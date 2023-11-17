@@ -1,2 +1,3 @@
-# helm-charts
-Official helm charts for deploying datafold into k8s
+# Datafold Helm Charts
+
+helm repo add datafold https://charts.datafold.com
