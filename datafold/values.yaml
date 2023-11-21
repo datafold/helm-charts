@@ -1,0 +1,12 @@
+# The global properties are used to configure multiple charts at once
+# and is a keyword that has special scope.
+global:
+  # This should be the fqdn of where your users will be accessing the instance.
+  host: "http://localhost:8080"
+  common:
+    labels: {}
+    annotations: {}
+
+# application specific stuff
+app:
+  install: true
