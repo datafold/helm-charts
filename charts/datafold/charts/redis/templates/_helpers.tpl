@@ -65,5 +65,12 @@ Create the name of the service account to use
 Name of the redis volume claim
 */}}
 {{- define "redis.pvc.name" -}}
-{{- include "redis.name" . }}-data
+{{- printf "%s-data-claim" (include "redis.name" .) | trunc 63 | trimSuffix "-" }}
+{{- end -}}
+
+{{/*
+Name of the redis pv
+*/}}
+{{- define "redis.pv.name" -}}
+{{- printf "%s-data-volume" (include "redis.name" .) | trunc 63 | trimSuffix "-" }}
 {{- end -}}
