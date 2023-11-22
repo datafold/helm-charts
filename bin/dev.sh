@@ -15,6 +15,12 @@ check_environment_variable "DATAFOLD_DEPLOY_NAME"
 # (DEV only)
 check_environment_variable "DATAFOLD_DB_HOSTPATH"
 
+if [ -z "$DATAFOLD_K8S_SECRETFILE" ]; then
+   DATAFOLD_K8S_SECRETFILE=secrets/secrets.yaml
+fi
+
+echo "Using ${DATAFOLD_K8S_SECRETFILE}"
+
 # Do not use TAG yet, because that's only when we use the application container.
 # check_environment_variable "TAG"
 
@@ -30,16 +36,16 @@ fi
 # Determine which function to run based on the provided command
 case "$1" in
   "install")
-    helm upgrade --install --namespace=datafold --create-namespace $DATAFOLD_DEPLOY_NAME ./charts/datafold --set global.hostPath=$DATAFOLD_DB_HOSTPATH
+    helm upgrade --install --namespace=datafold --create-namespace $DATAFOLD_DEPLOY_NAME ./charts/datafold --set global.hostPath=$DATAFOLD_DB_HOSTPATH -f $DATAFOLD_K8S_SECRETFILE
     ;;
   "upgrade")
-    helm upgrade --namespace=datafold --create-namespace $DATAFOLD_DEPLOY_NAME ./charts/datafold --set global.hostPath=$DATAFOLD_DB_HOSTPATH
+    helm upgrade --namespace=datafold --create-namespace $DATAFOLD_DEPLOY_NAME ./charts/datafold --set global.hostPath=$DATAFOLD_DB_HOSTPATH -f $DATAFOLD_K8S_SECRETFILE
     ;;
   "uninstall")
     helm uninstall --namespace=datafold $DATAFOLD_DEPLOY_NAME
     ;;
   "test")
-    helm template --debug --namespace=datafold --set global.hostPath=$DATAFOLD_DB_HOSTPATH ./charts/datafold
+    helm template --debug --namespace=datafold --set global.hostPath=$DATAFOLD_DB_HOSTPATH $DATAFOLD_DEPLOY_NAME ./charts/datafold -f $DATAFOLD_K8S_SECRETFILE
     ;;
   *)
     echo "Error: Unknown command '$1'."
