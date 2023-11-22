@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ datafold.fullname }}-config
+  name: {{ include "datafold.fullname" . }}-config
 data:
   PYTHONUNBUFFERED: "0"
   DATAFOLD_WEB_WORKERS: "{{ .Values.DATAFOLD_WEB_WORKERS }}"

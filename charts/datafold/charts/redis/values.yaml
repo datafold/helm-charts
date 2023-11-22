@@ -1,0 +1,36 @@
+replicaCount: 1
+
+image:
+  repository: redis
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+storage:
+  size: 1Gi
+  name: datafold-redis-storage
+  storageClass: ""
+  storageClassOverride: false
+
+podAnnotations:
+  ad.datadoghq.com/redis.logs: '[
+        {"source": "redis",
+        "service": "redis",
+        "tags": ["env:{{ .Values.DD_ENV }}"]}
+      ]'
+
+service:
+  type: ClusterIP
+  port: 6379
+
+resources: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

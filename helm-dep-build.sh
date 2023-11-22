@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # helm-dep-build-recursive
 #
@@ -19,3 +19,5 @@ for chart in . $subcharts; do
     fi
   fi
 done
+
+echo "Finished"

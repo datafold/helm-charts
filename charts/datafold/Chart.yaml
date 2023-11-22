@@ -12,7 +12,7 @@ maintainers:
     url: https://datafold.com
 
 dependencies:
-  - name: app
+  - name: redis
     version: "*.*.*"
-    repository: file://charts/app
-    condition: app.install
+    repository: file://charts/redis
+    condition: redis.install

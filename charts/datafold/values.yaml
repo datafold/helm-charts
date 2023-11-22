@@ -6,7 +6,7 @@ global:
   common:
     labels: {}
     annotations: {}
+  storageClass: ""
 
-# application specific stuff
-app:
+redis:
   install: true

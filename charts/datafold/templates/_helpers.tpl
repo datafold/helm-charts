@@ -60,3 +60,21 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{/*
+Template to derive storage class to use
+*/}}
+{{- define "datafold.storageClass" -}}
+{{- if .Values.global.hostPath -}}
+{{-     printf "storageClassName: manual" -}}
+{{- else if .Values.storage.storageClass -}}
+{{-   if (ne .Values.storage.storageClass "") -}}
+{{-     printf "storageClassName: %s" .Values.storageClass -}}
+{{-   end -}}
+{{- else if .Values.global.storageClass -}}
+{{-   if (ne .Values.global.storageClass "") -}}
+{{-     printf "storageClassName: %s" .Values.global.storageClass -}}
+{{-   end -}}
+{{- end -}}
+{{- end -}}
+
