@@ -10,3 +10,28 @@ global:
 
 redis:
   install: true
+  foo: bar
+
+config:
+  web_workers: "30"
+  worker_count: "90"
+  github_server: "https://github.com"
+  max_tasks_per_worker: "200"
+  max_mem_per_worker: "300000"
+  ratelimit_enabled: "true"
+  logging_enabled: "true"
+  single_tenant_deploy: "true"
+  mail_port: "25"
+  mail_use_tls: "false"
+  mail_use_ssl: "false"
+  enable_ssrf_protection: "true"
+
+secrets:
+  install_me_password: "-"
+  database:
+    encryption_key: "-"
+  mail:
+    server: "-"
+    username: "-"
+    password: "-"
+    default_sender: "-"
