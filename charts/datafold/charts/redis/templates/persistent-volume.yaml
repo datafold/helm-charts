@@ -1,8 +1,4 @@
-{{- if not .Values.global.hostPath -}}
-# Extend with additional checks, we only want to create one volume here
-{{ fail "This version must use global.hostPath setting" }}
-{{- end -}}
-
+{{- include "datafold.hostpath.check" . -}}
 {{- if .Values.global.hostPath }}
 apiVersion: v1
 kind: PersistentVolume

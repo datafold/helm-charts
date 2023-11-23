@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "datafold.name" -}}
+{{- define "clickhouse.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "datafold.fullname" -}}
+{{- define "clickhouse.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,16 +26,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "datafold.chart" -}}
+{{- define "clickhouse.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "datafold.labels" -}}
-helm.sh/chart: {{ include "datafold.chart" . }}
-{{ include "datafold.selectorLabels" . }}
+{{- define "clickhouse.labels" -}}
+helm.sh/chart: {{ include "clickhouse.chart" . }}
+{{ include "clickhouse.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,51 +45,46 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "datafold.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "datafold.name" . }}
+{{- define "clickhouse.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "clickhouse.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "datafold.serviceAccountName" -}}
+{{- define "clickhouse.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "datafold.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "clickhouse.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
 
 {{/*
-Template to derive storage class to use
+Name of the clickhouse data volume
 */}}
-{{- define "datafold.storageClass" -}}
-{{- if .Values.global.hostPath -}}
-{{-     printf "storageClassName: manual" -}}
-{{- else if .Values.storage.storageClass -}}
-{{-   if (ne .Values.storage.storageClass "") -}}
-{{-     printf "storageClassName: %s" .Values.storageClass -}}
-{{-   end -}}
-{{- else if .Values.global.storageClass -}}
-{{-   if (ne .Values.global.storageClass "") -}}
-{{-     printf "storageClassName: %s" .Values.global.storageClass -}}
-{{-   end -}}
-{{- end -}}
+{{- define "clickhouse.data.pv.name" -}}
+{{- include "clickhouse.name" . }}-data-volume
 {{- end -}}
 
 {{/*
-Name of the clickhouse secrets location
+Name of the clickhouse logs volume
 */}}
-{{- define "datafold.secrets" -}}
-{{- printf "%s-secrets" .Release.Name | trunc 63 | trimSuffix "-" }}
+{{- define "clickhouse.logs.pv.name" -}}
+{{- include "clickhouse.name" . }}-logs-volume
 {{- end -}}
 
 {{/*
-Check that hostpath is set
+Name of the clickhouse data volume claim
 */}}
-{{- define "datafold.hostpath.check" -}}
-{{- if not .Values.global.hostPath -}}
-{{ fail "This version must use global.hostPath setting" }}
+{{- define "clickhouse.data.pvc.name" -}}
+{{- include "clickhouse.name" . }}-data-claim
 {{- end -}}
+
+{{/*
+Name of the clickhouse logs volume claim
+*/}}
+{{- define "clickhouse.logs.pvc.name" -}}
+{{- include "clickhouse.name" . }}-logs-claim
 {{- end -}}

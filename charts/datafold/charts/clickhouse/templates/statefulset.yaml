@@ -1,0 +1,128 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "clickhouse.fullname" . }}
+  labels:
+    {{- include "clickhouse.labels" . | nindent 4 }}
+spec:
+  serviceName: {{ include "clickhouse.fullname" . }}
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "clickhouse.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "clickhouse.labels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: MAX_SERVER_MEMORY_USAGE_TO_RAM_RATIO
+              value: "{{ .Values.config.ram_ratio }}"
+            - name: CLICKHOUSE_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "datafold.secrets" . }}
+                  key: DATAFOLD_CLICKHOUSE_USER
+            - name: USER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "datafold.secrets" . }}
+                  key: DATAFOLD_CLICKHOUSE_PASSWORD
+            - name: UNCOMPRESSED_CACHE_SIZE
+              value: "{{ .Values.config.uncompressed_cache_size }}"
+            - name: MARK_CACHE_SIZE
+              value: "{{ .Values.config.mark_cache_size }}"
+            - name: MAX_CONCURRENT_QUERIES
+              value: "{{ .Values.config.concurrent_queries }}"
+            - name: LOGGER_LEVEL
+              value: "{{ .Values.config.log_level }}"
+          ports:
+            - name: ch-native
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+            - name: ch-http
+              containerPort: 8123
+              protocol: TCP
+          livenessProbe:
+            failureThreshold: 10
+            exec:
+              command:
+              - sh
+              - -c
+              - wget -qO- localhost:8123/ping
+            initialDelaySeconds: 60
+            periodSeconds: 3
+            successThreshold: 1
+            timeoutSeconds: 1
+          readinessProbe:
+            failureThreshold: 3
+            exec:
+              command:
+              - sh
+              - -c
+              - wget -qO- localhost:8123/ping
+            initialDelaySeconds: 10
+            periodSeconds: 3
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: {{ include "clickhouse.data.pvc.name" . }}
+              mountPath: /var/lib/clickhouse
+            - name: {{ include "clickhouse.logs.pvc.name" . }}
+              mountPath: /var/log/clickhouse-server
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+  volumeClaimTemplates:
+    - metadata:
+        name: {{ include "clickhouse.data.pvc.name" . }}
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        {{ include "datafold.storageClass" . | nindent 8 }}
+        resources:
+          requests:
+            storage: {{ .Values.storage.size }}
+{{- if .Values.global.hostPath }}
+        volumeName: {{ include "clickhouse.data.pv.name" . }}
+{{- end }}
+    - metadata:
+        name: {{ include "clickhouse.logs.pvc.name" . }}
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        {{ include "datafold.storageClass" . | nindent 8 }}
+        resources:
+          requests:
+            storage: {{ .Values.storage.size }}
+{{- if .Values.global.hostPath }}
+        volumeName: {{ include "clickhouse.logs.pv.name" . }}
+{{- end }}
