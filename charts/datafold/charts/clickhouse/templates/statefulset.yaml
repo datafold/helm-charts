@@ -111,10 +111,10 @@ spec:
         {{ include "datafold.storageClass" . | nindent 8 }}
         resources:
           requests:
-            storage: {{ .Values.storage.size }}
-{{- if .Values.global.hostPath }}
+            storage: {{ .Values.storage.dataSize }}
+        {{- if .Values.global.hostPath }}
         volumeName: {{ include "clickhouse.data.pv.name" . }}
-{{- end }}
+        {{- end }}
     - metadata:
         name: {{ include "clickhouse.logs.pvc.name" . }}
       spec:
@@ -122,7 +122,7 @@ spec:
         {{ include "datafold.storageClass" . | nindent 8 }}
         resources:
           requests:
-            storage: {{ .Values.storage.size }}
-{{- if .Values.global.hostPath }}
+            storage: {{ .Values.storage.logSize }}
+        {{- if .Values.global.hostPath }}
         volumeName: {{ include "clickhouse.logs.pv.name" . }}
-{{- end }}
+        {{- end }}

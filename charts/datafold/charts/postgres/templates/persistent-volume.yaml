@@ -1,0 +1,21 @@
+{{- include "datafold.hostpath.check" . -}}
+
+{{- if .Values.global.hostPath }}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ include "postgres.data.pv.name" . }}
+  labels:
+    {{- include "postgres.labels" . | nindent 4 }}
+spec:
+  {{- include "datafold.storageClass" . | nindent 2 }}
+  accessModes:
+    - ReadWriteOnce
+  # capacity.storage is required, but in a PV it is only a label
+  capacity:
+    storage: {{ .Values.storage.size }}
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: {{ .Values.global.hostPath }}/deploy/data/postgres
+    type: Directory
+{{- end }}

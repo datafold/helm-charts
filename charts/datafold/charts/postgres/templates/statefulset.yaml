@@ -1,0 +1,125 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "postgres.fullname" . }}
+  labels:
+    {{- include "postgres.labels" . | nindent 4 }}
+spec:
+  serviceName: {{ include "postgres.fullname" . }}
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "postgres.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "postgres.labels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          # Is this dev only?
+          command: ["docker-entrypoint.sh", "-c", "fsync=off", "-c", "full_page_writes=off", "-c", "synchronous_commit=OFF"]
+          env:
+            {{- if eq .Values.global.auth_method "trust" }}
+            - name: POSTGRES_HOST_AUTH_METHOD
+              value: "trust"
+            {{- else }}
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "datafold.secrets" . }}
+                  key: DATAFOLD_POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "datafold.secrets" . }}
+                  key: DATAFOLD_POSTGRES_PASSWORD
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "datafold.secrets" . }}
+                  key: DATAFOLD_POSTGRES_DB
+            {{- end }}
+          ports:
+            - name: postgres
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            exec:
+              command:
+                - "psql"
+                - "-w"
+                - "-U"
+                - "postgres"
+                - "-d"
+                - "postgres"
+                - "-c"
+                - "SELECT 1"
+            initialDelaySeconds: 2
+            periodSeconds: 3
+            timeoutSeconds: 2
+            successThreshold: 1
+          livenessProbe:
+            failureThreshold: 10
+            exec:
+              command:
+                - "psql"
+                - "-w"
+                - "postgres"
+                - "-U"
+                - "postgres"
+                - "-d"
+                - "postgres"
+                - "-c"
+                - "SELECT 1"
+            initialDelaySeconds: 2
+            periodSeconds: 3
+            timeoutSeconds: 2
+            successThreshold: 1
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: {{ include "postgres.data.pvc.name" . }}
+              mountPath: /var/lib/postgresql/data
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+  volumeClaimTemplates:
+    - metadata:
+        name: {{ include "postgres.data.pvc.name" . }}
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        {{ include "datafold.storageClass" . | nindent 8 }}
+        resources:
+          requests:
+            storage: {{ .Values.storage.size }}
+        {{- if .Values.global.hostPath }}
+        volumeName: {{ include "postgres.data.pv.name" . }}
+        {{- end }}
