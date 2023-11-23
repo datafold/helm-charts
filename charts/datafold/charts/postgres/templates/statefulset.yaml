@@ -37,7 +37,7 @@ spec:
           # Is this dev only?
           command: ["docker-entrypoint.sh", "-c", "fsync=off", "-c", "full_page_writes=off", "-c", "synchronous_commit=OFF"]
           env:
-            {{- if eq .Values.global.auth_method "trust" }}
+            {{- if eq .Values.global.authMethod "trust" }}
             - name: POSTGRES_HOST_AUTH_METHOD
               value: "trust"
             {{- else }}
@@ -59,7 +59,7 @@ spec:
             {{- end }}
           ports:
             - name: postgres
-              containerPort: {{ .Values.service.port }}
+              containerPort: 5432
               protocol: TCP
           readinessProbe:
             failureThreshold: 3

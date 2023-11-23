@@ -1,28 +1,19 @@
 replicaCount: 1
-
 image:
-  repository: gcr.io/datadiff-mm/clickhouse
+  repository: gcr.io/datadiff-mm/datafold-server-onprem
   pullPolicy: IfNotPresent
   tag: ""
 
 imagePullSecrets:
   - name: datafold-docker-secret
-
 nameOverride: ""
 fullnameOverride: ""
 
-storage:
-  dataSize: 2Gi
-  logSize: 2Gi
-  storageClass: ""
-  storageClassOverride: false
-
-config:
-  ram_ratio: 0.9
-  uncompressed_cache_size: "0"
-  mark_cache_size: "5368709120"
-  concurrent_queries: "300"
-  log_level: "information"
+serviceAccount:
+  create: true
+  automount: true
+  annotations: {}
+  name: ""
 
 podAnnotations: {}
 podLabels: {}
@@ -30,9 +21,6 @@ podLabels: {}
 podSecurityContext: {}
 
 securityContext: {}
-
-service:
-  type: ClusterIP
 
 resources: {}
 

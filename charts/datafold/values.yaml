@@ -7,7 +7,14 @@ global:
     labels: {}
     annotations: {}
   storageClass: ""
-  auth_method: "password"
+  authMethod: "password"
+  datafoldVersion: ""
+  clickhouse:
+    port: 9000
+  postgres:
+    port: 5432
+  redis:
+    port: 6379
 
 redis:
   install: true
@@ -18,29 +25,32 @@ clickhouse:
 postgres:
   install: true
 
+dfshell:
+  install: true
+
 config:
-  web_workers: "30"
-  worker_count: "90"
-  github_server: "https://github.com"
-  max_tasks_per_worker: "200"
-  max_mem_per_worker: "300000"
-  ratelimit_enabled: "true"
-  logging_enabled: "true"
-  single_tenant_deploy: "true"
-  mail_port: "25"
-  mail_use_tls: "false"
-  mail_use_ssl: "false"
-  enable_ssrf_protection: "true"
+  webWorkers: "30"
+  workerCount: "90"
+  githubServer: "https://github.com"
+  maxTasksPerWorker: "200"
+  maxMemPerWorker: "300000"
+  ratelimitEnabled: "true"
+  loggingEnabled: "true"
+  singleTenantDeploy: "true"
+  mailPort: "25"
+  mailUseTls: "false"
+  mailUseSsl: "false"
+  enableSsrfProtection: "true"
 
 secrets:
-  install_me_password: "-"
+  installMePassword: "-"
   database:
-    encryption_key: "-"
+    encryptionKey: "-"
   mail:
     server: "-"
     username: "-"
     password: "-"
-    default_sender: "-"
+    defaultSender: "-"
   clickhouse:
     user: "-"
     password: "-"
