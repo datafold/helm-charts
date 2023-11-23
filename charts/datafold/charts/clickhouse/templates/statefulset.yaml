@@ -18,7 +18,7 @@ spec:
       {{- end }}
       labels:
         {{- include "clickhouse.labels" . | nindent 8 }}
-	{{- with .Values.podLabels }}
+        {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}
     {{- end }}
     spec:
@@ -36,24 +36,61 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: MAX_SERVER_MEMORY_USAGE_TO_RAM_RATIO
-              value: "0.2"
+              value: "{{ .Values.config.ram_ratio }}"
+            - name: CLICKHOUSE_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "datafold.secrets" . }}
+                  key: DATAFOLD_CLICKHOUSE_USER
             - name: USER_PASSWORD
-              value: default
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "datafold.secrets" . }}
+                  key: DATAFOLD_CLICKHOUSE_PASSWORD
             - name: UNCOMPRESSED_CACHE_SIZE
-              value: "536870912"
-            - name: MAX_CONCURRENT_QUERIES
-              value: "300"
+              value: "{{ .Values.config.uncompressed_cache_size }}"
             - name: MARK_CACHE_SIZE
-              value: "1073741824"
+              value: "{{ .Values.config.mark_cache_size }}"
+            - name: MAX_CONCURRENT_QUERIES
+              value: "{{ .Values.config.concurrent_queries }}"
+            - name: LOGGER_LEVEL
+              value: "{{ .Values.config.log_level }}"
           ports:
-            - name: clickhouse
-              containerPort: 9000
+            - name: ch-native
+              containerPort: {{ .Values.service.port }}
               protocol: TCP
+            - name: ch-http
+              containerPort: 8123
+              protocol: TCP
+          livenessProbe:
+            failureThreshold: 10
+            exec:
+              command:
+              - sh
+              - -c
+              - wget -qO- localhost:8123/ping
+            initialDelaySeconds: 60
+            periodSeconds: 3
+            successThreshold: 1
+            timeoutSeconds: 1
+          readinessProbe:
+            failureThreshold: 3
+            exec:
+              command:
+              - sh
+              - -c
+              - wget -qO- localhost:8123/ping
+            initialDelaySeconds: 10
+            periodSeconds: 3
+            successThreshold: 1
+            timeoutSeconds: 1
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
-            - name: {{ include "clickhouse.pvc.name" . }}
-              mountPath: /data
+            - name: {{ include "clickhouse.data.pvc.name" . }}
+              mountPath: /var/lib/clickhouse
+            - name: {{ include "clickhouse.logs.pvc.name" . }}
+              mountPath: /var/log/clickhouse-server
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -68,7 +105,7 @@ spec:
       {{- end }}
   volumeClaimTemplates:
     - metadata:
-        name: {{ include "clickhouse.pvc.name" . }}
+        name: {{ include "clickhouse.data.pvc.name" . }}
       spec:
         accessModes: [ "ReadWriteOnce" ]
         {{ include "datafold.storageClass" . | nindent 8 }}
@@ -76,5 +113,16 @@ spec:
           requests:
             storage: {{ .Values.storage.size }}
 {{- if .Values.global.hostPath }}
-        volumeName: {{ include "clickhouse.pv.name" . }}
+        volumeName: {{ include "clickhouse.data.pv.name" . }}
+{{- end }}
+    - metadata:
+        name: {{ include "clickhouse.logs.pvc.name" . }}
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        {{ include "datafold.storageClass" . | nindent 8 }}
+        resources:
+          requests:
+            storage: {{ .Values.storage.size }}
+{{- if .Values.global.hostPath }}
+        volumeName: {{ include "clickhouse.logs.pv.name" . }}
 {{- end }}

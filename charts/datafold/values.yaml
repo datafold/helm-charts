@@ -10,7 +10,9 @@ global:
 
 redis:
   install: true
-  foo: bar
+
+clickhouse:
+  install: true
 
 config:
   web_workers: "30"
@@ -35,3 +37,6 @@ secrets:
     username: "-"
     password: "-"
     default_sender: "-"
+  clickhouse:
+    user: "default"
+    password: "default"

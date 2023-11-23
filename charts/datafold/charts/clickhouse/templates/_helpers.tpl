@@ -62,16 +62,29 @@ Create the name of the service account to use
 {{- end }}
 
 {{/*
-Name of the clickhouse volume
+Name of the clickhouse data volume
 */}}
-{{- define "clickhouse.pv.name" -}}
+{{- define "clickhouse.data.pv.name" -}}
 {{- include "clickhouse.name" . }}-data-volume
 {{- end -}}
 
 {{/*
-Name of the clickhouse volume claim
+Name of the clickhouse logs volume
 */}}
-{{- define "clickhouse.pvc.name" -}}
+{{- define "clickhouse.logs.pv.name" -}}
+{{- include "clickhouse.name" . }}-logs-volume
+{{- end -}}
+
+{{/*
+Name of the clickhouse data volume claim
+*/}}
+{{- define "clickhouse.data.pvc.name" -}}
 {{- include "clickhouse.name" . }}-data-claim
 {{- end -}}
 
+{{/*
+Name of the clickhouse logs volume claim
+*/}}
+{{- define "clickhouse.logs.pvc.name" -}}
+{{- include "clickhouse.name" . }}-logs-claim
+{{- end -}}

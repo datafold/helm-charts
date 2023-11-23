@@ -78,3 +78,18 @@ Template to derive storage class to use
 {{- end -}}
 {{- end -}}
 
+{{/*
+Name of the clickhouse secrets location
+*/}}
+{{- define "datafold.secrets" -}}
+{{- printf "%s-secrets" .Release.Name | trunc 63 | trimSuffix "-" }}
+{{- end -}}
+
+{{/*
+Check that hostpath is set
+*/}}
+{{- define "datafold.hostpath.check" -}}
+{{- if not .Values.global.hostPath -}}
+{{ fail "This version must use global.hostPath setting" }}
+{{- end -}}
+{{- end -}}

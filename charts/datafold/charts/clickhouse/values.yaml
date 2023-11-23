@@ -1,17 +1,12 @@
-# Default values for clickhouse.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-
 replicaCount: 1
 
 image:
   repository: gcr.io/datadiff-mm/clickhouse
   pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
   tag: ""
 
 imagePullSecrets:
-  - name: mydockercfg
+  - name: datafold-docker-secret
 
 nameOverride: ""
 fullnameOverride: ""
@@ -20,6 +15,13 @@ storage:
   size: 100Gi
   storageClass: ""
   storageClassOverride: false
+
+config:
+  ram_ratio: 0.9
+  uncompressed_cache_size: "0"
+  mark_cache_size: "5368709120"
+  concurrent_queries: "300"
+  log_level: "information"
 
 podAnnotations: {}
 podLabels: {}

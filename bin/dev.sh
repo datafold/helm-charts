@@ -36,16 +36,16 @@ fi
 # Determine which function to run based on the provided command
 case "$1" in
   "install")
-    helm upgrade --install --namespace=datafold --create-namespace $DATAFOLD_DEPLOY_NAME ./charts/datafold --set global.hostPath=$DATAFOLD_DB_HOSTPATH -f $DATAFOLD_K8S_SECRETFILE
+    helm upgrade --install $DATAFOLD_DEPLOY_NAME ./charts/datafold --set global.hostPath=$DATAFOLD_DB_HOSTPATH -f $DATAFOLD_K8S_SECRETFILE
     ;;
   "upgrade")
-    helm upgrade --namespace=datafold --create-namespace $DATAFOLD_DEPLOY_NAME ./charts/datafold --set global.hostPath=$DATAFOLD_DB_HOSTPATH -f $DATAFOLD_K8S_SECRETFILE
+    helm upgrade $DATAFOLD_DEPLOY_NAME ./charts/datafold --set global.hostPath=$DATAFOLD_DB_HOSTPATH -f $DATAFOLD_K8S_SECRETFILE
     ;;
   "uninstall")
-    helm uninstall --namespace=datafold $DATAFOLD_DEPLOY_NAME
+    helm uninstall $DATAFOLD_DEPLOY_NAME
     ;;
   "test")
-    helm template --debug --namespace=datafold --set global.hostPath=$DATAFOLD_DB_HOSTPATH $DATAFOLD_DEPLOY_NAME ./charts/datafold -f $DATAFOLD_K8S_SECRETFILE
+    helm template --debug --set global.hostPath=$DATAFOLD_DB_HOSTPATH $DATAFOLD_DEPLOY_NAME ./charts/datafold -f $DATAFOLD_K8S_SECRETFILE
     ;;
   *)
     echo "Error: Unknown command '$1'."

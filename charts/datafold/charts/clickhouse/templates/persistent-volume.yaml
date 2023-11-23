@@ -1,13 +1,10 @@
-{{- if not .Values.global.hostPath -}}
-# Extend with additional checks, we only want to create one volume here
-{{ fail "This version must use global.hostPath setting" }}
-{{- end -}}
+{{- include "datafold.hostpath.check" . -}}
 
 {{- if .Values.global.hostPath }}
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: {{ .Values.storage.name }}
+  name: {{ include "clickhouse.data.pv.name" . }}
   labels:
     {{- include "clickhouse.labels" . | nindent 4 }}
 spec:
@@ -20,5 +17,23 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   hostPath:
     path: {{ .Values.global.hostPath }}/deploy/data/clickhouse
+    type: Directory
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ include "clickhouse.logs.pv.name" . }}
+  labels:
+    {{- include "clickhouse.labels" . | nindent 4 }}
+spec:
+  {{- include "datafold.storageClass" . | nindent 2 }}
+  accessModes:
+    - ReadWriteOnce
+  # capacity.storage is required, but in a PV it is only a label
+  capacity:
+    storage: {{ .Values.storage.size }}
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: {{ .Values.global.hostPath }}/deploy/logs/clickhouse
     type: Directory
 {{- end }}
