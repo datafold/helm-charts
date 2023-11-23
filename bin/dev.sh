@@ -14,10 +14,10 @@ check_environment_variable "DATAFOLD_DEPLOY_NAME"
 # The DB hostpath is where local postgres/redis data is stored
 # (DEV only)
 check_environment_variable "DATAFOLD_DB_HOSTPATH"
+check_environment_variable "TAG"
+check_environment_variable "DATAFOLD_K8S_SECRETFILE"
 
-if [ -z "$DATAFOLD_K8S_SECRETFILE" ]; then
-   DATAFOLD_K8S_SECRETFILE=secrets/secrets.yaml
-fi
+DATAFOLD_VOLUME_YAML=~/.datafold/dev_volumes.yaml
 
 echo "Using ${DATAFOLD_K8S_SECRETFILE}"
 
@@ -36,16 +36,16 @@ fi
 # Determine which function to run based on the provided command
 case "$1" in
   "install")
-    helm upgrade --install $DATAFOLD_DEPLOY_NAME ./charts/datafold --set global.hostPath=$DATAFOLD_DB_HOSTPATH -f $DATAFOLD_K8S_SECRETFILE
+    helm upgrade --install $DATAFOLD_DEPLOY_NAME ./charts/datafold -f $DATAFOLD_K8S_SECRETFILE -f $DATAFOLD_VOLUME_YAML --set global.hostPath=$DATAFOLD_DB_HOSTPATH  --set global.datafoldVersion=$DATAFOLD_DB_HOSTPATH --set global.datafoldVersion=$TAG
     ;;
   "upgrade")
-    helm upgrade $DATAFOLD_DEPLOY_NAME ./charts/datafold --set global.hostPath=$DATAFOLD_DB_HOSTPATH -f $DATAFOLD_K8S_SECRETFILE
+    helm upgrade $DATAFOLD_DEPLOY_NAME ./charts/datafold -f $DATAFOLD_K8S_SECRETFILE -f $DATAFOLD_VOLUME_YAML --set global.hostPath=$DATAFOLD_DB_HOSTPATH --set global.datafoldVersion=$TAG
     ;;
   "uninstall")
     helm uninstall $DATAFOLD_DEPLOY_NAME
     ;;
   "test")
-    helm template --debug --set global.hostPath=$DATAFOLD_DB_HOSTPATH $DATAFOLD_DEPLOY_NAME ./charts/datafold -f $DATAFOLD_K8S_SECRETFILE
+    helm template --debug ./charts/datafold -f $DATAFOLD_K8S_SECRETFILE -f $DATAFOLD_VOLUME_YAML --set global.hostPath=$DATAFOLD_DB_HOSTPATH  --set global.datafoldVersion=$TAG
     ;;
   *)
     echo "Error: Unknown command '$1'."

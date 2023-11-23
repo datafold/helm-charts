@@ -1,21 +1,21 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "datafold.fullname" . }}-config
+  name: {{ include "datafold.configmap" . }}
 data:
   PYTHONUNBUFFERED: "0"
-  DATAFOLD_WEB_WORKERS: "{{ .Values.config.web_workers }}"
-  GITHUB_SERVER: "{{ .Values.config.github_server }}"
+  DATAFOLD_WEB_WORKERS: "{{ .Values.config.webWorkers }}"
+  GITHUB_SERVER: "{{ .Values.config.githubServer }}"
   DEV_NAME: "{{ .Release.Name }}"
   INSTALLATION_NAME: "{{ .Release.Name }}"
-  WORKERS_COUNT: "{{ .Values.config.worker_count }}"
-  MAX_TASKS_PER_WORKER: "{{ .Values.config.max_tasks_per_worker }}"
-  MAX_MEMORY_PER_WORKER: "{{ .Values.config.max_mem_per_worker }}"
-  DATAFOLD_RATELIMIT_ENABLED: "{{ .Values.config.ratelimit_enabled }}"
-  DATAFOLD_LOGGING_ENABLED: "{{ .Values.config.logging_enabled }}"
-  DATAFOLD_SINGLE_TENANT_DEPLOY: "{{ .Values.config.single_tenant_deploy }}"
-  DATAFOLD_MAIL_PORT: "{{ .Values.config.mail_port }}"
-  DATAFOLD_MAIL_USE_TLS: "{{ .Values.config.mail_use_tls }}"
-  DATAFOLD_MAIL_USE_SSL: "{{ .Values.config.mail_use_ssl }}"
-  DATAFOLD_ENABLE_SSRF_PROTECTION: "{{ .Values.config.enable_ssrf_protection }}"
-  DATAFOLD_APP_VERSION: "{{ .Values.config.max_mem_per_worker }}"
+  WORKERS_COUNT: "{{ .Values.config.workerCount }}"
+  MAX_TASKS_PER_WORKER: "{{ .Values.config.maxTasksPerWorker }}"
+  MAX_MEMORY_PER_WORKER: "{{ .Values.config.maxMemPerWorker }}"
+  DATAFOLD_RATELIMIT_ENABLED: "{{ .Values.config.ratelimitEnabled }}"
+  DATAFOLD_LOGGING_ENABLED: "{{ .Values.config.loggingEnabled }}"
+  DATAFOLD_SINGLE_TENANT_DEPLOY: "{{ .Values.config.singleTenantDeploy }}"
+  DATAFOLD_MAIL_PORT: "{{ .Values.config.mailPort }}"
+  DATAFOLD_MAIL_USE_TLS: "{{ .Values.config.mailUseTls }}"
+  DATAFOLD_MAIL_USE_SSL: "{{ .Values.config.mailUseSsl }}"
+  DATAFOLD_ENABLE_SSRF_PROTECTION: "{{ .Values.config.enableSsrfProtection }}"
+  DATAFOLD_APP_VERSION: "{{ .Values.config.maxMemPerWorker }}"
