@@ -1,28 +1,18 @@
 replicaCount: 1
 
 image:
-  repository: gcr.io/datadiff-mm/clickhouse
+  repository: postgres
   pullPolicy: IfNotPresent
   tag: ""
 
-imagePullSecrets:
-  - name: datafold-docker-secret
-
+imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
 storage:
-  dataSize: 2Gi
-  logSize: 2Gi
+  size: 2Gi
   storageClass: ""
   storageClassOverride: false
-
-config:
-  ram_ratio: 0.9
-  uncompressed_cache_size: "0"
-  mark_cache_size: "5368709120"
-  concurrent_queries: "300"
-  log_level: "information"
 
 podAnnotations: {}
 podLabels: {}
@@ -33,7 +23,7 @@ securityContext: {}
 
 service:
   type: ClusterIP
-  port: 9000
+  port: 5432
 
 resources: {}
 

@@ -7,11 +7,15 @@ global:
     labels: {}
     annotations: {}
   storageClass: ""
+  auth_method: "password"
 
 redis:
   install: true
 
 clickhouse:
+  install: true
+
+postgres:
   install: true
 
 config:
@@ -38,5 +42,9 @@ secrets:
     password: "-"
     default_sender: "-"
   clickhouse:
-    user: "default"
-    password: "default"
+    user: "-"
+    password: "-"
+  postgres:
+    user: "-"
+    password: "-"
+    database: "-"

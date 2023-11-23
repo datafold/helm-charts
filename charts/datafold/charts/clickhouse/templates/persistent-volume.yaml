@@ -13,7 +13,7 @@ spec:
     - ReadWriteOnce
   # capacity.storage is required, but in a PV it is only a label
   capacity:
-    storage: {{ .Values.storage.size }}
+    storage: {{ .Values.storage.dataSize }}
   persistentVolumeReclaimPolicy: Retain
   hostPath:
     path: {{ .Values.global.hostPath }}/deploy/data/clickhouse
@@ -31,7 +31,7 @@ spec:
     - ReadWriteOnce
   # capacity.storage is required, but in a PV it is only a label
   capacity:
-    storage: {{ .Values.storage.size }}
+    storage: {{ .Values.storage.logSize }}
   persistentVolumeReclaimPolicy: Retain
   hostPath:
     path: {{ .Values.global.hostPath }}/deploy/logs/clickhouse

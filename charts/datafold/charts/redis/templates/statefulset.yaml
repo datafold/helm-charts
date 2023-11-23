@@ -69,6 +69,6 @@ spec:
         resources:
           requests:
             storage: {{ .Values.storage.size }}
-{{- if .Values.global.hostPath }}
+        {{- if .Values.global.hostPath }}
         volumeName: {{ include "redis.pv.name" . }}
-{{- end }}
+        {{- end }}

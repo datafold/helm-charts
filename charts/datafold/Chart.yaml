@@ -2,7 +2,7 @@ apiVersion: v2
 name: datafold
 description: Helm chart package to deploy Datafold on kubernetes.
 type: application
-version: 0.1.3
+version: 0.1.4
 appVersion: "1.0.0"
 icon: https://www.datafold.com/logo.png
 
@@ -20,3 +20,7 @@ dependencies:
     version: "*.*.*"
     repository: file://charts/clickhouse
     condition: clickhouse.install
+  - name: postgres
+    version: "*.*.*"
+    repository: file://charts/postgres
+    condition: postgres.install
