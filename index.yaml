@@ -3,6 +3,38 @@ entries:
   datafold:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2023-11-23T18:48:29.48984265Z"
+    dependencies:
+    - condition: redis.install
+      name: redis
+      repository: file://charts/redis
+      version: '*.*.*'
+    - condition: clickhouse.install
+      name: clickhouse
+      repository: file://charts/clickhouse
+      version: '*.*.*'
+    - condition: postgres.install
+      name: postgres
+      repository: file://charts/postgres
+      version: '*.*.*'
+    - condition: dfshell.install
+      name: dfshell
+      repository: file://charts/dfshell
+      version: '*.*.*'
+    description: Helm chart package to deploy Datafold on kubernetes.
+    digest: 5b7049bcf30f3a16c8ca399b33ae1f347844f47f1912b9f330c9bae61b9eadcd
+    icon: https://www.datafold.com/logo.png
+    maintainers:
+    - email: support@datafold.com
+      name: datafold
+      url: https://datafold.com
+    name: datafold
+    type: application
+    urls:
+    - https://github.com/datafold/helm-charts/releases/download/datafold-0.1.5/datafold-0.1.5.tgz
+    version: 0.1.5
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2023-11-23T15:40:31.652420996Z"
     dependencies:
     - condition: redis.install
@@ -113,4 +145,4 @@ entries:
     urls:
     - https://github.com/datafold/helm-charts/releases/download/datafold-0.1.0/datafold-0.1.0.tgz
     version: 0.1.0
-generated: "2023-11-23T15:40:31.652440672Z"
+generated: "2023-11-23T18:48:29.489871083Z"
