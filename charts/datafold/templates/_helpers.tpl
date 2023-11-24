@@ -100,4 +100,3 @@ Check that hostpath is set
 {{ fail "This version must use global.hostPath setting" }}
 {{- end -}}
 {{- end -}}
-

@@ -23,7 +23,7 @@ kubectl config set-context --current --namespace=datafold
 ### Receive a json key to pull images
 
 Our images are stored on a private registry. You can request a JSON key to be used
-to pull those images. Install that json key as follows, paying attention to the 
+to pull those images. Install that json key as follows, paying attention to the
 values of docker-server and you have the correct namespace targeted in your context.
 
 ```
