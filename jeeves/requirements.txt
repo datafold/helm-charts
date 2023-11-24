@@ -1,0 +1,3 @@
+jeeves-shell[all]>=2.2.0
+poetry
+funcy==2.0

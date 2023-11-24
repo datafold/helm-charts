@@ -1,0 +1,47 @@
+name: Jeeves pre-commit checks
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, labeled, unlabeled]
+
+concurrency:
+  group: '${{ github.workflow }} @ ${{ github.ref }}'
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Precommit checks
+    runs-on: ubuntu-latest
+    env:
+      BRANCH: ${{ github.base_ref || github.ref_name }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Get changed files - Only run the other steps if any of these files changed
+        id: changed-files
+        uses: tj-actions/changed-files@v35
+        with:
+          files: |
+            .github/workflows/jeeves-check.yaml
+            jeeves
+
+      # This will install python tool and make a venv like environment for it
+      # in "_work/_tool" on the git runner. No need to worry about separate venvs
+      # because of that.
+      - name: Set up Python
+        if: steps.changed-files.outputs.any_changed == 'true'
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install pre-commit
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: (cd jeeves; pip install pre-commit && pre-commit install)
+
+      - name: Run pre-commit
+        if: steps.changed-files.outputs.any_changed == 'true'
+        shell: bash
+        run: |
+          (cd jeeves; pre-commit run --files ./*)
