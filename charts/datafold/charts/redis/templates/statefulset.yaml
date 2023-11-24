@@ -31,6 +31,14 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["/bin/sh"]
+          args: ["-c", "redis-server --appendonly yes --appendfsync always --notify-keyspace-events Kh --dir /data --requirepass $${REDIS_PASSWORD}"]
+          env:
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "datafold.secrets" . }}
+                  key: DATAFOLD_CLICKHOUSE_PASSWORD
           ports:
             - name: redis
               containerPort: 6379

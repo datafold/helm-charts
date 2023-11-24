@@ -58,3 +58,5 @@ secrets:
     user: "-"
     password: "-"
     database: "-"
+  redis:
+    password: "-"
