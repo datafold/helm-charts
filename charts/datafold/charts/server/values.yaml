@@ -9,6 +9,7 @@ imagePullSecrets:
   - name: datafold-docker-secret
 nameOverride: ""
 fullnameOverride: ""
+terminationGracePeriodSeconds: "5"
 
 command: "server"
 statusCheckToken: "magic_token"

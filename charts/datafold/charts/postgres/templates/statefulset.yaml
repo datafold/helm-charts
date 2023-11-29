@@ -28,13 +28,13 @@ spec:
       {{- end }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          # Is this dev only?
           command: ["docker-entrypoint.sh", "-c", "fsync=off", "-c", "full_page_writes=off", "-c", "synchronous_commit=OFF"]
           env:
             {{- if eq .Values.global.authMethod "trust" }}
