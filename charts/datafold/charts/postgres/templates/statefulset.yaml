@@ -97,8 +97,14 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
-            - name: {{ include "postgres.data.pvc.name" . }}
-              mountPath: /var/lib/postgresql/data
+            {{- include "postgres.volume.mounts" . | nindent 12 }}
+            {{- with .Values.volumeMounts }}
+              {{- toYaml . | nindent 12 }}
+            {{- end }}
+      {{- with .Values.volumes }}
+      volumes:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -111,15 +117,14 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+{{- if (ne .Values.global.postgres.storageOnPV "false") }}
   volumeClaimTemplates:
     - metadata:
         name: {{ include "postgres.data.pvc.name" . }}
       spec:
         accessModes: [ "ReadWriteOnce" ]
-        {{ include "datafold.storageClass" . | nindent 8 }}
+        {{- include "datafold.storageClass" . | nindent 8 }}
         resources:
           requests:
             storage: {{ .Values.storage.size }}
-        {{- if .Values.global.hostPath }}
-        volumeName: {{ include "postgres.data.pv.name" . }}
-        {{- end }}
+{{- end }}

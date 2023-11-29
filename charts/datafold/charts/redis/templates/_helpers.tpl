@@ -35,11 +35,12 @@ Common labels
 */}}
 {{- define "redis.labels" -}}
 helm.sh/chart: {{ include "redis.chart" . }}
+app.kubernetes.io/component: database
 {{ include "redis.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
-app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{ include "datafold.labels" . }}
 {{- end }}
 
 {{/*
@@ -47,7 +48,6 @@ Selector labels
 */}}
 {{- define "redis.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "redis.name" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
@@ -73,4 +73,14 @@ Name of the redis pv
 */}}
 {{- define "redis.pv.name" -}}
 {{- printf "%s-data-volume" (include "redis.name" .) | trunc 63 | trimSuffix "-" }}
+{{- end -}}
+
+{{/*
+Volume mounts when PV is used
+*/}}
+{{- define "redis.volume.mounts" -}}
+{{- if (ne .Values.global.redis.storageOnPV "false") }}
+- name: {{ include "redis.pvc.name" . }}
+  mountPath: /data
+{{- end -}}
 {{- end -}}

@@ -35,11 +35,12 @@ Common labels
 */}}
 {{- define "dfshell.labels" -}}
 helm.sh/chart: {{ include "dfshell.chart" . }}
+app.kubernetes.io/component: command-line
 {{ include "dfshell.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
-app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{ include "datafold.labels" . }}
 {{- end }}
 
 {{/*
@@ -47,7 +48,6 @@ Selector labels
 */}}
 {{- define "dfshell.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "dfshell.name" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
