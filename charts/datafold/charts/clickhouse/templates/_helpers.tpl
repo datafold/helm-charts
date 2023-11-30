@@ -114,3 +114,19 @@ Volumes when PV is used
     claimName: {{ include "clickhouse.logs.pvc.name" . }}
 {{- end }}
 {{- end -}}
+
+{{/*
+Datadog annotations
+*/}}
+{{- define "clickhouse.datadog.annotations" -}}
+{{- if (eq .Values.global.datadog.install true) }}
+ad.datadoghq.com/{{ .Chart.Name }}.logs: >-
+  [{
+    "source": "clickhouse",
+    "service": "clickhouse"
+  }]
+{{- end }}
+{{- with .Values.podAnnotations }}
+{{- toYaml . }}
+{{- end }}
+{{- end }}

@@ -95,3 +95,19 @@ Volumes when PV is used
     claimName: {{ include "redis.data.pvc.name" . }}
 {{- end }}
 {{- end -}}
+
+{{/*
+Datadog annotations
+*/}}
+{{- define "redis.datadog.annotations" -}}
+{{- if (eq .Values.global.datadog.install true) }}
+ad.datadoghq.com/{{ .Chart.Name }}.logs: >-
+  [{
+    "source": "redis",
+    "service": "redis"
+  }]
+{{- end }}
+{{- with .Values.podAnnotations }}
+{{- toYaml . }}
+{{- end }}
+{{- end }}

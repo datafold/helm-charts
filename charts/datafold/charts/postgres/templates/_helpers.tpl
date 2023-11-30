@@ -95,3 +95,19 @@ Volumes when PV is used
     claimName: {{ include "postgres.data.pvc.name" . }}
 {{- end }}
 {{- end -}}
+
+{{/*
+Datadog annotations
+*/}}
+{{- define "postgres.datadog.annotations" -}}
+{{- if (eq .Values.global.datadog.install true) }}
+ad.datadoghq.com/{{ .Chart.Name }}.logs: >-
+  [{
+    "source": "postgres",
+    "service": "postgres"
+  }]
+{{- end }}
+{{- with .Values.podAnnotations }}
+{{- toYaml . }}
+{{- end }}
+{{- end }}

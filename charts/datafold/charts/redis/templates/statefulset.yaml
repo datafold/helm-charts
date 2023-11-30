@@ -12,10 +12,8 @@ spec:
       {{- include "redis.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
       annotations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+        {{- include "redis.datadog.annotations" . | nindent 8 }}
       labels:
         {{- include "redis.labels" . | nindent 8 }}
           {{- with .Values.podLabels }}

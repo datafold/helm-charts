@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "scheduler.name" -}}
+{{- define "datadog.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "scheduler.fullname" -}}
+{{- define "datadog.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,17 +26,17 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "scheduler.chart" -}}
+{{- define "datadog.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "scheduler.labels" -}}
-helm.sh/chart: {{ include "scheduler.chart" . }}
-app.kubernetes.io/component: web-app
-{{ include "scheduler.selectorLabels" . }}
+{{- define "datadog.labels" -}}
+helm.sh/chart: {{ include "datadog.chart" . }}
+app.kubernetes.io/component: monitor
+{{ include "datadog.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -46,25 +46,17 @@ app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{/*
 Selector labels
 */}}
-{{- define "scheduler.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "scheduler.name" . }}
+{{- define "datadog.selectorLabels" -}}
+app.kubernetes.io/instance: {{ .Release.Name }}-datadog-agent
 {{- end }}
 
 {{/*
-Datadog annotations
+Create the name of the service account to use
 */}}
-{{- define "scheduler.datadog.annotations" -}}
-{{- if (eq .Values.global.datadog.install true) }}
-ad.datadoghq.com/{{ .Chart.Name }}.logs: >-
-  [{
-    "source": "datafold-server-onprem",
-    "service": "datafold-server-onprem",
-    "auto_multi_line_detection": true,
-    "name": "log_start_with_date",
-    "pattern" : "\\[\\d{4}-\\d{2}-\\d{2}\\s\\d{2}:\\d{2}:\\d{2}\\,\\d{3}\\]"
-  }]
-{{- end }}
-{{- with .Values.podAnnotations }}
-{{- toYaml . }}
+{{- define "datadog.serviceAccountName" -}}
+{{- if .Values.serviceAccount.create }}
+{{- default (include "datadog.fullname" .) .Values.serviceAccount.name }}
+{{- else }}
+{{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}

@@ -1,7 +1,7 @@
 # The global properties are used to configure multiple charts at once and is a
 # keyword that has special scope.
 global:
-  serverName: chiel.dev.datafold.io
+  serverName: "<replace-this>"
   common:
     labels: {}
     annotations: {}
@@ -12,7 +12,7 @@ global:
   datafoldVersion: ""
   datafoldRepository: "us-docker.pkg.dev/datadiff-mm/datafold/server"
   shellRepository: "us-docker.pkg.dev/datadiff-mm/datafold/server"
-  ingressClassName: traefik
+  ingressClassName: nginx
   clickhouse:
     port: 9000
     storageOnPV: "true"
@@ -27,6 +27,14 @@ global:
     port: 5000
   nginx:
     port: 80
+  datadog:
+    install: false
+    env: "prod"
+    host: ""
+    logs:
+      port: 10518
+    metrics:
+      port: 8125
 
 # ------------------------------------------------------------------------------
 # These are properties only used by the charts and templates on this level.
@@ -69,7 +77,6 @@ config:
   googleOauthRequestBQ: "true"
   ddTraceEnabled: "false"
   ddDogStatsDisable: "true"
-  ddEnv: "prod"
   floatFormat: "0,0.00[0000000]"
   dateFormat: "YYYY-MM-DD"
   timeFormat: "HH:mm:ss"
@@ -78,7 +85,7 @@ config:
   lineageTestingDb: ""
   freshpaintBackend: ""
   freshpaintFrontend: ""
-  freshpaintUrl: "https://api.perfalytics.com2/track"
+  freshpaintUrl: "https://api.perfalytics.com/track"
   avoToken: ""
 
 secrets:
@@ -99,3 +106,5 @@ secrets:
     database: "-"
   redis:
     password: "-"
+  datadog:
+    apiKey: ""

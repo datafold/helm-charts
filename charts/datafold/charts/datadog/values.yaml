@@ -1,0 +1,50 @@
+replicaCount: 1
+
+image:
+  repository: datadog/datadog
+  pullPolicy: IfNotPresent
+  tag: ""
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext: {}
+
+securityContext: {}
+
+service:
+  type: ClusterIP
+
+resources: {}
+
+autoscaling:
+  enabled: false
+
+volumes: []
+
+volumeMounts: []
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+configuration:
+  logLevel: "INFO"
+  logCollection:
+    enabled: "true"
+    containerCollectAll: "true"
+  liveProcessCollection: "true"
+  liveContainerCollection: "true"
+  processDiscovery: "true"
+  oomKill: "false"
+  apm: "false"
+  dogstatsd:
+    enabled: "true"
+    hostPortConfig: "true"
+    tagCardinality: "low"

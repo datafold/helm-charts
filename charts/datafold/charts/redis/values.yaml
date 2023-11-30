@@ -17,12 +17,7 @@ storage:
   storageClass: ""
   storageClassOverride: false
 
-podAnnotations:
-  ad.datadoghq.com/redis.logs: '[
-        {"source": "redis",
-        "service": "redis",
-        "tags": ["env:{{ .Values.DD_ENV }}"]}
-      ]'
+podAnnotations: {}
 
 service:
   type: ClusterIP
