@@ -7,8 +7,7 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - port: {{ include "datafold.redis.port" . }}
-      nodePort: 32500
+    - port: {{ include "datafold.server.port" . }}
       targetPort: server
       protocol: TCP
   selector:

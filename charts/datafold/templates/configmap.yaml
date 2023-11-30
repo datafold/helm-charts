@@ -32,3 +32,7 @@ data:
   DATAFOLD_LINEAGE_TESTING_DB: "{{ .Values.config.lineageTestingDb }}"
   DATAFOLD_ENABLE_GRAPH_INVARIANTS_CHECKS: "{{ .Values.config.enableGraphInvariantsChecks }}"
   DATAFOLD_CONTENT_SECURITY_POLICY: "default-src 'self'; connect-src 'self' raw.githubusercontent.com api.perfalytics.com perfalytics.com api.avo.app track.customer.io www.google-analytics.com browser-http-intake.logs.datadoghq.com browser-intake-datadoghq.com *.browser-intake-datadoghq.com forms.hubspot.com *.ingest.sentry.io api.segment.io *.intercom.io *.intercomcdn.com wss://*.intercom.io ; style-src 'self' 'unsafe-inline' fonts.googleapis.com; script-src 'self' 'unsafe-eval' perfalytics.com assets.customer.io js.intercomcdn.com *.hs-scripts.com js.hs-scripts.com js.hs-banner.com js.hscollectedforms.net cdn.segment.com widget.intercom.io js.intercomcdn.com www.google-analytics.com js.hs-analytics.net https://www.google-analytics.com; font-src 'self' data: fonts.gstatic.com js.intercomcdn.com; img-src 'self' http: https: data:; object-src 'none'; frame-ancestors 'none'; worker-src 'self' blob:; frame-src 'self calendly.com;"
+  DATAFOLD_FRESHPAINT_FRONTEND_TOKEN: "{{ .Values.config.freshpaintFrontend }}"
+  DATAFOLD_FRESHPAINT_BACKEND_TOKEN: "{{ .Values.config.freshpaintBackend }}"
+  DATAFOLD_FRESHPAINT_URL: "{{ .Values.config.freshpaintUrl }}"
+  DATAFOLD_AVO_INSPECTOR_FRONTEND_API_KEY: "{{ .Values.config.avoToken }}"

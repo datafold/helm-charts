@@ -16,7 +16,8 @@ global:
   redis:
     port: 6379
   server:
-    port: 8080
+    port: 5000
+    hostName: k8s.dev.local
 
 redis:
   install: true
@@ -58,6 +59,10 @@ config:
   alertsWithMultiDimAndMultiField: ""
   enableGraphInvariantsChecks: "true"
   lineageTestingDb: ""
+  freshpaintBackend: ""
+  freshpaintfrontend: ""
+  freshpaintUrl: "https://api.perfalytics.com2/track"
+  avoToken: ""
 
 secrets:
   installMePassword: "-"
