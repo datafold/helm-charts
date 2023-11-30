@@ -35,11 +35,12 @@ Common labels
 */}}
 {{- define "clickhouse.labels" -}}
 helm.sh/chart: {{ include "clickhouse.chart" . }}
+app.kubernetes.io/component: database
 {{ include "clickhouse.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
-app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{ include "datafold.labels" . }}
 {{- end }}
 
 {{/*
@@ -47,7 +48,6 @@ Selector labels
 */}}
 {{- define "clickhouse.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "clickhouse.name" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
@@ -87,4 +87,16 @@ Name of the clickhouse logs volume claim
 */}}
 {{- define "clickhouse.logs.pvc.name" -}}
 {{- include "clickhouse.name" . }}-logs-claim
+{{- end -}}
+
+{{/*
+Volume mounts when PV is used
+*/}}
+{{- define "clickhouse.volume.mounts" -}}
+{{- if (ne .Values.global.clickhouse.storageOnPV "false") }}
+- name: {{ include "clickhouse.data.pvc.name" . }}
+  mountPath: /var/lib/clickhouse
+- name: {{ include "clickhouse.logs.pvc.name" . }}
+  mountPath: /var/log/clickhouse-server
+{{- end -}}
 {{- end -}}

@@ -35,11 +35,12 @@ Common labels
 */}}
 {{- define "postgres.labels" -}}
 helm.sh/chart: {{ include "postgres.chart" . }}
+app.kubernetes.io/component: database
 {{ include "postgres.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
-app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{ include "datafold.labels" . }}
 {{- end }}
 
 {{/*
@@ -47,7 +48,6 @@ Selector labels
 */}}
 {{- define "postgres.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "postgres.name" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
@@ -73,4 +73,14 @@ Name of the postgres data volume claim
 */}}
 {{- define "postgres.data.pvc.name" -}}
 {{- include "postgres.name" . }}-data-claim
+{{- end -}}
+
+{{/*
+Volume mounts when PV is used
+*/}}
+{{- define "postgres.volume.mounts" -}}
+{{- if (ne .Values.global.postgres.storageOnPV "false") }}
+- name: {{ include "postgres.data.pvc.name" . }}
+  mountPath: /var/lib/postgresql/data
+{{- end -}}
 {{- end -}}

@@ -34,19 +34,16 @@ Create chart name and version as used by the chart label.
 Common labels
 */}}
 {{- define "datafold.labels" -}}
-helm.sh/chart: {{ include "datafold.chart" . }}
+app.kubernetes.io/part-of: datafold
 {{ include "datafold.selectorLabels" . }}
-{{- if .Chart.AppVersion }}
-app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
-{{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
+
 
 {{/*
 Selector labels
 */}}
 {{- define "datafold.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "datafold.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
@@ -65,9 +62,7 @@ Create the name of the service account to use
 Template to derive storage class to use
 */}}
 {{- define "datafold.storageClass" -}}
-{{- if .Values.global.hostPath -}}
-{{-     printf "storageClassName: manual" -}}
-{{- else if .Values.storage.storageClass -}}
+{{- if .Values.storage.storageClass -}}
 {{-   if (ne .Values.storage.storageClass "") -}}
 {{-     printf "storageClassName: %s" .Values.storageClass -}}
 {{-   end -}}
@@ -90,13 +85,4 @@ Name of the datafold configmap location
 */}}
 {{- define "datafold.configmap" -}}
 {{- printf "%s-config" .Release.Name | trunc 63 | trimSuffix "-" }}
-{{- end -}}
-
-{{/*
-Check that hostpath is set
-*/}}
-{{- define "datafold.hostpath.check" -}}
-{{- if not .Values.global.hostPath -}}
-{{ fail "This version must use global.hostPath setting" }}
-{{- end -}}
 {{- end -}}
