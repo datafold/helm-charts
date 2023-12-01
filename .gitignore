@@ -1,4 +1,8 @@
 .idea/
 .history/
+.env
 venv/
 __pycache__
+
+
+data/

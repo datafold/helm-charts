@@ -9,7 +9,9 @@ global:
   storageClass: ""
   cloudProvider: "aws"
   authMethod: "password"
+  statusCheckToken: "magic_token"
   datafoldVersion: ""
+  datafoldRepository: "us-docker.pkg.dev/datadiff-mm/datafold/server"
   clickhouse:
     port: 9000
     storageOnPV: "true"
@@ -22,6 +24,8 @@ global:
   server:
     port: 5000
     hostName: k8s.dev.local
+  scheduler:
+    port: 5001
 
 redis:
   install: true
@@ -37,6 +41,15 @@ dfshell:
 
 server:
   install: true
+  command: "server"
+
+scheduler:
+  install: true
+  command: "scheduler"
+
+worker:
+  install: true
+  command: "celery_worker"
 
 config:
   webWorkers: "30"

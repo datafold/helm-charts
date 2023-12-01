@@ -1,14 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "dfshell.fullname" . }}
+  name: {{ include "worker.fullname" . }}
   labels:
-    {{- include "dfshell.labels" . | nindent 4 }}
+    {{- include "worker.labels" . | nindent 4 }}
 spec:
-  replicas: 1
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
   selector:
     matchLabels:
-      {{- include "dfshell.selectorLabels" . | nindent 6 }}
+      {{- include "worker.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -16,7 +18,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "dfshell.labels" . | nindent 8 }}
+        {{- include "worker.labels" . | nindent 8 }}
         {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -25,22 +27,45 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "dfshell.serviceAccountName" . }}
+      serviceAccountName: {{ include "worker.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
-      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.global.datafoldRepository }}:{{ .Values.global.datafoldVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          command: ["/bin/sleep", "infinity"]
+          args: ["{{ .Values.command }}"]
           envFrom:
             - configMapRef:
                 name: {{ include "datafold.configmap" . }}
           env:
             {{ include "datafold.env" . }}
+          ports:
+            - name: worker
+              containerPort: 5000
+              protocol: TCP
+          # livenessProbe:
+          #   failureThreshold: 10
+          #   httpGet:
+          #     path: /status_check?token={{ .Values.global.statusCheckToken }}
+          #     port: worker
+          #     scheme: HTTP
+          #   initialDelaySeconds: 30
+          #   periodSeconds: 60
+          #   successThreshold: 1
+          #   timeoutSeconds: 5
+          # readinessProbe:
+          #   failureThreshold: 3
+          #   httpGet:
+          #     path: /status_check?token={{ .Values.global.statusCheckToken }}
+          #     port: worker
+          #     scheme: HTTP
+          #   initialDelaySeconds: 30
+          #   periodSeconds: 60
+          #   successThreshold: 1
+          #   timeoutSeconds: 5
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           {{- with .Values.volumeMounts }}

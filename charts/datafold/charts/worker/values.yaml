@@ -8,7 +8,8 @@ imagePullSecrets:
   - name: datafold-docker-secret
 nameOverride: ""
 fullnameOverride: ""
-terminationGracePeriodSeconds: "5"
+
+queue: "celery,api,ci,interactive,freshpaint,lineage,catalog,singletons,alerts"
 
 serviceAccount:
   create: true

@@ -8,7 +8,6 @@ imagePullSecrets:
   - name: datafold-docker-secret
 nameOverride: ""
 fullnameOverride: ""
-terminationGracePeriodSeconds: "5"
 
 serviceAccount:
   create: true
