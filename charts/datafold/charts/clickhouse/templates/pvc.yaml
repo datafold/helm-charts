@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "clickhouse.data.pvc.name" . }}
+  labels:
+    {{- include "clickhouse.labels" . | nindent 4 }}
+  annotations: {}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  {{ include "datafold.storageClass" . | nindent 2 }}
+  resources:
+    requests:
+      storage: {{ .Values.storage.dataSize | quote }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "clickhouse.logs.pvc.name" . }}
+  labels:
+    {{- include "clickhouse.labels" . | nindent 4 }}
+  annotations: {}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  {{ include "datafold.storageClass" . | nindent 2 }}
+  resources:
+    requests:
+      storage: {{ .Values.storage.logSize | quote }}

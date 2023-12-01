@@ -1,0 +1,31 @@
+{{- if false }}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ include "clickhouse.data.pv.name" . }}
+  labels:
+    {{- include "clickhouse.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  capacity:
+    storage: {{ .Values.storage.dataSize }}
+  {{- include "datafold.storageClass" . | nindent 2 }}
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ include "clickhouse.logs.pv.name" . }}
+  labels:
+    {{- include "clickhouse.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  capacity:
+    storage: {{ .Values.storage.logSize }}
+  {{- include "datafold.storageClass" . | nindent 2 }}
+  persistentVolumeReclaimPolicy: Retain
+{{- end }}

@@ -13,8 +13,8 @@ fullnameOverride: ""
 terminationGracePeriodSeconds: "300"
 
 storage:
-  dataSize: 2Gi
-  logSize: 2Gi
+  dataSize: 100Gi
+  logSize: 10Gi
   storageClass: ""
   storageClassOverride: false
 

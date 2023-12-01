@@ -94,9 +94,23 @@ Volume mounts when PV is used
 */}}
 {{- define "clickhouse.volume.mounts" -}}
 {{- if (ne .Values.global.clickhouse.storageOnPV "false") }}
-- name: {{ include "clickhouse.data.pvc.name" . }}
+- name: data
   mountPath: /var/lib/clickhouse
-- name: {{ include "clickhouse.logs.pvc.name" . }}
+- name: logs
   mountPath: /var/log/clickhouse-server
 {{- end -}}
+{{- end -}}
+
+{{/*
+Volumes when PV is used
+*/}}
+{{- define "clickhouse.volumes" -}}
+{{- if (ne .Values.global.clickhouse.storageOnPV "false") }}
+- name: data
+  persistentVolumeClaim:
+    claimName: {{ include "clickhouse.data.pvc.name" . }}
+- name: logs
+  persistentVolumeClaim:
+    claimName: {{ include "clickhouse.logs.pvc.name" . }}
+{{- end }}
 {{- end -}}

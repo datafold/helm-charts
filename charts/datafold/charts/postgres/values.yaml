@@ -11,7 +11,7 @@ fullnameOverride: ""
 terminationGracePeriodSeconds: "300"
 
 storage:
-  size: 2Gi
+  size: 100Gi
   storageClass: ""
   storageClassOverride: false
 
