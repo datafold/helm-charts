@@ -9,6 +9,7 @@ class EnvVar(enum.StrEnum):
     DATAFOLD_K8S_CONFIGFILE = "DATAFOLD_K8S_CONFIGFILE"
     DATAFOLD_DEPLOY_NAME = "DATAFOLD_DEPLOY_NAME"
     DATAFOLD_DEV_OVERRIDES = "DATAFOLD_DEV_OVERRIDES"
+    DATAFOLD_DB_HOSTPATH = "DATAFOLD_DB_HOSTPATH"
     TAG = "TAG"
 
 
@@ -38,6 +39,8 @@ def _common_args():
         os.getenv(EnvVar.DATAFOLD_K8S_CONFIGFILE),
         '-f',
         os.getenv(EnvVar.DATAFOLD_DEV_OVERRIDES),
+        '--set',
+        f'global.hostPath={os.getenv(EnvVar.DATAFOLD_DB_HOSTPATH)}',
         '--set',
         f'global.datafoldVersion={os.getenv(EnvVar.TAG)}',
     ]

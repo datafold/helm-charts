@@ -49,4 +49,3 @@ Selector labels
 {{- define "scheduler.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "scheduler.name" . }}
 {{- end }}
-
