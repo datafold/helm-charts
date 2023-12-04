@@ -26,8 +26,6 @@ global:
     # Application will fail if the port is not set to 5000
     port: 5000
     hostName: k8s.dev.local
-  scheduler:
-    port: 5001
 
 # ------------------------------------------------------------------------------
 # These are properties only used by the charts and templates on this level.
@@ -45,15 +43,12 @@ dfshell:
 
 server:
   install: true
-  command: "server"
 
 scheduler:
   install: true
-  command: "scheduler"
 
 worker:
   install: true
-  command: "celery_worker"
 
 scheduler:
   install: true
