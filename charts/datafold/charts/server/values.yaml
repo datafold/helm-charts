@@ -10,6 +10,8 @@ nameOverride: ""
 fullnameOverride: ""
 terminationGracePeriodSeconds: "5"
 
+command: "server"
+
 serviceAccount:
   create: true
   automount: true

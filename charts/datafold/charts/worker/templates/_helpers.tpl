@@ -50,17 +50,6 @@ Selector labels
 app.kubernetes.io/name: {{ include "worker.name" . }}
 {{- end }}
 
-{{/*
-Create the name of the service account to use
-*/}}
-{{- define "worker.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create }}
-{{- default (include "worker.fullname" .) .Values.serviceAccount.name }}
-{{- else }}
-{{- default "default" .Values.serviceAccount.name }}
-{{- end }}
-{{- end }}
-
 {{- define "worker.env" -}}
             - name: QUEUES
               value: "{{ .Values.queues }}"

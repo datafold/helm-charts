@@ -1,5 +1,5 @@
-# The global properties are used to configure multiple charts at once
-# and is a keyword that has special scope.
+# The global properties are used to configure multiple charts at once and is a
+# keyword that has special scope.
 global:
   # This should be the fqdn of where your users will be accessing the instance.
   host: "http://localhost:8080"
@@ -22,11 +22,12 @@ global:
     port: 6379
     storageOnPV: "true"
   server:
+    # Application will fail if the port is not set to 5000
     port: 5000
     hostName: k8s.dev.local
-  scheduler:
-    port: 5001
 
+# ------------------------------------------------------------------------------
+# These are properties only used by the charts and templates on this level.
 redis:
   install: true
 
@@ -41,15 +42,12 @@ dfshell:
 
 server:
   install: true
-  command: "server"
 
 scheduler:
   install: true
-  command: "scheduler"
 
 worker:
   install: true
-  command: "celery_worker"
 
 config:
   webWorkers: "30"

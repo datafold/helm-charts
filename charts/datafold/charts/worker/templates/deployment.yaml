@@ -27,7 +27,6 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "worker.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
@@ -42,30 +41,6 @@ spec:
                 name: {{ include "datafold.configmap" . }}
           env:
             {{ include "datafold.env" . }}
-          ports:
-            - name: worker
-              containerPort: 5000
-              protocol: TCP
-          # livenessProbe:
-          #   failureThreshold: 10
-          #   httpGet:
-          #     path: /status_check?token={{ .Values.global.statusCheckToken }}
-          #     port: worker
-          #     scheme: HTTP
-          #   initialDelaySeconds: 30
-          #   periodSeconds: 60
-          #   successThreshold: 1
-          #   timeoutSeconds: 5
-          # readinessProbe:
-          #   failureThreshold: 3
-          #   httpGet:
-          #     path: /status_check?token={{ .Values.global.statusCheckToken }}
-          #     port: worker
-          #     scheme: HTTP
-          #   initialDelaySeconds: 30
-          #   periodSeconds: 60
-          #   successThreshold: 1
-          #   timeoutSeconds: 5
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           {{- with .Values.volumeMounts }}

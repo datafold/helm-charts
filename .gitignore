@@ -1,8 +1,9 @@
-.idea/
-.history/
+.idea
+.vscode
+.history
 .env
-venv/
+venv
 __pycache__
 
 
-data/
+data

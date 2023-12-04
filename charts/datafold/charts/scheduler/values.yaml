@@ -9,11 +9,7 @@ imagePullSecrets:
 nameOverride: ""
 fullnameOverride: ""
 
-serviceAccount:
-  create: true
-  automount: true
-  annotations: {}
-  name: ""
+command: scheduler
 
 podAnnotations: {}
 podLabels: {}
@@ -22,24 +18,7 @@ podSecurityContext: {}
 
 securityContext: {}
 
-service:
-  type: ClusterIP
-
-ingress:
-  enabled: true
-  className: ""
-  annotations: {}
-  path: /
-  pathType: ImplementationSpecific
-  tls: []
-
 resources: {}
-
-autoscaling:
-  enabled: false
-  minReplicas: 1
-  maxReplicas: 100
-  targetCPUUtilizationPercentage: 80
 
 volumes: []
 

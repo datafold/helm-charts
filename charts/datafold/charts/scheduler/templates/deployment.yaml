@@ -5,9 +5,7 @@ metadata:
   labels:
     {{- include "scheduler.labels" . | nindent 4 }}
 spec:
-  {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.replicaCount }}
-  {{- end }}
+  replicas: 1
   selector:
     matchLabels:
       {{- include "scheduler.selectorLabels" . | nindent 6 }}
@@ -27,7 +25,6 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "scheduler.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
@@ -42,30 +39,6 @@ spec:
                 name: {{ include "datafold.configmap" . }}
           env:
             {{ include "datafold.env" . }}
-          ports:
-            - name: scheduler
-              containerPort: 5000
-              protocol: TCP
-          # livenessProbe:
-          #   failureThreshold: 10
-          #   httpGet:
-          #     path: /status_check?token={{ .Values.global.statusCheckToken }}
-          #     port: scheduler
-          #     scheme: HTTP
-          #   initialDelaySeconds: 30
-          #   periodSeconds: 60
-          #   successThreshold: 1
-          #   timeoutSeconds: 5
-          # readinessProbe:
-          #   failureThreshold: 3
-          #   httpGet:
-          #     path: /status_check?token={{ .Values.global.statusCheckToken }}
-          #     port: scheduler
-          #     scheme: HTTP
-          #   initialDelaySeconds: 30
-          #   periodSeconds: 60
-          #   successThreshold: 1
-          #   timeoutSeconds: 5
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           {{- with .Values.volumeMounts }}

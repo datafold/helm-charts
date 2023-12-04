@@ -50,13 +50,3 @@ Selector labels
 app.kubernetes.io/name: {{ include "scheduler.name" . }}
 {{- end }}
 
-{{/*
-Create the name of the service account to use
-*/}}
-{{- define "scheduler.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create }}
-{{- default (include "scheduler.fullname" .) .Values.serviceAccount.name }}
-{{- else }}
-{{- default "default" .Values.serviceAccount.name }}
-{{- end }}
-{{- end }}

@@ -9,13 +9,8 @@ imagePullSecrets:
 nameOverride: ""
 fullnameOverride: ""
 
+command: celery_worker
 queue: "celery,api,ci,interactive,freshpaint,lineage,catalog,singletons,alerts"
-
-serviceAccount:
-  create: true
-  automount: true
-  annotations: {}
-  name: ""
 
 podAnnotations: {}
 podLabels: {}
@@ -23,17 +18,6 @@ podLabels: {}
 podSecurityContext: {}
 
 securityContext: {}
-
-service:
-  type: ClusterIP
-
-ingress:
-  enabled: true
-  className: ""
-  annotations: {}
-  path: /
-  pathType: ImplementationSpecific
-  tls: []
 
 resources: {}
 
