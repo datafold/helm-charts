@@ -45,6 +45,11 @@
               value: "{{ include "datafold.redis.server" . }}"
             - name: REDIS_PORT
               value: "{{ include "datafold.redis.port" . }}"
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "datafold.secrets" . }}
+                  key: DATAFOLD_REDIS_PASSWORD
             - name: DATAFOLD_REDIS_URL
-              value: "redis://$(REDIS_SERVER):$(REDIS_PORT)/0"
+              value: "redis://:$(REDIS_PASSWORD)@$(REDIS_SERVER):$(REDIS_PORT)/0"
 {{- end -}}

@@ -80,7 +80,18 @@ Volume mounts when PV is used
 */}}
 {{- define "postgres.volume.mounts" -}}
 {{- if (ne .Values.global.postgres.storageOnPV "false") }}
-- name: {{ include "postgres.data.pvc.name" . }}
+- name: data
   mountPath: /var/lib/postgresql/data
 {{- end -}}
+{{- end -}}
+
+{{/*
+Volumes when PV is used
+*/}}
+{{- define "postgres.volumes" -}}
+{{- if (ne .Values.global.postgres.storageOnPV "false") }}
+- name: data
+  persistentVolumeClaim:
+    claimName: {{ include "postgres.data.pvc.name" . }}
+{{- end }}
 {{- end -}}

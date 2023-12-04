@@ -92,10 +92,11 @@ spec:
             {{- with .Values.volumeMounts }}
               {{- toYaml . | nindent 12 }}
             {{- end }}
-      {{- with .Values.volumes }}
       volumes:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+        {{- include "clickhouse.volumes" . | nindent 8 }}
+        {{- with .Values.volumes }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -108,22 +109,3 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-{{- if (ne .Values.global.clickhouse.storageOnPV "false") }}
-  volumeClaimTemplates:
-    - metadata:
-        name: {{ include "clickhouse.data.pvc.name" . }}
-      spec:
-        accessModes: [ "ReadWriteOnce" ]
-        {{- include "datafold.storageClass" . | nindent 8 }}
-        resources:
-          requests:
-            storage: {{ .Values.storage.dataSize }}
-    - metadata:
-        name: {{ include "clickhouse.logs.pvc.name" . }}
-      spec:
-        accessModes: [ "ReadWriteOnce" ]
-        {{- include "datafold.storageClass" . | nindent 8 }}
-        resources:
-          requests:
-            storage: {{ .Values.storage.logSize }}
-{{- end }}

@@ -7,6 +7,7 @@ global:
     labels: {}
     annotations: {}
   storageClass: ""
+  cloudProvider: "aws"
   authMethod: "password"
   datafoldVersion: ""
   clickhouse:
@@ -83,3 +84,5 @@ secrets:
     user: "-"
     password: "-"
     database: "-"
+  redis:
+    password: "-"

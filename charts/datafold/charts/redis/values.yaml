@@ -12,7 +12,7 @@ fullnameOverride: ""
 terminationGracePeriodSeconds: "30"
 
 storage:
-  size: 1Gi
+  size: 2Gi
   name: datafold-redis-storage
   storageClass: ""
   storageClassOverride: false

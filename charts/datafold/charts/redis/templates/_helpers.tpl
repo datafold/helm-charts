@@ -62,17 +62,17 @@ Create the name of the service account to use
 {{- end }}
 
 {{/*
-Name of the redis volume claim
+Name of the redis data volume
 */}}
-{{- define "redis.pvc.name" -}}
-{{- printf "%s-data-claim" (include "redis.name" .) | trunc 63 | trimSuffix "-" }}
+{{- define "redis.data.pv.name" -}}
+{{- include "redis.name" . }}-data-volume
 {{- end -}}
 
 {{/*
-Name of the redis pv
+Name of the redis data volume claim
 */}}
-{{- define "redis.pv.name" -}}
-{{- printf "%s-data-volume" (include "redis.name" .) | trunc 63 | trimSuffix "-" }}
+{{- define "redis.data.pvc.name" -}}
+{{- include "redis.name" . }}-data-claim
 {{- end -}}
 
 {{/*
@@ -80,7 +80,18 @@ Volume mounts when PV is used
 */}}
 {{- define "redis.volume.mounts" -}}
 {{- if (ne .Values.global.redis.storageOnPV "false") }}
-- name: {{ include "redis.pvc.name" . }}
+- name: data
   mountPath: /data
 {{- end -}}
+{{- end -}}
+
+{{/*
+Volumes when PV is used
+*/}}
+{{- define "redis.volumes" -}}
+{{- if (ne .Values.global.redis.storageOnPV "false") }}
+- name: data
+  persistentVolumeClaim:
+    claimName: {{ include "redis.data.pvc.name" . }}
+{{- end }}
 {{- end -}}

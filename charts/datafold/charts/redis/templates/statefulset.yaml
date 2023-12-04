@@ -35,6 +35,14 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["/bin/sh"]
+          args: ["-c", "redis-server --appendonly yes --appendfsync always --notify-keyspace-events Kh --dir /data --requirepass $${REDIS_PASSWORD}"]
+          env:
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "datafold.secrets" . }}
+                  key: DATAFOLD_REDIS_PASSWORD
           ports:
             - name: redis
               containerPort: 6379
@@ -54,10 +62,11 @@ spec:
             {{- with .Values.volumeMounts }}
               {{- toYaml . | nindent 12 }}
             {{- end }}
-      {{- with .Values.volumes }}
       volumes:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+        {{- include "redis.volumes" . | nindent 8 }}
+        {{- with .Values.volumes }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -70,14 +79,3 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-{{- if (ne .Values.global.redis.storageOnPV "false") }}
-  volumeClaimTemplates:
-    - metadata:
-        name: {{ include "redis.pvc.name" . }}
-      spec:
-        accessModes: [ "ReadWriteOnce" ]
-        {{ include "datafold.storageClass" . | nindent 8 }}
-        resources:
-          requests:
-            storage: {{ .Values.storage.size }}
-{{- end }}
