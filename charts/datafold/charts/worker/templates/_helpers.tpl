@@ -54,4 +54,3 @@ app.kubernetes.io/name: {{ include "worker.name" . }}
             - name: QUEUES
               value: "{{ .Values.queues }}"
 {{- end -}}
-
