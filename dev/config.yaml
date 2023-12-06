@@ -1,0 +1,35 @@
+
+
+server:
+  command: "dev_server"
+
+scheduler:
+  command: "dev_scheduler"
+
+worker:
+  command: "dev_celery_worker"
+
+config:
+  mailPort: "25"
+  mailUseTls: "false"
+  mailUseSsl: "false"
+  ddEnv: "dev"
+  workerCount: "50"
+  webWorkers: "3"
+  enableGraphInvariantsChecks: "false"
+
+global:
+  cloudProvider: ""  # For local development, options ("", "aws", "gcp", "azure")
+  storageClass: "local-storage"  # For local development, options ("local-storage", "")
+  authMethod: "password"
+  datafoldRepository: "us-docker.pkg.dev/datadiff-mm/datafold/datafold-server-dev"
+  datadog:
+    env: "dev"
+  clickhouse:
+    storageOnPV: "false"
+  redis:
+    storageOnPV: "false"
+  postgres:
+    storageOnPV: "false"
+
+  
