@@ -1,0 +1,31 @@
+replicaCount: 1
+
+image:
+  pullPolicy: IfNotPresent
+  tag: ""
+
+imagePullSecrets:
+  - name: datafold-docker-secret
+nameOverride: ""
+fullnameOverride: ""
+
+command: scheduler
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext: {}
+
+securityContext: {}
+
+resources: {}
+
+volumes: []
+
+volumeMounts: []
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

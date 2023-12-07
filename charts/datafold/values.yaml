@@ -1,5 +1,5 @@
-# The global properties are used to configure multiple charts at once
-# and is a keyword that has special scope.
+# The global properties are used to configure multiple charts at once and is a
+# keyword that has special scope.
 global:
   # This should be the fqdn of where your users will be accessing the instance.
   host: "http://localhost:8080"
@@ -9,7 +9,9 @@ global:
   storageClass: ""
   cloudProvider: "aws"
   authMethod: "password"
+  statusCheckToken: "magic_token"
   datafoldVersion: ""
+  datafoldRepository: "us-docker.pkg.dev/datadiff-mm/datafold/server"
   clickhouse:
     port: 9000
     storageOnPV: "true"
@@ -20,9 +22,12 @@ global:
     port: 6379
     storageOnPV: "true"
   server:
+    # Application will fail if the port is not set to 5000
     port: 5000
     hostName: k8s.dev.local
 
+# ------------------------------------------------------------------------------
+# These are properties only used by the charts and templates on this level.
 redis:
   install: true
 
@@ -36,6 +41,12 @@ dfshell:
   install: true
 
 server:
+  install: true
+
+scheduler:
+  install: true
+
+worker:
   install: true
 
 config:

@@ -6,6 +6,7 @@ from typer import Typer
 
 class EnvVar(enum.StrEnum):
     DATAFOLD_K8S_SECRETFILE = "DATAFOLD_K8S_SECRETFILE"
+    DATAFOLD_K8S_CONFIGFILE = "DATAFOLD_K8S_CONFIGFILE"
     DATAFOLD_DEPLOY_NAME = "DATAFOLD_DEPLOY_NAME"
     DATAFOLD_DEV_OVERRIDES = "DATAFOLD_DEV_OVERRIDES"
     TAG = "TAG"
@@ -34,6 +35,8 @@ def _common_args():
         '-f',
         os.getenv(EnvVar.DATAFOLD_K8S_SECRETFILE),
         '-f',
+        os.getenv(EnvVar.DATAFOLD_K8S_CONFIGFILE),
+        '-f',
         os.getenv(EnvVar.DATAFOLD_DEV_OVERRIDES),
         '--set',
         f'global.datafoldVersion={os.getenv(EnvVar.TAG)}',
@@ -48,7 +51,7 @@ def install():
     args = ['--install']
     args.extend(_common_args())
 
-    out = sh.helm.upgrade(args)
+    out = sh.helm.upgrade(args, _fg=True)
     print(out)
 
 
@@ -56,7 +59,7 @@ def install():
 def update():
     """Updates the deployment."""
     _check_env_vars_present()
-    out = sh.helm.upgrade(_common_args())
+    out = sh.helm.upgrade(_common_args(), _fg=True)
     print(out)
 
 
@@ -64,7 +67,15 @@ def update():
 def uninstall():
     """Uninstalls the deployment."""
     _check_env_vars_present()
-    out = sh.helm.uninstall(os.getenv(EnvVar.DATAFOLD_DEPLOY_NAME))
+    out = sh.helm.uninstall(os.getenv(EnvVar.DATAFOLD_DEPLOY_NAME), _fg=True)
+    print(out)
+
+
+@dev.command()
+def delete():
+    """Deletes the deployment."""
+    _check_env_vars_present()
+    out = sh.helm.delete(os.getenv(EnvVar.DATAFOLD_DEPLOY_NAME), _fg=True)
     print(out)
 
 
@@ -74,5 +85,5 @@ def render():
     _check_env_vars_present()
     args = ['--debug']
     args.extend(_common_args())
-    out = sh.helm.template(args)
+    out = sh.helm.template(args, _fg=True)
     print(out)

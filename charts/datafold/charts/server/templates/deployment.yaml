@@ -35,7 +35,7 @@ spec:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.global.datafoldVersion }}"
+          image: "{{ .Values.global.datafoldRepository }}:{{ .Values.global.datafoldVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args: ["{{ .Values.command }}"]
           envFrom:
@@ -45,12 +45,12 @@ spec:
             {{ include "datafold.env" . }}
           ports:
             - name: server
-              containerPort: 5000
+              containerPort: {{ .Values.global.server.port }}
               protocol: TCP
           livenessProbe:
             failureThreshold: 10
             httpGet:
-              path: /status_check?token={{ .Values.statusCheckToken }}
+              path: /status_check?token={{ .Values.global.statusCheckToken }}
               port: server
               scheme: HTTP
             initialDelaySeconds: 30
@@ -60,7 +60,7 @@ spec:
           readinessProbe:
             failureThreshold: 3
             httpGet:
-              path: /status_check?token={{ .Values.statusCheckToken }}
+              path: /status_check?token={{ .Values.global.statusCheckToken }}
               port: server
               scheme: HTTP
             initialDelaySeconds: 30

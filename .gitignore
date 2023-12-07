@@ -1,4 +1,9 @@
-.idea/
-.history/
-venv/
+.idea
+.vscode
+.history
+.env
+venv
 __pycache__
+
+
+data
