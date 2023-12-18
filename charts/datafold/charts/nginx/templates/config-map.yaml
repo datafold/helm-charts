@@ -1,0 +1,76 @@
+apiVersion: v1
+data:
+  nginx.conf: |
+    user www-data;
+    worker_processes auto;
+    pid /run/nginx.pid;
+    include /etc/nginx/modules-enabled/*.conf;
+
+    events {
+        worker_connections 768;
+    }
+
+    http {
+        sendfile on;
+        tcp_nopush on;
+        tcp_nodelay on;
+        keepalive_timeout 65;
+        types_hash_max_size 2048;
+
+        # include /etc/nginx/mime.types;
+        default_type application/octet-stream;
+
+        access_log /var/log/nginx/access.log;
+        error_log /var/log/nginx/error.log;
+
+        gzip on;
+
+        # Not setting up virtual host configs, because we want a single revproxy anyway.
+        server {
+            listen 80;
+
+            server_name {{ .Values.global.serverName }};
+
+            gzip on;
+            gzip_types text/plain text/html application/json application/javascript;
+            gzip_proxied    no-cache no-store private expired auth;
+            gzip_min_length 1000;
+
+            real_ip_header X-Forwarded-For;
+            real_ip_recursive on;
+
+            # AWS internal LB's are assigned any IP in the VPC CIDR range
+            set_real_ip_from 10.0.0.0/16;
+
+            root /usr/share/nginx/html;
+
+            charset     utf-8;
+            client_max_body_size 300M;
+
+            location ~ ^/a/(.*)$ {
+                return 302 https://{{ .Values.global.serverName }}/$1;
+            }
+
+            location /nginx-health {
+                access_log off;
+                return 200 "healthy\n";
+            }
+
+            location / {
+                proxy_send_timeout 300;
+                proxy_read_timeout 300;
+                proxy_set_header X-Forwarded-For $remote_addr;
+                proxy_set_header Host {{ .Values.global.serverName }};
+                proxy_pass http://{{ include "datafold.server.fullname" . }}:5000;
+            }
+        }
+
+        include /etc/nginx/conf.d/*.conf;
+    }
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/name: nginx
+    app.kubernetes.io/part-of: datafold
+    app.kubernetes.io/version: 1.0.0
+  name: nginx-config-662d6ctt64
