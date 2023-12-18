@@ -1,4 +1,7 @@
-
+dfshell:
+  command:
+    - "/bin/sleep"
+    - "infinity"
 
 server:
   command: "dev_server"
@@ -22,7 +25,8 @@ global:
   cloudProvider: ""  # For local development, options ("", "aws", "gcp", "azure")
   storageClass: "local-storage"  # For local development, options ("local-storage", "")
   authMethod: "password"
-  datafoldRepository: "us-docker.pkg.dev/datadiff-mm/datafold/datafold-server-dev"
+  datafoldRepository: "us-docker.pkg.dev/datadiff-mm/datafold/server"
+  shellRepository: "us-docker.pkg.dev/datadiff-mm/datafold/server"
   datadog:
     env: "dev"
   clickhouse:

@@ -33,9 +33,10 @@ spec:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.global.datafoldRepository }}:{{ .Values.global.datafoldVersion }}"
+          image: "{{ .Values.global.shellRepository }}:{{ .Values.global.datafoldVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          command: ["/bin/sleep", "infinity"]
+          args:
+            {{- toYaml $.Values.command | nindent 10 }}
           envFrom:
             - configMapRef:
                 name: {{ include "datafold.configmap" . }}
