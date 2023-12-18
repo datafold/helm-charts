@@ -1,0 +1,36 @@
+replicaCount: 1
+image:
+  repository: nginx
+  pullPolicy: IfNotPresent
+  tag: "1.21.1"
+
+# imagePullSecrets:
+#   - name: datafold-docker-secret
+nameOverride: ""
+fullnameOverride: ""
+terminationGracePeriodSeconds: "5"
+
+serviceAccount:
+  create: true
+  automount: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext: {}
+
+securityContext: {}
+
+resources: {}
+
+volumes: []
+
+volumeMounts: []
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

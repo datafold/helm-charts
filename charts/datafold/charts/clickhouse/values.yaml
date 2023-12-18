@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: gcr.io/datadiff-mm/clickhouse
+  repository: us-docker.pkg.dev/datadiff-mm/datafold/clickhouse
   pullPolicy: IfNotPresent
   tag: ""
 

@@ -1,8 +1,8 @@
 # The global properties are used to configure multiple charts at once and is a
 # keyword that has special scope.
 global:
-  # This should be the fqdn of where your users will be accessing the instance.
-  host: "http://localhost:8080"
+  serverName: chiel.dev.datafold.io
+  nginxPort: 80
   common:
     labels: {}
     annotations: {}
@@ -25,7 +25,6 @@ global:
   server:
     # Application will fail if the port is not set to 5000
     port: 5000
-    hostName: k8s.dev.local
 
 # ------------------------------------------------------------------------------
 # These are properties only used by the charts and templates on this level.
@@ -42,12 +41,6 @@ dfshell:
   install: true
 
 server:
-  install: true
-
-scheduler:
-  install: true
-
-worker:
   install: true
 
 scheduler:
