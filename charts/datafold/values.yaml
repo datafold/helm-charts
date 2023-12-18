@@ -12,6 +12,7 @@ global:
   statusCheckToken: "magic_token"
   datafoldVersion: ""
   datafoldRepository: "us-docker.pkg.dev/datadiff-mm/datafold/server"
+  shellRepository: "us-docker.pkg.dev/datadiff-mm/datafold/server"
   clickhouse:
     port: 9000
     storageOnPV: "true"

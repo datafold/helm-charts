@@ -10,6 +10,10 @@ nameOverride: ""
 fullnameOverride: ""
 terminationGracePeriodSeconds: "5"
 
+command:
+  - "/bin/sleep"
+  - "infinity"
+
 serviceAccount:
   create: true
   automount: true
