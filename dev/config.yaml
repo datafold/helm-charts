@@ -35,5 +35,3 @@ global:
     storageOnPV: "false"
   postgres:
     storageOnPV: "false"
-
-  

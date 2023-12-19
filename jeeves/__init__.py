@@ -18,3 +18,4 @@ To get help, use:
 
 # Sub-commands
 from jeeves.dev import dev
+from jeeves.upgrade import upgrade

@@ -12,9 +12,7 @@ class EnvVar(enum.StrEnum):
     TAG = "TAG"
 
 
-dev = Typer(
-    no_args_is_help=True, help='Commands useful for local development environment.'
-)
+dev = Typer(no_args_is_help=True, help='Commands useful for local development environment.')
 
 
 def _check_env_var(name: str):

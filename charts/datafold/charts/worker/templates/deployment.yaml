@@ -29,6 +29,7 @@ spec:
       {{- end }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
@@ -40,6 +41,7 @@ spec:
             - configMapRef:
                 name: {{ include "datafold.configmap" . }}
           env:
+            {{ include "worker.env" . }}
             {{ include "datafold.env" . }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
