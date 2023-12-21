@@ -21,6 +21,10 @@ spec:
       - image: nginx
         imagePullPolicy: Always
         name: nginx
+        ports:
+        - name: nginx
+          containerPort: {{ .Values.global.nginx.port }}
+          protocol: TCP
         resources:
           limits:
             memory: 100Mi
@@ -33,5 +37,5 @@ spec:
           readOnly: true
       volumes:
       - configMap:
-          name: nginx-config-662d6ctt64
+          name: {{ include "nginx.configMap" . }}
         name: nginx-config
