@@ -73,4 +73,4 @@ metadata:
     app.kubernetes.io/name: nginx
     app.kubernetes.io/part-of: datafold
     app.kubernetes.io/version: 1.0.0
-  name: nginx-config-662d6ctt64
+  name: {{ include "nginx.configMap" . }}

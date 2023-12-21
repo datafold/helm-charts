@@ -2,7 +2,6 @@
 # keyword that has special scope.
 global:
   serverName: chiel.dev.datafold.io
-  nginxPort: 80
   common:
     labels: {}
     annotations: {}
@@ -13,6 +12,7 @@ global:
   datafoldVersion: ""
   datafoldRepository: "us-docker.pkg.dev/datadiff-mm/datafold/server"
   shellRepository: "us-docker.pkg.dev/datadiff-mm/datafold/server"
+  ingressClassName: traefik
   clickhouse:
     port: 9000
     storageOnPV: "true"
@@ -25,6 +25,8 @@ global:
   server:
     # Application will fail if the port is not set to 5000
     port: 5000
+  nginx:
+    port: 80
 
 # ------------------------------------------------------------------------------
 # These are properties only used by the charts and templates on this level.

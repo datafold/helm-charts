@@ -5,10 +5,8 @@ metadata:
   annotations:
     ingress.kubernetes.io/force-ssl-redirect: "false"
     ingress.kubernetes.io/ssl-redirect: "false"
-    cert-manager.io/cluster-issuer: letsencrypt-prod
-    traefik.ingress.kubernetes.io/router.middlewares: default-redirect-https@kubernetescrd
 spec:
-  ingressClassName: traefik
+  ingressClassName: {{ .Values.global.ingressClassName }}
   rules:
   - host: {{ .Values.global.serverName }}
     http:
