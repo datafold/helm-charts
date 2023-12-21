@@ -3,6 +3,54 @@ entries:
   datafold:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2023-12-21T11:41:02.711990071Z"
+    dependencies:
+    - condition: redis.install
+      name: redis
+      repository: file://charts/redis
+      version: '*.*.*'
+    - condition: clickhouse.install
+      name: clickhouse
+      repository: file://charts/clickhouse
+      version: '*.*.*'
+    - condition: postgres.install
+      name: postgres
+      repository: file://charts/postgres
+      version: '*.*.*'
+    - condition: dfshell.install
+      name: dfshell
+      repository: file://charts/dfshell
+      version: '*.*.*'
+    - condition: server.install
+      name: server
+      repository: file://charts/server
+      version: '*.*.*'
+    - condition: scheduler.install
+      name: scheduler
+      repository: file://charts/scheduler
+      version: '*.*.*'
+    - condition: worker.install
+      name: worker
+      repository: file://charts/worker
+      version: '*.*.*'
+    - condition: nginx.install
+      name: nginx
+      repository: file://charts/nginx
+      version: '*.*.*'
+    description: Helm chart package to deploy Datafold on kubernetes.
+    digest: 82b513ef48f1f00cc946ddb45e03a331fc4e9e8c0c386fa1d20799a7372b4265
+    icon: https://www.datafold.com/logo.png
+    maintainers:
+    - email: support@datafold.com
+      name: datafold
+      url: https://datafold.com
+    name: datafold
+    type: application
+    urls:
+    - https://github.com/datafold/helm-charts/releases/download/datafold-0.2.3/datafold-0.2.3.tgz
+    version: 0.2.3
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2023-12-20T11:00:59.885793772Z"
     dependencies:
     - condition: redis.install
@@ -449,4 +497,4 @@ entries:
     urls:
     - https://github.com/datafold/helm-charts/releases/download/datafold-0.1.0/datafold-0.1.0.tgz
     version: 0.1.0
-generated: "2023-12-20T11:00:59.885902524Z"
+generated: "2023-12-21T11:41:02.712114293Z"
