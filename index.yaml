@@ -3,6 +3,58 @@ entries:
   datafold:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2023-12-22T11:40:02.441836029Z"
+    dependencies:
+    - condition: redis.install
+      name: redis
+      repository: file://charts/redis
+      version: '*.*.*'
+    - condition: clickhouse.install
+      name: clickhouse
+      repository: file://charts/clickhouse
+      version: '*.*.*'
+    - condition: postgres.install
+      name: postgres
+      repository: file://charts/postgres
+      version: '*.*.*'
+    - condition: dfshell.install
+      name: dfshell
+      repository: file://charts/dfshell
+      version: '*.*.*'
+    - condition: server.install
+      name: server
+      repository: file://charts/server
+      version: '*.*.*'
+    - condition: scheduler.install
+      name: scheduler
+      repository: file://charts/scheduler
+      version: '*.*.*'
+    - condition: worker.install
+      name: worker
+      repository: file://charts/worker
+      version: '*.*.*'
+    - condition: nginx.install
+      name: nginx
+      repository: file://charts/nginx
+      version: '*.*.*'
+    - condition: global.datadog.install
+      name: datadog
+      repository: file://charts/datadog
+      version: '*.*.*'
+    description: Helm chart package to deploy Datafold on kubernetes.
+    digest: 2d2579cc2da009f0ace1e47fc6d96bb7584578edc0532aec384118ffd222f9a8
+    icon: https://www.datafold.com/logo.png
+    maintainers:
+    - email: support@datafold.com
+      name: datafold
+      url: https://datafold.com
+    name: datafold
+    type: application
+    urls:
+    - https://github.com/datafold/helm-charts/releases/download/datafold-0.2.5/datafold-0.2.5.tgz
+    version: 0.2.5
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2023-12-22T09:02:05.708826322Z"
     dependencies:
     - condition: redis.install
@@ -545,4 +597,4 @@ entries:
     urls:
     - https://github.com/datafold/helm-charts/releases/download/datafold-0.1.0/datafold-0.1.0.tgz
     version: 0.1.0
-generated: "2023-12-22T09:02:05.708906001Z"
+generated: "2023-12-22T11:40:02.441923382Z"
