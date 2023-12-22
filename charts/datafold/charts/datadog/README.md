@@ -11,7 +11,7 @@ https://docs.datadoghq.com/containers/kubernetes/installation/?tab=operator
 > kubectl create secret generic datadog-secret --from-literal api-key=<DATADOG_API_KEY>
 ```
 
-After that, you can enable the install flag for datadog and 
+After that, you can enable the install flag for datadog and
 apply these charts.
 
 Verify this page if you need to apply additional settings:

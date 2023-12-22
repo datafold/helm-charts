@@ -61,7 +61,7 @@ worker:
 
 config:
   webWorkers: "30"
-  workerCount: "90"
+  workerCount: "15"
   githubServer: "https://github.com"
   maxTasksPerWorker: "200"
   maxMemPerWorker: "300000"

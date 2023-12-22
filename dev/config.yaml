@@ -9,9 +9,6 @@ server:
 scheduler:
   command: "dev_scheduler"
 
-worker:
-  command: "dev_celery_worker"
-
 config:
   mailPort: "25"
   mailUseTls: "false"
@@ -37,3 +34,30 @@ global:
     storageOnPV: "false"
   postgres:
     storageOnPV: "false"
+
+worker:
+  worker:
+    tasks: 200
+    memory: 850000
+    count: 15
+
+worker-interactive:
+  worker:
+    queues: "interactive"
+    tasks: 200
+    memory: 850000
+    count: 5
+
+worker-catalog:
+  worker:
+    queues: "lineage,catalog"
+    tasks: 200
+    memory: 850000
+    count: 5
+
+worker-singletons:
+  worker:
+    queues: "singletons"
+    tasks: 200
+    memory: 850000
+    count: 4

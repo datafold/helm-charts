@@ -4,6 +4,9 @@ import sh
 from typer import Typer
 
 
+DEFAULT_NAMESPACE = "datafold"
+
+
 class EnvVar(enum.StrEnum):
     DATAFOLD_K8S_SECRETFILE = "DATAFOLD_K8S_SECRETFILE"
     DATAFOLD_K8S_CONFIGFILE = "DATAFOLD_K8S_CONFIGFILE"
@@ -26,6 +29,15 @@ def _check_env_vars_present():
         _check_env_var(name)
 
 
+def _set_correct_namespace():
+    sh.kubectl.config("set-context", "--current", f"--namespace={DEFAULT_NAMESPACE}")
+
+
+def _check_environment():
+    _check_env_vars_present()
+    _set_correct_namespace()
+
+
 def _common_args():
     return [
         os.getenv(EnvVar.DATAFOLD_DEPLOY_NAME),
@@ -44,7 +56,7 @@ def _common_args():
 @dev.command()
 def install():
     """Installs all helm charts."""
-    _check_env_vars_present()
+    _check_environment()
 
     args = ['--install']
     args.extend(_common_args())
@@ -56,7 +68,7 @@ def install():
 @dev.command()
 def update():
     """Updates the deployment."""
-    _check_env_vars_present()
+    _check_environment()
     out = sh.helm.upgrade(_common_args(), _fg=True)
     print(out)
 
@@ -64,7 +76,7 @@ def update():
 @dev.command()
 def uninstall():
     """Uninstalls the deployment."""
-    _check_env_vars_present()
+    _check_environment()
     out = sh.helm.uninstall(os.getenv(EnvVar.DATAFOLD_DEPLOY_NAME), _fg=True)
     print(out)
 
@@ -72,7 +84,7 @@ def uninstall():
 @dev.command()
 def delete():
     """Deletes the deployment."""
-    _check_env_vars_present()
+    _check_environment()
     out = sh.helm.delete(os.getenv(EnvVar.DATAFOLD_DEPLOY_NAME), _fg=True)
     print(out)
 
@@ -80,7 +92,7 @@ def delete():
 @dev.command()
 def render():
     """Renders all charts to console output for validation."""
-    _check_env_vars_present()
+    _check_environment()
     args = ['--debug']
     args.extend(_common_args())
     out = sh.helm.template(args, _fg=True)
