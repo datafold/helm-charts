@@ -14,14 +14,13 @@ repos:
     hooks:
       - id: black
         types: [python]
-        exclude: __init__.py
         args:
           # Prevent Black from standardizing quotes
           - "-S"
 
           # Will not support 3.10 syntax forms otherwise
           - "--target-version"
-          - "py310"
+          - "py311"
 
   - repo: https://github.com/charliermarsh/ruff-pre-commit
     rev: 'v0.0.282'

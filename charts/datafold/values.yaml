@@ -77,7 +77,7 @@ config:
   enableGraphInvariantsChecks: "true"
   lineageTestingDb: ""
   freshpaintBackend: ""
-  freshpaintfrontend: ""
+  freshpaintFrontend: ""
   freshpaintUrl: "https://api.perfalytics.com2/track"
   avoToken: ""
 
