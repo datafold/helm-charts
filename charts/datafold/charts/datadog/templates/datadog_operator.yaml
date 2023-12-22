@@ -1,0 +1,47 @@
+apiVersion: datadoghq.com/v2alpha1
+kind: DatadogAgent
+metadata:
+  name: {{ include "datadog.fullname" . }}
+  labels:
+    {{- include "datadog.labels" . | nindent 4 }}
+spec:
+  global:
+    credentials:
+      apiSecret:
+        keyName: "DATAFOLD_DD_API_KEY"
+        secretName: '{{ include "datafold.secrets" . }}'
+    tags:
+      - "env:{{ .Values.global.datadog.env }}"
+      - "deployment:{{ .Release.Name }}"
+    logLevel: "{{ .Values.configuration.logLevel }}"
+  features:
+    logCollection:
+      enabled: {{ .Values.configuration.logCollection.enabled }}
+      containerCollectAll: {{ .Values.configuration.logCollection.containerCollectAll }}
+    liveProcessCollection:
+      enabled: {{ .Values.configuration.liveProcessCollection }}
+    liveContainerCollection:
+      enabled: {{ .Values.configuration.liveContainerCollection }}
+    processDiscovery:
+      enabled: {{ .Values.configuration.processDiscovery }}
+    oomKill:
+      enabled: {{ .Values.configuration.oomKill }}
+    apm:
+      enabled: {{ .Values.configuration.apm }}
+    dogstatsd:
+      enabled: {{ .Values.configuration.dogstatsd.enabled }}
+      tagCardinality: {{ .Values.configuration.dogstatsd.tagCardinality }}
+      hostPortConfig:
+        enabled: {{ .Values.configuration.dogstatsd.hostPortConfig }}
+        hostPort: 8125
+  override:
+    nodeAgent:
+      extraConfd:
+         configDataMap:
+           python.yaml: |-
+             logs:
+               - type: tcp
+                 port: {{ include "datafold.datadog.logs.port" . }}
+                 service: datafold
+                 source: app
+                 sourcecategory: sourcecode

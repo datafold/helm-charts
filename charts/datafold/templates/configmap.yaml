@@ -24,7 +24,7 @@ data:
   DATAFOLD_GOOGLE_OAUTH_REQUEST_BQ: "{{ .Values.config.googleOauthRequestBQ }}"
   DD_TRACE_ENABLED: "{{ .Values.config.ddTraceEnabled }}"
   DD_DOGSTATSD_DISABLE: "{{ .Values.config.ddDogStatsDisable }}"
-  DD_ENV: "{{ .Values.config.ddEnv }}"
+  DD_ENV: "{{ .Values.global.datadog.env }}"
   DATAFOLD_FLOAT_FORMAT: "{{ .Values.config.floatFormat }}"
   DATAFOLD_DATE_FORMAT: "{{ .Values.config.dateFormat }}"
   DATAFOLD_TIME_FORMAT: "{{ .Values.config.timeFormat }}"
@@ -36,3 +36,6 @@ data:
   DATAFOLD_FRESHPAINT_BACKEND_TOKEN: "{{ .Values.config.freshpaintBackend }}"
   DATAFOLD_FRESHPAINT_URL: "{{ .Values.config.freshpaintUrl }}"
   DATAFOLD_AVO_INSPECTOR_FRONTEND_API_KEY: "{{ .Values.config.avoToken }}"
+  DATAFOLD_DATADOG_AGENT_ADDRESS: '{{ include "datafold.datadog.logs.host" . }}:{{ include "datafold.datadog.logs.port" . }}'
+  DATAFOLD_DATADOG_METRICS_ADDRESS: '{{ include "datafold.datadog.metrics.host" . }}:{{ include "datafold.datadog.metrics.port" . }}'
+

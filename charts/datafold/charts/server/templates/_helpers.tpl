@@ -35,3 +35,22 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{/*
+Datadog annotations
+*/}}
+{{- define "server.datadog.annotations" -}}
+{{- if (eq .Values.global.datadog.install true) }}
+ad.datadoghq.com/{{ .Chart.Name }}.logs: >-
+  [{
+    "source": "datafold-server-onprem",
+    "service": "datafold-server-onprem",
+    "auto_multi_line_detection": true,
+    "name": "log_start_with_date",
+    "pattern" : "\\[\\d{4}-\\d{2}-\\d{2}\\s\\d{2}:\\d{2}:\\d{2}\\,\\d{3}\\]"
+  }]
+{{- end }}
+{{- with .Values.podAnnotations }}
+{{- toYaml . }}
+{{- end }}
+{{- end }}

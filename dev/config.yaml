@@ -22,6 +22,7 @@ config:
   enableGraphInvariantsChecks: "false"
 
 global:
+  serverName: "<replace-this>"
   cloudProvider: ""  # For local development, options ("", "aws", "gcp", "azure")
   storageClass: "local-storage"  # For local development, options ("local-storage", "")
   authMethod: "password"
@@ -29,6 +30,7 @@ global:
   shellRepository: "us-docker.pkg.dev/datadiff-mm/datafold/server"
   datadog:
     env: "dev"
+    install: "false"
   clickhouse:
     storageOnPV: "false"
   redis:
