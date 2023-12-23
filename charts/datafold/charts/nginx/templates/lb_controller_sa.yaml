@@ -1,0 +1,13 @@
+{{- if .Values.global.cloudProvider -}}
+{{-   if (eq .Values.global.cloudProvider "aws") -}}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ include "nginx.lbController.svcAccountName" . }}
+  labels:
+    {{ include "nginx.lbController.labels" . | nindent 4 }}
+  annotations:
+    {{ include "nginx.lbController.annotations" . | nindent 4 }}
+  namespace: kube-system
+{{-   end }}
+{{- end }}

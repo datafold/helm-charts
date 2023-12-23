@@ -2,13 +2,20 @@ replicaCount: 1
 image:
   repository: nginx
   pullPolicy: IfNotPresent
-  tag: "1.21.1"
+  tag: "1.24"
 
-# imagePullSecrets:
-#   - name: datafold-docker-secret
+imagePullSecrets:
 nameOverride: ""
 fullnameOverride: ""
-terminationGracePeriodSeconds: "5"
+terminationGracePeriodSeconds: "15"
+
+service:
+  typeOverride: ""
+  nodePort: 31337
+
+ingress:
+  ingressClassOverride: ""
+  deploy: false
 
 serviceAccount:
   create: true

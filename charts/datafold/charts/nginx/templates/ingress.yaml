@@ -1,12 +1,15 @@
+{{- if (eq .Values.ingress.deploy true) -}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: nginx
+  name: {{ include "nginx.fullname" . }}
+  labels:
+    {{- include "nginx.labels" . | nindent 4 }}
   annotations:
     ingress.kubernetes.io/force-ssl-redirect: "false"
     ingress.kubernetes.io/ssl-redirect: "false"
 spec:
-  ingressClassName: {{ .Values.global.ingressClassName }}
+  ingressClassName: {{- include "nginx.ingressClassName" . }}
   rules:
   - host: {{ .Values.global.serverName }}
     http:
@@ -15,10 +18,11 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: nginx
+            name: {{ include "nginx.fullname" . }}
             port:
               number: 80
   tls:
   - secretName: {{ .Values.global.serverName }}
     hosts:
     - {{ .Values.global.serverName }}
+{{- end}}

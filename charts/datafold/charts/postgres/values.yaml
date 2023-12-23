@@ -8,7 +8,7 @@ image:
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
-terminationGracePeriodSeconds: "300"
+terminationGracePeriodSeconds: "900"
 
 storage:
   size: 100Gi

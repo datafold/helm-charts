@@ -5,7 +5,7 @@ metadata:
   labels:
     {{- include "dfshell.labels" . | nindent 4 }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
       {{- include "dfshell.selectorLabels" . | nindent 6 }}
