@@ -8,15 +8,15 @@ imagePullSecrets:
   - name: datafold-docker-secret
 nameOverride: ""
 fullnameOverride: ""
-terminationGracePeriodSeconds: "600"
+terminationGracePeriodSeconds: "30"
 
 command: celery_worker
 
 worker:
-  queues: "celery,api,ci,interactive,freshpaint,alerts"
+  queues: "lineage,catalog"
   tasks: 200
   memory: 850000
-  count: 15
+  count: 5
 
 podAnnotations: {}
 podLabels: {}
