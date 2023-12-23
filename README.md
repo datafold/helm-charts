@@ -28,7 +28,7 @@ values of docker-server and you have the correct namespace targeted in your cont
 
 ```
 kubectl create secret docker-registry datafold-docker-secret \
-  --docker-server=gcr.io \
+  --docker-server=us-docker.pkg.dev \
   --docker-username=_json_key \
   --docker-password="$(cat ~/json-key-file.json)" \
   --docker-email=support@datafold.com
@@ -38,5 +38,11 @@ kubectl create secret docker-registry datafold-docker-secret \
 
 ```
 helm repo add datafold https://charts.datafold.com
-helm upgrade --install datafold datafold/datafold --version 0.1.0
+helm upgrade --install datafold datafold/datafold \
+  --version 0.1.0  \
+  --set global.datafoldVersion="<version_tag>" \
+  --set global.serverName="<access-url-on-lb>" \
+  --set global.cloudProvider="aws" \
+  --set global.awsTargetGroupArn="<replace-with-target-group-arn>" \
+  --set global.awsLbCtrlArn="<replace-with-load-balancer-controller-role-arn>"
 ```

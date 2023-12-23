@@ -111,3 +111,23 @@ ad.datadoghq.com/{{ .Chart.Name }}.logs: >-
 {{- toYaml . }}
 {{- end }}
 {{- end }}
+
+{{/*
+Postgres probe commands
+*/}}
+{{- define "postgres.probe.commands" -}}
+{{- if eq .Values.global.authMethod "trust" -}}
+- "psql"
+- "-w"
+- "-U"
+- "postgres"
+- "-d"
+- "postgres"
+- "-c"
+- "SELECT 1"
+{{- else -}}
+- "bash"
+- "-c"
+- "psql -U $POSTGRES_USER -d $POSTGRES_DB -c 'SELECT 1'"
+{{- end }}
+{{- end }}

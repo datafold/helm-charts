@@ -49,6 +49,11 @@ spec:
                 secretKeyRef:
                   name: {{ include "datafold.secrets" . }}
                   key: DATAFOLD_POSTGRES_PASSWORD
+            - name: PG_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "datafold.secrets" . }}
+                  key: DATAFOLD_POSTGRES_PASSWORD
             - name: POSTGRES_DB
               valueFrom:
                 secretKeyRef:
@@ -62,37 +67,22 @@ spec:
               containerPort: 5432
               protocol: TCP
           readinessProbe:
-            failureThreshold: 3
+            failureThreshold: 5
             exec:
               command:
-                - "psql"
-                - "-w"
-                - "-U"
-                - "postgres"
-                - "-d"
-                - "postgres"
-                - "-c"
-                - "SELECT 1"
-            initialDelaySeconds: 2
-            periodSeconds: 3
-            timeoutSeconds: 2
+                {{- include "postgres.probe.commands" . | nindent 16 }}
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 5
             successThreshold: 1
           livenessProbe:
             failureThreshold: 10
             exec:
               command:
-                - "psql"
-                - "-w"
-                - "postgres"
-                - "-U"
-                - "postgres"
-                - "-d"
-                - "postgres"
-                - "-c"
-                - "SELECT 1"
-            initialDelaySeconds: 2
-            periodSeconds: 3
-            timeoutSeconds: 2
+                {{- include "postgres.probe.commands" . | nindent 16 }}
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 5
             successThreshold: 1
           resources:
             {{- toYaml .Values.resources | nindent 12 }}

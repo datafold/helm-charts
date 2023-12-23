@@ -6,13 +6,14 @@ global:
     labels: {}
     annotations: {}
   storageClass: ""
+  awsTargetGroupArn: ""
+  awsLbCtrlArn: ""
   cloudProvider: "aws"
   authMethod: "password"
   statusCheckToken: "magic_token"
   datafoldVersion: ""
   datafoldRepository: "us-docker.pkg.dev/datadiff-mm/datafold/server"
   shellRepository: "us-docker.pkg.dev/datadiff-mm/datafold/server"
-  ingressClassName: nginx
   clickhouse:
     port: 9000
     storageOnPV: "true"
@@ -57,6 +58,9 @@ scheduler:
   install: true
 
 worker:
+  install: true
+
+nginx:
   install: true
 
 config:

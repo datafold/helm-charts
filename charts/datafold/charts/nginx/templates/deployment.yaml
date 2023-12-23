@@ -1,41 +1,73 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  name: {{ include "nginx.fullname" . }}
   labels:
-    app: nginx
-  name: nginx
+    {{- include "nginx.labels" . | nindent 4 }}
 spec:
-  progressDeadlineSeconds: 300
-  replicas: 1
-  revisionHistoryLimit: 3
   selector:
     matchLabels:
-      app: nginx
+      {{- include "nginx.selectorLabels" . | nindent 6 }}
+  # progressDeadlineSeconds: 300
+  replicas: {{ .Values.replicaCount }}
+  # revisionHistoryLimit: 3
   template:
     metadata:
-      creationTimestamp: null
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       labels:
-        app: nginx
+        {{- include "nginx.labels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
     spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "nginx.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
       containers:
-      - image: nginx
-        imagePullPolicy: Always
-        name: nginx
-        ports:
-        - name: nginx
-          containerPort: {{ .Values.global.nginx.port }}
-          protocol: TCP
-        resources:
-          limits:
-            memory: 100Mi
-          requests:
-            cpu: 100m
-            memory: 100Mi
-        volumeMounts:
-        - mountPath: /etc/nginx
-          name: nginx-config
-          readOnly: true
+        - name: {{ .Chart.Name }}
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            {{- toYaml $.Values.command | nindent 12 }}
+          ports:
+            - name: nginx
+              containerPort: {{ .Values.global.nginx.port }}
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - mountPath: /etc/nginx
+              name: nginx-config
+              readOnly: true
+            {{- with .Values.volumeMounts }}
+              {{- toYaml . | nindent 12 }}
+            {{- end }}
       volumes:
-      - configMap:
-          name: {{ include "nginx.configMap" . }}
-        name: nginx-config
+        - configMap:
+            name: {{ include "nginx.configMap" . }}
+          name: nginx-config
+      {{- with .Values.volumes }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
