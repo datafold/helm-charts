@@ -7,7 +7,7 @@ global:
     annotations: {}
   storageClass: ""
   awsTargetGroupArn: ""
-  awsLbCtrlArn: ""
+  vpcCidr: ""
   cloudProvider: "aws"
   authMethod: "password"
   statusCheckToken: "magic_token"
