@@ -15,7 +15,7 @@ storage:
   size: 2Gi
   name: datafold-redis-storage
   storageClass: ""
-  storageClassOverride: false
+  volumeId: ""
 
 podAnnotations: {}
 

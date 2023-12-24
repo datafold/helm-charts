@@ -16,7 +16,7 @@ storage:
   dataSize: 100Gi
   logSize: 10Gi
   storageClass: ""
-  storageClassOverride: false
+  volumeId: ""
 
 config:
   ram_ratio: 0.9

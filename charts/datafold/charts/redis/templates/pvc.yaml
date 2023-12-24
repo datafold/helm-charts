@@ -8,7 +8,12 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  {{ include "datafold.storageClass" . | nindent 2 }}
   resources:
     requests:
       storage: {{ .Values.storage.size | quote }}
+{{- if .Values.storage.volumeId }}
+  volumeName: {{ include "redis.data.pv.name" . }}
+  storageClassName: ""
+{{- else }}
+  {{ include "datafold.storageClass" . | nindent 2 }}
+{{- end }}

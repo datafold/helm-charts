@@ -8,10 +8,15 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  {{ include "datafold.storageClass" . | nindent 2 }}
   resources:
     requests:
       storage: {{ .Values.storage.dataSize | quote }}
+{{- if .Values.storage.volumeId }}
+  volumeName: {{ include "clickhouse.data.pv.name" . }}
+  storageClassName: ""
+{{- else }}
+  {{ include "datafold.storageClass" . | nindent 2 }}
+{{- end }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
