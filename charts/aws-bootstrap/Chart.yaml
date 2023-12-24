@@ -1,0 +1,11 @@
+apiVersion: v2
+name: aws-bootstrap
+description: A Helm chart to bootstrap AWS cluster if needed.
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+
+maintainers:
+  - name: datafold
+    email: support@datafold.com
+    url: https://datafold.com
