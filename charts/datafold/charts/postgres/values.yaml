@@ -13,7 +13,7 @@ terminationGracePeriodSeconds: "900"
 storage:
   size: 100Gi
   storageClass: ""
-  storageClassOverride: false
+  volumeId: ""
 
 podAnnotations: {}
 podLabels: {}
