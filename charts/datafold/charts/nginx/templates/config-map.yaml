@@ -39,8 +39,15 @@ data:
             real_ip_header X-Forwarded-For;
             real_ip_recursive on;
 
+            # LB Public IP address
+            {{ include "nginx.load_balancer_ips" . | nindent 12 }}
+
             # AWS internal LB's are assigned any IP in the VPC CIDR range
             set_real_ip_from 10.0.0.0/16;
+            set_real_ip_from 12.0.0.0/16;
+            # GCP internal LB's are from these ranges.
+            set_real_ip_from 130.211.0.0/22;
+            set_real_ip_from 35.191.0.0/16;
 
             root /usr/share/nginx/html;
 
