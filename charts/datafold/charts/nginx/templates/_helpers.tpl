@@ -117,3 +117,12 @@ Setting the service type for the service
 {{      fail "Azure is not supported yet" }}
 {{-   end }}
 {{- end }}
+
+{{/*
+Setting the service type for the service
+*/}}
+{{- define "nginx.load_balancer_ips" -}}
+{{- range $index, $lb_ip := .Values.service.loadBalancerIps }}
+set_real_ip_from {{ $lb_ip }}/32;
+{{- end }}
+{{- end }}

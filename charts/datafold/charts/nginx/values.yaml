@@ -12,6 +12,7 @@ terminationGracePeriodSeconds: "15"
 service:
   typeOverride: ""
   nodePort: 31337
+  loadBalancerIps: []
 
 ingress:
   ingressClassOverride: ""
