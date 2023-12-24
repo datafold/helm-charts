@@ -48,6 +48,29 @@ spec:
           volumeMounts:
             {{- toYaml . | nindent 12 }}
           {{- end }}
+      initContainers:
+        - name: init-postgres
+          image: "{{ .Values.global.shellRepository }}:{{ .Values.global.datafoldVersion }}"
+          command:
+            - bash
+            - -c
+            - ./manage.py database wait-for-connection && ./manage.py database create-or-upgrade
+          envFrom:
+            - configMapRef:
+                name: {{ include "datafold.configmap" . }}
+          env:
+            {{ include "datafold.env" . | nindent 12 }}
+        - name: init-clickhouse
+          image: "{{ .Values.global.shellRepository }}:{{ .Values.global.datafoldVersion }}"
+          command:
+            - bash
+            - -c
+            - ./manage.py clickhouse wait-for-connection && ./manage.py clickhouse create-or-upgrade
+          envFrom:
+            - configMapRef:
+                name: {{ include "datafold.configmap" . }}
+          env:
+            {{ include "datafold.env" . | nindent 12 }}
       {{- with .Values.volumes }}
       volumes:
         {{- toYaml . | nindent 8 }}
