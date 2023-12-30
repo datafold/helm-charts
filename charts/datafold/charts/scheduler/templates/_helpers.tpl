@@ -35,7 +35,7 @@ Common labels
 */}}
 {{- define "scheduler.labels" -}}
 helm.sh/chart: {{ include "scheduler.chart" . }}
-app.kubernetes.io/component: web-app
+app.kubernetes.io/component: scheduler
 {{ include "scheduler.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
@@ -48,6 +48,7 @@ Selector labels
 */}}
 {{- define "scheduler.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "scheduler.name" . }}
+app.kubernetes.io/part-of: datafold
 {{- end }}
 
 {{/*

@@ -1,0 +1,35 @@
+replicaCount: 1
+
+image:
+  pullPolicy: Always
+  tag: "0.0.2"
+
+imagePullSecrets:
+  - name: datafold-docker-secret
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  automount: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext: {}
+
+securityContext: {}
+
+resources: {}
+
+volumes: []
+
+volumeMounts: []
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
