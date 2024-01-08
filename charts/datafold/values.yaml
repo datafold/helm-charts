@@ -96,10 +96,6 @@ config:
   alertsWithMultiDimAndMultiField: ""
   enableGraphInvariantsChecks: "true"
   lineageTestingDb: ""
-  freshpaintBackend: ""
-  freshpaintFrontend: ""
-  freshpaintUrl: "https://api.perfalytics.com/track"
-  avoToken: ""
 
 secrets:
   installMePassword: "-"
@@ -121,3 +117,10 @@ secrets:
     password: "-"
   datadog:
     apiKey: ""
+    clientToken: "client-token"
+    applicationId: "application-id"
+  freshpaint:
+    backendToken: ""
+    frontendToken: ""
+    url: "https://api.perfalytics.com/track"
+    avoToken: ""

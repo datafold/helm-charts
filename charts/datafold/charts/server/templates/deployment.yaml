@@ -41,6 +41,26 @@ spec:
                 name: {{ include "datafold.configmap" . }}
           env:
             {{ include "datafold.env" . | nindent 12 }}
+            - name: DATAFOLD_FRESHPAINT_FRONTEND_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "datafold.secrets" . }}
+                  key: DATAFOLD_FRESHPAINT_FRONTEND_TOKEN
+            - name: DATAFOLD_FRESHPAINT_BACKEND_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "datafold.secrets" . }}
+                  key: DATAFOLD_FRESHPAINT_BACKEND_TOKEN
+            - name: DATAFOLD_FRESHPAINT_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "datafold.secrets" . }}
+                  key: DATAFOLD_FRESHPAINT_URL
+            - name: DATAFOLD_AVO_INSPECTOR_FRONTEND_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "datafold.secrets" . }}
+                  key: DATAFOLD_AVO_INSPECTOR_FRONTEND_API_KEY
           ports:
             - name: server
               containerPort: {{ .Values.global.server.port }}
