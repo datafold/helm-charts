@@ -32,6 +32,78 @@ entries:
   datafold:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2024-01-08T16:13:15.041283761Z"
+    dependencies:
+    - condition: redis.install
+      name: redis
+      repository: file://charts/redis
+      version: '*.*.*'
+    - condition: clickhouse.install
+      name: clickhouse
+      repository: file://charts/clickhouse
+      version: '*.*.*'
+    - condition: postgres.install
+      name: postgres
+      repository: file://charts/postgres
+      version: '*.*.*'
+    - condition: dfshell.install
+      name: dfshell
+      repository: file://charts/dfshell
+      version: '*.*.*'
+    - condition: initjob.install
+      name: initjob
+      repository: file://charts/initjob
+      version: '*.*.*'
+    - condition: operator.install
+      name: operator
+      repository: file://charts/operator
+      version: '*.*.*'
+    - condition: server.install
+      name: server
+      repository: file://charts/server
+      version: '*.*.*'
+    - condition: scheduler.install
+      name: scheduler
+      repository: file://charts/scheduler
+      version: '*.*.*'
+    - condition: worker.install
+      name: worker
+      repository: file://charts/worker
+      version: '*.*.*'
+    - condition: worker.install
+      name: worker-catalog
+      repository: file://charts/worker_catalog
+      version: '*.*.*'
+    - condition: worker.install
+      name: worker-interactive
+      repository: file://charts/worker_interactive
+      version: '*.*.*'
+    - condition: worker.install
+      name: worker-singletons
+      repository: file://charts/worker_singletons
+      version: '*.*.*'
+    - condition: nginx.install
+      name: nginx
+      repository: file://charts/nginx
+      version: '*.*.*'
+    - condition: global.datadog.install
+      name: datadog
+      repository: file://charts/datadog
+      version: '*.*.*'
+    description: Helm chart package to deploy Datafold on kubernetes.
+    digest: 7b33f4079b3b4d74f40dfbf081b1fcdc4656154341c070a26a26de25142ca32b
+    icon: https://www.datafold.com/logo.png
+    maintainers:
+    - email: support@datafold.com
+      name: datafold
+      url: https://datafold.com
+    name: datafold
+    type: application
+    urls:
+    - https://github.com/datafold/helm-charts/releases/download/datafold-0.2.9/datafold-0.2.9.tgz
+    version: 0.2.9
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2024-01-08T11:59:07.612592203Z"
     dependencies:
     - condition: redis.install
@@ -826,4 +898,4 @@ entries:
     urls:
     - https://github.com/datafold/helm-charts/releases/download/datafold-0.1.0/datafold-0.1.0.tgz
     version: 0.1.0
-generated: "2024-01-08T11:59:07.612747674Z"
+generated: "2024-01-08T16:13:15.041400579Z"
