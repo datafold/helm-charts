@@ -1,14 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "dfshell.fullname" . }}
+  name: {{ include "operator.fullname" . }}
   labels:
-    {{- include "dfshell.labels" . | nindent 4 }}
+    {{- include "operator.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- include "dfshell.selectorLabels" . | nindent 6 }}
+      {{- include "operator.selectorLabels" . | nindent 6 }}
+  strategy:
+    type: Recreate
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -16,7 +18,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "dfshell.labels" . | nindent 8 }}
+        {{- include "operator.labels" . | nindent 8 }}
         {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -25,23 +27,36 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "dfshell.serviceAccountName" . }}
+      serviceAccountName: {{ include "operator.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
-      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.global.shellRepository }}/server:{{ .Values.global.datafoldVersion }}"
+          image: "{{ .Values.global.datafoldRepository }}/operator:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          args:
-            {{- toYaml $.Values.command | nindent 10 }}
-          envFrom:
-            - configMapRef:
-                name: {{ include "datafold.configmap" . }}
+          command:
+            - poetry
+            - run
+            - kopf
+            - run
+            - --liveness=http://0.0.0.0:8080/healthz
+            - --namespace={{ .Release.Namespace }}
+            - /app/datafold_kopf/app_manager.py
+#          livenessProbe:
+#            httpGet:
+#              path: /
+#              port: http
           env:
-            {{ include "datafold.env" . | nindent 12 }}
+            - name: OPERATOR_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: ALLOW_ROLLBACK
+              value: "{{ .Values.global.operator.allowRollback }}"
+            - name: RELEASE_CHANNEL
+              value: "{{ .Values.global.operator.releaseChannel }}"
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           {{- with .Values.volumeMounts }}

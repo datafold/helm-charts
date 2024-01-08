@@ -35,12 +35,13 @@ Common labels
 */}}
 {{- define "worker.labels" -}}
 helm.sh/chart: {{ include "worker.chart" . }}
-app.kubernetes.io/component: web-app
+app.kubernetes.io/component: worker-catalog
 {{ include "worker.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
 {{ include "datafold.labels" . }}
+app.kubernetes.io/part-of: datafold
 {{- end }}
 
 {{/*
@@ -48,6 +49,7 @@ Selector labels
 */}}
 {{- define "worker.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "worker.name" . }}
+app.kubernetes.io/part-of: datafold
 {{- end }}
 
 {{/*

@@ -1,0 +1,9 @@
+apiVersion: crds.datafold.com/v1
+kind: DfAppManager
+metadata:
+  name: {{ include "datafold.fullname" . }}
+  labels:
+    {{- include "datafold.labels" . | nindent 4 }}
+    app.kubernetes.io/part-of: datafold
+spec:
+  version: "{{ .Values.global.datafoldVersion }}"

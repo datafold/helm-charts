@@ -12,8 +12,8 @@ global:
   authMethod: "password"
   statusCheckToken: "magic_token"
   datafoldVersion: ""
-  datafoldRepository: "us-docker.pkg.dev/datadiff-mm/datafold/server"
-  shellRepository: "us-docker.pkg.dev/datadiff-mm/datafold/server"
+  datafoldRepository: "us-docker.pkg.dev/datadiff-mm/datafold"
+  shellRepository: "us-docker.pkg.dev/datadiff-mm/datafold"
   clickhouse:
     port: 9000
     storageOnPV: "true"
@@ -36,6 +36,9 @@ global:
       port: 10518
     metrics:
       port: 8125
+  operator:
+    allowRollback: "false"
+    releaseChannel: "change-this"
 
 # ------------------------------------------------------------------------------
 # These are properties only used by the charts and templates on this level.
@@ -49,6 +52,12 @@ postgres:
   install: true
 
 dfshell:
+  install: true
+
+initjob:
+  install: true
+
+operator:
   install: true
 
 server:

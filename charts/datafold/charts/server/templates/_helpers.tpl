@@ -23,6 +23,7 @@ Selector labels
 */}}
 {{- define "server.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "datafold.server.name" . }}
+app.kubernetes.io/part-of: datafold
 {{- end }}
 
 {{/*
