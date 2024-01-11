@@ -1,0 +1,19 @@
+global:
+  serverName: "server"
+  cloudProvider: "aws"
+  awsTargetGroupArn: "target_group_arn"
+  vpcCidr: "vpc_cidr"
+  statusCheckToken: "magic_token"
+
+secrets:
+  clickhouse:
+    user: "default"
+    password: "default"
+  postgres:
+    user: "postgres"
+    password: "postgres"
+    database: "postgres"
+    host: "host"
+    port: 5432
+  redis:
+    password: "redis-pw"
