@@ -61,6 +61,11 @@ spec:
                 secretKeyRef:
                   name: {{ include "datafold.secrets" . }}
                   key: DATAFOLD_AVO_INSPECTOR_FRONTEND_API_KEY
+            - name: DATAFOLD_INSTALL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "datafold.secrets" . }}
+                  key: DATAFOLD_INSTALL_PASSWORD
           ports:
             - name: server
               containerPort: {{ .Values.global.server.port }}

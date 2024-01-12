@@ -8,10 +8,9 @@ global:
   storageClass: ""
   awsTargetGroupArn: ""
   vpcCidr: ""
-  cloudProvider: "aws"
+  cloudProvider: ""
   authMethod: "password"
   statusCheckToken: "magic_token"
-  datafoldVersion: ""
   datafoldRepository: "us-docker.pkg.dev/datadiff-mm/datafold"
   shellRepository: "us-docker.pkg.dev/datadiff-mm/datafold"
   clickhouse:
