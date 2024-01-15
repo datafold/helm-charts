@@ -45,14 +45,15 @@ spec:
             - name: redis
               containerPort: 6379
               protocol: TCP
-#          livenessProbe:
-#            exec:
-#              command:
-#              - sh
-#              - -c
-#              - redis-cli -a ping
-#            initialDelaySeconds: 10
-#            timeoutSeconds: 5
+          livenessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - redis-cli -a ping
+            initialDelaySeconds: 10
+            timeoutSeconds: 5
+            periodSeconds: 30
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:

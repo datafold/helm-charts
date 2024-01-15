@@ -43,6 +43,15 @@ spec:
             - name: nginx
               containerPort: {{ .Values.global.nginx.port }}
               protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /nginx-health
+              port: 80
+              httpHeaders:
+            initialDelaySeconds: 5
+            periodSeconds: 30
+            timeoutSeconds: 5
+            successThreshold: 1
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
