@@ -22,7 +22,12 @@ podAnnotations: {}
 service:
   type: ClusterIP
 
-resources: {}
+resources:
+  limits:
+    memory: 6000Mi
+  requests:
+    cpu: 100m
+    memory: 6000Mi
 
 nodeSelector: {}
 

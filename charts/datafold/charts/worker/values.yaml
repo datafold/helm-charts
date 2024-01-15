@@ -25,7 +25,12 @@ podSecurityContext: {}
 
 securityContext: {}
 
-resources: {}
+resources:
+  limits:
+    memory: 10000Mi
+  requests:
+    cpu: 1000m
+    memory: 10000Mi
 
 autoscaling:
   enabled: false

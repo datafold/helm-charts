@@ -36,7 +36,12 @@ ingress:
   pathType: ImplementationSpecific
   tls: []
 
-resources: {}
+resources:
+  limits:
+    memory: 3000Mi
+  requests:
+    cpu: 500m
+    memory: 3000Mi
 
 autoscaling:
   enabled: false
