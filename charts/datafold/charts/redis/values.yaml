@@ -19,6 +19,12 @@ storage:
 
 podAnnotations: {}
 
+podSecurityContext:
+  runAsNonRoot: false
+
+securityContext:
+  allowPrivilegeEscalation: false
+
 service:
   type: ClusterIP
 

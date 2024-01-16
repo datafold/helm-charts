@@ -21,16 +21,19 @@ worker:
 podAnnotations: {}
 podLabels: {}
 
-podSecurityContext: {}
+podSecurityContext:
+  runAsUser: 1000
+  runAsNonRoot: true
 
-securityContext: {}
+securityContext:
+  allowPrivilegeEscalation: false
 
 resources:
   limits:
-    memory: 6000Mi
+    memory: 5000Mi
   requests:
     cpu: 100m
-    memory: 6000Mi
+    memory: 5000Mi
 
 autoscaling:
   enabled: false

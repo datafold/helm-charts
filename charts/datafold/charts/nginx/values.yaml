@@ -19,17 +19,19 @@ ingress:
   deploy: false
 
 serviceAccount:
-  create: true
-  automount: true
+  create: false
+  automount: false
   annotations: {}
   name: ""
 
 podAnnotations: {}
 podLabels: {}
 
-podSecurityContext: {}
+podSecurityContext:
+  runAsNonRoot: false
 
-securityContext: {}
+securityContext:
+  allowPrivilegeEscalation: false
 
 resources:
   limits:
