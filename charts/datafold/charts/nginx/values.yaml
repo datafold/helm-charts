@@ -31,7 +31,12 @@ podSecurityContext: {}
 
 securityContext: {}
 
-resources: {}
+resources:
+  limits:
+    memory: 100Mi
+  requests:
+    cpu: 100m
+    memory: 100Mi
 
 volumes: []
 
