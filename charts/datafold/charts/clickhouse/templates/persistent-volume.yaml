@@ -1,4 +1,4 @@
-{{- if .Values.storage.volumeId }}
+{{- if .Values.storage.dataVolumeId }}
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -15,8 +15,33 @@ spec:
   storageClassName: ""
   persistentVolumeReclaimPolicy: Retain
   csi:
-    driver: efs.csi.aws.com
-    volumeHandle: {{ .Values.storage.volumeId }}
+    driver: ebs.csi.aws.com
+    volumeHandle: {{ .Values.storage.dataVolumeId }}
   claimRef:
     name: {{ include "clickhouse.data.pvc.name" . }}
+    namespace: {{ .Release.Namespace }}
+{{- end }}
+---
+{{- if .Values.storage.logVolumeId }}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ include "clickhouse.logs.pv.name" . }}
+  labels:
+    {{- include "clickhouse.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  capacity:
+    storage: {{ .Values.storage.logSize }}
+  {{- include "datafold.storageClass" . | nindent 2 }}
+  storageClassName: ""
+  persistentVolumeReclaimPolicy: Retain
+  csi:
+    driver: ebs.csi.aws.com
+    volumeHandle: {{ .Values.storage.logVolumeId }}
+  claimRef:
+    name: {{ include "clickhouse.logs.pvc.name" . }}
+    namespace: {{ .Release.Namespace }}
 {{- end }}

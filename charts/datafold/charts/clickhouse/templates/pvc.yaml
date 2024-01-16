@@ -11,7 +11,7 @@ spec:
   resources:
     requests:
       storage: {{ .Values.storage.dataSize | quote }}
-{{- if .Values.storage.volumeId }}
+{{- if .Values.storage.dataVolumeId }}
   volumeName: {{ include "clickhouse.data.pv.name" . }}
   storageClassName: ""
 {{- else }}
@@ -28,7 +28,12 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  {{ include "datafold.storageClass" . | nindent 2 }}
   resources:
     requests:
       storage: {{ .Values.storage.logSize | quote }}
+{{- if .Values.storage.logVolumeId }}
+  volumeName: {{ include "clickhouse.logs.pv.name" . }}
+  storageClassName: ""
+{{- else }}
+  {{ include "datafold.storageClass" . | nindent 2 }}
+{{- end }}
