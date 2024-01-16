@@ -13,17 +13,20 @@ terminationGracePeriodSeconds: "5"
 command: "server"
 
 serviceAccount:
-  create: true
-  automount: true
+  create: false
+  automount: false
   annotations: {}
   name: ""
 
 podAnnotations: {}
 podLabels: {}
 
-podSecurityContext: {}
+podSecurityContext:
+  runAsUser: 1000
+  runAsNonRoot: true
 
-securityContext: {}
+securityContext:
+  allowPrivilegeEscalation: false
 
 service:
   type: ClusterIP
