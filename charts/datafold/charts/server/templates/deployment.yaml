@@ -76,17 +76,7 @@ spec:
               path: /status_check?token={{ .Values.global.statusCheckToken }}
               port: server
               scheme: HTTP
-            initialDelaySeconds: 30
-            periodSeconds: 60
-            successThreshold: 1
-            timeoutSeconds: 5
-          readinessProbe:
-            failureThreshold: 3
-            httpGet:
-              path: /status_check?token={{ .Values.global.statusCheckToken }}
-              port: server
-              scheme: HTTP
-            initialDelaySeconds: 30
+            initialDelaySeconds: 60
             periodSeconds: 60
             successThreshold: 1
             timeoutSeconds: 5

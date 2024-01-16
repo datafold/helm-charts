@@ -37,6 +37,14 @@ spec:
                 name: {{ include "datafold.configmap" . }}
           env:
             {{ include "datafold.env" . | nindent 12 }}
+          livenessProbe:
+            exec:
+              command:
+              - /bin/bash
+              - -c
+              - ps -ef | grep "celery beat" | grep -v grep
+            initialDelaySeconds: 10
+            periodSeconds: 60
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           {{- with .Values.volumeMounts }}
