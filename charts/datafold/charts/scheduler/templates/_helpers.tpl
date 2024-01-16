@@ -60,9 +60,11 @@ ad.datadoghq.com/{{ .Chart.Name }}.logs: >-
   [{
     "source": "datafold-server-onprem",
     "service": "datafold-server-onprem",
-    "auto_multi_line_detection": true,
-    "name": "log_start_with_date",
-    "pattern" : "\\[\\d{4}-\\d{2}-\\d{2}\\s\\d{2}:\\d{2}:\\d{2}\\,\\d{3}\\]"
+    "log_processing_rules": [{
+      "type": "multi_line",
+      "name": "log_start_with_date",
+      "pattern" : "\\d{4}-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])"
+    }]
   }]
 {{- end }}
 {{- with .Values.podAnnotations }}
