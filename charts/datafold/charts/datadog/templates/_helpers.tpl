@@ -60,3 +60,52 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{/*
+The datadog deployment tag to use
+*/}}
+{{- define "datadog.deployment.tag" -}}
+{{- if .Values.global.datadog.install -}}
+{{-   printf "deployment:%s" (include "datafold.deployment.name" .) }}
+{{- end -}}
+{{- end -}}
+
+{{/*
+The datadog global config for a cloud provider
+*/}}
+{{- define "datadog.global.config" -}}
+{{- if .Values.global.cloudProvider -}}
+{{-   if (eq .Values.global.cloudProvider "aws") -}}
+criSocketPath: /run/dockershim.sock
+{{-   end -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+The datadog features for a cloud provider
+*/}}
+{{- define "datadog.features" -}}
+{{- if .Values.global.cloudProvider -}}
+{{-   if (eq .Values.global.cloudProvider "aws") -}}
+admissionController:
+  enabled: false
+externalMetricsServer:
+  enabled: false
+  useDatadogMetrics: false
+{{-   end -}}
+{{- end -}}
+{{- end -}}
+
+
+{{/*
+The datadog clusteragent overrides
+*/}}
+{{- define "datadog.clusteragent.overrides" -}}
+{{- if .Values.global.cloudProvider -}}
+{{-   if (eq .Values.global.cloudProvider "aws") -}}
+clusterAgent:
+  image:
+    name: gcr.io/datadoghq/cluster-agent:latest
+{{-   end -}}
+{{- end -}}
+{{- end -}}

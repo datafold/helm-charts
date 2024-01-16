@@ -97,3 +97,35 @@ Name of the datafold configmap location
 {{- define "datafold.configmap" -}}
 {{- printf "%s-config" .Release.Name | trunc 63 | trimSuffix "-" }}
 {{- end -}}
+
+{{/*
+The deployment tag to use
+*/}}
+{{- define "datafold.deployment.name" -}}
+{{- if .Values.global.deployment -}}
+{{-   if (ne .Values.global.deployment "") -}}
+{{-     printf "deployment:%s" .Values.global.deployment -}}
+{{-   else -}}
+{{      fail "global.deployment name must be set." }}
+{{-   end -}}
+{{- else -}}
+{{    fail "global.deployment name must be set." }}
+{{- end -}}
+{{- end -}}
+
+{{/*
+The deployment tag to use
+*/}}
+{{- define "datadog.deployment.tag" -}}
+{{- if .Values.global.datadog.install -}}
+{{-   if .Values.global.deployment -}}
+{{-     if (ne .Values.global.deployment "") -}}
+{{-       printf "deployment:%s" .Values.global.deployment -}}
+{{-     else -}}
+{{        fail "datadog deployment tag must be set" }}
+{{-     end -}}
+{{-   else -}}
+{{      fail "datadog deployment tag must be set" }}
+{{-   end -}}
+{{- end -}}
+{{- end -}}

@@ -106,6 +106,19 @@ ad.datadoghq.com/{{ .Chart.Name }}.logs: >-
     "source": "redis",
     "service": "redis"
   }]
+ad.datadoghq.com/redis.checks: |
+  {
+    "redisdb": {
+      "init_config": {},
+      "instances": [
+      {
+        "host": "%%host%%",
+          "port":"6379",
+          "password":"%%env_REDIS_PASSWORD%%"
+        }
+      ]
+    }
+  }
 {{- end }}
 {{- with .Values.podAnnotations }}
 {{- toYaml . }}

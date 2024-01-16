@@ -8,13 +8,18 @@ spec:
   global:
     credentials:
       apiSecret:
-        keyName: "DATAFOLD_DD_API_KEY"
-        secretName: '{{ include "datafold.secrets" . }}'
+        secretName: {{ include "datafold.secrets" . }}
+        keyName: DATAFOLD_DD_API_KEY
+      appSecret:
+        secretName: {{ include "datafold.secrets" . }}
+        keyName: DATAFOLD_DD_APP_KEY
+    {{- include "datadog.global.config" . | nindent 4 }}
     tags:
       - "env:{{ .Values.global.datadog.env }}"
-      - "deployment:{{ .Release.Name }}"
+      - '{{ include "datadog.deployment.tag" . }}'
     logLevel: "{{ .Values.configuration.logLevel }}"
   features:
+    {{- include "datadog.features" . | nindent 4 }}
     logCollection:
       enabled: {{ .Values.configuration.logCollection.enabled }}
       containerCollectAll: {{ .Values.configuration.logCollection.containerCollectAll }}
@@ -35,7 +40,14 @@ spec:
         enabled: {{ .Values.configuration.dogstatsd.hostPortConfig }}
         hostPort: 8125
   override:
+    {{- include "datadog.clusteragent.overrides" . | nindent 4 }}
     nodeAgent:
+      env:
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "datafold.secrets" . }}
+              key: DATAFOLD_REDIS_PASSWORD
       extraConfd:
          configDataMap:
            python.yaml: |-

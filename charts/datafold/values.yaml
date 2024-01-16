@@ -5,6 +5,7 @@ global:
   common:
     labels: {}
     annotations: {}
+  deployment: ""
   storageClass: ""
   awsTargetGroupArn: ""
   vpcCidr: ""
@@ -88,7 +89,7 @@ config:
   enforceHttps: "false"
   googleOauthRequestBQ: "true"
   ddTraceEnabled: "false"
-  ddDogStatsDisable: "true"
+  ddDogStatsDisable: "false"
   floatFormat: "0,0.00[0000000]"
   dateFormat: "YYYY-MM-DD"
   timeFormat: "HH:mm:ss"
@@ -116,6 +117,7 @@ secrets:
     password: "-"
   datadog:
     apiKey: ""
+    appKey: ""
     clientToken: "client-token"
     applicationId: "application-id"
   freshpaint:

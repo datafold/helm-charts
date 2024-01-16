@@ -6,8 +6,8 @@ data:
   PYTHONUNBUFFERED: "0"
   DATAFOLD_WEB_WORKERS: "{{ .Values.config.webWorkers }}"
   GITHUB_SERVER: "{{ .Values.config.githubServer }}"
-  DEV_NAME: "{{ .Release.Name }}"
-  INSTALLATION_NAME: "{{ .Release.Name }}"
+  DEV_NAME: '{{ include "datafold.deployment.name" . }}'
+  INSTALLATION_NAME: '{{ include "datafold.deployment.name" . }}'
   DATAFOLD_RATELIMIT_ENABLED: "{{ .Values.config.ratelimitEnabled }}"
   DATAFOLD_LOGGING_ENABLED: "{{ .Values.config.loggingEnabled }}"
   DATAFOLD_SINGLE_TENANT_DEPLOY: "{{ .Values.config.singleTenantDeploy }}"
