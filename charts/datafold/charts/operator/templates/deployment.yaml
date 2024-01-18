@@ -57,6 +57,10 @@ spec:
               value: "{{ .Values.global.operator.allowRollback }}"
             - name: RELEASE_CHANNEL
               value: "{{ .Values.global.operator.releaseChannel }}"
+            - name: CLICKHOUSE_BACKUP_SCHEDULE
+              value: "{{ .Values.global.operator.backupCronSchedule }}"
+            - name: MAINTENANCE_WINDOW
+              value: "{{ .Values.global.operator.maintenanceWindow }}"
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           {{- with .Values.volumeMounts }}

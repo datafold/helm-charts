@@ -24,7 +24,16 @@ config:
   uncompressed_cache_size: "0"
   mark_cache_size: "5368709120"
   concurrent_queries: "300"
+  memory_usage_to_ram_ratio: "0.9"
   log_level: "information"
+  backups_to_keep_local: "1"
+  backups_to_keep_remote: "7"
+  s3_bucket: ""
+  s3_region: ""
+
+secrets:
+  access_key: ""
+  secret_key: ""
 
 podAnnotations: {}
 podLabels: {}
