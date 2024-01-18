@@ -13,8 +13,10 @@
   value: "{{ include "datafold.clickhouse.server" . }}"
 - name: CH_PORT
   value: "{{ include "datafold.clickhouse.port" . }}"
+- name: CH_DATABASE
+  value: "{{ .Values.global.clickhouse.database }}"
 - name: CLICKHOUSE_URL
-  value: "clickhouse+native://$(CH_USER):$(CH_PASSWORD)@$(CH_SERVER):$(CH_PORT)"
+  value: "clickhouse+native://$(CH_USER):$(CH_PASSWORD)@$(CH_SERVER):$(CH_PORT)/$(CH_DATABASE)"
 - name: PG_PASS
   valueFrom:
     secretKeyRef:

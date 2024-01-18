@@ -130,3 +130,36 @@ ad.datadoghq.com/{{ .Chart.Name }}.logs: >-
 {{- toYaml . }}
 {{- end }}
 {{- end }}
+
+{{/*
+Defines remote storage system to use
+*/}}
+{{- define "clickhouse.remote_storage" -}}
+{{- if .Values.global.cloudProvider -}}
+{{-   if (eq .Values.global.cloudProvider "aws") -}}
+"s3"
+{{-   else if (eq .Values.global.cloudProvider "gcp") -}}
+{{      fail "GCP is not supported yet" }}
+{{-   else if (eq .Values.global.cloudProvider "azure") -}}
+{{      fail "Azure is not supported yet" }}
+{{-   else -}}
+{{      fail .Values.global.cloudProvider " is not a supported cloud provider" }}
+{{-   end -}}
+{{- else -}}
+""
+{{- end -}}
+{{- end -}}
+
+{{/*
+Name of the clickhouse configmap location
+*/}}
+{{- define "clickhouse.configmap" -}}
+{{- printf "%s-clickhouse-config" .Release.Name | trunc 63 | trimSuffix "-" }}
+{{- end -}}
+
+{{/*
+Name of the clickhouse secrets location
+*/}}
+{{- define "clickhouse.secrets" -}}
+{{- printf "%s-clickhouse-secrets" .Release.Name | trunc 63 | trimSuffix "-" }}
+{{- end -}}

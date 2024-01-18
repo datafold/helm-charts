@@ -17,6 +17,7 @@ global:
   clickhouse:
     port: 9000
     storageOnPV: "true"
+    database: "default"
   postgres:
     port: 5432
     storageOnPV: "true"
@@ -39,6 +40,8 @@ global:
   operator:
     allowRollback: "false"
     releaseChannel: "change-this"
+    backupCronSchedule: "0 1 * * *"
+    maintenanceWindow: ""
 
 # ------------------------------------------------------------------------------
 # These are properties only used by the charts and templates on this level.

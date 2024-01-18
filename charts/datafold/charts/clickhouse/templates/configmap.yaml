@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "clickhouse.configmap" . }}
+data:
+  CLICKHOUSE_INIT_TIMEOUT: "60"
+  UNCOMPRESSED_CACHE_SIZE: "{{ .Values.config.uncompressed_cache_size }}"
+  MARK_CACHE_SIZE: "{{ .Values.config.mark_cache_size }}"
+  MAX_CONCURRENT_QUERIES: "{{ .Values.config.concurrent_queries }}"
+  LOGGER_LEVEL: "{{ .Values.config.log_level }}"
+  MAX_SERVER_MEMORY_USAGE_TO_RAM_RATIO: "{{ .Values.config.memory_usage_to_ram_ratio }}"
+  REMOTE_STORAGE: {{ include "clickhouse.remote_storage" . }}
+  BACKUPS_TO_KEEP_LOCAL: "{{ .Values.config.backups_to_keep_local }}"
+  BACKUPS_TO_KEEP_REMOTE: "{{ .Values.config.backups_to_keep_remote }}"
+  S3_BUCKET: "{{ .Values.config.s3_bucket }}"
+  S3_REGION: "{{ .Values.config.s3_region }}"
