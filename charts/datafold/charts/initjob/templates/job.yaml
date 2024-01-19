@@ -16,7 +16,7 @@ spec:
           command:
             - bash
             - -c
-            - ./manage.py database wait-for-connection && ./manage.py database create-or-upgrade
+            - ./manage.py database wait-for-connection && ./manage.py database create-or-upgrade && ./manage.py installation set-new-deployment-params
           envFrom:
             - configMapRef:
                 name: {{ include "datafold.configmap" . }}
