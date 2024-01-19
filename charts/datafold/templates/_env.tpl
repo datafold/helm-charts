@@ -54,4 +54,24 @@
       key: DATAFOLD_REDIS_PASSWORD
 - name: DATAFOLD_REDIS_URL
   value: "redis://:$(REDIS_PASSWORD)@$(REDIS_SERVER):$(REDIS_PORT)/0"
+- name: DATAFOLD_MAIL_SERVER
+  valueFrom:
+    secretKeyRef:
+      name: {{ include "datafold.secrets" . }}
+      key: DATAFOLD_MAIL_SERVER
+- name: DATAFOLD_MAIL_USERNAME
+  valueFrom:
+    secretKeyRef:
+      name: {{ include "datafold.secrets" . }}
+      key: DATAFOLD_MAIL_USERNAME
+- name: DATAFOLD_MAIL_PASSWORD
+  valueFrom:
+    secretKeyRef:
+      name: {{ include "datafold.secrets" . }}
+      key: DATAFOLD_MAIL_PASSWORD
+- name: DATAFOLD_MAIL_DEFAULT_SENDER
+  valueFrom:
+    secretKeyRef:
+      name: {{ include "datafold.secrets" . }}
+      key: DATAFOLD_MAIL_DEFAULT_SENDER
 {{- end -}}
