@@ -139,7 +139,7 @@ Defines remote storage system to use
 {{-   if (eq .Values.global.cloudProvider "aws") -}}
 "s3"
 {{-   else if (eq .Values.global.cloudProvider "gcp") -}}
-{{      fail "GCP is not supported yet" }}
+"gcs"
 {{-   else if (eq .Values.global.cloudProvider "azure") -}}
 {{      fail "Azure is not supported yet" }}
 {{-   else -}}

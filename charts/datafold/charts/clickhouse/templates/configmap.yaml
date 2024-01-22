@@ -14,3 +14,5 @@ data:
   BACKUPS_TO_KEEP_REMOTE: "{{ .Values.config.backups_to_keep_remote }}"
   S3_BUCKET: "{{ .Values.config.s3_bucket }}"
   S3_REGION: "{{ .Values.config.s3_region }}"
+  GCS_BUCKET: "{{ .Values.config.gcs_bucket }}"
+  GCS_PATH: "{{ .Values.config.gcs_path }}"

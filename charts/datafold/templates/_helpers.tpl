@@ -73,7 +73,6 @@ Template to derive storage class to use
 {{-   if (eq .Values.global.cloudProvider "aws") -}}
 {{-     printf "storageClassName: \"sc-datafold-aws\"" -}}
 {{-   else if (eq .Values.global.cloudProvider "gcp") -}}
-{{      fail "GCP is not supported yet" }}
 {{-   else if (eq .Values.global.cloudProvider "azure") -}}
 {{      fail "Azure is not supported yet" }}
 {{-   else -}}
