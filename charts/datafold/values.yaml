@@ -17,7 +17,7 @@ global:
   clickhouse:
     port: 9000
     storageOnPV: "true"
-    database: "default"
+    database: "clickhouse"
   postgres:
     port: 5432
     storageOnPV: "true"

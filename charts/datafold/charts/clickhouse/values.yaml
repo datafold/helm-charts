@@ -36,7 +36,7 @@ config:
 secrets:
   access_key: "override_this"
   secret_key: "override_this"
-  clickhouse_backup_sa: "override_this"
+  clickhouse_backup_sa: "b3ZlcnJpZGVfdGhpcwoKCg=="
 
 podAnnotations: {}
 podLabels: {}

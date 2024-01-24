@@ -37,6 +37,8 @@ spec:
             - configMapRef:
                 name: {{ include "clickhouse.configmap" . }}
           env:
+            - name: CLICKHOUSE_DB
+              value: "{{ .Values.global.clickhouse.database }}"
             - name: CLICKHOUSE_USER
               valueFrom:
                 secretKeyRef:
