@@ -4,30 +4,41 @@ metadata:
   name: {{ include "datafold.configmap" . }}
 data:
   PYTHONUNBUFFERED: "0"
-  DATAFOLD_WEB_WORKERS: "{{ .Values.config.webWorkers }}"
-  GITHUB_SERVER: "{{ .Values.config.githubServer }}"
-  DEV_NAME: '{{ include "datafold.deployment.name" . }}'
-  INSTALLATION_NAME: '{{ include "datafold.deployment.name" . }}'
-  DATAFOLD_RATELIMIT_ENABLED: "{{ .Values.config.ratelimitEnabled }}"
+  DATAFOLD_ALERTS_WITH_MULTIDIM_AND_MULTIFIELD: "{{ .Values.config.alertsWithMultiDimAndMultiField }}"
+  DATAFOLD_APP_VERSION: "{{ .Values.config.maxMemPerWorker }}"
+  DATAFOLD_CONTENT_SECURITY_POLICY: "{{ .Values.config.contentSecurityPolicy}}"
+  DATAFOLD_DATADOG_AGENT_ADDRESS: '{{ include "datafold.datadog.logs.host" . }}:{{ include "datafold.datadog.logs.port" . }}'
+  DATAFOLD_DATADOG_METRICS_ADDRESS: '{{ include "datafold.datadog.metrics.host" . }}:{{ include "datafold.datadog.metrics.port" . }}'
+  DATAFOLD_DATE_FORMAT: "{{ .Values.config.dateFormat }}"
+  DATAFOLD_ENABLE_GRAPH_INVARIANTS_CHECKS: "{{ .Values.config.enableGraphInvariantsChecks }}"
+  DATAFOLD_ENABLE_SSRF_PROTECTION: "{{ .Values.config.enableSsrfProtection }}"
+  DATAFOLD_ENFORCE_HTTPS: "{{ .Values.config.enforceHttps }}"
+  DATAFOLD_FLOAT_FORMAT: "{{ .Values.config.floatFormat }}"
+  DATAFOLD_GOOGLE_OAUTH_REQUEST_BQ: "{{ .Values.config.googleOauthRequestBQ }}"
+  DATAFOLD_HOST: "{{ .Values.global.serverName }}"
+  DATAFOLD_LINEAGE_TESTING_DB: "{{ .Values.config.lineageTestingDb }}"
+  DATAFOLD_LOG_LEVEL: "{{ .Values.config.logLevel }}"
   DATAFOLD_LOGGING_ENABLED: "{{ .Values.config.loggingEnabled }}"
-  DATAFOLD_SINGLE_TENANT_DEPLOY: "{{ .Values.config.singleTenantDeploy }}"
   DATAFOLD_MAIL_PORT: "{{ .Values.config.mailPort }}"
   DATAFOLD_MAIL_USE_TLS: "{{ .Values.config.mailUseTls }}"
   DATAFOLD_MAIL_USE_SSL: "{{ .Values.config.mailUseSsl }}"
-  DATAFOLD_ENABLE_SSRF_PROTECTION: "{{ .Values.config.enableSsrfProtection }}"
-  DATAFOLD_APP_VERSION: "{{ .Values.config.maxMemPerWorker }}"
-  DATAFOLD_LOG_LEVEL: "{{ .Values.config.logLevel }}"
-  DATAFOLD_ENFORCE_HTTPS: "{{ .Values.config.enforceHttps }}"
-  DATAFOLD_GOOGLE_OAUTH_REQUEST_BQ: "{{ .Values.config.googleOauthRequestBQ }}"
-  DD_TRACE_ENABLED: "{{ .Values.config.ddTraceEnabled }}"
+  DATAFOLD_RATELIMIT_ENABLED: "{{ .Values.config.ratelimitEnabled }}"
+  DATAFOLD_SINGLE_TENANT_DEPLOY: "{{ .Values.config.singleTenantDeploy }}"
+  DATAFOLD_TIME_FORMAT: "{{ .Values.config.timeFormat }}"
+  DATAFOLD_WEB_WORKERS: "{{ .Values.config.webWorkers }}"
   DD_DOGSTATSD_DISABLE: "{{ .Values.config.ddDogStatsDisable }}"
   DD_ENV: "{{ .Values.global.datadog.env }}"
-  DATAFOLD_FLOAT_FORMAT: "{{ .Values.config.floatFormat }}"
-  DATAFOLD_DATE_FORMAT: "{{ .Values.config.dateFormat }}"
-  DATAFOLD_TIME_FORMAT: "{{ .Values.config.timeFormat }}"
-  DATAFOLD_ALERTS_WITH_MULTIDIM_AND_MULTIFIELD: "{{ .Values.config.alertsWithMultiDimAndMultiField }}"
-  DATAFOLD_LINEAGE_TESTING_DB: "{{ .Values.config.lineageTestingDb }}"
-  DATAFOLD_ENABLE_GRAPH_INVARIANTS_CHECKS: "{{ .Values.config.enableGraphInvariantsChecks }}"
-  DATAFOLD_CONTENT_SECURITY_POLICY: "default-src 'self'; connect-src 'self' raw.githubusercontent.com api.perfalytics.com perfalytics.com api.avo.app track.customer.io www.google-analytics.com browser-http-intake.logs.datadoghq.com browser-intake-datadoghq.com *.browser-intake-datadoghq.com forms.hubspot.com *.ingest.sentry.io api.segment.io *.intercom.io *.intercomcdn.com wss://*.intercom.io ; style-src 'self' 'unsafe-inline' fonts.googleapis.com; script-src 'self' 'unsafe-eval' perfalytics.com assets.customer.io js.intercomcdn.com *.hs-scripts.com js.hs-scripts.com js.hs-banner.com js.hscollectedforms.net cdn.segment.com widget.intercom.io js.intercomcdn.com www.google-analytics.com js.hs-analytics.net https://www.google-analytics.com; font-src 'self' data: fonts.gstatic.com js.intercomcdn.com; img-src 'self' http: https: data:; object-src 'none'; frame-ancestors 'none'; worker-src 'self' blob:; frame-src 'self calendly.com;"
-  DATAFOLD_DATADOG_AGENT_ADDRESS: '{{ include "datafold.datadog.logs.host" . }}:{{ include "datafold.datadog.logs.port" . }}'
-  DATAFOLD_DATADOG_METRICS_ADDRESS: '{{ include "datafold.datadog.metrics.host" . }}:{{ include "datafold.datadog.metrics.port" . }}'
+  DD_TRACE_ENABLED: "{{ .Values.config.ddTraceEnabled }}"
+  DEV_NAME: '{{ include "datafold.deployment.name" . }}'
+{{- if .Values.config.githubServer }}
+  GITHUB_SERVER: "{{ .Values.config.githubServer }}"
+{{- end }}
+{{- if .Values.config.gitlabServer }}
+  GITLAB_SERVER: "{{ .Values.config.gitlabServer }}"
+{{- end }}
+  INSTALLATION_NAME: '{{ include "datafold.deployment.name" . }}'
+  DATAFOLD_CELERY_RESULT_EXPIRES: "86400"
+  DATAFOLD_FORCE_FEATURES: "{{ .Values.config.forceFeatures }}"
+  DATAFOLD_ENABLED_FEATURES: "{{ .Values.config.enabledFeatures }}"
+  DATAFOLD_ENABLED_DESTINATIONS: "{{ .Values.config.enabledDestinations }}"
+  DATAFOLD_CUSTOMER_ADAPTATION: "{{ .Values.config.customerAdaptation }}"
