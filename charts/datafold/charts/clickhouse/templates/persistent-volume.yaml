@@ -14,9 +14,17 @@ spec:
   {{- include "datafold.storageClass" . | nindent 2 }}
   storageClassName: ""
   persistentVolumeReclaimPolicy: Retain
+{{- if (eq .Values.global.cloudProvider "aws") }}
   csi:
     driver: ebs.csi.aws.com
     volumeHandle: {{ .Values.storage.dataVolumeId }}
+{{- end }}
+{{- if (eq .Values.global.cloudProvider "gcp") }}
+  csi:
+    driver: pd.csi.storage.gke.io
+    volumeHandle: {{ .Values.storage.dataVolumeId }}
+    fsType: "ext4"
+{{- end }}
   claimRef:
     name: {{ include "clickhouse.data.pvc.name" . }}
     namespace: {{ .Release.Namespace }}
@@ -38,9 +46,17 @@ spec:
   {{- include "datafold.storageClass" . | nindent 2 }}
   storageClassName: ""
   persistentVolumeReclaimPolicy: Retain
+{{- if (eq .Values.global.cloudProvider "aws") }}
   csi:
     driver: ebs.csi.aws.com
     volumeHandle: {{ .Values.storage.logVolumeId }}
+{{- end }}
+{{- if (eq .Values.global.cloudProvider "gcp") }}
+  csi:
+    driver: pd.csi.storage.gke.io
+    volumeHandle: {{ .Values.storage.logVolumeId }}
+    fsType: "ext4"
+{{- end }}
   claimRef:
     name: {{ include "clickhouse.logs.pvc.name" . }}
     namespace: {{ .Release.Namespace }}

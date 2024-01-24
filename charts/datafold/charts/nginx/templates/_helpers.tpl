@@ -95,7 +95,7 @@ Setting the service type for the service
 {{-   if (eq .Values.global.cloudProvider "aws") -}}
 NodePort
 {{-   else if (eq .Values.global.cloudProvider "gcp") -}}
-{{      fail "GCP is not supported yet" }}
+ClusterIP
 {{-   else if (eq .Values.global.cloudProvider "azure") -}}
 {{      fail "Azure is not supported yet" }}
 {{-   end }}
@@ -125,4 +125,23 @@ Setting the service type for the service
 {{- range $index, $lb_ip := .Values.service.loadBalancerIps -}}
 set_real_ip_from {{ $lb_ip }}/32;
 {{- end -}}
+{{- end }}
+
+{{/*
+NEG annotations for Google Cloud (in the service)
+*/}}
+{{- define "nginx.gcp.loadbalancer.annotations" -}}
+{{- if (eq .Values.global.cloudProvider "gcp") -}}
+annotations:
+  cloud.google.com/neg: '{"exposed_ports": {"{{ .Values.global.nginx.port }}":{"name": "{{ .Values.global.nginx.gcpNegName }}"}}}'
+{{- end }}
+{{- end }}
+
+{{/*
+NEG annotations for Google Cloud (in the service)
+*/}}
+{{- define "nginx.nodeport" -}}
+{{- if (ne .Values.global.cloudProvider "gcp") -}}
+nodePort: {{ .Values.service.nodePort }}
+{{- end }}
 {{- end }}

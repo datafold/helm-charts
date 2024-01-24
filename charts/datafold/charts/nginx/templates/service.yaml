@@ -4,13 +4,14 @@ metadata:
   name: {{ include "nginx.fullname" . }}
   labels:
     {{- include "nginx.labels" . | nindent 4 }}
+  {{- include "nginx.gcp.loadbalancer.annotations" . | nindent 2 }}
 spec:
   ports:
   - name: http
     protocol: TCP
     port: {{ .Values.global.nginx.port }}
     targetPort: nginx
-    nodePort: {{ .Values.service.nodePort }}
+{{- include "nginx.nodeport" . | nindent 4 }}
   selector:
     app.kubernetes.io/name: {{ include "nginx.name" . }}
   sessionAffinity: None

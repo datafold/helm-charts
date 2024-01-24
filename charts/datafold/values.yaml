@@ -29,6 +29,7 @@ global:
     port: 5000
   nginx:
     port: 80
+    gcpNegName: ""
   datadog:
     install: false
     env: "prod"
@@ -102,6 +103,7 @@ config:
 
 secrets:
   installMePassword: "-"
+  imagePull: ""
   database:
     encryptionKey: "-"
   mail:
