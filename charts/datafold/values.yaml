@@ -14,6 +14,9 @@ global:
   statusCheckToken: "magic_token"
   datafoldRepository: "us-docker.pkg.dev/datadiff-mm/datafold"
   shellRepository: "us-docker.pkg.dev/datadiff-mm/datafold"
+  optional:
+    intercom: "false"
+    googleAuth: "false"
   clickhouse:
     port: 9000
     storageOnPV: "true"
@@ -109,7 +112,6 @@ config:
 
 secrets:
   installMePassword: "-"
-  imagePull: ""
   googleClientId: ""
   googleclientSecret: ""
   intercomId: ""

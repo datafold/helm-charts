@@ -1,9 +1,10 @@
 apiVersion: v2
-name: aws-bootstrap
-description: A Helm chart to bootstrap AWS cluster if needed.
+name: datafold-crds
+description: Helm chart package to deploy Datafold CRDs on kubernetes.
 type: application
-version: 0.1.2
+version: 0.1.0
 appVersion: "1.0.0"
+icon: https://www.datafold.com/logo.png
 
 maintainers:
   - name: datafold
