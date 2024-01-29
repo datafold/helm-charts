@@ -76,11 +76,25 @@ spec:
                 secretKeyRef:
                   name: {{ include "datafold.secrets" . }}
                   key: DATAFOLD_DATADOG_APPLICATION_ID
+            {{- if (eq .Values.global.optional.intercom "true") }}
             - name: DATAFOLD_INTERCOM_APP_ID
               valueFrom:
                 secretKeyRef:
                   name: {{ include "datafold.secrets" . }}
                   key: DATAFOLD_INTERCOM_APP_ID
+            {{- end }}
+            {{- if (eq .Values.global.optional.googleAuth "true") }}
+            - name: DATAFOLD_GOOGLE_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "datafold.secrets" . }}
+                  key: DATAFOLD_GOOGLE_CLIENT_ID
+            - name: DATAFOLD_GOOGLE_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "datafold.secrets" . }}
+                  key: DATAFOLD_GOOGLE_CLIENT_SECRET
+            {{- end }}
           ports:
             - name: server
               containerPort: {{ .Values.global.server.port }}
