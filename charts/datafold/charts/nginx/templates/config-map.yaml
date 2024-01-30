@@ -78,6 +78,5 @@ kind: ConfigMap
 metadata:
   labels:
     app.kubernetes.io/name: nginx
-    app.kubernetes.io/part-of: datafold
     app.kubernetes.io/version: 1.0.0
   name: {{ include "nginx.configMap" . }}
