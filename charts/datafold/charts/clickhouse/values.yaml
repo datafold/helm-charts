@@ -42,11 +42,14 @@ podAnnotations: {}
 podLabels: {}
 
 podSecurityContext:
-  runAsUser: 101
   runAsNonRoot: true
 
 securityContext:
   allowPrivilegeEscalation: false
+  fsGroup: 101
+  runAsUser: 101
+  runAsGroup: 101
+  fsGroupChangePolicy: "Always"
 
 service:
   type: ClusterIP
