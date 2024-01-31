@@ -52,8 +52,6 @@ service:
   type: ClusterIP
 
 resources:
-  limits:
-    memory: 3000Mi
   requests:
     cpu: 1000m
     memory: 3000Mi
