@@ -11,5 +11,6 @@ spec:
     name: {{ include "nginx.fullname" . }}
     port: {{ .Values.global.nginx.port }}
   targetGroupARN: {{ .Values.global.awsTargetGroupArn }}
+  targetType: instance
 {{-   end }}
 {{- end }}
