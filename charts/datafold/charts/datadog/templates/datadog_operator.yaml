@@ -48,6 +48,16 @@ spec:
             secretKeyRef:
               name: {{ include "datafold.secrets" . }}
               key: DATAFOLD_REDIS_PASSWORD
+        - name: CLICKHOUSE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "datafold.secrets" . }}
+              key: DATAFOLD_CLICKHOUSE_PASSWORD
+        - name: CLICKHOUSE_USER
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "datafold.secrets" . }}
+              key: DATAFOLD_CLICKHOUSE_USER
       extraConfd:
          configDataMap:
            python.yaml: |-

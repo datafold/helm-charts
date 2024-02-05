@@ -125,6 +125,56 @@ ad.datadoghq.com/{{ .Chart.Name }}.logs: >-
     "source": "clickhouse",
     "service": "clickhouse"
   }]
+ad.datadoghq.com/{{ .Chart.Name }}.checks: |
+  {
+    "clickhouse": {
+      "init_config": {},
+      "instances": [
+      {
+        "server": "%%host%%",
+        "port":"9000",
+        "db":"clickhouse",
+        "username":"%%env_CLICKHOUSE_USER%%",
+        "password":"%%env_CLICKHOUSE_PASSWORD%%",
+        "service":"clickhouse",
+        "metric_patterns": {
+          "include": [
+            "clickhouse.connection.http",
+            "clickhouse.connection.tcp",
+            "clickhouse.file.open.*",
+            "clickhouse.file.read.*",
+            "clickhouse.file.read.fail.count",
+            "clickhouse.file.write.*",
+            "clickhouse.fs.*",
+            "clickhouse.insert.query.time",
+            "clickhouse.lock.*",
+            "clickhouse.MarkCacheFiles",
+            "clickhouse.merge.active",
+            "clickhouse.merge.memory",
+            "clickhouse.merge.row.read.count",
+            "clickhouse.merge.time",
+            "clickhouse.query.*",
+            "clickhouse.query.insert.count",
+            "clickhouse.query.insert.delayed",
+            "clickhouse.query.memory",
+            "clickhouse.query.time",
+            "clickhouse.table.insert.row.count",
+            "clickhouse.table.insert.size.count",
+            "clickhouse.table.mergetree.insert.delayed.*",
+            "clickhouse.table.mergetree.insert.delayed.count",
+            "clickhouse.thread.cpu.wait",
+            "clickhouse.thread.io.wait",
+            "clickhouse.thread.lock.rw.*",
+            "clickhouse.thread.query"
+          ],
+          "exclude": [
+            "clickhouse.*.total"
+          ]
+        }
+      }
+      ]
+    }
+  }
 {{- end }}
 {{- with .Values.podAnnotations }}
 {{- toYaml . }}
