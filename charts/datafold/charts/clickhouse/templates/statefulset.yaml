@@ -91,6 +91,20 @@ spec:
             {{- with .Values.volumeMounts }}
               {{- toYaml . | nindent 12 }}
             {{- end }}
+{{- if .Values.movedata }}
+      initContainers:
+        - name: infinite-sleep-to-move-data
+          securityContext:
+            {{- toYaml .Values.initSecurityContext | nindent 12 }}
+          image: "busybox:latest"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["/bin/sleep", "infinity"]
+          volumeMounts:
+            {{- include "clickhouse.volume.mounts" . | nindent 12 }}
+            {{- with .Values.volumeMounts }}
+              {{- toYaml . | nindent 12 }}
+            {{- end }}
+{{- end }}
       volumes:
         {{- include "clickhouse.volumes" . | nindent 8 }}
         {{- with .Values.volumes }}
