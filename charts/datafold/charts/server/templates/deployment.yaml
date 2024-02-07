@@ -8,12 +8,18 @@ spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
   selector:
     matchLabels:
       {{- include "server.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       annotations:
+        {{- include "server.datafold.annotations" . | nindent 8 }}
         {{- include "server.datadog.annotations" . | nindent 8 }}
       labels:
         {{- include "server.labels" . | nindent 8 }}
@@ -100,6 +106,16 @@ spec:
               containerPort: {{ .Values.global.server.port }}
               protocol: TCP
           livenessProbe:
+            failureThreshold: 10
+            httpGet:
+              path: /status_check?token={{ .Values.global.statusCheckToken }}
+              port: server
+              scheme: HTTP
+            initialDelaySeconds: 60
+            periodSeconds: 60
+            successThreshold: 1
+            timeoutSeconds: 5
+          readinessProbe:
             failureThreshold: 10
             httpGet:
               path: /status_check?token={{ .Values.global.statusCheckToken }}

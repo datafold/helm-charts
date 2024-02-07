@@ -53,6 +53,13 @@ ad.datadoghq.com/{{ .Chart.Name }}.logs: >-
     }]
   }]
 {{- end }}
+{{- end }}
+
+{{/*
+Datafold annotations
+*/}}
+{{- define "server.datafold.annotations" -}}
+replica-count: "{{ .Values.replicaCount }}"
 {{- with .Values.podAnnotations }}
 {{- toYaml . }}
 {{- end }}
