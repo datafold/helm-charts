@@ -82,6 +82,13 @@ ad.datadoghq.com/{{ .Chart.Name }}.logs: >-
     }]
   }]
 {{- end }}
+{{- end }}
+
+{{/*
+Datafold annotations
+*/}}
+{{- define "worker.datafold.annotations" -}}
+replica-count: "{{ .Values.replicaCount }}"
 {{- with .Values.podAnnotations }}
 {{- toYaml . }}
 {{- end }}
