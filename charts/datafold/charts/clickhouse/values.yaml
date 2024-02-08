@@ -10,7 +10,7 @@ imagePullSecrets:
 
 nameOverride: ""
 fullnameOverride: ""
-terminationGracePeriodSeconds: "300"
+terminationGracePeriodSeconds: "30"
 
 storage:
   dataSize: 100Gi
@@ -42,14 +42,20 @@ podAnnotations: {}
 podLabels: {}
 
 podSecurityContext:
-  runAsNonRoot: true
+  fsGroup: 101
+  fsGroupChangePolicy: "OnRootMismatch"
 
 securityContext:
   allowPrivilegeEscalation: false
-  fsGroup: 101
   runAsUser: 101
   runAsGroup: 101
-  fsGroupChangePolicy: "Always"
+
+movedata: true
+
+initSecurityContext:
+  allowPrivilegeEscalation: true
+  runAsUser: 0
+  runAsGroup: 0
 
 service:
   type: ClusterIP
