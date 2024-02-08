@@ -50,7 +50,7 @@ securityContext:
   runAsUser: 101
   runAsGroup: 101
 
-movedata: true
+movedata: false
 
 initSecurityContext:
   allowPrivilegeEscalation: true
