@@ -58,6 +58,8 @@ spec:
             secretKeyRef:
               name: {{ include "datafold.secrets" . }}
               key: DATAFOLD_CLICKHOUSE_USER
+        - name: DD_CONTAINER_EXCLUDE
+          value: "image:gcr.io/datadoghq.*"
       extraConfd:
          configDataMap:
            python.yaml: |-
