@@ -38,7 +38,4 @@ data:
 {{- end }}
   INSTALLATION_NAME: '{{ include "datafold.deployment.name" . }}'
   DATAFOLD_CELERY_RESULT_EXPIRES: "86400"
-  DATAFOLD_FORCE_FEATURES: "{{ .Values.config.forceFeatures }}"
-  DATAFOLD_ENABLED_FEATURES: "{{ .Values.config.enabledFeatures }}"
-  DATAFOLD_ENABLED_DESTINATIONS: "{{ .Values.config.enabledDestinations }}"
   DATAFOLD_CUSTOMER_ADAPTATION: "{{ .Values.config.customerAdaptation }}"
