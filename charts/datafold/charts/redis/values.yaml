@@ -12,10 +12,10 @@ fullnameOverride: ""
 terminationGracePeriodSeconds: "30"
 
 storage:
-  size: 2Gi
+  dataSize: 2Gi
   name: datafold-redis-storage
   storageClass: ""
-  volumeId: ""
+  dataVolumeId: ""
 
 podAnnotations: {}
 
