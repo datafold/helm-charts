@@ -8,7 +8,7 @@ imagePullSecrets:
   - name: datafold-docker-secret
 nameOverride: ""
 fullnameOverride: ""
-terminationGracePeriodSeconds: "60"
+terminationGracePeriodSeconds: "30"
 
 command: celery_worker
 
