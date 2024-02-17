@@ -7,7 +7,7 @@ image:
 imagePullSecrets:
 nameOverride: ""
 fullnameOverride: ""
-terminationGracePeriodSeconds: "15"
+terminationGracePeriodSeconds: "30"
 
 service:
   typeOverride: ""

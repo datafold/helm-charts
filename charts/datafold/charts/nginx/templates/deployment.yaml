@@ -10,6 +10,11 @@ spec:
       {{- include "nginx.selectorLabels" . | nindent 6 }}
   # progressDeadlineSeconds: 300
   replicas: {{ .Values.replicaCount }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
   # revisionHistoryLimit: 3
   template:
     metadata:
