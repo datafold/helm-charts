@@ -1,4 +1,4 @@
-{{- if .Values.storage.volumeId }}
+{{- if .Values.storage.dataVolumeId }}
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -14,9 +14,16 @@ spec:
   {{- include "datafold.storageClass" . | nindent 2 }}
   storageClassName: ""
   persistentVolumeReclaimPolicy: Retain
+{{- if (eq .Values.global.cloudProvider "aws") }}
   csi:
-    driver: efs.csi.aws.com
-    volumeHandle: {{ .Values.storage.volumeId }}
-  claimRef:
-    name: {{ include "redis.data.pvc.name" . }}
+    driver: ebs.csi.aws.com
+    volumeHandle: {{ .Values.storage.dataVolumeId }}
+    fsType: "ext4"
+{{- end }}
+{{- if (eq .Values.global.cloudProvider "gcp") }}
+  csi:
+    driver: pd.csi.storage.gke.io
+    volumeHandle: {{ .Values.storage.dataVolumeId }}
+    fsType: "ext4"
+{{- end }}
 {{- end }}

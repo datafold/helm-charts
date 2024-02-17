@@ -10,8 +10,8 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: {{ .Values.storage.size | quote }}
-{{- if .Values.storage.volumeId }}
+      storage: {{ .Values.storage.dataSize | quote }}
+{{- if .Values.storage.dataVolumeId }}
   volumeName: {{ include "redis.data.pv.name" . }}
   storageClassName: ""
 {{- else }}
