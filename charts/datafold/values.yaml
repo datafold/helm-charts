@@ -73,9 +73,6 @@ server:
 scheduler:
   install: true
 
-worker:
-  install: true
-
 nginx:
   install: true
 
@@ -138,3 +135,73 @@ secrets:
     frontendToken: ""
     url: "https://api.perfalytics.com/track"
     avoToken: ""
+
+worker:
+  install: true
+  replicaCount: 1
+  terminationGracePeriodSeconds: "1800"
+  worker:
+    queues: "celery,api,ci,interactive,freshpaint,alerts"
+    tasks: 200
+    memory: 850000
+    count: 15
+  resources:
+    limits:
+      memory: 9000Mi
+    requests:
+      cpu: 1000m
+      memory: 9000Mi
+
+worker-catalog:
+  install: true
+  replicaCount: 1
+  terminationGracePeriodSeconds: "30"
+  worker:
+    queues: "lineage,catalog"
+    tasks: 200
+    memory: 850000
+    count: 5
+  resources:
+    limits:
+      memory: 12000Mi
+    requests:
+      cpu: 1000m
+      memory: 12000Mi
+
+worker-interactive:
+  install: true
+  replicaCount: 1
+  terminationGracePeriodSeconds: "300"
+  worker:
+    queues: "interactive"
+    tasks: 200
+    memory: 850000
+    count: 5
+  resources:
+    limits:
+      memory: 6000Mi
+    requests:
+      cpu: 100m
+      memory: 6000Mi
+
+worker-singletons:
+  install: true
+  replicaCount: 1
+  terminationGracePeriodSeconds: "30"
+  worker:
+    queues: "singletons"
+    tasks: 200
+    memory: 850000
+    count: 4
+  resources:
+    limits:
+      memory: 5000Mi
+    requests:
+      cpu: 100m
+      memory: 5000Mi
+
+worker-lineage:
+  install: false
+
+worker-monitors:
+  install: false

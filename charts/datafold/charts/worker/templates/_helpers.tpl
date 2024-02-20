@@ -35,7 +35,7 @@ Common labels
 */}}
 {{- define "worker.labels" -}}
 helm.sh/chart: {{ include "worker.chart" . }}
-app.kubernetes.io/component: worker
+app.kubernetes.io/component: {{ include "worker.name" . }}
 {{ include "worker.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
