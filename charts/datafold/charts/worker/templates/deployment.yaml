@@ -47,6 +47,11 @@ spec:
           env:
             {{ include "worker.env" . | nindent 12 }}
             {{ include "datafold.env" . | nindent 12 }}
+            - name: DATAFOLD_FRESHPAINT_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "datafold.secrets" . }}
+                  key: DATAFOLD_FRESHPAINT_URL
           livenessProbe:
             exec:
               command:
