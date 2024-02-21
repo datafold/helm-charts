@@ -15,7 +15,7 @@ data:
   DATAFOLD_ENFORCE_HTTPS: "{{ .Values.config.enforceHttps }}"
   DATAFOLD_FLOAT_FORMAT: "{{ .Values.config.floatFormat }}"
   DATAFOLD_GOOGLE_OAUTH_REQUEST_BQ: "{{ .Values.config.googleOauthRequestBQ }}"
-  DATAFOLD_HOST: "{{ .Values.global.serverName }}"
+  DATAFOLD_HOST: "https://{{ .Values.global.serverName }}"
   DATAFOLD_LINEAGE_TESTING_DB: "{{ .Values.config.lineageTestingDb }}"
   DATAFOLD_LOG_LEVEL: "{{ .Values.config.logLevel }}"
   DATAFOLD_LOGGING_ENABLED: "{{ .Values.config.loggingEnabled }}"
