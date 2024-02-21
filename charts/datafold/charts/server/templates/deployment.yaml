@@ -111,8 +111,13 @@ spec:
               path: /status_check?token={{ .Values.global.statusCheckToken }}
               port: server
               scheme: HTTP
-            initialDelaySeconds: 60
-            periodSeconds: 60
+              httpHeaders:
+                - name: "Host"
+                  value: {{ .Values.global.serverName }}
+                - name: "X-Forwarded-Proto"
+                  value: https
+            initialDelaySeconds: 20
+            periodSeconds: 15
             successThreshold: 1
             timeoutSeconds: 5
           readinessProbe:
@@ -121,8 +126,13 @@ spec:
               path: /status_check?token={{ .Values.global.statusCheckToken }}
               port: server
               scheme: HTTP
-            initialDelaySeconds: 60
-            periodSeconds: 60
+              httpHeaders:
+                - name: "Host"
+                  value: {{ .Values.global.serverName }}
+                - name: "X-Forwarded-Proto"
+                  value: https
+            initialDelaySeconds: 20
+            periodSeconds: 15
             successThreshold: 1
             timeoutSeconds: 5
           resources:
