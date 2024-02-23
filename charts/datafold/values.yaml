@@ -24,6 +24,7 @@ global:
   postgres:
     port: 5432
     storageOnPV: "true"
+    datadogpw: ""
   redis:
     port: 6379
     storageOnPV: "true"

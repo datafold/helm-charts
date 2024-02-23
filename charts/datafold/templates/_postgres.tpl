@@ -15,3 +15,11 @@
 {{- define "datafold.postgres.port" -}}
 {{- print $.Values.global.postgres.port -}}
 {{- end -}}
+
+{{/*
+    Return the postgres port
+*/}}
+{{- define "datafold.postgres.datadogpw" -}}
+{{- print $.Values.global.postgres.datadogpw -}}
+{{- end -}}
+
