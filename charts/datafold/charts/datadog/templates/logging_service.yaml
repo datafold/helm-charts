@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "datadog.fullname" . }}
+  name: {{ include "datadog.log.service" . }}
   labels:
     {{- include "datadog.labels" . | nindent 4 }}
 spec:

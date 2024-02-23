@@ -109,3 +109,10 @@ clusterAgent:
 {{-   end -}}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Logging service
+*/}}
+{{- define "datadog.log.service" -}}
+{{ include "datadog.fullname" . }}-logging
+{{- end }}

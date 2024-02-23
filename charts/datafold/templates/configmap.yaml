@@ -39,3 +39,5 @@ data:
   INSTALLATION_NAME: '{{ include "datafold.deployment.name" . }}'
   DATAFOLD_CELERY_RESULT_EXPIRES: "86400"
   DATAFOLD_CUSTOMER_ADAPTATION: "{{ .Values.config.customerAdaptation }}"
+  DATAFOLD_DATADOG_APM_ADDRESS: '{{ include "datafold.datadog.apm.host" . }}:{{ include "datafold.datadog.apm.port" . }}'
+  DD_REMOTE_CONFIGURATION_ENABLED: "false"
