@@ -46,6 +46,92 @@ entries:
   datafold:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2024-02-23T14:37:36.679710676Z"
+    dependencies:
+    - condition: redis.install
+      name: redis
+      repository: file://charts/redis
+      version: '*.*.*'
+    - condition: clickhouse.install
+      name: clickhouse
+      repository: file://charts/clickhouse
+      version: '*.*.*'
+    - condition: postgres.install
+      name: postgres
+      repository: file://charts/postgres
+      version: '*.*.*'
+    - condition: dfshell.install
+      name: dfshell
+      repository: file://charts/dfshell
+      version: '*.*.*'
+    - condition: initjob.install
+      name: initjob
+      repository: file://charts/initjob
+      version: '*.*.*'
+    - condition: operator.install
+      name: operator
+      repository: file://charts/operator
+      version: '*.*.*'
+    - condition: server.install
+      name: server
+      repository: file://charts/server
+      version: '*.*.*'
+    - condition: scheduler.install
+      name: scheduler
+      repository: file://charts/scheduler
+      version: '*.*.*'
+    - alias: worker
+      condition: worker.install
+      name: worker
+      repository: file://charts/worker
+      version: '*.*.*'
+    - alias: worker-catalog
+      condition: worker-catalog.install
+      name: worker
+      repository: file://charts/worker
+      version: 0.1.0
+    - alias: worker-interactive
+      condition: worker-interactive.install
+      name: worker
+      repository: file://charts/worker
+      version: 0.1.0
+    - alias: worker-singletons
+      condition: worker-singletons.install
+      name: worker
+      repository: file://charts/worker
+      version: 0.1.0
+    - alias: worker-lineage
+      condition: worker-lineage.install
+      name: worker
+      repository: file://charts/worker
+      version: 0.1.0
+    - alias: worker-monitor
+      condition: worker-monitors.install
+      name: worker
+      repository: file://charts/worker
+      version: 0.1.0
+    - condition: nginx.install
+      name: nginx
+      repository: file://charts/nginx
+      version: 0.1.0
+    - condition: global.datadog.install
+      name: datadog
+      repository: file://charts/datadog
+      version: '*.*.*'
+    description: Helm chart package to deploy Datafold on kubernetes.
+    digest: 573da55597e20ff436c9aedb9a21a64f185c2ca96136ca364a86d071757173df
+    icon: https://www.datafold.com/logo.png
+    maintainers:
+    - email: support@datafold.com
+      name: datafold
+      url: https://datafold.com
+    name: datafold
+    type: application
+    urls:
+    - https://github.com/datafold/helm-charts/releases/download/datafold-0.5.1/datafold-0.5.1.tgz
+    version: 0.5.1
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2024-02-23T09:14:18.140594696Z"
     dependencies:
     - condition: redis.install
@@ -3073,4 +3159,4 @@ entries:
     urls:
     - https://github.com/datafold/helm-charts/releases/download/gcp-bootstrap-0.1.0/gcp-bootstrap-0.1.0.tgz
     version: 0.1.0
-generated: "2024-02-23T09:14:18.140744196Z"
+generated: "2024-02-23T14:37:36.679880182Z"
