@@ -122,9 +122,9 @@ Setting the service type for the service
 Setting the service type for the service
 */}}
 {{- define "nginx.load_balancer_ips" -}}
-{{- range $index, $lb_ip := .Values.service.loadBalancerIps -}}
+{{- range $idx, $lb_ip := .Values.service.loadBalancerIps }}
 set_real_ip_from {{ $lb_ip }}/32;
-{{- end -}}
+{{- end }}
 {{- end }}
 
 {{/*
