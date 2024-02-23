@@ -30,10 +30,10 @@ securityContext:
 
 resources:
   limits:
-    memory: 9000Mi
+    memory: 12000Mi
   requests:
     cpu: 1000m
-    memory: 9000Mi
+    memory: 12000Mi
 
 autoscaling:
   enabled: false
