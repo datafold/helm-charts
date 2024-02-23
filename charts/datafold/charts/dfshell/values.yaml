@@ -32,10 +32,10 @@ securityContext:
 
 resources:
   limits:
-    memory: 3000Mi
+    memory: 1000Mi
   requests:
     cpu: 100m
-    memory: 3000Mi
+    memory: 1000Mi
 
 volumes: []
 

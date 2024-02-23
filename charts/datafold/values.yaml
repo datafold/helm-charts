@@ -150,10 +150,10 @@ worker:
     count: 15
   resources:
     limits:
-      memory: 9000Mi
+      memory: 12000Mi
     requests:
       cpu: 1000m
-      memory: 9000Mi
+      memory: 12000Mi
 
 worker-catalog:
   install: true
@@ -166,10 +166,10 @@ worker-catalog:
     count: 5
   resources:
     limits:
-      memory: 12000Mi
+      memory: 13000Mi
     requests:
       cpu: 1000m
-      memory: 12000Mi
+      memory: 13000Mi
 
 worker-interactive:
   install: true
@@ -182,10 +182,10 @@ worker-interactive:
     count: 5
   resources:
     limits:
-      memory: 6000Mi
+      memory: 4000Mi
     requests:
       cpu: 100m
-      memory: 6000Mi
+      memory: 4000Mi
 
 worker-singletons:
   install: true
@@ -198,10 +198,10 @@ worker-singletons:
     count: 4
   resources:
     limits:
-      memory: 5000Mi
+      memory: 3000Mi
     requests:
       cpu: 100m
-      memory: 5000Mi
+      memory: 3000Mi
 
 worker-lineage:
   install: false
