@@ -41,6 +41,8 @@ global:
       port: 10518
     metrics:
       port: 8125
+    apm:
+      port: 8126
   operator:
     allowRollback: "false"
     releaseChannel: "change-this"
@@ -94,6 +96,7 @@ config:
   enforceHttps: "true"
   googleOauthRequestBQ: "true"
   ddTraceEnabled: "false"
+  ddApmAddress: ""
   ddDogStatsDisable: "false"
   floatFormat: "0,0.00[0000000]"
   dateFormat: "YYYY-MM-DD"

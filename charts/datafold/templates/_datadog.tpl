@@ -3,7 +3,7 @@
 */}}
 {{- define "datafold.datadog.logs.host" -}}
 {{- if not .Values.global.datadog.host -}}
-{{ printf "%s-%s" .Release.Name "datadog" }}
+{{ printf "%s-%s-logging" .Release.Name "datadog" }}
 {{- else -}}
 {{ .Values.global.datadog.host }}
 {{- end -}}
@@ -13,6 +13,13 @@
     Return the datadog host for metrics
 */}}
 {{- define "datafold.datadog.metrics.host" -}}
+{{- printf "%s-%s" .Release.Name "datadog-agent" | trunc 63 | trimSuffix "-" }}
+{{- end -}}
+
+{{/*
+    Return the datadog host for apm
+*/}}
+{{- define "datafold.datadog.apm.host" -}}
 {{- printf "%s-%s" .Release.Name "datadog-agent" | trunc 63 | trimSuffix "-" }}
 {{- end -}}
 
@@ -29,3 +36,11 @@
 {{- define "datafold.datadog.metrics.port" -}}
 {{- print $.Values.global.datadog.metrics.port -}}
 {{- end -}}
+
+{{/*
+    Return the datadog apm port
+*/}}
+{{- define "datafold.datadog.apm.port" -}}
+{{- print $.Values.global.datadog.apm.port -}}
+{{- end -}}
+

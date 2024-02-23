@@ -33,6 +33,8 @@ spec:
       enabled: {{ .Values.configuration.oomKill }}
     apm:
       enabled: {{ .Values.configuration.apm }}
+      hostPortConfig:
+        enabled: {{ .Values.configuration.apm }}
     dogstatsd:
       enabled: {{ .Values.configuration.dogstatsd.enabled }}
       tagCardinality: {{ .Values.configuration.dogstatsd.tagCardinality }}
