@@ -17,7 +17,7 @@
 {{- end -}}
 
 {{/*
-    Return the postgres port
+    Return the postgres password of the datadog user 
 */}}
 {{- define "datafold.postgres.datadogpw" -}}
 {{- print $.Values.global.postgres.datadogpw -}}
