@@ -41,6 +41,60 @@ spec:
                 name: {{ include "datafold.configmap" . }}
           env:
             {{ include "datafold.env" . | nindent 12 }}
+            - name: DATAFOLD_FRESHPAINT_FRONTEND_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "datafold.secrets" . }}
+                  key: DATAFOLD_FRESHPAINT_FRONTEND_TOKEN
+            - name: DATAFOLD_FRESHPAINT_BACKEND_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "datafold.secrets" . }}
+                  key: DATAFOLD_FRESHPAINT_BACKEND_TOKEN
+            - name: DATAFOLD_FRESHPAINT_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "datafold.secrets" . }}
+                  key: DATAFOLD_FRESHPAINT_URL
+            - name: DATAFOLD_AVO_INSPECTOR_FRONTEND_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "datafold.secrets" . }}
+                  key: DATAFOLD_AVO_INSPECTOR_FRONTEND_API_KEY
+            - name: DATAFOLD_INSTALL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "datafold.secrets" . }}
+                  key: DATAFOLD_INSTALL_PASSWORD
+            - name: DATAFOLD_DATADOG_CLIENT_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "datafold.secrets" . }}
+                  key: DATAFOLD_DATADOG_CLIENT_TOKEN
+            - name: DATAFOLD_DATADOG_APPLICATION_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "datafold.secrets" . }}
+                  key: DATAFOLD_DATADOG_APPLICATION_ID
+            {{- if (eq .Values.global.optional.intercom "true") }}
+            - name: DATAFOLD_INTERCOM_APP_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "datafold.secrets" . }}
+                  key: DATAFOLD_INTERCOM_APP_ID
+            {{- end }}
+            {{- if (eq .Values.global.optional.googleAuth "true") }}
+            - name: DATAFOLD_GOOGLE_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "datafold.secrets" . }}
+                  key: DATAFOLD_GOOGLE_CLIENT_ID
+            - name: DATAFOLD_GOOGLE_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "datafold.secrets" . }}
+                  key: DATAFOLD_GOOGLE_CLIENT_SECRET
+            {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           {{- with .Values.volumeMounts }}
