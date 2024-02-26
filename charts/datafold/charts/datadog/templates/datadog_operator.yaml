@@ -41,6 +41,7 @@ spec:
       hostPortConfig:
         enabled: {{ .Values.configuration.dogstatsd.hostPortConfig }}
         hostPort: 8125
+    {{- include "datadog.clusterChecks" . | nindent 4 }}
   override:
     {{- include "datadog.clusteragent.overrides" . | nindent 4 }}
     nodeAgent:

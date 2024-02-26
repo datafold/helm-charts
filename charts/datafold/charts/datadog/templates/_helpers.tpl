@@ -106,6 +106,20 @@ The datadog clusteragent overrides
 clusterAgent:
   image:
     name: gcr.io/datadoghq/cluster-agent:latest
+{{-     if (eq .Values.configuration.clusterChecks true) }}
+  extraConfd:
+    configDataMap:
+      postgres.yaml: |-
+        cluster_check: true
+        init_config:
+        instances:
+          - dbm: true
+            host: {{ include "datafold.postgres.server" . }}
+            port: {{ include "datafold.postgres.port" . }}
+            username: datadog
+            password: {{ include "datafold.postgres.datadogpw" . }}
+            ssl: allow
+{{-     end }}
 {{-   end -}}
 {{- end -}}
 {{- end -}}
@@ -116,3 +130,13 @@ Logging service
 {{- define "datadog.log.service" -}}
 {{ include "datadog.fullname" . }}-logging
 {{- end }}
+
+{{/*
+Cluster checks boolean
+*/}}
+{{- define "datadog.clusterChecks" -}}
+{{- if (eq .Values.configuration.clusterChecks true) -}}
+clusterChecks:
+  enabled: true
+{{- end -}}
+{{- end -}}

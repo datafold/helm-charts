@@ -48,3 +48,4 @@ configuration:
     enabled: "true"
     hostPortConfig: "true"
     tagCardinality: "low"
+  clusterChecks: false
