@@ -29,14 +29,14 @@ data:
   DD_DOGSTATSD_DISABLE: "{{ .Values.config.ddDogStatsDisable }}"
   DD_ENV: "{{ .Values.global.datadog.env }}"
   DD_TRACE_ENABLED: "{{ .Values.config.ddTraceEnabled }}"
-  DEV_NAME: '{{ include "datafold.deployment.name" . }}'
+  DEV_NAME: '{{ .Values.global.deployment }}'
 {{- if .Values.config.githubServer }}
   GITHUB_SERVER: "{{ .Values.config.githubServer }}"
 {{- end }}
 {{- if .Values.config.gitlabServer }}
   GITLAB_SERVER: "{{ .Values.config.gitlabServer }}"
 {{- end }}
-  INSTALLATION_NAME: '{{ include "datafold.deployment.name" . }}'
+  INSTALLATION_NAME: '{{ .Values.global.deployment }}'
   DATAFOLD_CELERY_RESULT_EXPIRES: "86400"
   DATAFOLD_CUSTOMER_ADAPTATION: "{{ .Values.config.customerAdaptation }}"
   DATAFOLD_DATADOG_APM_ADDRESS: '{{ include "datafold.datadog.apm.host" . }}:{{ include "datafold.datadog.apm.port" . }}'

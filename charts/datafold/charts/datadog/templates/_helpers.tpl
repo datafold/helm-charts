@@ -62,15 +62,6 @@ Create the name of the service account to use
 {{- end }}
 
 {{/*
-The datadog deployment tag to use
-*/}}
-{{- define "datadog.deployment.tag" -}}
-{{- if .Values.global.datadog.install -}}
-{{-   printf "deployment:%s" (include "datafold.deployment.name" .) }}
-{{- end -}}
-{{- end -}}
-
-{{/*
 The datadog global config for a cloud provider
 */}}
 {{- define "datadog.global.config" -}}
