@@ -3475,6 +3475,21 @@ entries:
   datafold-crds:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2024-03-06T13:40:40.132229898Z"
+    description: Helm chart package to deploy Datafold CRDs on kubernetes.
+    digest: ffe74eb8623d9523cb8e2233dfa71483399d731cb67d626bab5d12ebd512ae15
+    icon: https://www.datafold.com/logo.png
+    maintainers:
+    - email: support@datafold.com
+      name: datafold
+      url: https://datafold.com
+    name: datafold-crds
+    type: application
+    urls:
+    - https://github.com/datafold/helm-charts/releases/download/datafold-crds-0.1.1/datafold-crds-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2024-01-29T08:32:53.503949431Z"
     description: Helm chart package to deploy Datafold CRDs on kubernetes.
     digest: 8d061ca6298140a3423bc112152a98f270919a4a9bf877c25251c7e92a090221
@@ -3503,4 +3518,4 @@ entries:
     urls:
     - https://github.com/datafold/helm-charts/releases/download/gcp-bootstrap-0.1.0/gcp-bootstrap-0.1.0.tgz
     version: 0.1.0
-generated: "2024-02-27T13:34:32.234552602Z"
+generated: "2024-03-06T13:40:40.132420043Z"
