@@ -26,3 +26,5 @@ spec:
                   type: string
                 lastBackupRun:
                   type: string
+                datafoldVersionOverride:
+                  type: string
