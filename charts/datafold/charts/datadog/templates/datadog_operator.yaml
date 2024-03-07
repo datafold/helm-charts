@@ -45,6 +45,11 @@ spec:
   override:
     {{- include "datadog.clusteragent.overrides" . | nindent 4 }}
     nodeAgent:
+    {{-  if (eq .Values.global.cloudProvider "gcp") }}
+      volumes:
+      - emptyDir: {}
+        name: src
+    {{-  end }}
       env:
         - name: REDIS_PASSWORD
           valueFrom:
