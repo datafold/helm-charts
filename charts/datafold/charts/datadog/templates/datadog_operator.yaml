@@ -62,7 +62,7 @@ spec:
               name: {{ include "datafold.secrets" . }}
               key: DATAFOLD_CLICKHOUSE_USER
         - name: DD_CONTAINER_EXCLUDE
-          value: "image:gcr.io/datadoghq.*"
+          value: "image:gcr.io/datadoghq.* kube_namespace:kube-system"
       extraConfd:
          configDataMap:
            python.yaml: |-
