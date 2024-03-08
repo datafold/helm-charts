@@ -31,7 +31,7 @@ config:
   s3_bucket: ""
   s3_region: ""
   gcs_bucket: ""
-  gcs_path: ""
+  gcs_path: "backups"
 
 secrets:
   access_key: "override_this"

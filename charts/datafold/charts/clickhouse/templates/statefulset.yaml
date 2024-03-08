@@ -66,6 +66,11 @@ spec:
                 secretKeyRef:
                   name: {{ include "clickhouse.secrets" . }}
                   key: S3_SECRET_KEY
+            - name: GCS_CREDENTIALS_JSON
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "clickhouse.secrets" . }}
+                  key: GCS_CREDENTIALS_JSON
           ports:
             - name: ch-native
               containerPort: 9000
