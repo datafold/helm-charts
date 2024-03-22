@@ -10,7 +10,7 @@ imagePullSecrets:
 
 nameOverride: ""
 fullnameOverride: ""
-terminationGracePeriodSeconds: "120"
+terminationGracePeriodSeconds: "60"
 
 storage:
   dataSize: 100Gi

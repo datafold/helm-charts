@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "clickhouse.xmlconfig" . }}
+data:
+  overrides.xml: |-
+    <yandex>
+        <logger>
+            <!-- on CrashLoop, set this to 1 to stream error logs to datadog -->
+            <console>0</console>
+        </logger>
+    </yandex>
