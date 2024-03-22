@@ -99,7 +99,8 @@ Volume mounts when PV is used
 - name: logs
   mountPath: /var/log/clickhouse-server
 - name: config
-  mountPath: /etc/clickhouse-server/config.d
+  mountPath: /etc/clickhouse-server/config.d/overrides.xml
+  subPath: overrides.xml
 {{- end -}}
 {{- end -}}
 
