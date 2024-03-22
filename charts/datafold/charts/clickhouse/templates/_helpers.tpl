@@ -98,6 +98,8 @@ Volume mounts when PV is used
   mountPath: /var/lib/clickhouse
 - name: logs
   mountPath: /var/log/clickhouse-server
+- name: config
+  mountPath: /etc/clickhouse-server/config.d
 {{- end -}}
 {{- end -}}
 
@@ -112,6 +114,9 @@ Volumes when PV is used
 - name: logs
   persistentVolumeClaim:
     claimName: {{ include "clickhouse.logs.pvc.name" . }}
+- name: config
+  configMap:
+    name: {{ include "clickhouse.xmlconfig" . }}
 {{- end }}
 {{- end -}}
 
@@ -201,10 +206,17 @@ Defines remote storage system to use
 {{- end -}}
 
 {{/*
-Name of the clickhouse configmap location
+Name of the clickhouse configmap for env location
 */}}
 {{- define "clickhouse.configmap" -}}
 {{- printf "%s-clickhouse-config" .Release.Name | trunc 63 | trimSuffix "-" }}
+{{- end -}}
+
+{{/*
+Name of the clickhouse config override location
+*/}}
+{{- define "clickhouse.xmlconfig" -}}
+{{- printf "%s-clickhouse-xml-config" .Release.Name | trunc 63 | trimSuffix "-" }}
 {{- end -}}
 
 {{/*
