@@ -1,3 +1,4 @@
+{{-  if (eq .Values.global.cloudProvider "gcp") }}
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
@@ -7,3 +8,4 @@ spec:
   selector:
     matchLabels:
       k8s-app: kube-dns
+{{- end }}
