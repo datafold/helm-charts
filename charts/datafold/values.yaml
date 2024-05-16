@@ -156,6 +156,38 @@ worker:
       cpu: 1000m
       memory: 12000Mi
 
+worker2:
+  install: false
+  replicaCount: 1
+  terminationGracePeriodSeconds: "1800"
+  worker:
+    queues: "celery,api,ci,interactive,freshpaint,alerts"
+    tasks: 200
+    memory: 850000
+    count: 15
+  resources:
+    limits:
+      memory: 12000Mi
+    requests:
+      cpu: 1000m
+      memory: 12000Mi
+
+worker3:
+  install: false
+  replicaCount: 1
+  terminationGracePeriodSeconds: "1800"
+  worker:
+    queues: "celery,api,ci,interactive,freshpaint,alerts"
+    tasks: 200
+    memory: 850000
+    count: 15
+  resources:
+    limits:
+      memory: 12000Mi
+    requests:
+      cpu: 1000m
+      memory: 12000Mi
+
 worker-catalog:
   install: true
   replicaCount: 1
@@ -207,5 +239,5 @@ worker-singletons:
 worker-lineage:
   install: false
 
-worker-monitors:
+worker-monitor:
   install: false
