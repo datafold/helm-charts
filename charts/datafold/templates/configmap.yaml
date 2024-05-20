@@ -41,3 +41,6 @@ data:
   DATAFOLD_CUSTOMER_ADAPTATION: "{{ .Values.config.customerAdaptation }}"
   DATAFOLD_DATADOG_APM_ADDRESS: '{{ include "datafold.datadog.apm.host" . }}:{{ include "datafold.datadog.apm.port" . }}'
   DD_REMOTE_CONFIGURATION_ENABLED: "false"
+{{- range $custom_var := .Values.config.customVars }}
+  {{ $custom_var.name }}: {{ $custom_var.value | quote }}
+{{- end }}

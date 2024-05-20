@@ -74,4 +74,11 @@
     secretKeyRef:
       name: {{ include "datafold.secrets" . }}
       key: DATAFOLD_MAIL_DEFAULT_SENDER
+{{- range $custom_secret := .Values.global.customSecrets }}
+- name: {{ $custom_secret.name }}
+  valueFrom:
+    secretKeyRef:
+      name: {{ include "datafold.secrets" $ }}
+      key: {{ $custom_secret.name }}
+{{- end }}
 {{- end -}}
