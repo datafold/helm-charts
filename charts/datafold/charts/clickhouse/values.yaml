@@ -18,6 +18,8 @@ storage:
   storageClass: ""
   dataVolumeId: ""
   logVolumeId: ""
+  dataFsType: "ext4"
+  logsFsType: "ext4"
 
 config:
   ram_ratio: 0.9

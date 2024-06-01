@@ -96,7 +96,7 @@ config:
   enableSsrfProtection: "true"
   logLevel: "INFO"
   enforceHttps: "true"
-  googleOauthRequestBQ: "true"
+  googleOauthRequestBQ: "false"
   ddTraceEnabled: "false"
   ddApmAddress: ""
   ddDogStatsDisable: "false"

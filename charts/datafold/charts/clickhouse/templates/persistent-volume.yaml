@@ -18,13 +18,13 @@ spec:
   csi:
     driver: ebs.csi.aws.com
     volumeHandle: {{ .Values.storage.dataVolumeId }}
-    fsType: "ext4"
+    fsType: {{ .Values.storage.dataFsType }}
 {{- end }}
 {{- if (eq .Values.global.cloudProvider "gcp") }}
   csi:
     driver: pd.csi.storage.gke.io
     volumeHandle: {{ .Values.storage.dataVolumeId }}
-    fsType: "ext4"
+    fsType: {{ .Values.storage.dataFsType }}
 {{- end }}
   claimRef:
     name: {{ include "clickhouse.data.pvc.name" . }}
@@ -51,13 +51,13 @@ spec:
   csi:
     driver: ebs.csi.aws.com
     volumeHandle: {{ .Values.storage.logVolumeId }}
-    fsType: "ext4"
+    fsType: {{ .Values.storage.logsFsType }}
 {{- end }}
 {{- if (eq .Values.global.cloudProvider "gcp") }}
   csi:
     driver: pd.csi.storage.gke.io
     volumeHandle: {{ .Values.storage.logVolumeId }}
-    fsType: "ext4"
+    fsType: {{ .Values.storage.logsFsType }}
 {{- end }}
   claimRef:
     name: {{ include "clickhouse.logs.pvc.name" . }}
