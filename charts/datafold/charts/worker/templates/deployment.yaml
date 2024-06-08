@@ -11,7 +11,7 @@ spec:
   strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxSurge: 1
+      maxSurge: {{ .Values.replicaCount }}
       maxUnavailable: 0
   selector:
     matchLabels:
