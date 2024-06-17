@@ -62,7 +62,7 @@ spec:
               command:
               - /bin/bash
               - -c
-              - /app/bin/docker_entrypoint celery_healthcheck
+              - /app/bin/docker-entrypoint celery_healthcheck
             initialDelaySeconds: 60
             periodSeconds: 180
             failureThreshold: 2
