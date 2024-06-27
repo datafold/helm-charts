@@ -64,6 +64,23 @@ data:
                 return 200 "healthy\n";
             }
 
+            location /datadog-browser-intake {
+                rewrite ^/datadog-browser-intake(/.*)$ $1 break;
+
+                proxy_set_header X-Forwarded-For $remote_addr;
+                proxy_set_header Content-Type $content_type;
+                proxy_set_header Content-Length $content_length;
+                proxy_set_header Transfer-Encoding "";
+                proxy_hide_header Cookie;
+
+                proxy_http_version 1.1;
+                proxy_method POST;
+                proxy_pass https://browser-intake-datadoghq.com;
+
+                proxy_pass_request_headers on;
+                proxy_pass_request_body on;
+            }
+
             location / {
                 proxy_send_timeout 300;
                 proxy_read_timeout 300;
