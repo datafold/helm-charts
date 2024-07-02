@@ -33,7 +33,8 @@ data:
             server_name {{ .Values.global.serverName }};
 
             gzip on;
-            gzip_types text/plain text/html application/json application/javascript;
+            gzip_types text/plain text/css text/html text/javascript text/xml application/json application/javascript application/x-javascript application/xml application/xml+rss image/x-icon image/bmp;
+            gzip_comp_level 4;
             gzip_proxied    no-cache no-store private expired auth;
             gzip_min_length 1000;
 
