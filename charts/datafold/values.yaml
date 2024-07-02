@@ -17,6 +17,7 @@ global:
   shellRepository: "us-docker.pkg.dev/datadiff-mm/datafold"
   optional:
     intercom: "false"
+    pylon: "false"
     googleAuth: "false"
   clickhouse:
     port: 9000
@@ -106,7 +107,7 @@ config:
   alertsWithMultiDimAndMultiField: ""
   enableGraphInvariantsChecks: "false"
   lineageTestingDb: ""
-  contentSecurityPolicy: "default-src 'self'; connect-src 'self' raw.githubusercontent.com api.perfalytics.com perfalytics.com api.avo.app track.customer.io www.google-analytics.com browser-http-intake.logs.datadoghq.com browser-intake-datadoghq.com *.browser-intake-datadoghq.com forms.hubspot.com *.ingest.sentry.io api.segment.io *.intercom.io *.intercomcdn.com wss://*.intercom.io wss://*.hotjar.com *.hotjar.io *.analytics.google.com *.g.doubleclick.net api.amplitude.com; style-src 'self' 'unsafe-inline' fonts.googleapis.com; script-src 'self' 'unsafe-eval' 'unsafe-inline' perfalytics.com assets.customer.io js.intercomcdn.com *.hs-scripts.com js.hs-scripts.com js.hs-banner.com js.hscollectedforms.net cdn.segment.com widget.intercom.io js.intercomcdn.com www.google-analytics.com js.hs-analytics.net https://www.google-analytics.com *.googletagmanager.com *.hotjar.com cdn.jsdelivr.net cdn.amplitude.com; font-src 'self' data: fonts.gstatic.com js.intercomcdn.com; img-src 'self' http: https: data:; object-src 'none'; frame-ancestors 'none'; worker-src 'self' blob:; frame-src 'self' calendly.com;"
+  contentSecurityPolicy: "default-src 'self'; connect-src 'self' *.usepylon.com *.posthog.com *.pusher.com raw.githubusercontent.com api.perfalytics.com perfalytics.com api.avo.app track.customer.io www.google-analytics.com browser-http-intake.logs.datadoghq.com browser-intake-datadoghq.com *.browser-intake-datadoghq.com forms.hubspot.com wss://*.hotjar.com *.hotjar.io *.analytics.google.com *.g.doubleclick.net api.amplitude.com; style-src 'self' 'unsafe-inline' fonts.googleapis.com *.usepylon.com *.posthog.com *.pusher.com; script-src 'self' 'unsafe-eval' 'unsafe-inline' *.usepylon.com *.posthog.com *.pusher.com perfalytics.com assets.customer.io *.hs-scripts.com js.hs-scripts.com js.hs-banner.com js.hscollectedforms.net www.google-analytics.com js.hs-analytics.net https://www.google-analytics.com *.googletagmanager.com *.hotjar.com cdn.jsdelivr.net cdn.amplitude.com; font-src 'self' data: fonts.gstatic.com *.usepylon.com *.posthog.com *.pusher.com; img-src 'self' http: https: data:; object-src 'none'; frame-ancestors 'none'; worker-src 'self' blob:; frame-src 'self' calendly.com;"
   customerAdaptation: ""
   customVars: []
 
@@ -115,6 +116,7 @@ secrets:
   googleClientId: ""
   googleclientSecret: ""
   intercomId: ""
+  pylonId: ""
   database:
     encryptionKey: "-"
   mail:
