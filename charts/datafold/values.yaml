@@ -82,7 +82,7 @@ nginx:
   install: true
 
 config:
-  webWorkers: "5"
+  webWorkers: "4"
   workerCount: "15"
   githubServer: ""
   gitlabServer: ""
