@@ -89,6 +89,7 @@ config:
   maxTasksPerWorker: "200"
   maxMemPerWorker: "300000"
   ratelimitEnabled: "true"
+  rateLimitHighLoadPerMinute: "120"
   loggingEnabled: "true"
   singleTenantDeploy: "true"
   mailPort: "587"
