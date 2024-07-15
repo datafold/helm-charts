@@ -23,6 +23,7 @@ data:
   DATAFOLD_MAIL_USE_TLS: "{{ .Values.config.mailUseTls }}"
   DATAFOLD_MAIL_USE_SSL: "{{ .Values.config.mailUseSsl }}"
   DATAFOLD_RATELIMIT_ENABLED: "{{ .Values.config.ratelimitEnabled }}"
+  DATAFOLD_RATELIMIT_HIGHLOAD_PER_MINUTE: "{{ .Values.config.rateLimitHighLoadPerMinute }}"
   DATAFOLD_SINGLE_TENANT_DEPLOY: "{{ .Values.config.singleTenantDeploy }}"
   DATAFOLD_TIME_FORMAT: "{{ .Values.config.timeFormat }}"
   DATAFOLD_WEB_WORKERS: "{{ .Values.config.webWorkers }}"
