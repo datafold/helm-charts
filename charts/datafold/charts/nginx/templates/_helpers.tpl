@@ -92,12 +92,10 @@ Setting the service type for the service
 {{- if .Values.service.typeOverride }}
 {{- .Values.service.typeOverride }}
 {{- else }}
-{{-   if (eq .Values.global.cloudProvider "aws") -}}
+{{-   if or (eq .Values.global.cloudProvider "aws") (eq .Values.global.cloudProvider "azure") }}
 NodePort
 {{-   else if (eq .Values.global.cloudProvider "gcp") -}}
 ClusterIP
-{{-   else if (eq .Values.global.cloudProvider "azure") -}}
-{{      fail "Azure is not supported yet" }}
 {{-   end }}
 {{- end }}
 {{- end }}
@@ -112,9 +110,9 @@ Setting the service type for the service
 {{-     end -}}
 {{ .Values.global.awsTargetGroupArn }}
 {{-   else if (eq .Values.global.cloudProvider "gcp") -}}
-{{      fail "GCP is not supported yet" }}
+{{      fail "Not relevant for GCP" }}
 {{-   else if (eq .Values.global.cloudProvider "azure") -}}
-{{      fail "Azure is not supported yet" }}
+{{      fail "Not relevant for Azure" }}
 {{-   end }}
 {{- end }}
 
