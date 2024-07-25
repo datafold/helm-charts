@@ -197,7 +197,7 @@ Defines remote storage system to use
 {{-   else if (eq .Values.global.cloudProvider "gcp") -}}
 "gcs"
 {{-   else if (eq .Values.global.cloudProvider "azure") -}}
-{{      fail "Azure is not supported yet" }}
+"blob"
 {{-   else -}}
 {{      fail .Values.global.cloudProvider " is not a supported cloud provider" }}
 {{-   end -}}
