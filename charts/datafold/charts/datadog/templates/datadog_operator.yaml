@@ -68,6 +68,10 @@ spec:
               key: DATAFOLD_CLICKHOUSE_USER
         - name: DD_CONTAINER_EXCLUDE
           value: "image:gcr.io/datadoghq.* kube_namespace:kube-system"
+      tolerations:
+        - operator: Equal
+          key: clickhouse
+          value: reserved
       extraConfd:
          configDataMap:
            python.yaml: |-
