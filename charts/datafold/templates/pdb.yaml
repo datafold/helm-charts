@@ -1,4 +1,4 @@
-{{-  if (eq .Values.global.cloudProvider "gcp") }}
+{{- if or (eq .Values.global.cloudProvider "gcp") (eq .Values.global.cloudProvider "azure") }}
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
