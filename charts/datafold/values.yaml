@@ -152,7 +152,7 @@ worker:
   worker:
     queues: "celery,api,ci,interactive,freshpaint,alerts"
     tasks: 200
-    memory: 1000000
+    memory: "1000000"
     count: 15
   resources:
     limits:
@@ -168,7 +168,7 @@ worker2:
   worker:
     queues: "celery,api,ci,interactive,freshpaint,alerts"
     tasks: 200
-    memory: 1000000
+    memory: "1000000"
     count: 15
   resources:
     limits:
@@ -184,7 +184,7 @@ worker3:
   worker:
     queues: "celery,api,ci,interactive,freshpaint,alerts"
     tasks: 200
-    memory: 1000000
+    memory: "1000000"
     count: 15
   resources:
     limits:
@@ -200,7 +200,7 @@ worker-catalog:
   worker:
     queues: "lineage,catalog"
     tasks: 200
-    memory: 1000000
+    memory: "1000000"
     count: 5
   resources:
     limits:
@@ -216,7 +216,7 @@ worker-interactive:
   worker:
     queues: "interactive"
     tasks: 200
-    memory: 1000000
+    memory: "1000000"
     count: 5
   resources:
     limits:
@@ -232,7 +232,7 @@ worker-singletons:
   worker:
     queues: "singletons"
     tasks: 200
-    memory: 1000000
+    memory: "1000000"
     count: 4
   resources:
     limits:
