@@ -5,14 +5,11 @@ metadata:
   name: {{ include "nginx.fullname" . }}
   labels:
     {{- include "nginx.labels" . | nindent 4 }}
-  annotations:
-    ingress.kubernetes.io/force-ssl-redirect: "false"
-    ingress.kubernetes.io/ssl-redirect: "false"
+  {{- include "nginx.ingress.annotations" . | nindent 2 }}
 spec:
-  ingressClassName: {{- include "nginx.ingressClassName" . }}
+  {{- include "nginx.ingress.class" . | nindent 2 }}
   rules:
-  - host: {{ .Values.global.serverName }}
-    http:
+  - http:
       paths:
       - path: /
         pathType: Prefix
@@ -20,9 +17,5 @@ spec:
           service:
             name: {{ include "nginx.fullname" . }}
             port:
-              number: 80
-  tls:
-  - secretName: {{ .Values.global.serverName }}
-    hosts:
-    - {{ .Values.global.serverName }}
+              number: {{ .Values.global.nginx.port }}
 {{- end}}

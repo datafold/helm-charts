@@ -70,31 +70,17 @@ Create the name of the service account to use
 {{- end }}
 
 {{/*
-Determine the ingress class to use
-*/}}
-{{- define "nginx.ingressClassName" -}}
-{{- if .Values.ingress.ingressClassOverride }}
-{{- .Values.ingress.ingressClassOverride }}
-{{- else }}
-{{-   if (eq .Values.global.cloudProvider "aws") -}}
-{{-   else if (eq .Values.global.cloudProvider "gcp") -}}
-{{      fail "GCP is not supported yet" }}
-{{-   else if (eq .Values.global.cloudProvider "azure") -}}
-{{      fail "Azure is not supported yet" }}
-{{-   end }}
-{{- end }}
-{{- end }}
-
-{{/*
 Setting the service type for the service
 */}}
 {{- define "nginx.serviceType" -}}
 {{- if .Values.service.typeOverride }}
 {{- .Values.service.typeOverride }}
 {{- else }}
-{{-   if or (eq .Values.global.cloudProvider "aws") (eq .Values.global.cloudProvider "azure") }}
+{{-   if (eq .Values.global.cloudProvider "aws") }}
 NodePort
 {{-   else if (eq .Values.global.cloudProvider "gcp") -}}
+ClusterIP
+{{-   else if (eq .Values.global.cloudProvider "azure") -}}
 ClusterIP
 {{-   end }}
 {{- end }}
@@ -126,9 +112,12 @@ set_real_ip_from {{ $lb_ip }}/32;
 {{- end }}
 
 {{/*
-NEG annotations for Google Cloud (in the service)
+Service annotations
 */}}
-{{- define "nginx.gcp.loadbalancer.annotations" -}}
+{{- define "nginx.loadbalancer.annotations" -}}
+{{/*
+NEG annotations for Google Cloud
+*/}}
 {{- if (eq .Values.global.cloudProvider "gcp") -}}
 annotations:
   cloud.google.com/neg: '{"exposed_ports": {"{{ .Values.global.nginx.port }}":{"name": "{{ .Values.global.nginx.gcpNegName }}"}}}'
@@ -136,10 +125,31 @@ annotations:
 {{- end }}
 
 {{/*
+Ingress annotations
+*/}}
+{{- define "nginx.ingress.annotations" -}}
+{{- if (eq .Values.global.cloudProvider "azure") -}}
+annotations:
+  appgw.ingress.kubernetes.io/override-frontend-port: "443"
+  appgw.ingress.kubernetes.io/appgw-ssl-certificate: {{ .Values.ingress.sslCertificate }}
+{{- end }}
+{{- end }}
+
+{{/*
+Ingress Class Name
+*/}}
+{{- define "nginx.ingress.class" -}}
+{{- if (eq .Values.global.cloudProvider "azure") -}}
+ingressClassName: azure-application-gateway
+{{- end }}
+{{- end }}
+
+
+{{/*
 NEG annotations for Google Cloud (in the service)
 */}}
 {{- define "nginx.nodeport" -}}
-{{- if (ne .Values.global.cloudProvider "gcp") -}}
+{{- if (eq .Values.global.cloudProvider "aws") -}}
 nodePort: {{ .Values.service.nodePort }}
 {{- end }}
 {{- end }}
