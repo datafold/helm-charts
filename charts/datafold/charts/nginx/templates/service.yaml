@@ -4,7 +4,7 @@ metadata:
   name: {{ include "nginx.fullname" . }}
   labels:
     {{- include "nginx.labels" . | nindent 4 }}
-  {{- include "nginx.gcp.loadbalancer.annotations" . | nindent 2 }}
+  {{- include "nginx.loadbalancer.annotations" . | nindent 2 }}
 spec:
   ports:
   - name: http
@@ -16,5 +16,3 @@ spec:
     app.kubernetes.io/name: {{ include "nginx.name" . }}
   sessionAffinity: None
   type: {{ include "nginx.serviceType" . }}
-status:
-  loadBalancer: {}
