@@ -34,11 +34,14 @@ config:
   s3_region: ""
   gcs_bucket: ""
   gcs_path: "backups"
+  azblob_account_name: ""
+  azblob_container: ""
 
 secrets:
   access_key: "override_this"
   secret_key: "override_this"
   clickhouse_backup_sa: "b3ZlcnJpZGVfdGhpcwoKCg=="
+  azblob_account_key: "override_this"
 
 podAnnotations: {}
 podLabels: {}

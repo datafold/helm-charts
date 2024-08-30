@@ -16,3 +16,5 @@ data:
   S3_REGION: "{{ .Values.config.s3_region }}"
   GCS_BUCKET: "{{ .Values.config.gcs_bucket }}"
   GCS_PATH: "{{ .Values.config.gcs_path }}"
+  AZBLOB_ACCOUNT_NAME: "{{ .Values.config.azblob_account_name }}"
+  AZBLOB_CONTAINER: "{{ .Values.config.azblob_container }}"

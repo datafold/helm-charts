@@ -71,6 +71,11 @@ spec:
                 secretKeyRef:
                   name: {{ include "clickhouse.secrets" . }}
                   key: GCS_CREDENTIALS_JSON
+            - name: AZBLOB_ACCOUNT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "clickhouse.secrets" . }}
+                  key: AZBLOB_ACCOUNT_KEY
           ports:
             - name: ch-native
               containerPort: 9000
