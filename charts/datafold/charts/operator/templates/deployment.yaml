@@ -61,6 +61,16 @@ spec:
               value: '{{ include "datafold.datadog.metrics.host" . }}'
             - name: DATADOG_METRICS_PORT
               value: '{{ include "datafold.datadog.metrics.port" . }}'
+            - name: PORTAL_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "datafold.secrets" . }}
+                  key: PORTAL_API_KEY
+            - name: PORTAL_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "datafold.secrets" . }}
+                  key: PORTAL_URL
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           {{- with .Values.volumeMounts }}

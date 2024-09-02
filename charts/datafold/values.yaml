@@ -112,6 +112,7 @@ config:
   customerAdaptation: ""
   customVars: []
 
+
 secrets:
   installMePassword: "-"
   googleClientId: ""
@@ -144,6 +145,9 @@ secrets:
     frontendToken: ""
     url: "https://api.perfalytics.com/track"
     avoToken: ""
+  operator:
+    apiKey: ""
+    portalUrl: ""
 
 worker:
   install: true
