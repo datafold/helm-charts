@@ -76,7 +76,7 @@ Setting the service type for the service
 {{- if .Values.service.typeOverride }}
 {{- .Values.service.typeOverride }}
 {{- else }}
-{{-   if (eq .Values.global.cloudProvider "aws") }}
+{{-   if (eq .Values.global.cloudProvider "aws") -}}
 NodePort
 {{-   else if (eq .Values.global.cloudProvider "gcp") -}}
 ClusterIP
