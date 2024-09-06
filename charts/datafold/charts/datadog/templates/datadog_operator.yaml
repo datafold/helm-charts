@@ -68,8 +68,6 @@ spec:
               key: DATAFOLD_CLICKHOUSE_USER
         - name: DD_CONTAINER_EXCLUDE
           value: "image:gcr.io/datadoghq.* kube_namespace:kube-system"
-        - name: DD_HOSTNAME
-          value: {{ .Values.global.clusterName }}
       tolerations:
         - operator: Equal
           key: clickhouse
