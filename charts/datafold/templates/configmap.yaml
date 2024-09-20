@@ -7,8 +7,6 @@ data:
   DATAFOLD_ALERTS_WITH_MULTIDIM_AND_MULTIFIELD: "{{ .Values.config.alertsWithMultiDimAndMultiField }}"
   DATAFOLD_APP_VERSION: "{{ .Values.config.maxMemPerWorker }}"
   DATAFOLD_CONTENT_SECURITY_POLICY: "{{ .Values.config.contentSecurityPolicy}}"
-  DATAFOLD_DATADOG_AGENT_ADDRESS: '{{ include "datafold.datadog.logs.host" . }}:{{ include "datafold.datadog.logs.port" . }}'
-  DATAFOLD_DATADOG_METRICS_ADDRESS: '{{ include "datafold.datadog.metrics.host" . }}:{{ include "datafold.datadog.metrics.port" . }}'
   DATAFOLD_DATE_FORMAT: "{{ .Values.config.dateFormat }}"
   DATAFOLD_ENABLE_GRAPH_INVARIANTS_CHECKS: "{{ .Values.config.enableGraphInvariantsChecks }}"
   DATAFOLD_ENABLE_SSRF_PROTECTION: "{{ .Values.config.enableSsrfProtection }}"
@@ -40,7 +38,6 @@ data:
   INSTALLATION_NAME: '{{ .Values.global.deployment }}'
   DATAFOLD_CELERY_RESULT_EXPIRES: "86400"
   DATAFOLD_CUSTOMER_ADAPTATION: "{{ .Values.config.customerAdaptation }}"
-  DATAFOLD_DATADOG_APM_ADDRESS: '{{ include "datafold.datadog.apm.host" . }}:{{ include "datafold.datadog.apm.port" . }}'
   DD_REMOTE_CONFIGURATION_ENABLED: "false"
 {{- range $custom_var := .Values.config.customVars }}
   {{ $custom_var.name }}: {{ $custom_var.value | quote }}

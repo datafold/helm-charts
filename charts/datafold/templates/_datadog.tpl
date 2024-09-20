@@ -1,22 +1,4 @@
 {{/*
-    Return the datadog host for logs
-*/}}
-{{- define "datafold.datadog.logs.host" -}}
-{{- if not .Values.global.datadog.host -}}
-{{ printf "%s-%s-logging" .Release.Name "datadog" }}
-{{- else -}}
-{{ .Values.global.datadog.host }}
-{{- end -}}
-{{- end -}}
-
-{{/*
-    Return the datadog host for metrics
-*/}}
-{{- define "datafold.datadog.metrics.host" -}}
-{{- printf "%s-%s" .Release.Name "datadog-agent" | trunc 63 | trimSuffix "-" }}
-{{- end -}}
-
-{{/*
     Return the datadog host for apm
 */}}
 {{- define "datafold.datadog.apm.host" -}}

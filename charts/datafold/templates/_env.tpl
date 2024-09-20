@@ -74,6 +74,14 @@
     secretKeyRef:
       name: {{ include "datafold.secrets" . }}
       key: DATAFOLD_MAIL_DEFAULT_SENDER
+- name: DATADOG_HOST_IP
+  valueFrom:
+    fieldRef:
+      fieldPath: status.hostIP
+- name: DATAFOLD_DATADOG_AGENT_ADDRESS
+  value: "$(DATADOG_HOST_IP):{{ include "datafold.datadog.logs.port" . }}"
+- name: DATAFOLD_DATADOG_METRICS_ADDRESS
+  value: "$(DATADOG_HOST_IP):{{ include "datafold.datadog.metrics.port" . }}"
 {{- range $custom_secret := .Values.global.customSecrets }}
 - name: {{ $custom_secret.name }}
   valueFrom:
