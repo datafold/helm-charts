@@ -58,7 +58,9 @@ spec:
             - name: MAINTENANCE_WINDOW
               value: "{{ .Values.global.operator.maintenanceWindow }}"
             - name: DATADOG_METRICS_HOST
-              value: '{{ include "datafold.datadog.metrics.host" . }}'
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
             - name: DATADOG_METRICS_PORT
               value: '{{ include "datafold.datadog.metrics.port" . }}'
             - name: PORTAL_API_KEY
