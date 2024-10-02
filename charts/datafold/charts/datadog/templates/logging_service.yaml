@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "datadog.log.service" . }}
+  labels:
+    {{- include "datadog.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ include "datafold.datadog.logs.port" . }}
+      targetPort: {{ include "datafold.datadog.logs.port" . }}
+      protocol: TCP
+      name: ddlog
+  selector:
+    {{- include "datadog.selectorLabels" . | nindent 4 }}
+  internalTrafficPolicy: Local
