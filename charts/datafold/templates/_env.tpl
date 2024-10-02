@@ -79,7 +79,7 @@
     fieldRef:
       fieldPath: status.hostIP
 - name: DATAFOLD_DATADOG_AGENT_ADDRESS
-  value: "$(DATADOG_HOST_IP):{{ include "datafold.datadog.logs.port" . }}"
+  value: "{{ include "datafold.datadog.logs.host" . }}:{{ include "datafold.datadog.logs.port" . }}"
 - name: DATAFOLD_DATADOG_METRICS_ADDRESS
   value: "$(DATADOG_HOST_IP):{{ include "datafold.datadog.metrics.port" . }}"
 {{- range $custom_secret := .Values.global.customSecrets }}
