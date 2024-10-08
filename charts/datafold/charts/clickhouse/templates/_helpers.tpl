@@ -139,7 +139,7 @@ ad.datadoghq.com/{{ .Chart.Name }}.checks: |
       {
         "server": "%%host%%",
         "port":"9000",
-        "db":"clickhouse",
+        "db":"%%env_CLICKHOUSE_DB%%",
         "username":"%%env_CLICKHOUSE_USER%%",
         "password":"%%env_CLICKHOUSE_PASSWORD%%",
         "service":"clickhouse",
