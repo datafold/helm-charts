@@ -66,6 +66,34 @@ Worker queues
 {{- end -}}
 
 {{/*
+Name of the worker data volume claim
+*/}}
+{{- define "worker.data.pvc.name" -}}
+{{- include "worker.name" . }}-scratch-claim
+{{- end -}}
+
+{{/*
+Volumes for scratch local storage if enabled
+*/}}
+{{- define "worker.volumes" -}}
+{{- if .Values.storage.enabled }}
+- name: data
+  persistentVolumeClaim:
+    claimName: {{ include "worker.data.pvc.name" . }}
+{{- end }}
+{{- end -}}
+
+{{/*
+Volume mounts for scratch local storage if enabled
+*/}}
+{{- define "worker.volume.mounts" -}}
+{{- if .Values.storage.enabled }}
+- name: data
+  mountPath: /data
+{{- end -}}
+{{- end -}}
+
+{{/*
 Datadog annotations
 */}}
 {{- define "worker.datadog.annotations" -}}

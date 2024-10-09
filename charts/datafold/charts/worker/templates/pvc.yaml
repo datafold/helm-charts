@@ -1,0 +1,16 @@
+{{- if .Values.storage.enabled }}
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ include "worker.data.pvc.name" . }}
+  labels:
+    {{- include "worker.labels" . | nindent 4 }}
+  annotations: {}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.storage.dataSize | quote }}
+  storageClassName: {{ .Values.storage.storageClass | quote }}
+{{- end }}

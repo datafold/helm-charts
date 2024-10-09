@@ -250,3 +250,21 @@ worker-lineage:
 
 worker-monitor:
   install: false
+
+worker-localstorage:
+  install: false
+  replicaCount: 1
+  terminationGracePeriodSeconds: "300"
+  worker:
+    queues: "localstorage"
+    tasks: 200
+    memory: "1000000"
+    count: 4
+  storage:
+    enabled: true
+  resources:
+    limits:
+      memory: 3000Mi
+    requests:
+      cpu: 100m
+      memory: 3000Mi

@@ -24,6 +24,13 @@ podLabels: {}
 podSecurityContext:
   runAsUser: 1000
   runAsNonRoot: true
+  fsGroup: 1000
+  fsGroupChangePolicy: "OnRootMismatch"
+
+storage:
+  dataSize: 100Gi
+  storageClass: "sc-datafold-scratch"
+  enabled: false
 
 securityContext:
   allowPrivilegeEscalation: false
