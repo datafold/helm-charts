@@ -70,12 +70,16 @@ spec:
             timeoutSeconds: 30
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-          {{- with .Values.volumeMounts }}
+          {{- if .Values.storage.enabled }}
           volumeMounts:
-            {{- toYaml . | nindent 12 }}
+            {{- include "worker.volume.mounts" . | nindent 12 }}
+            {{- with .Values.volumeMounts }}
+              {{- toYaml . | nindent 12 }}
+            {{- end }}
           {{- end }}
-      {{- with .Values.volumes }}
       volumes:
+      {{- include "worker.volumes" . | nindent 8 }}
+      {{- with .Values.volumes }}
         {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- with .Values.nodeSelector }}

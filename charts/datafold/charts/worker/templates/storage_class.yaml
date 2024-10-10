@@ -1,0 +1,17 @@
+{{- if .Values.storage.enabled }}
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: {{ .Values.storage.storageClass | quote }}
+  labels:
+    {{- include "worker.labels" . | nindent 4 }}
+  annotations: {}
+provisioner: "kubernetes.io/aws-ebs"
+reclaim_policy: "Delete"
+parameters:
+  encrypted: "true"
+  fsType: "ext4"
+  type: "gp3"
+allowVolumeExpansion: true
+volumeBindingMode: "WaitForFirstConsumer"
+{{- end }}
