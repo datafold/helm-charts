@@ -37,7 +37,10 @@ resources:
 
 nodeSelector: {}
 
-tolerations: []
+tolerations:
+  - key: clickhouse
+    operator: "Equal"
+    value: reserved
 
 affinity:
   podAffinity:
