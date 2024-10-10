@@ -43,6 +43,12 @@ secrets:
   clickhouse_backup_sa: "b3ZlcnJpZGVfdGhpcwoKCg=="
   azblob_account_key: "override_this"
 
+serviceAccount:
+  create: false
+  automount: false
+  annotations: {}
+  name: ""
+
 podAnnotations: {}
 podLabels: {}
 
