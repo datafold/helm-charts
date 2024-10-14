@@ -36,6 +36,8 @@ config:
   gcs_path: "backups"
   azblob_account_name: ""
   azblob_container: ""
+  # One of: s3, gcs, azblob. Leave empty to auto-detect based on "global.cloudProvider".
+  remote_storage: ""
 
 secrets:
   access_key: "override_this"

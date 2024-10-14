@@ -191,7 +191,9 @@ ad.datadoghq.com/{{ .Chart.Name }}.checks: |
 Defines remote storage system to use
 */}}
 {{- define "clickhouse.remote_storage" -}}
-{{- if .Values.global.cloudProvider -}}
+{{- if .Values.config.remote_storage -}}
+{{ .Values.config.remote_storage }}
+{{- else if .Values.global.cloudProvider -}}
 {{-   if (eq .Values.global.cloudProvider "aws") -}}
 "s3"
 {{-   else if (eq .Values.global.cloudProvider "gcp") -}}
