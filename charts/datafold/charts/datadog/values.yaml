@@ -49,3 +49,6 @@ configuration:
     hostPortConfig: "true"
     tagCardinality: "low"
   clusterChecks: false
+  npm:
+    enabled: "false"
+    dnsstats: "false"
