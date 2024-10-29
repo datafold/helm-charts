@@ -66,6 +66,39 @@ Worker queues
 {{- end -}}
 
 {{/*
+Name of the worker data volume claim
+*/}}
+{{- define "worker.data.pvc.name" -}}
+{{- include "worker.name" . }}-scratch-claim
+{{- end -}}
+
+{{/*
+Volumes
+*/}}
+{{- define "worker.volumes" -}}
+- name: data
+  ephemeral:
+    volumeClaimTemplate:
+      metadata:
+        labels:
+          {{- include "worker.labels" . | nindent 8 }}
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: {{ .Values.storage.storageClass | quote }}
+        resources:
+          requests:
+            storage: {{ .Values.storage.dataSize | quote }}
+{{- end -}}
+
+{{/*
+Volume mounts for scratch local storage if enabled
+*/}}
+{{- define "worker.volume.mounts" -}}
+- name: data
+  mountPath: /data
+{{- end -}}
+
+{{/*
 Datadog annotations
 */}}
 {{- define "worker.datadog.annotations" -}}
