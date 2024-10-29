@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: {{ include "worker.fullname" . }}
   labels:
@@ -12,7 +12,10 @@ spec:
     type: RollingUpdate
     rollingUpdate:
       maxSurge: {{ .Values.replicaCount }}
-      maxUnavailable: 0
+      maxUnavailable: {{ .Values.replicaCount }}
+  persistentVolumeClaimRetentionPolicy:
+    whenDeleted: Delete
+    whenScaled: Delete
   selector:
     matchLabels:
       {{- include "worker.selectorLabels" . | nindent 6 }}
@@ -70,14 +73,16 @@ spec:
             timeoutSeconds: 30
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-          {{- with .Values.volumeMounts }}
           volumeMounts:
+            {{- include "worker.volume.mounts" . | nindent 12 }}
+            {{- with .Values.volumeMounts }}
               {{- toYaml . | nindent 12 }}
             {{- end }}
-      {{- with .Values.volumes }}
       volumes:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+        {{- include "worker.volumes" . | nindent 8 }}
+        {{- with .Values.volumes }}
+            {{- toYaml . | nindent 8 }}
+        {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

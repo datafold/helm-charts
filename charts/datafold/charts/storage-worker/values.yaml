@@ -13,10 +13,10 @@ terminationGracePeriodSeconds: "1800"
 command: celery_worker
 
 worker:
-  queues: "celery,api,ci,interactive,freshpaint,alerts"
+  queues: "localstorage"
   tasks: 200
   memory: 850000
-  count: 15
+  count: 2
 
 podAnnotations: {}
 podLabels: {}
@@ -24,6 +24,12 @@ podLabels: {}
 podSecurityContext:
   runAsUser: 1000
   runAsNonRoot: true
+  fsGroup: 1000
+  fsGroupChangePolicy: "OnRootMismatch"
+
+storage:
+  dataSize: 100Gi
+  storageClass: "sc-datafold-scratch"
 
 securityContext:
   allowPrivilegeEscalation: false
@@ -38,7 +44,7 @@ resources:
 autoscaling:
   enabled: false
   minReplicas: 1
-  maxReplicas: 100
+  maxReplicas: 2
   targetCPUUtilizationPercentage: 80
 
 volumes: []
