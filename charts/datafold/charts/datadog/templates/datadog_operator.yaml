@@ -69,6 +69,8 @@ spec:
             secretKeyRef:
               name: {{ include "datafold.secrets" . }}
               key: DATAFOLD_CLICKHOUSE_USER
+        - name: CLICKHOUSE_DB
+          value: {{ .Values.global.clickhouse.database }}
         - name: DD_CONTAINER_EXCLUDE
           value: "image:gcr.io/datadoghq.* kube_namespace:.*"
         - name: DD_CONTAINER_INCLUDE
