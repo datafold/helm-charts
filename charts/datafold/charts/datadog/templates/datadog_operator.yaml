@@ -81,6 +81,9 @@ spec:
           value: reserved
         - operator: Exists
           key: nvidia.com/gpu
+      {{- with .Values.tolerations }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       extraConfd:
          configDataMap:
            python.yaml: |-
