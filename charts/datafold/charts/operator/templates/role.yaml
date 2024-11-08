@@ -14,5 +14,5 @@ rules:
     resources: ["dfappmanagers"]
     verbs: ["get", "watch", "list", "patch"]
   - apiGroups: ["apps"]
-    resources: ["deployments", "deployments/scale"]
+    resources: ["deployments", "deployments/scale", "statefulsets", "statefulsets/scale"]
     verbs: ["get", "list", "patch"]
