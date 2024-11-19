@@ -66,6 +66,9 @@ postgres:
 dfshell:
   install: true
 
+backoffice:
+  install: true
+
 initjob:
   install: false
 

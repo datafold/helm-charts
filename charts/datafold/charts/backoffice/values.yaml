@@ -1,0 +1,49 @@
+replicaCount: 1
+image:
+  repository: gcr.io/datadiff-mm/datafold-server-onprem
+  pullPolicy: IfNotPresent
+  tag: ""
+
+imagePullSecrets:
+  - name: datafold-docker-secret
+nameOverride: ""
+fullnameOverride: ""
+terminationGracePeriodSeconds: "5"
+
+command:
+  - "./manage.py"
+  - "portal"
+  - "start-ws-client"
+
+serviceAccount:
+  create: false
+  automount: false
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext:
+  runAsUser: 1000
+  runAsNonRoot: true
+
+securityContext:
+  allowPrivilegeEscalation: true
+
+resources:
+  limits:
+    memory: 1000Mi
+  requests:
+    cpu: 100m
+    memory: 1000Mi
+
+volumes: []
+
+volumeMounts: []
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
