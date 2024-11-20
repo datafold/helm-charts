@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "backoffice.name" -}}
+{{- define "portal-client.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "backoffice.fullname" -}}
+{{- define "portal-client.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,17 +26,17 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "backoffice.chart" -}}
+{{- define "portal-client.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "backoffice.labels" -}}
-helm.sh/chart: {{ include "backoffice.chart" . }}
+{{- define "portal-client.labels" -}}
+helm.sh/chart: {{ include "portal-client.chart" . }}
 app.kubernetes.io/component: command-line
-{{ include "backoffice.selectorLabels" . }}
+{{ include "portal-client.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -46,17 +46,17 @@ app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{/*
 Selector labels
 */}}
-{{- define "backoffice.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "backoffice.name" . }}
+{{- define "portal-client.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "portal-client.name" . }}
 app.kubernetes.io/part-of: datafold
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "backoffice.serviceAccountName" -}}
+{{- define "portal-client.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "backoffice.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "portal-client.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
@@ -65,7 +65,7 @@ Create the name of the service account to use
 {{/*
 Datadog annotations
 */}}
-{{- define "backoffice.datadog.annotations" -}}
+{{- define "portal-client.datadog.annotations" -}}
 {{- if (eq .Values.global.datadog.install true) }}
 ad.datadoghq.com/{{ .Chart.Name }}.logs: >-
   [{
@@ -83,7 +83,7 @@ ad.datadoghq.com/{{ .Chart.Name }}.logs: >-
 {{/*
 Datafold annotations
 */}}
-{{- define "backoffice.datafold.annotations" -}}
+{{- define "portal-client.datafold.annotations" -}}
 replica-count: "{{ .Values.replicaCount }}"
 {{- with .Values.podAnnotations }}
 {{- toYaml . }}
