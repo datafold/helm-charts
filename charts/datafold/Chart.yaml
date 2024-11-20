@@ -28,10 +28,10 @@ dependencies:
     version: "*.*.*"
     repository: file://charts/dfshell
     condition: dfshell.install
-  - name: backoffice
+  - name: portal-client
     version: "*.*.*"
-    repository: file://charts/backoffice
-    condition: backoffice.install
+    repository: file://charts/portal-client
+    condition: portal-client.install
   - name: initjob
     version: "*.*.*"
     repository: file://charts/initjob

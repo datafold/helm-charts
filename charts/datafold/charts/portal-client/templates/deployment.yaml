@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "backoffice.fullname" . }}
+  name: {{ include "portal-client.fullname" . }}
   labels:
-    {{- include "backoffice.labels" . | nindent 4 }}
+    {{- include "portal-client.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- include "backoffice.selectorLabels" . | nindent 6 }}
+      {{- include "portal-client.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       annotations:
-        {{- include "backoffice.datafold.annotations" . | nindent 8 }}
-        {{- include "backoffice.datadog.annotations" . | nindent 8 }}
+        {{- include "portal-client.datafold.annotations" . | nindent 8 }}
+        {{- include "portal-client.datadog.annotations" . | nindent 8 }}
       labels:
-        {{- include "backoffice.labels" . | nindent 8 }}
+        {{- include "portal-client.labels" . | nindent 8 }}
         {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -24,7 +24,6 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "backoffice.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}

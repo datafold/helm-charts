@@ -15,12 +15,6 @@ command:
   - "portal"
   - "start-ws-client"
 
-serviceAccount:
-  create: false
-  automount: false
-  annotations: {}
-  name: ""
-
 podAnnotations: {}
 podLabels: {}
 
@@ -29,7 +23,7 @@ podSecurityContext:
   runAsNonRoot: true
 
 securityContext:
-  allowPrivilegeEscalation: true
+  allowPrivilegeEscalation: False
 
 resources:
   limits:
