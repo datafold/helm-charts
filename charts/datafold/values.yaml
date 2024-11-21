@@ -67,7 +67,7 @@ dfshell:
   install: true
 
 portal-client:
-  install: true
+  install: false
 
 initjob:
   install: false
