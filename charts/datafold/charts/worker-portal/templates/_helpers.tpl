@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "portal-client.name" -}}
+{{- define "worker-portal.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "portal-client.fullname" -}}
+{{- define "worker-portal.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,17 +26,17 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "portal-client.chart" -}}
+{{- define "worker-portal.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "portal-client.labels" -}}
-helm.sh/chart: {{ include "portal-client.chart" . }}
+{{- define "worker-portal.labels" -}}
+helm.sh/chart: {{ include "worker-portal.chart" . }}
 app.kubernetes.io/component: command-line
-{{ include "portal-client.selectorLabels" . }}
+{{ include "worker-portal.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -46,17 +46,17 @@ app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{/*
 Selector labels
 */}}
-{{- define "portal-client.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "portal-client.name" . }}
+{{- define "worker-portal.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "worker-portal.name" . }}
 app.kubernetes.io/part-of: datafold
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "portal-client.serviceAccountName" -}}
+{{- define "worker-portal.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "portal-client.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "worker-portal.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
@@ -65,12 +65,12 @@ Create the name of the service account to use
 {{/*
 Datadog annotations
 */}}
-{{- define "portal-client.datadog.annotations" -}}
+{{- define "worker-portal.datadog.annotations" -}}
 {{- if (eq .Values.global.datadog.install true) }}
 ad.datadoghq.com/{{ .Chart.Name }}.logs: >-
   [{
-    "source": "datafold-server-onprem",
-    "service": "datafold-server-onprem",
+    "source": "datafold-worker-portal",
+    "service": "datafold-worker-portal",
     "log_processing_rules": [{
       "type": "multi_line",
       "name": "log_start_with_date",
@@ -83,7 +83,7 @@ ad.datadoghq.com/{{ .Chart.Name }}.logs: >-
 {{/*
 Datafold annotations
 */}}
-{{- define "portal-client.datafold.annotations" -}}
+{{- define "worker-portal.datafold.annotations" -}}
 replica-count: "{{ .Values.replicaCount }}"
 {{- with .Values.podAnnotations }}
 {{- toYaml . }}
