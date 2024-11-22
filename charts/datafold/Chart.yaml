@@ -28,10 +28,10 @@ dependencies:
     version: "*.*.*"
     repository: file://charts/dfshell
     condition: dfshell.install
-  - name: portal-client
+  - name: worker-portal
     version: "*.*.*"
-    repository: file://charts/portal-client
-    condition: portal-client.install
+    repository: file://charts/worker-portal
+    condition: worker-portal.install
   - name: initjob
     version: "*.*.*"
     repository: file://charts/initjob
