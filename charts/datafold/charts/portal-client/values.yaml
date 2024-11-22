@@ -1,6 +1,5 @@
 replicaCount: 1
 image:
-  repository: gcr.io/datadiff-mm/datafold-server-onprem
   pullPolicy: IfNotPresent
   tag: ""
 
