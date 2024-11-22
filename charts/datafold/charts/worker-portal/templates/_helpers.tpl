@@ -69,8 +69,8 @@ Datadog annotations
 {{- if (eq .Values.global.datadog.install true) }}
 ad.datadoghq.com/{{ .Chart.Name }}.logs: >-
   [{
-    "source": "datafold-server-onprem",
-    "service": "datafold-server-onprem",
+    "source": "datafold-worker-portal",
+    "service": "datafold-worker-portal",
     "log_processing_rules": [{
       "type": "multi_line",
       "name": "log_start_with_date",
