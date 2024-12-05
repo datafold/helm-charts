@@ -32,5 +32,18 @@ allowVolumeExpansion: true
 volumeBindingMode: "WaitForFirstConsumer"
 {{- end }}
 {{- if (eq .Values.global.cloudProvider "azure") }}
-{{    fail .Values.global.cloudProvider " is not a supported cloud provider" }}
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: {{ .Values.storage.storageClass | quote }}
+  labels:
+    {{- include "worker.labels" . | nindent 4 }}
+  annotations: {}
+provisioner: "disk.csi.azure.com"
+reclaim_policy: "Delete"
+parameters:
+  skuname: "StandardSSD_LRS"
+  fsType: "ext4"
+allowVolumeExpansion: true
+volumeBindingMode: "WaitForFirstConsumer"
 {{- end }}
