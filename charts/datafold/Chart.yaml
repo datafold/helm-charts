@@ -101,3 +101,7 @@ dependencies:
     version: "*.*.*"
     repository: file://charts/datadog
     condition: global.datadog.install
+  - name: loki-monitoring
+    version: "*.*.*"
+    repository: file://charts/loki-monitoring
+    condition: loki-monitoring.install
