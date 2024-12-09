@@ -46,6 +46,8 @@ global:
       port: 8125
     apm:
       port: 8126
+  loki-monitoring:
+    install: true # will change to false after POC.
   operator:
     allowRollback: "false"
     releaseChannel: "change-this"
@@ -68,6 +70,9 @@ dfshell:
 
 worker-portal:
   install: false
+
+loki-monitoring:
+  install: true
 
 initjob:
   install: false

@@ -1,0 +1,53 @@
+loki:
+  enabled: true
+  auth_enabled: false
+  isDefault: true
+
+  monitoring:
+    selfMonitoring:
+      enabled: false      # Disable self monitoring
+    lokiCanary:
+      enabled: false      # Disable canary
+    serviceMonitor:
+      enabled: false      # Disable service monitor
+
+  gateway:
+    enabled: false        # Disable gateway
+  
+  test:
+    enabled: false        # Disable tests
+
+  namespace: datafold
+
+  singleBinary:
+    enabled: true
+    replicas: 1
+
+  persistence:
+    enabled: true
+    size: 10Gi
+
+  storage:
+    type: filesystem
+  
+  limits_config:
+    retention_period: 2h
+    
+  storage_config:
+    boltdb_shipper:
+      active_index_directory: /data/loki/index
+      cache_location: /data/loki/cache
+      cache_ttl: 24h
+      shared_store: filesystem
+    filesystem:
+      directory: /data/loki/chunks
+  
+  schema_config:
+    configs:
+      - from: "2020-01-01"
+        store: boltdb-shipper
+        object_store: filesystem
+        schema: v11
+        index:
+          prefix: index_
+          period: 24h

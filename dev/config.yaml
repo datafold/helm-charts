@@ -27,13 +27,15 @@ global:
   shellRepository: "us-docker.pkg.dev/datadiff-mm/datafold/server"
   datadog:
     env: "dev"
-    install: "false"
+    install: false
   clickhouse:
     storageOnPV: "false"
   redis:
     storageOnPV: "false"
   postgres:
     storageOnPV: "false"
+  loki-monitoring:
+    install: true
 
 worker:
   worker:
