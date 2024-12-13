@@ -51,8 +51,6 @@ spec:
               value: '{{ include "operator.version" . }}'
             - name: ALLOW_ROLLBACK
               value: "{{ .Values.global.operator.allowRollback }}"
-            - name: RELEASE_CHANNEL
-              value: "{{ .Values.global.operator.releaseChannel }}"
             - name: CLICKHOUSE_BACKUP_SCHEDULE
               value: "{{ .Values.global.operator.backupCronSchedule }}"
             - name: MAINTENANCE_WINDOW
