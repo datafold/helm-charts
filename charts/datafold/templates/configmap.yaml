@@ -32,6 +32,9 @@ data:
 {{- if .Values.config.githubServer }}
   GITHUB_SERVER: "{{ .Values.config.githubServer }}"
 {{- end }}
+{{- if .Values.config.portalCertData }}
+  PORTAL_CERT_DATA: "{{ .Values.config.portalCertData }}"
+{{- end }}
 {{- if .Values.config.gitlabServer }}
   GITLAB_SERVER: "{{ .Values.config.gitlabServer }}"
 {{- end }}
