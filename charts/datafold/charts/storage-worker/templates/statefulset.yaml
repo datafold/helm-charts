@@ -8,7 +8,7 @@ spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
-  strategy:
+  updateStrategy:
     type: RollingUpdate
     rollingUpdate:
       maxSurge: {{ .Values.replicaCount }}
