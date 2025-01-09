@@ -6,6 +6,7 @@ metadata:
     {{- include "datadog.labels" . | nindent 4 }}
 spec:
   global:
+    clusterName: {{ .Values.global.deployment }}
     credentials:
       apiSecret:
         secretName: {{ include "datafold.secrets" . }}
@@ -31,6 +32,8 @@ spec:
       enabled: {{ .Values.configuration.processDiscovery }}
     oomKill:
       enabled: {{ .Values.configuration.oomKill }}
+    orchestratorExplorer:
+      enabled: {{ .Values.configuration.orchestratorExplorer }}
     apm:
       enabled: {{ .Values.configuration.apm }}
       hostPortConfig:

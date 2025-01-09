@@ -43,6 +43,7 @@ configuration:
   liveContainerCollection: "true"
   processDiscovery: "true"
   oomKill: "true"
+  orchestratorExplorer: "true"
   apm: "false"
   dogstatsd:
     enabled: "true"
