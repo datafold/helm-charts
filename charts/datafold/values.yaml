@@ -251,6 +251,7 @@ worker-singletons:
 
 worker-lineage:
   install: false
+  terminationGracePeriodSeconds: "300"
 
 worker-monitor:
   install: false
