@@ -5,6 +5,7 @@ metadata:
 data:
   PYTHONUNBUFFERED: "0"
   DATAFOLD_ALERTS_WITH_MULTIDIM_AND_MULTIFIELD: "{{ .Values.config.alertsWithMultiDimAndMultiField }}"
+  DATAFOLD_ENABLE_PROCESS_PROTECTION: "{{ .Values.config.enableProcessProtection }}"
   DATAFOLD_APP_VERSION: "{{ .Values.config.maxMemPerWorker }}"
   DATAFOLD_CONTENT_SECURITY_POLICY: "{{ .Values.config.contentSecurityPolicy}}"
   DATAFOLD_DATE_FORMAT: "{{ .Values.config.dateFormat }}"
