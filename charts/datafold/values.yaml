@@ -162,7 +162,7 @@ worker:
     queues: "celery,api,ci,interactive,freshpaint,alerts"
     tasks: 200
     memory: "1000000"
-    count: 15
+    count: 8
   resources:
     limits:
       memory: 12000Mi
@@ -256,6 +256,7 @@ worker-lineage:
 
 worker-monitor:
   install: false
+  count: 4
 
 storage-worker:
   install: false
