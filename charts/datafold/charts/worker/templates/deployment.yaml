@@ -57,6 +57,10 @@ spec:
                 secretKeyRef:
                   name: {{ include "datafold.secrets" . }}
                   key: DATAFOLD_FRESHPAINT_URL
+            - name: COMPONENT_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['app.kubernetes.io/component']
           livenessProbe:
             exec:
               command:
