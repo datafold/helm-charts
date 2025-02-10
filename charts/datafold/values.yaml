@@ -159,7 +159,7 @@ worker:
   replicaCount: 1
   terminationGracePeriodSeconds: "1800"
   worker:
-    queues: "celery,api,ci,interactive,freshpaint,alerts"
+    queues: "celery,api,ci,interactive,freshpaint"
     tasks: 200
     memory: "1000000"
     count: 8
@@ -175,7 +175,7 @@ worker2:
   replicaCount: 1
   terminationGracePeriodSeconds: "1800"
   worker:
-    queues: "celery,api,ci,interactive,freshpaint,alerts"
+    queues: "celery,api,ci,interactive,freshpaint"
     tasks: 200
     memory: "1000000"
     count: 15
@@ -191,7 +191,7 @@ worker3:
   replicaCount: 1
   terminationGracePeriodSeconds: "1800"
   worker:
-    queues: "celery,api,ci,interactive,freshpaint,alerts"
+    queues: "celery,api,ci,interactive,freshpaint"
     tasks: 200
     memory: "1000000"
     count: 15
@@ -255,8 +255,17 @@ worker-lineage:
   terminationGracePeriodSeconds: "300"
 
 worker-monitor:
-  install: false
-  count: 4
+  install: true
+  replicaCount: 1
+  worker:
+    queues: "alerts"
+    count: 4
+    memory: "1000000"
+  resources:
+    limits:
+      memory: 6Gi
+    requests:
+      memory: 6Gi
 
 storage-worker:
   install: false
