@@ -82,13 +82,10 @@ spec:
                 secretKeyRef:
                   name: {{ include "datafold.secrets" . }}
                   key: DATAFOLD_DATADOG_APPLICATION_ID
-            {{- if (eq .Values.global.optional.intercom "true") }}
-            - name: DATAFOLD_INTERCOM_APP_ID
+            - name: COMPONENT_NAME
               valueFrom:
-                secretKeyRef:
-                  name: {{ include "datafold.secrets" . }}
-                  key: DATAFOLD_INTERCOM_APP_ID
-            {{- end }}
+                fieldRef:
+                  fieldPath: metadata.labels['app.kubernetes.io/component']
             {{- if (eq .Values.global.optional.pylon "true") }}
             - name: DATAFOLD_PYLON_APP_ID
               valueFrom:
