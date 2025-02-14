@@ -226,13 +226,13 @@ worker-interactive:
     queues: "interactive"
     tasks: 200
     memory: "1000000"
-    count: 5
+    count: 4
   resources:
     limits:
-      memory: 4000Mi
+      memory: 6Gi
     requests:
       cpu: 100m
-      memory: 4000Mi
+      memory: 6Gi
 
 worker-singletons:
   install: true
