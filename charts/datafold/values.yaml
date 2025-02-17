@@ -14,8 +14,7 @@ global:
   authMethod: "password"
   statusCheckToken: "magic_token"
   datafoldRepository: "us-docker.pkg.dev/datadiff-mm/datafold"
-  # temporary image for testing, will revert.
-  datafoldImage: "datafold-server-test"
+  datafoldImage: "server"
   shellRepository: "us-docker.pkg.dev/datadiff-mm/datafold"
   optional:
     intercom: "false"
