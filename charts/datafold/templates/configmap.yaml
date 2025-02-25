@@ -39,6 +39,12 @@ data:
 {{- if .Values.config.gitlabServer }}
   GITLAB_SERVER: "{{ .Values.config.gitlabServer }}"
 {{- end }}
+{{- if (index .Values "storage-worker" "install") }}
+  DATAFOLD_STORAGE_WORKER_DEPLOYED: "true"
+{{- end }}
+{{- if (eq .Values.config.permitUnsafeLocalStorageMode "true" ) }}
+  DATAFOLD_PERMIT_UNSAFE_LOCALSTORAGE_MODE: "true"
+{{- end }}
   INSTALLATION_NAME: '{{ .Values.global.deployment }}'
   DATAFOLD_CELERY_RESULT_EXPIRES: "86400"
   DATAFOLD_CUSTOMER_ADAPTATION: "{{ .Values.config.customerAdaptation }}"
