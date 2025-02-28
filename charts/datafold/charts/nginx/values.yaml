@@ -1,4 +1,4 @@
-replicaCount: 1
+replicaCount: 2
 image:
   repository: nginx
   pullPolicy: IfNotPresent
@@ -48,4 +48,17 @@ nodeSelector: {}
 
 tolerations: []
 
-affinity: {}
+affinity:
+  podAntiAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+            - key: app.kubernetes.io/name
+              operator: In
+              values:
+                - nginx
+            - key: app.kubernetes.io/instance
+              operator: In
+              values:
+                - datafold
+        topologyKey: "kubernetes.io/hostname"
