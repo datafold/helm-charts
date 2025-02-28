@@ -1,0 +1,59 @@
+{{- if .Values.ingress.enabled -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-ingress
+  annotations:
+    kubernetes.io/ingress.class: "alb"
+    alb.ingress.kubernetes.io/scheme: "internet-facing"
+    alb.ingress.kubernetes.io/target-type: "ip"
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/ssl-redirect: "443"
+    alb.ingress.kubernetes.io/healthcheck-path: "/status_check"
+    alb.ingress.kubernetes.io/success-codes: "200"
+    {{- toYaml .Values.ingress.annotations | nindent 4 }}
+    alb.ingress.kubernetes.io/group.name: e2e-pr-alb
+    alb.ingress.kubernetes.io/group.order: "1"
+spec:
+  rules:
+    - host: {{ .Values.ingress.host }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: pr-{{ .Values.ingress.prNumber }}-server
+                port:
+                  number: {{ .Values.ingress.servicePort }}
+{{- end }}
+---
+{{- if .Values.networkPolicy.enabled -}}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ .Release.Name }}-network-policy
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  ingress:
+  # Allow all pods in the same namespace to communicate with each other
+  - from:
+    - podSelector: {}
+
+    # Allow traffic from load balancer in kube-system namespace
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: kube-system
+      podSelector:
+        matchLabels:
+          app.kubernetes.io/name: aws-load-balancer-controller
+  - ports:
+    - protocol: TCP
+      port: {{ .Values.networkPolicy.port }} 
+    from:
+    - ipBlock:
+        cidr: {{ .Values.networkPolicy.cidr }} 
+{{- end }}

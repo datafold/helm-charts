@@ -41,7 +41,7 @@ spec:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.global.datafoldRepository }}/server:{{ .Values.global.datafoldVersion }}"
+          image: "{{ .Values.global.datafoldRepository }}/{{ .Values.global.datafoldImage }}:{{ .Values.global.datafoldVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args: ["{{ .Values.command }}"]
           envFrom:
