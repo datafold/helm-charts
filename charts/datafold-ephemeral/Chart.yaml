@@ -1,0 +1,11 @@
+apiVersion: v2
+name: datafold-ephemeral
+description: Helm chart for Datafold ephemeral PR environment
+version: 0.1.1
+type: application
+icon: https://www.datafold.com/logo.png
+
+maintainers:
+  - name: datafold
+    email: support@datafold.com
+    url: https://datafold.com

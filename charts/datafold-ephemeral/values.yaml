@@ -1,0 +1,8 @@
+ingress:
+  enabled: false
+  annotations: {}
+  host: ""
+  prNumber: ""
+  servicePort: 5000
+networkPolicy:
+  enabled: false
