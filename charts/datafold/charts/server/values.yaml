@@ -1,4 +1,4 @@
-replicaCount: 1
+replicaCount: 2
 
 image:
   pullPolicy: IfNotPresent
@@ -41,10 +41,10 @@ ingress:
 
 resources:
   limits:
-    memory: 7000Mi
+    memory: 6Gi
   requests:
     cpu: 500m
-    memory: 7000Mi
+    memory: 6Gi
 
 autoscaling:
   enabled: false
@@ -60,4 +60,17 @@ nodeSelector: {}
 
 tolerations: []
 
-affinity: {}
+affinity:
+  podAntiAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+            - key: app.kubernetes.io/name
+              operator: In
+              values:
+                - server
+            - key: app.kubernetes.io/instance
+              operator: In
+              values:
+                - datafold
+        topologyKey: "kubernetes.io/hostname"
