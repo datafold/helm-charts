@@ -52,6 +52,10 @@ global:
     releaseChannel: "change-this"
     backupCronSchedule: "0 1 * * *"
     maintenanceWindow: ""
+  awsBedrockIrsa:
+    install: false
+    serviceAccount:
+      name: "datafold-sa"
 
 # ------------------------------------------------------------------------------
 # These are properties only used by the charts and templates on this level.
