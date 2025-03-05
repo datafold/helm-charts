@@ -1,0 +1,16 @@
+apiVersion: v2
+name: awsBedrockIrsa
+description: A Helm chart for implementing IAM Roles for Service Accounts (IRSA) to access AWS Bedrock from Datafold services
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+keywords:
+  - aws
+  - eks
+  - irsa
+  - bedrock
+  - iam
+  - datafold
+maintainers:
+  - name: Datafold Team
+    email: support@datafold.com

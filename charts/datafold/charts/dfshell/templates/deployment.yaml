@@ -24,7 +24,9 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "dfshell.serviceAccountName" . }}
+      {{- if .Values.global.awsBedrockIrsa.install }}
+      serviceAccountName: {{ .Values.global.awsBedrockIrsa.serviceAccount.name }}
+      {{- end }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
