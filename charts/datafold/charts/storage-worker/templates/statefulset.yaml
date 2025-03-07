@@ -5,14 +5,14 @@ metadata:
   labels:
     {{- include "worker.labels" . | nindent 4 }}
 spec:
+  podManagementPolicy: "Parallel"
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   updateStrategy:
     type: RollingUpdate
     rollingUpdate:
-      maxSurge: {{ .Values.replicaCount }}
-      maxUnavailable: {{ .Values.replicaCount }}
+      maxUnavailable: 100%
   persistentVolumeClaimRetentionPolicy:
     whenDeleted: Delete
     whenScaled: Delete
@@ -50,6 +50,8 @@ spec:
           env:
             {{ include "worker.env" . | nindent 12 }}
             {{ include "datafold.env" . | nindent 12 }}
+            - name: DATAFOLD_CELERY_TASKS_ACK_LATE
+              value: "{{ .Values.worker.tasks_ack_late }}"
             - name: DATAFOLD_FRESHPAINT_BACKEND_TOKEN
               valueFrom:
                 secretKeyRef:
