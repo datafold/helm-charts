@@ -14,9 +14,10 @@ command: celery_worker
 
 worker:
   queues: "localstorage"
-  tasks: 200
+  tasks: 1
   memory: 850000
-  count: 2
+  count: 1
+  tasks_ack_late: "false"
 
 podAnnotations: {}
 podLabels: {}
