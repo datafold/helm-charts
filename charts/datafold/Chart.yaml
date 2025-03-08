@@ -101,3 +101,7 @@ dependencies:
     version: "*.*.*"
     repository: file://charts/datadog
     condition: global.datadog.install
+  - name: awsBedrockIrsa
+    version: "*.*.*"
+    repository: file://charts/awsBedrockIrsa
+    condition: global.awsBedrockIrsa.install

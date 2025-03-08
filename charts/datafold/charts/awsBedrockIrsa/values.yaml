@@ -1,0 +1,7 @@
+# Whether to install the AWS Bedrock IRSA components
+serviceAccount:
+  create: true
+  annotations:
+    eks.amazonaws.com/role-arn: ""  # Filled by Terraform
+  name: ""
+  automount: true
