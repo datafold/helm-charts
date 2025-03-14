@@ -219,6 +219,22 @@ worker-catalog:
     requests:
       cpu: 1000m
       memory: 13000Mi
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 50
+          podAffinityTerm:
+            labelSelector:
+              matchExpressions:
+                - key: app.kubernetes.io/name
+                  operator: In
+                  values:
+                    - clickhouse
+                - key: app.kubernetes.io/instance
+                  operator: In
+                  values:
+                    - datafold
+            topologyKey: "kubernetes.io/hostname"
 
 worker-interactive:
   install: true
@@ -255,6 +271,22 @@ worker-singletons:
 worker-lineage:
   install: false
   terminationGracePeriodSeconds: "300"
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 50
+          podAffinityTerm:
+            labelSelector:
+              matchExpressions:
+                - key: app.kubernetes.io/name
+                  operator: In
+                  values:
+                    - clickhouse
+                - key: app.kubernetes.io/instance
+                  operator: In
+                  values:
+                    - datafold
+            topologyKey: "kubernetes.io/hostname"
 
 worker-monitor:
   install: true
