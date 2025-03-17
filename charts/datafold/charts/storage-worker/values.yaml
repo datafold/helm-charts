@@ -12,6 +12,13 @@ terminationGracePeriodSeconds: "1800"
 
 command: celery_worker
 
+serviceAccount:
+  create: true
+  automount: true
+  annotations: {}
+  roleArn: ""
+  name: "storage-worker"
+
 worker:
   queues: "localstorage"
   tasks: 1

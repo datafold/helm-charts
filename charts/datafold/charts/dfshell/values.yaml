@@ -14,10 +14,11 @@ command:
   - "infinity"
 
 serviceAccount:
-  create: false
-  automount: false
+  create: true
+  automount: true
   annotations: {}
-  name: ""
+  roleArn: ""
+  name: "datafold-dfshell"
 
 podAnnotations: {}
 podLabels: {}

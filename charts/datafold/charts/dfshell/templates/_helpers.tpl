@@ -52,17 +52,6 @@ app.kubernetes.io/part-of: datafold
 {{- end }}
 
 {{/*
-Create the name of the service account to use
-*/}}
-{{- define "dfshell.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create }}
-{{- default (include "dfshell.fullname" .) .Values.serviceAccount.name }}
-{{- else }}
-{{- default "default" .Values.serviceAccount.name }}
-{{- end }}
-{{- end }}
-
-{{/*
 Datadog annotations
 */}}
 {{- define "dfshell.datadog.annotations" -}}

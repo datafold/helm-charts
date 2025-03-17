@@ -12,6 +12,13 @@ terminationGracePeriodSeconds: "5"
 
 command: scheduler
 
+serviceAccount:
+  create: true
+  automount: true
+  annotations: {}
+  roleArn: ""
+  name: "datafold-scheduler"
+
 podAnnotations: {}
 podLabels: {}
 

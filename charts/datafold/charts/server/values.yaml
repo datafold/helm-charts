@@ -13,10 +13,11 @@ terminationGracePeriodSeconds: "120"
 command: "server"
 
 serviceAccount:
-  create: false
-  automount: false
+  create: true
+  automount: true
   annotations: {}
-  name: ""
+  roleArn: ""
+  name: "datafold-server"
 
 podAnnotations: {}
 podLabels: {}

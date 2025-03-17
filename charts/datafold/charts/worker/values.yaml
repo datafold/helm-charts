@@ -12,6 +12,13 @@ terminationGracePeriodSeconds: "1800"
 
 command: celery_worker
 
+serviceAccount:
+  create: true
+  automount: true
+  annotations: {}
+  roleArn: ""
+  name: "datafold-worker"
+
 worker:
   queues: "celery,api,ci,interactive,freshpaint,alerts"
   tasks: 200
