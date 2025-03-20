@@ -17,7 +17,7 @@ serviceAccount:
   automount: true
   annotations: {}
   roleArn: ""
-  name: "storage-worker"
+  name: "datafold-storage-worker"
 
 worker:
   queues: "localstorage"
