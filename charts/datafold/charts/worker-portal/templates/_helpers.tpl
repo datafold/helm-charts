@@ -52,17 +52,6 @@ app.kubernetes.io/part-of: datafold
 {{- end }}
 
 {{/*
-Create the name of the service account to use
-*/}}
-{{- define "worker-portal.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create }}
-{{- default (include "worker-portal.fullname" .) .Values.serviceAccount.name }}
-{{- else }}
-{{- default "default" .Values.serviceAccount.name }}
-{{- end }}
-{{- end }}
-
-{{/*
 Datadog annotations
 */}}
 {{- define "worker-portal.datadog.annotations" -}}

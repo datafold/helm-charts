@@ -13,7 +13,8 @@ serviceAccount:
   create: true
   automount: true
   annotations: {}
-  name: ""
+  roleArn: ""
+  name: "datafold-operator"
 
 podAnnotations: {}
 podLabels: {}
