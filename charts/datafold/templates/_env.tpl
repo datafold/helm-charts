@@ -27,6 +27,16 @@
     secretKeyRef:
       name: {{ include "datafold.secrets" . }}
       key: DATAFOLD_POSTGRES_USER
+- name: PG_RO_PASS
+  valueFrom:
+    secretKeyRef:
+      name: {{ include "datafold.secrets" . }}
+      key: DATAFOLD_RO_DATABASE_PASSWORD
+- name: PG_RO_USER
+  valueFrom:
+    secretKeyRef:
+      name: {{ include "datafold.secrets" . }}
+      key: DATAFOLD_RO_DATABASE_USER
 - name: PG_DB
   valueFrom:
     secretKeyRef:
@@ -43,6 +53,8 @@
   value: "{{ include "datafold.postgres.port" . }}"
 - name: DATAFOLD_DATABASE_URL
   value: "postgresql://$(PG_USER):$(PG_PASS)@$(PG_SERVER):$(PG_PORT)/$(PG_DB)"
+- name: DATAFOLD_RO_DATABASE_URL
+  value: "postgresql://$(PG_RO_USER):$(PG_RO_PASS)@$(PG_SERVER):$(PG_PORT)/$(PG_DB)"
 - name: REDIS_SERVER
   value: "{{ include "datafold.redis.server" . }}"
 - name: REDIS_PORT
