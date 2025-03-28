@@ -140,6 +140,8 @@ secrets:
     user: "-"
     password: "-"
     database: "-"
+    ro_user: "datafold_ro"
+    ro_password: "-"
   redis:
     password: "-"
   datadog:
