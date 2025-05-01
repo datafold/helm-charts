@@ -51,6 +51,7 @@ spec:
   override:
     {{- include "datadog.clusteragent.overrides" . | nindent 4 }}
     nodeAgent:
+      hostNetwork: true
     {{-  if (eq .Values.global.cloudProvider "gcp") }}
       volumes:
       - emptyDir: {}
