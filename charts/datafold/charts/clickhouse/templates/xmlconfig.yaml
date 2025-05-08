@@ -9,4 +9,8 @@ data:
             <!-- on CrashLoop, set this to 1 to stream error logs to datadog -->
             <console>0</console>
         </logger>
+
+        <!-- Docs: https://kb.altinity.com/altinity-kb-setup-and-maintenance/altinity-kb-server-config-files/ -->
+        <trace_log remove="1" />
+        <query_log remove="1" />
     </yandex>
