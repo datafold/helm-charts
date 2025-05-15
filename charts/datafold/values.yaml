@@ -305,7 +305,7 @@ worker-monitor:
 
 storage-worker:
   install: false
-  replicaCount: 1
+  replicaCount: 0
   terminationGracePeriodSeconds: "18000"
   worker:
     queues: "localstorage"
