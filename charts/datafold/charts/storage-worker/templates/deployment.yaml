@@ -1,21 +1,18 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: {{ include "worker.fullname" . }}
   labels:
     {{- include "worker.labels" . | nindent 4 }}
 spec:
-  podManagementPolicy: "Parallel"
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
-  updateStrategy:
+  strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxUnavailable: 100%
-  persistentVolumeClaimRetentionPolicy:
-    whenDeleted: Delete
-    whenScaled: Delete
+      maxSurge: {{ .Values.replicaCount }}
+      maxUnavailable: 0
   selector:
     matchLabels:
       {{- include "worker.selectorLabels" . | nindent 6 }}
