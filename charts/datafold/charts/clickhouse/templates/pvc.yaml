@@ -13,10 +13,8 @@ spec:
       storage: {{ .Values.storage.dataSize | quote }}
 {{- if .Values.storage.dataVolumeId }}
   volumeName: {{ include "clickhouse.data.pv.name" . }}
-  storageClassName: ""
-{{- else }}
-  {{ include "datafold.storageClass" . | nindent 2 }}
 {{- end }}
+  {{- include "datafold.storageClass" . | nindent 2 }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -33,7 +31,5 @@ spec:
       storage: {{ .Values.storage.logSize | quote }}
 {{- if .Values.storage.logVolumeId }}
   volumeName: {{ include "clickhouse.logs.pv.name" . }}
-  storageClassName: ""
-{{- else }}
-  {{ include "datafold.storageClass" . | nindent 2 }}
 {{- end }}
+  {{ include "datafold.storageClass" . | nindent 2 }}
