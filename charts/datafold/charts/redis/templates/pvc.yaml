@@ -13,7 +13,5 @@ spec:
       storage: {{ .Values.storage.dataSize | quote }}
 {{- if .Values.storage.dataVolumeId }}
   volumeName: {{ include "redis.data.pv.name" . }}
-  storageClassName: ""
-{{- else }}
-  {{ include "datafold.storageClass" . | nindent 2 }}
 {{- end }}
+  {{ include "datafold.storageClass" . | nindent 2 }}
