@@ -27,7 +27,6 @@ global:
   postgres:
     port: 5432
     storageOnPV: "true"
-    datadogpw: ""
   redis:
     port: 6379
     storageOnPV: "true"
@@ -142,6 +141,7 @@ secrets:
     database: "-"
     ro_user: "datafold_ro"
     ro_password: "-"
+    datadog_password: "-"
   redis:
     password: "-"
   datadog:

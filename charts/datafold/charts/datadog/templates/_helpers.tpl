@@ -87,17 +87,14 @@ externalMetricsServer:
 {{- end -}}
 {{- end -}}
 
-
 {{/*
 The datadog clusteragent overrides
 */}}
 {{- define "datadog.clusteragent.overrides" -}}
-{{- if .Values.global.cloudProvider -}}
-{{-   if (eq .Values.global.cloudProvider "aws") -}}
 clusterAgent:
   image:
     name: gcr.io/datadoghq/cluster-agent:latest
-{{-     if (eq .Values.configuration.clusterChecks true) }}
+{{-     if (eq .Values.configuration.monitorPostgres true) }}
   extraConfd:
     configDataMap:
       postgres.yaml: |-
@@ -108,10 +105,9 @@ clusterAgent:
             host: {{ include "datafold.postgres.server" . }}
             port: {{ include "datafold.postgres.port" . }}
             username: datadog
-            password: {{ include "datafold.postgres.datadogpw" . }}
-            ssl: allow
-{{-     end }}
-{{-   end -}}
+            password: {{ include "datafold.datadog.postgres.pw" . }}
+            ssl: require
+
 {{- end -}}
 {{- end -}}
 

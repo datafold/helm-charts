@@ -37,3 +37,9 @@
 {{- print $.Values.global.datadog.apm.port -}}
 {{- end -}}
 
+{{/*
+    Return the datadog postgres password
+*/}}
+{{- define "datafold.datadog.postgres.pw" -}}
+{{- printf "ENC[k8s_secret@%s/%s-secrets/DATAFOLD_DATADOG_PW]" $.Values.global.deployment .Release.Name -}}
+{{- end -}}

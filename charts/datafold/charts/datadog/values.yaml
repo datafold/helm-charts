@@ -49,7 +49,8 @@ configuration:
     enabled: "true"
     hostPortConfig: "true"
     tagCardinality: "low"
-  clusterChecks: false
+  monitorPostgres: false
+  clusterChecks: true
   npm:
     enabled: "false"
     dnsstats: "false"

@@ -1,0 +1,24 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "datadog.fullname" . }}
+rules:
+  - apiGroups: [""]
+    resources: ["secrets"]
+    resourceNames: [{{ include "datafold.secrets" . }}]
+    verbs: ["get", "watch", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "datadog.fullname" . }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "datadog.fullname" . }}
+    apiGroup: ""
+    namespace: default
+roleRef:
+  kind: Role
+  name: {{ include "datadog.fullname" . }}
+  namespace: {{ .Values.global.deployment }}
+  apiGroup: ""

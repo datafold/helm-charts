@@ -76,6 +76,11 @@ spec:
                 secretKeyRef:
                   name: {{ include "datafold.secrets" . }}
                   key: DATAFOLD_DATADOG_APPLICATION_ID
+            - name: DATAFOLD_DATADOG_PW
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "datafold.secrets" . }}
+                  key: DATAFOLD_DATADOG_PW
             {{- if (eq .Values.global.optional.intercom "true") }}
             - name: DATAFOLD_INTERCOM_APP_ID
               valueFrom:
