@@ -14,9 +14,9 @@ metadata:
   name: {{ include "datadog.fullname" . }}
 subjects:
   - kind: ServiceAccount
-    name: {{ include "datadog.fullname" . }}
+    name: {{ include "datadog.fullname.agent" . }}
     apiGroup: ""
-    namespace: default
+    namespace: {{ .Values.global.deployment }}
 roleRef:
   kind: Role
   name: {{ include "datadog.fullname" . }}
