@@ -24,6 +24,24 @@ If release name contains chart name it will be used as a full name.
 {{- end }}
 
 {{/*
+Create a default fully qualified app name.
+We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
+If release name contains chart name it will be used as a full name.
+*/}}
+{{- define "datadog.fullname.agent" -}}
+{{- if .Values.fullnameOverride }}
+{{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- $name := default .Chart.Name .Values.nameOverride }}
+{{- if contains $name .Release.Name }}
+{{- .Release.Name | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- printf "%s-%s-agent" .Release.Name $name | trunc 63 | trimSuffix "-" }}
+{{- end }}
+{{- end }}
+{{- end }}
+
+{{/*
 Create chart name and version as used by the chart label.
 */}}
 {{- define "datadog.chart" -}}
@@ -107,6 +125,18 @@ clusterAgent:
             username: datadog
             password: {{ include "datafold.datadog.postgres.pw" . }}
             ssl: require
+            exclude_hostname: true
+            dbname: {{ include "datafold.datadog.postgres.database" . }}
+            dbstrict: true
+            collect_activity_metrics: true
+            query_metrics:
+              enabled: false
+              collection_interval: 10
+            query_samples:
+              enabled: false
+            query_activity:
+              enabled: true
+            query_timeout: 5000
 
 {{- end -}}
 {{- end -}}

@@ -38,6 +38,13 @@
 {{- end -}}
 
 {{/*
+    Return the postgres database
+*/}}
+{{- define "datafold.datadog.postgres.database" -}}
+{{- printf "ENC[k8s_secret@%s/%s-secrets/DATAFOLD_POSTGRES_DB]" $.Values.global.deployment .Release.Name -}}
+{{- end -}}
+
+{{/*
     Return the datadog postgres password
 */}}
 {{- define "datafold.datadog.postgres.pw" -}}
