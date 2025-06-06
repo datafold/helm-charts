@@ -36,6 +36,12 @@ data:
 {{- if .Values.config.portalCertData }}
   PORTAL_CERT_DATA: "{{ .Values.config.portalCertData }}"
 {{- end }}
+{{- if .Values.config.temporalAddress }}
+  TEMPORAL_ADDRESS: "{{ .Values.config.temporalAddress }}"
+{{- end }}
+{{- if .Values.config.temporalNamespace }}
+  TEMPORAL_NAMESPACE: "{{ .Values.config.temporalNamespace }}"
+{{- end }}
 {{- if .Values.config.gitlabServer }}
   GITLAB_SERVER: "{{ .Values.config.gitlabServer }}"
 {{- end }}
