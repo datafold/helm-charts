@@ -58,6 +58,9 @@ spec:
         name: src
     {{-  end }}
       env:
+        - name: DD_SECRET_BACKEND_COMMAND
+          value: "/readsecret_multiple_providers.sh"
+        - name: DD_SECRET_BACKEND_ARGUMENTS
         - name: REDIS_PASSWORD
           valueFrom:
             secretKeyRef:
@@ -78,7 +81,7 @@ spec:
         - name: DD_CONTAINER_EXCLUDE
           value: "image:gcr.io/datadoghq.* kube_namespace:.*"
         - name: DD_CONTAINER_INCLUDE
-          value: "kube_namespace:{{ .Release.Namespace }}"
+          value: "kube_namespace:{{ .Release.Namespace }} kube_namespace:temporal"
       tolerations:
         - operator: Equal
           key: clickhouse
@@ -97,3 +100,4 @@ spec:
                  service: datafold
                  source: app
                  sourcecategory: sourcecode
+
