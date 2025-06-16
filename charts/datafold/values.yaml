@@ -3,6 +3,7 @@
 global:
   serverName: "<replace-this>"
   customSecrets: []
+  manageSecretsYourself: false
   common:
     labels: {}
     annotations: {}

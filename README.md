@@ -36,10 +36,16 @@ kubectl create secret docker-registry datafold-docker-secret \
 
 ### Install from our helm repo
 
+Make sure to use the latest release from the helm-charts from our release list:
+
+https://github.com/datafold/helm-charts/releases
+
+(replace 0.6.84 with the most recent release number)
+
 ```
 helm repo add datafold https://charts.datafold.com
 helm upgrade --install datafold datafold/datafold \
-  --version 0.1.0  \
+  --version 0.6.84 \
   --set global.datafoldVersion="<version_tag>" \
   --set global.serverName="<access-url-on-lb>" \
   --set global.cloudProvider="aws" \
