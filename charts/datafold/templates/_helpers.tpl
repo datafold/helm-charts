@@ -63,7 +63,7 @@ Template to derive storage class to use
 {{- define "datafold.storageClass" -}}
 {{- if .Values.storage.storageClass -}}
 {{-   if (ne .Values.storage.storageClass "") -}}
-{{-     printf "storageClassName: %s" .Values.storageClass -}}
+{{-     printf "storageClassName: %s" .Values.storage.storageClass -}}
 {{-   end -}}
 {{- else if .Values.global.storageClass -}}
 {{-   if (ne .Values.global.storageClass "") -}}
