@@ -118,7 +118,6 @@ config:
   contentSecurityPolicy: "default-src 'self'; connect-src 'self' *.getbeamer.com *.usepylon.com *.posthog.com *.pusher.com raw.githubusercontent.com api.perfalytics.com perfalytics.com api.avo.app track.customer.io www.google-analytics.com browser-http-intake.logs.datadoghq.com browser-intake-datadoghq.com *.browser-intake-datadoghq.com forms.hubspot.com wss://*.hotjar.com *.hotjar.io *.analytics.google.com *.g.doubleclick.net api.amplitude.com; style-src 'self' 'unsafe-inline' *.getbeamer.com fonts.googleapis.com *.usepylon.com *.posthog.com *.pusher.com; script-src 'self' 'unsafe-eval' 'unsafe-inline' *.getbeamer.com *.usepylon.com *.posthog.com *.pusher.com perfalytics.com assets.customer.io *.hs-scripts.com js.hs-scripts.com js.hs-banner.com js.hscollectedforms.net www.google-analytics.com js.hs-analytics.net https://www.google-analytics.com *.googletagmanager.com *.hotjar.com cdn.jsdelivr.net cdn.amplitude.com; font-src 'self' data: fonts.googleapis.com fonts.gstatic.com *.getbeamer.com *.usepylon.com *.posthog.com *.pusher.com; img-src 'self' http: https: data: blob:; object-src 'none'; frame-ancestors 'none'; worker-src 'self' blob:; frame-src 'self' *.getbeamer.com calendly.com;"
   customerAdaptation: ""
   temporalAddress: "temporal-frontend.temporal.svc.cluster.local:7233"
-  temporalNamespace: "gerard"
   customVars: []
 
 
