@@ -277,7 +277,7 @@ worker-singletons:
 
 worker-lineage:
   install: false
-  terminationGracePeriodSeconds: "300"
+  terminationGracePeriodSeconds: "1800"
   affinity:
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
