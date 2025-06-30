@@ -32,6 +32,7 @@ config:
   backups_to_keep_remote: "7"
   s3_bucket: ""
   s3_region: ""
+  s3_backup_role: ""
   gcs_bucket: ""
   gcs_path: "backups"
   azblob_account_name: ""
@@ -40,14 +41,12 @@ config:
   remote_storage: ""
 
 secrets:
-  access_key: "override_this"
-  secret_key: "override_this"
   clickhouse_backup_sa: "b3ZlcnJpZGVfdGhpcwoKCg=="
   azblob_account_key: "override_this"
 
 serviceAccount:
-  create: false
-  automount: false
+  create: true
+  automount: true
   annotations: {}
   name: ""
 
