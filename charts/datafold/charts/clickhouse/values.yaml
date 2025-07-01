@@ -35,6 +35,7 @@ config:
   s3_backup_role: ""
   gcs_bucket: ""
   gcs_path: "backups"
+  gcp_backup_account: ""
   azblob_account_name: ""
   azblob_container: ""
   # One of: s3, gcs, azblob. Leave empty to auto-detect based on "global.cloudProvider".

@@ -19,7 +19,7 @@ serviceAccount:
   automount: true
   annotations: {}
   roleArn: ""
-  name: "datafold-worker"
+  name: "datafold-worker-temporal"
 
 podAnnotations: {}
 podLabels: {}
