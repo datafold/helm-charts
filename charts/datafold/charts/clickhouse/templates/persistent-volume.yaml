@@ -25,6 +25,9 @@ spec:
     volumeHandle: {{ .Values.storage.dataVolumeId }}
     fsType: {{ .Values.storage.dataFsType }}
 {{- end }}
+{{- if (eq .Values.global.cloudProvider "azure") }}
+  fail "PV for azure not implemented yet." }}
+{{- end }}
   claimRef:
     name: {{ include "clickhouse.data.pvc.name" . }}
     namespace: {{ .Release.Namespace }}
@@ -56,6 +59,9 @@ spec:
     driver: pd.csi.storage.gke.io
     volumeHandle: {{ .Values.storage.logVolumeId }}
     fsType: {{ .Values.storage.logsFsType }}
+{{- end }}
+{{- if (eq .Values.global.cloudProvider "azure") }}
+  fail "PV for azure not implemented yet." }}
 {{- end }}
   claimRef:
     name: {{ include "clickhouse.logs.pvc.name" . }}

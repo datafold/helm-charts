@@ -25,4 +25,7 @@ spec:
     volumeHandle: {{ .Values.storage.dataVolumeId }}
     fsType: "ext4"
 {{- end }}
+{{- if (eq .Values.global.cloudProvider "azure") }}
+  fail "PV for azure not implemented yet." }}
+{{- end }}
 {{- end }}
