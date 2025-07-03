@@ -19,6 +19,9 @@ spec:
         {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
+        {{- if (eq .Values.global.cloudProvider "azure") }}
+        azure.workload.identity/use: "true"
+        {{- end }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
@@ -57,11 +60,6 @@ spec:
                 secretKeyRef:
                   name: {{ include "datafold.secrets" . }}
                   key: DATAFOLD_CLICKHOUSE_PASSWORD
-            - name: AZBLOB_ACCOUNT_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "clickhouse.secrets" . }}
-                  key: AZBLOB_ACCOUNT_KEY
           ports:
             - name: ch-native
               containerPort: 9000
