@@ -34,7 +34,7 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command: ["/bin/sh"]
-          args: ["-c", "redis-server --appendonly yes --appendfsync always --notify-keyspace-events Kh --dir /data --requirepass $${REDIS_PASSWORD}"]
+          args: ["-c", "redis-server --appendonly yes --appendfsync always --notify-keyspace-events Kh --dir /data --requirepass $${REDIS_PASSWORD} --auto-aof-rewrite-percentage {{ .Values.aof.autoRewritePercentage }} --auto-aof-rewrite-min-size {{ .Values.aof.autoRewriteMinSize }}"]
           env:
             - name: REDIS_PASSWORD
               valueFrom:
