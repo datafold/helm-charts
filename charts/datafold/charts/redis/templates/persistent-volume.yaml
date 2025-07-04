@@ -3,6 +3,10 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: {{ include "redis.data.pv.name" . }}
+{{- if (eq .Values.global.cloudProvider "azure") }}
+  annotations:
+    pv.kubernetes.io/provisioned-by: disk.csi.azure.com
+{{- end }}
   labels:
     {{- include "redis.labels" . | nindent 4 }}
 spec:
@@ -26,6 +30,9 @@ spec:
     fsType: "ext4"
 {{- end }}
 {{- if (eq .Values.global.cloudProvider "azure") }}
-  fail "PV for azure not implemented yet." }}
+  csi:
+    driver: disk.csi.azure.com
+    volumeHandle: {{ .Values.storage.dataVolumeId }}
+    fsType: "ext4"
 {{- end }}
 {{- end }}

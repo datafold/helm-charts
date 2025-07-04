@@ -18,3 +18,4 @@ data:
   GCS_PATH: "{{ .Values.config.gcs_path }}"
   AZBLOB_ACCOUNT_NAME: "{{ .Values.config.azblob_account_name }}"
   AZBLOB_CONTAINER: "{{ .Values.config.azblob_container }}"
+  AZBLOB_USE_MANAGED_IDENTITY: "true"
