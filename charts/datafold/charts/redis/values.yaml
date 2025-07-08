@@ -11,6 +11,11 @@ nameOverride: ""
 fullnameOverride: ""
 terminationGracePeriodSeconds: "30"
 
+# Redis AOF (Append-Only File) rewrite settings for compaction
+aof:
+  autoRewritePercentage: 100  # Rewrite AOF when it grows 100% larger than last rewrite
+  autoRewriteMinSize: "64mb"  # Minimum size for AOF rewrite
+
 storage:
   dataSize: 2Gi
   name: datafold-redis-storage
