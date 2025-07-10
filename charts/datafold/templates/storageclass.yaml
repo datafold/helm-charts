@@ -6,7 +6,7 @@ metadata:
 provisioner: "kubernetes.io/aws-ebs"
 reclaimPolicy: "Retain"
 parameters:
-  encrypted: true
+  encrypted: "true"
   fsType: ext4
   type: gp3
 allowVolumeExpansion: true
