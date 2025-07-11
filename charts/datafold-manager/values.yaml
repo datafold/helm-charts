@@ -1,0 +1,110 @@
+# Default values for datafold-manager
+# This is a YAML-formatted file.
+
+# Operator configuration
+operator:
+  # Operator image configuration
+  image:
+    repository: us-docker.pkg.dev/datadiff-mm/datafold/datafold-operator
+    tag: "latest"
+    pullPolicy: Always
+
+  # Operator deployment configuration
+  replicas: 1
+
+  # Resource limits and requests
+  resources:
+    limits:
+      cpu: 500m
+      memory: 1024Mi
+    requests:
+      cpu: 10m
+      memory: 512Mi
+
+  # Operator arguments
+  args:
+    - --health-probe-bind-address=:8081
+
+  # Security context
+  securityContext:
+    runAsNonRoot: true
+    seccompProfile:
+      type: RuntimeDefault
+
+  # Health checks
+  livenessProbe:
+    httpGet:
+      path: /healthz
+      port: 8081
+    initialDelaySeconds: 15
+    periodSeconds: 20
+
+  readinessProbe:
+    httpGet:
+      path: /readyz
+      port: 8081
+    initialDelaySeconds: 5
+    periodSeconds: 10
+
+# Namespace configuration
+namespace:
+  create: false
+  name: "datafold-apps"
+  labels:
+    control-plane: controller-manager
+    app.kubernetes.io/name: datafold-manager
+
+# Service account configuration
+serviceAccount:
+  create: true
+  name: "controller-manager"
+  annotations: {}
+
+# RBAC configuration
+rbac:
+  create: true
+  # Create cluster roles and bindings
+  clusterRole:
+    create: true
+  clusterRoleBinding:
+    create: true
+
+# CRD configuration
+crds:
+  install: true
+
+# Metrics configuration
+metrics:
+  enabled: true
+  service:
+    create: true
+    port: 8443
+    targetPort: 8443
+
+# Image pull secrets
+imagePullSecrets:
+  - name: datafold-docker-secret
+
+# Node selector
+nodeSelector: {}
+
+# Tolerations
+tolerations: []
+
+# Affinity
+affinity: {}
+
+# Pod annotations
+podAnnotations: {}
+
+# Pod labels
+podLabels: {}
+
+# Additional environment variables
+env: []
+
+# Additional volume mounts
+volumeMounts: []
+
+# Additional volumes
+volumes: []

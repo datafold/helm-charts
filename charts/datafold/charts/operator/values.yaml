@@ -14,7 +14,7 @@ serviceAccount:
   automount: true
   annotations: {}
   roleArn: ""
-  name: "datafold-operator"
+  name: "datafold-manager"
 
 podAnnotations: {}
 podLabels: {}

@@ -1,0 +1,19 @@
+{{- if (eq .Values.global.cloudProvider "gcp") -}}
+{{- if (eq .Values.ingress.deploy true) -}}
+{{- if (eq .Values.ingress.internal false) }}
+apiVersion: networking.gke.io/v1beta1
+kind: FrontendConfig
+metadata:
+  name: {{ include "nginx.fullname" . }}
+  labels:
+    {{- include "nginx.labels" . | nindent 4 }}
+spec:
+  {{- if .Values.ingress.sslPolicy }}
+  sslPolicy: {{ .Values.ingress.sslPolicy }}
+  {{- end }}
+  redirectToHttps:
+    enabled: true
+    responseCodeName: MOVED_PERMANENTLY_DEFAULT
+{{- end }}
+{{- end }}
+{{- end }}

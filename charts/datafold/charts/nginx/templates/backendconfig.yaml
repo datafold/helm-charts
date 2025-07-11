@@ -1,0 +1,20 @@
+{{- if (eq .Values.global.cloudProvider "gcp") -}}
+{{- if (eq .Values.ingress.deploy true) -}}
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: {{ include "nginx.fullname" . }}
+  labels:
+    {{- include "nginx.labels" . | nindent 4 }}
+spec:
+  timeoutSec: 300
+  healthCheck:
+    type: "HTTP"
+    requestPath:  "/nginx-health"
+    port: {{ .Values.global.nginx.port }}
+  {{- if .Values.ingress.cloudArmorPolicy }}
+  securityPolicy:
+    name: {{ .Values.ingress.cloudArmorPolicy }}
+  {{- end }}
+{{- end }}
+{{- end }}
