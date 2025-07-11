@@ -26,8 +26,8 @@ global:
     storageOnPV: "true"
     database: "clickhouse"
   postgres:
+    server: ""
     port: 5432
-    storageOnPV: "true"
   redis:
     port: 6379
     storageOnPV: "true"

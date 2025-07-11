@@ -1,0 +1,739 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.18.0
+  name: datafoldapplications.datafold.datafold.com
+spec:
+  group: datafold.datafold.com
+  names:
+    kind: DatafoldApplication
+    listKind: DatafoldApplicationList
+    plural: datafoldapplications
+    singular: datafoldapplication
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: DatafoldApplication is the Schema for the datafoldapplications
+          API.
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: DatafoldApplicationSpec defines the desired state of DatafoldApplication.
+            properties:
+              clickhouse:
+                description: Clickhouse contains configuration for ClickHouse database
+                properties:
+                  database:
+                    default: clickhouse
+                    description: Database specifies the database name
+                    type: string
+                  password:
+                    description: Password specifies the ClickHouse password
+                    type: string
+                  port:
+                    default: 9000
+                    description: Port specifies the port for ClickHouse server
+                    format: int32
+                    type: integer
+                  user:
+                    default: default
+                    description: User specifies the ClickHouse user
+                    type: string
+                type: object
+              components:
+                description: Components specifies which components to install and
+                  their configuration
+                properties:
+                  clickhouse:
+                    description: ClickHouse enables ClickHouse database
+                    properties:
+                      enabled:
+                        default: true
+                        description: Enabled specifies whether this component should
+                          be installed
+                        type: boolean
+                      replicas:
+                        description: Replicas specifies the number of replicas for
+                          this component
+                        format: int32
+                        type: integer
+                      resources:
+                        description: Resources specifies the resource requirements
+                          for this component
+                        properties:
+                          limits:
+                            additionalProperties:
+                              type: string
+                            description: Limits specifies the maximum resources that
+                              can be used
+                            type: object
+                          requests:
+                            additionalProperties:
+                              type: string
+                            description: Requests specifies the minimum resources
+                              that should be allocated
+                            type: object
+                        type: object
+                    type: object
+                  nginx:
+                    description: Nginx enables the nginx ingress
+                    properties:
+                      enabled:
+                        default: true
+                        description: Enabled specifies whether this component should
+                          be installed
+                        type: boolean
+                      replicas:
+                        description: Replicas specifies the number of replicas for
+                          this component
+                        format: int32
+                        type: integer
+                      resources:
+                        description: Resources specifies the resource requirements
+                          for this component
+                        properties:
+                          limits:
+                            additionalProperties:
+                              type: string
+                            description: Limits specifies the maximum resources that
+                              can be used
+                            type: object
+                          requests:
+                            additionalProperties:
+                              type: string
+                            description: Requests specifies the minimum resources
+                              that should be allocated
+                            type: object
+                        type: object
+                    type: object
+                  operator:
+                    description: Operator enables the operator component
+                    properties:
+                      enabled:
+                        default: true
+                        description: Enabled specifies whether this component should
+                          be installed
+                        type: boolean
+                      replicas:
+                        description: Replicas specifies the number of replicas for
+                          this component
+                        format: int32
+                        type: integer
+                      resources:
+                        description: Resources specifies the resource requirements
+                          for this component
+                        properties:
+                          limits:
+                            additionalProperties:
+                              type: string
+                            description: Limits specifies the maximum resources that
+                              can be used
+                            type: object
+                          requests:
+                            additionalProperties:
+                              type: string
+                            description: Requests specifies the minimum resources
+                              that should be allocated
+                            type: object
+                        type: object
+                    type: object
+                  redis:
+                    description: Redis enables Redis cache
+                    properties:
+                      enabled:
+                        default: true
+                        description: Enabled specifies whether this component should
+                          be installed
+                        type: boolean
+                      replicas:
+                        description: Replicas specifies the number of replicas for
+                          this component
+                        format: int32
+                        type: integer
+                      resources:
+                        description: Resources specifies the resource requirements
+                          for this component
+                        properties:
+                          limits:
+                            additionalProperties:
+                              type: string
+                            description: Limits specifies the maximum resources that
+                              can be used
+                            type: object
+                          requests:
+                            additionalProperties:
+                              type: string
+                            description: Requests specifies the minimum resources
+                              that should be allocated
+                            type: object
+                        type: object
+                    type: object
+                  scheduler:
+                    description: Scheduler enables the scheduler component
+                    properties:
+                      enabled:
+                        default: true
+                        description: Enabled specifies whether this component should
+                          be installed
+                        type: boolean
+                      replicas:
+                        description: Replicas specifies the number of replicas for
+                          this component
+                        format: int32
+                        type: integer
+                      resources:
+                        description: Resources specifies the resource requirements
+                          for this component
+                        properties:
+                          limits:
+                            additionalProperties:
+                              type: string
+                            description: Limits specifies the maximum resources that
+                              can be used
+                            type: object
+                          requests:
+                            additionalProperties:
+                              type: string
+                            description: Requests specifies the minimum resources
+                              that should be allocated
+                            type: object
+                        type: object
+                    type: object
+                  server:
+                    description: Server enables the main Datafold server
+                    properties:
+                      enabled:
+                        default: true
+                        description: Enabled specifies whether this component should
+                          be installed
+                        type: boolean
+                      replicas:
+                        description: Replicas specifies the number of replicas for
+                          this component
+                        format: int32
+                        type: integer
+                      resources:
+                        description: Resources specifies the resource requirements
+                          for this component
+                        properties:
+                          limits:
+                            additionalProperties:
+                              type: string
+                            description: Limits specifies the maximum resources that
+                              can be used
+                            type: object
+                          requests:
+                            additionalProperties:
+                              type: string
+                            description: Requests specifies the minimum resources
+                              that should be allocated
+                            type: object
+                        type: object
+                    type: object
+                  worker:
+                    description: Worker enables the worker components
+                    properties:
+                      enabled:
+                        default: true
+                        description: Enabled specifies whether this component should
+                          be installed
+                        type: boolean
+                      replicas:
+                        description: Replicas specifies the number of replicas for
+                          this component
+                        format: int32
+                        type: integer
+                      resources:
+                        description: Resources specifies the resource requirements
+                          for this component
+                        properties:
+                          limits:
+                            additionalProperties:
+                              type: string
+                            description: Limits specifies the maximum resources that
+                              can be used
+                            type: object
+                          requests:
+                            additionalProperties:
+                              type: string
+                            description: Requests specifies the minimum resources
+                              that should be allocated
+                            type: object
+                        type: object
+                    type: object
+                type: object
+              email:
+                description: Email contains configuration for email server settings
+                properties:
+                  defaultSender:
+                    description: DefaultSender specifies the default sender email
+                      address
+                    type: string
+                  password:
+                    description: Password specifies the SMTP password
+                    type: string
+                  server:
+                    description: Server specifies the SMTP server address
+                    type: string
+                  username:
+                    description: Username specifies the SMTP username
+                    type: string
+                required:
+                - defaultSender
+                - password
+                - server
+                - username
+                type: object
+              freshpaint:
+                description: Freshpaint contains configuration for Freshpaint analytics
+                  integration
+                properties:
+                  avoToken:
+                    description: AvoToken is the token for Avo analytics
+                    type: string
+                  backendToken:
+                    description: BackendToken is the token for backend analytics
+                    type: string
+                  frontendToken:
+                    description: FrontendToken is the token for frontend analytics
+                    type: string
+                  url:
+                    description: URL is the Freshpaint project URL
+                    type: string
+                type: object
+              global:
+                description: Global contains the core configuration for the Datafold
+                  deployment
+                properties:
+                  clusterName:
+                    description: ClusterName specifies the name of the Kubernetes
+                      cluster
+                    type: string
+                  deployment:
+                    description: Deployment specifies the deployment name
+                    type: string
+                  environment:
+                    description: Environment specifies the deployment environment
+                      (e.g., production, staging, development)
+                    type: string
+                  portalUrl:
+                    description: PortalUrl is the optional URL to override the default
+                      portal endpoint
+                    type: string
+                  serverName:
+                    description: ServerName is the domain name for the Datafold server
+                    type: string
+                required:
+                - serverName
+                type: object
+              ingress:
+                description: Ingress contains configuration for ingress and load balancer
+                  setup
+                properties:
+                  aws:
+                    description: AWS contains Amazon Web Services specific configuration
+                    properties:
+                      targetGroupArn:
+                        description: |-
+                          TargetGroupName specifies the name of the existing target group
+                          This is used when DeployLoadBalancer is false to connect to an existing load balancer
+                        type: string
+                    type: object
+                  azure:
+                    description: Azure contains Microsoft Azure specific configuration
+                    properties:
+                      backendPoolName:
+                        description: |-
+                          BackendPoolName specifies the name of the existing backend pool
+                          This is used when DeployLoadBalancer is false to connect to an existing load balancer
+                        type: string
+                    type: object
+                  deployLoadBalancer:
+                    default: true
+                    description: |-
+                      DeployLoadBalancer specifies whether to deploy a complete load balancer
+                      If false, the operator will only configure the ingress to connect to an existing load balancer
+                    type: boolean
+                  google:
+                    description: Google contains Google Cloud Platform specific configuration
+                    properties:
+                      certificateMethod:
+                        default: managed
+                        description: CertificateMethod specifies the method the certificate
+                          is attached to the load balancer
+                        enum:
+                        - managed
+                        - preshared
+                        - secret
+                        type: string
+                      cloudArmorPolicy:
+                        description: CloudArmorPolicy allows the use of a Cloud Armor
+                          policy, externally created.
+                        type: string
+                      networkEndpointGroupName:
+                        description: |-
+                          NetworkEndpointGroupName specifies the name of the existing Network Endpoint Group
+                          This is used when DeployLoadBalancer is false to connect to an existing load balancer
+                        type: string
+                      presharedCertificate:
+                        description: PresharedCertificate specifies the domain name
+                          of the preshared certificate in the cloud
+                        type: string
+                      sslPolicy:
+                        description: SslPolicy specifies an SSL policy to use.
+                        type: string
+                      staticIpName:
+                        description: StaticIpName specifies the name of the static
+                          IP address
+                        type: string
+                      tlsSecretName:
+                        description: TlsSecretName specifies the name of a custom
+                          made secret with cert and key
+                        type: string
+                    type: object
+                  internal:
+                    default: true
+                    description: Internal specifies whether the load balancer is internal
+                    type: boolean
+                  sslCertificate:
+                    description: SSLCertificate specifies the name of the SSL certificate
+                    type: string
+                type: object
+              monitoring:
+                description: Monitoring contains configuration for monitoring and
+                  observability
+                properties:
+                  datadog:
+                    description: Datadog contains Datadog-specific configuration
+                    properties:
+                      configuration:
+                        description: Configuration contains Datadog configuration
+                          settings
+                        properties:
+                          apm:
+                            default: false
+                            description: APM enables Application Performance Monitoring
+                            type: boolean
+                          monitorPostgres:
+                            default: true
+                            description: MonitorPostgres enables PostgreSQL monitoring
+                            type: boolean
+                          npm:
+                            description: NPM contains Network Performance Monitoring
+                              configuration
+                            properties:
+                              dnsstats:
+                                default: true
+                                description: Dnsstats enables DNS statistics collection
+                                type: boolean
+                              enabled:
+                                default: true
+                                description: Enabled enables Network Performance Monitoring
+                                type: boolean
+                            required:
+                            - dnsstats
+                            - enabled
+                            type: object
+                        required:
+                        - apm
+                        - monitorPostgres
+                        - npm
+                        type: object
+                      secrets:
+                        description: Secrets contains Datadog secret references
+                        properties:
+                          apiKey:
+                            description: ApiKey contains the Datadog API key
+                            type: string
+                          appKey:
+                            description: AppKey contains the Datadog app key
+                            type: string
+                          applicationId:
+                            description: ApplicationId contains the Datadog application
+                              ID
+                            type: string
+                          clientToken:
+                            description: ClientToken contains the Datadog client token
+                            type: string
+                        type: object
+                    required:
+                    - configuration
+                    type: object
+                  type:
+                    default: none
+                    description: Type specifies the monitoring solution to use
+                    enum:
+                    - none
+                    - datadog
+                    type: string
+                type: object
+              nginx:
+                description: Nginx contains configuration for the nginx component
+                properties:
+                  loadBalancerIps:
+                    description: LoadBalancerIps specifies the list of load balancer
+                      IPs
+                    items:
+                      type: string
+                    type: array
+                  vpcCidrBlock:
+                    default: 10.0.0.0/16
+                    description: VpcCidrBlock specifies the CIDR block of the VPC
+                    type: string
+                required:
+                - loadBalancerIps
+                type: object
+              operator:
+                description: Operator contains configuration for the operator component
+                properties:
+                  version:
+                    default: 1.2.8
+                    description: Version specifies the version/tag of the operator
+                      image
+                    type: string
+                type: object
+              postgres:
+                description: Postgres contains configuration for PostgreSQL database
+                properties:
+                  database:
+                    description: Database specifies the database name
+                    type: string
+                  datadog_password:
+                    description: DatadogPassword specifies the Datadog monitoring
+                      password
+                    type: string
+                  password:
+                    description: Password specifies the PostgreSQL password
+                    type: string
+                  port:
+                    default: 5432
+                    description: Port specifies the port for PostgreSQL server
+                    format: int32
+                    type: integer
+                  ro_password:
+                    description: ROPassword specifies the read-only user password
+                    type: string
+                  ro_user:
+                    default: datafold_ro
+                    description: ROUser specifies the read-only user
+                    type: string
+                  server:
+                    description: Server specifies the PostgreSQL server address
+                    type: string
+                  user:
+                    description: User specifies the PostgreSQL user
+                    type: string
+                type: object
+              redis:
+                description: Redis contains configuration for Redis cache
+                properties:
+                  password:
+                    description: Password specifies the Redis password
+                    type: string
+                  port:
+                    default: 6379
+                    description: Port specifies the port for Redis server
+                    format: int32
+                    type: integer
+                  storageOnPV:
+                    default: "true"
+                    description: StorageOnPV specifies whether to use persistent volume
+                      storage
+                    type: string
+                type: object
+              secrets:
+                description: Secrets contains references to customer-managed secrets
+                properties:
+                  apiKey:
+                    default:
+                      keyName: apiKey
+                      secretName: datafold-operator-secrets
+                    description: ApiKeySecret references the secret containing the
+                      API key for portal authentication
+                    properties:
+                      keyName:
+                        description: KeyName is the key within the secret
+                        type: string
+                      secretName:
+                        description: SecretName is the name of the secret
+                        type: string
+                    required:
+                    - keyName
+                    - secretName
+                    type: object
+                  databaseEncryptionKey:
+                    default:
+                      keyName: databaseEncryptionKey
+                      secretName: datafold-operator-secrets
+                    description: DatabaseEncryptionKeySecret references the secret
+                      containing the database encryption key
+                    properties:
+                      keyName:
+                        description: KeyName is the key within the secret
+                        type: string
+                      secretName:
+                        description: SecretName is the name of the secret
+                        type: string
+                    required:
+                    - keyName
+                    - secretName
+                    type: object
+                  installPassword:
+                    default:
+                      keyName: installPassword
+                      secretName: datafold-operator-secrets
+                    description: InstallPasswordSecret references the secret containing
+                      the initial admin password
+                    properties:
+                      keyName:
+                        description: KeyName is the key within the secret
+                        type: string
+                      secretName:
+                        description: SecretName is the name of the secret
+                        type: string
+                    required:
+                    - keyName
+                    - secretName
+                    type: object
+                required:
+                - apiKey
+                - databaseEncryptionKey
+                - installPassword
+                type: object
+              values:
+                additionalProperties:
+                  type: string
+                description: Values contains custom Helm values to override defaults
+                type: object
+            required:
+            - global
+            - ingress
+            - secrets
+            type: object
+          status:
+            description: DatafoldApplicationStatus defines the observed state of DatafoldApplication.
+            properties:
+              components:
+                additionalProperties:
+                  description: ComponentStatus represents the status of a component
+                  properties:
+                    lastUpdateTime:
+                      description: LastUpdateTime is the last time the status was
+                        updated
+                      format: date-time
+                      type: string
+                    message:
+                      description: Message provides additional information about the
+                        component status
+                      type: string
+                    phase:
+                      description: Phase represents the current phase of the component
+                      type: string
+                    ready:
+                      description: Ready indicates if the component is ready
+                      type: boolean
+                  type: object
+                description: Components tracks the status of individual components
+                type: object
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the application's current state
+                items:
+                  description: Condition contains details for one aspect of the current
+                    state of this API Resource.
+                  properties:
+                    lastTransitionTime:
+                      description: |-
+                        lastTransitionTime is the last time the condition transitioned from one status to another.
+                        This should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.
+                      format: date-time
+                      type: string
+                    message:
+                      description: |-
+                        message is a human readable message indicating details about the transition.
+                        This may be an empty string.
+                      maxLength: 32768
+                      type: string
+                    observedGeneration:
+                      description: |-
+                        observedGeneration represents the .metadata.generation that the condition was set based upon.
+                        For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
+                        with respect to the current state of the instance.
+                      format: int64
+                      minimum: 0
+                      type: integer
+                    reason:
+                      description: |-
+                        reason contains a programmatic identifier indicating the reason for the condition's last transition.
+                        Producers of specific condition types may define expected values and meanings for this field,
+                        and whether the values are considered a guaranteed API.
+                        The value should be a CamelCase string.
+                        This field may not be empty.
+                      maxLength: 1024
+                      minLength: 1
+                      pattern: ^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$
+                      type: string
+                    status:
+                      description: status of the condition, one of True, False, Unknown.
+                      enum:
+                      - "True"
+                      - "False"
+                      - Unknown
+                      type: string
+                    type:
+                      description: type of condition in CamelCase or in foo.example.com/CamelCase.
+                      maxLength: 316
+                      pattern: ^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$
+                      type: string
+                  required:
+                  - lastTransitionTime
+                  - message
+                  - reason
+                  - status
+                  - type
+                  type: object
+                type: array
+              lastAppliedValues:
+                additionalProperties:
+                  type: string
+                description: LastAppliedValues stores the last applied Helm values
+                type: object
+              observedGeneration:
+                description: ObservedGeneration tracks the observed generation of
+                  the spec
+                format: int64
+                type: integer
+              phase:
+                description: Phase represents the current phase of the deployment
+                enum:
+                - Pending
+                - Installing
+                - Running
+                - Failed
+                - Updating
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

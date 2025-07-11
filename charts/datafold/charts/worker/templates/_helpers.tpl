@@ -31,6 +31,17 @@ Create chart name and version as used by the chart label.
 {{- end }}
 
 {{/*
+Service Account name
+*/}}
+{{- define "worker.serviceAccountName" -}}
+{{- if .Values.serviceAccount.name }}
+{{- .Values.serviceAccount.name }}
+{{- else }}
+{{- printf "%s-%s" .Release.Name .Chart.Name }}
+{{- end }}
+{{- end }}
+
+{{/*
 Common labels
 */}}
 {{- define "worker.labels" -}}

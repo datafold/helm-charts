@@ -8,12 +8,27 @@ metadata:
   {{- include "nginx.ingress.annotations" . | nindent 2 }}
 spec:
   {{- include "nginx.ingress.class" . | nindent 2 }}
+  defaultBackend:
+    service:
+      name: {{ include "nginx.fullname" . }}
+      port:
+        number: {{ .Values.global.nginx.port }}
+  {{- if (eq .Values.ingress.certificateMethod "secret") }}
+  {{- if .Values.ingress.tlsSecretName  }}
+  tls:
+  - secretName: {{ .Values.ingress.tlsSecretName }}
+  {{- end }}
+  {{- end }}
   rules:
   - host: {{ .Values.global.serverName }}
     http:
       paths:
       - path: /
+        {{- if (eq .Values.ingress.certificateMethod "managed") }}
         pathType: Prefix
+        {{- else }}
+        pathType: ImplementationSpecific
+        {{- end }}
         backend:
           service:
             name: {{ include "nginx.fullname" . }}

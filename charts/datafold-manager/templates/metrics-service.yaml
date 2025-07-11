@@ -1,0 +1,22 @@
+{{- if .Values.metrics.enabled }}
+{{- if .Values.metrics.service.create }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "datafold-manager.fullname" . }}-metrics-service
+  namespace: {{ include "datafold-manager.namespace" . }}
+  labels:
+    {{- include "datafold-manager.labels" . | nindent 4 }}
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "{{ .Values.metrics.service.targetPort }}"
+spec:
+  ports:
+  - name: https
+    port: {{ .Values.metrics.service.port }}
+    protocol: TCP
+    targetPort: {{ .Values.metrics.service.targetPort }}
+  selector:
+    {{- include "datafold-manager.selectorLabels" . | nindent 4 }}
+{{- end }}
+{{- end }}
