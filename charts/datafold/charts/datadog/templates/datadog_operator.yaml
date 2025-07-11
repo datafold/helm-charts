@@ -81,7 +81,7 @@ spec:
         - name: DD_CONTAINER_EXCLUDE
           value: "image:gcr.io/datadoghq.* kube_namespace:.*"
         - name: DD_CONTAINER_INCLUDE
-          value: "kube_namespace:{{ .Release.Namespace }} kube_namespace:temporal"
+          value: "kube_namespace:{{ .Release.Namespace }} kube_namespace:temporal kube_namespace:dmadocs"
       tolerations:
         - operator: Equal
           key: clickhouse
