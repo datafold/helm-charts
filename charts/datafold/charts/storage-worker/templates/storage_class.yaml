@@ -7,7 +7,7 @@ metadata:
     {{- include "worker.labels" . | nindent 4 }}
   annotations: {}
 provisioner: "kubernetes.io/aws-ebs"
-reclaim_policy: "Delete"
+reclaimPolicy: "Delete"
 parameters:
   encrypted: "true"
   fsType: "ext4"
@@ -24,7 +24,7 @@ metadata:
     {{- include "worker.labels" . | nindent 4 }}
   annotations: {}
 provisioner: "kubernetes.io/gce-pd"
-reclaim_policy: "Delete"
+reclaimPolicy: "Delete"
 parameters:
   type: "pd-standard"
   fsType: "ext4"
@@ -40,7 +40,7 @@ metadata:
     {{- include "worker.labels" . | nindent 4 }}
   annotations: {}
 provisioner: "disk.csi.azure.com"
-reclaim_policy: "Delete"
+reclaimPolicy: "Delete"
 parameters:
   skuname: "StandardSSD_LRS"
   fsType: "ext4"
