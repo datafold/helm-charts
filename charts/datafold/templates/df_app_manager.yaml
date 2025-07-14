@@ -6,4 +6,4 @@ metadata:
     {{- include "datafold.labels" . | nindent 4 }}
     app.kubernetes.io/part-of: datafold
 spec:
-  version: "{{ .Values.global.datafoldVersion }}"
+  datafoldVersion: "{{ .Values.global.datafoldVersion }}"
