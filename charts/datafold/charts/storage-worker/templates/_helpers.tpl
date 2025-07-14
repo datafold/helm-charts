@@ -81,7 +81,7 @@ Volumes
     volumeClaimTemplate:
       metadata:
         labels:
-          {{- include "worker.labels" . | nindent 8 }}
+          {{- include "worker.labels" . | nindent 10 }}
       spec:
         accessModes: [ "ReadWriteOnce" ]
         storageClassName: {{ .Values.storage.storageClass | quote }}
