@@ -1,19 +1,77 @@
-global:
-  serverName: "server"
-  cloudProvider: "aws"
-  awsTargetGroupArn: "target_group_arn"
-  vpcCidr: "vpc_cidr"
-  statusCheckToken: "magic_token"
-
-secrets:
-  clickhouse:
-    user: "default"
-    password: "default"
-  postgres:
-    user: "postgres"
-    password: "postgres"
-    database: "postgres"
-    host: "host"
-    port: 5432
-  redis:
-    password: "redis-pw"
+# =============================================================================
+# INFRASTRUCTURE CONFIGURATION REFERENCE
+# =============================================================================
+# This file has been split into cloud provider-specific configurations.
+# 
+# Available configuration files:
+# - infra-aws.yaml     - AWS-specific configuration with EKS and IAM roles
+# - infra-gcp.yaml     - GCP-specific configuration with GKE and Workload Identity
+# - infra-azure.yaml   - Azure-specific configuration with AKS and Azure AD Workload Identity
+# - infra-local.yaml   - Local development configuration
+#
+# To use a specific configuration, update your environment variable:
+#
+# For AWS:
+# export DATAFOLD_DEV_OVERRIDES="./dev/infra-aws.yaml"
+#
+# For GCP:
+# export DATAFOLD_DEV_OVERRIDES="./dev/infra-gcp.yaml"
+#
+# For Azure:
+# export DATAFOLD_DEV_OVERRIDES="./dev/infra-azure.yaml"
+#
+# For Local Development:
+# export DATAFOLD_DEV_OVERRIDES="./dev/infra-local.yaml"
+#
+# =============================================================================
+# CONFIGURATION OVERVIEW
+# =============================================================================
+#
+# Each cloud provider configuration includes:
+#
+# AWS (infra-aws.yaml):
+# - EKS service accounts with IAM roles (IRSA)
+# - EBS gp3 storage class
+# - AWS Load Balancer Controller integration
+# - RDS/Aurora database examples
+#
+# GCP (infra-gcp.yaml):
+# - GKE service accounts with Workload Identity
+# - Persistent Disk SSD storage class
+# - GCP Network Endpoint Groups
+# - Cloud SQL/Memorystore examples
+#
+# Azure (infra-azure.yaml):
+# - AKS service accounts with Azure AD Workload Identity
+# - Managed Premium storage class
+# - Azure Database services examples
+#
+# Local (infra-local.yaml):
+# - Simplified service accounts (no cloud-specific annotations)
+# - Local storage class
+# - Development-optimized settings
+#
+# =============================================================================
+# MIGRATION GUIDE
+# =============================================================================
+#
+# If you were previously using this file directly:
+# 1. Choose the appropriate cloud provider file
+# 2. Update your DATAFOLD_DEV_OVERRIDES environment variable
+# 3. Customize the selected configuration file for your environment
+#
+# Example:
+# export DATAFOLD_DEV_OVERRIDES="./dev/infra-aws.yaml"
+# ./jeeves/j dev install run
+#
+# =============================================================================
+# CUSTOMIZATION
+# =============================================================================
+#
+# Each configuration file includes placeholders that need to be updated:
+# - Replace "your-domain.com" with your actual domain
+# - Update IAM role ARNs, service account names, or client IDs
+# - Configure database connection details
+# - Set appropriate resource limits for your environment
+#
+# See the individual configuration files for detailed customization instructions.
