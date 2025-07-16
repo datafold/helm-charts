@@ -18,8 +18,6 @@ kubectl create namespace datafold
 kubectl config set-context --current --namespace=datafold
 ```
 
-
-
 ### Receive a json key to pull images
 
 Our images are stored on a private registry. You can request a JSON key to be used
@@ -51,4 +49,40 @@ helm upgrade --install datafold datafold/datafold \
   --set global.cloudProvider="aws" \
   --set global.awsTargetGroupArn="<replace-with-target-group-arn>" \
   --set global.awsLbCtrlArn="<replace-with-load-balancer-controller-role-arn>"
+
+## Development and Validation
+
+### Kubeconform Validation
+
+This repository includes kubeconform validation to ensure Helm charts conform to the Kubernetes API schema. You can run validation locally using the jeeves tool:
+
+```bash
+# Install dependencies
+pip install -r jeeves/requirements.txt
+
+# Set environment variables (optional - wrapper commands set these automatically)
+export DATAFOLD_K8S_SECRETFILE="./dev/secrets.yaml"
+export DATAFOLD_K8S_CONFIGFILE="./dev/config.yaml"
+export DATAFOLD_DEPLOY_NAME="datafold-test"
+export TAG="latest"
+
+# Run kubeconform validation for different cloud providers
+# AWS Configuration (automatically sets environment variables and infra file)
+./j dev kubeconform run --cloud-provider aws --strict
+
+# GCP Configuration (automatically sets environment variables and infra file)
+./j dev kubeconform run --cloud-provider gcp --strict
+
+# Azure Configuration (automatically sets environment variables and infra file)
+./j dev kubeconform run --cloud-provider azure --strict
+
+# Custom validation parameters
+./j dev kubeconform run --cloud-provider aws --kubernetes-version "1.29.0" --output-format "json"
+./j dev kubeconform run --cloud-provider gcp --skip-list "CustomResourceDefinition,ValidatingWebhookConfiguration"
+./j dev kubeconform run --cloud-provider azure --strict false
+```
+
+The validation runs automatically on pull requests for all three cloud providers (AWS, GCP, Azure) to ensure your charts work correctly across different Kubernetes environments.
+
+For more information about jeeves and available commands, see [jeeves/README.md](jeeves/README.md).
 ```

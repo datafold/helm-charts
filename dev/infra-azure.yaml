@@ -1,0 +1,177 @@
+# =============================================================================
+# AZURE INFRASTRUCTURE CONFIGURATION
+# =============================================================================
+# This file contains Azure-specific infrastructure configurations for Datafold deployment.
+
+global:
+  serverName: "datafold.your-domain.com"  # Replace with your domain
+  cloudProvider: "azure"
+  storageClass: "managed-premium"  # Azure managed disk premium
+  awsTargetGroupArn: ""
+  vpcCidr: "10.0.0.0/16"
+  statusCheckToken: "your-status-check-token"
+  deployment: "datafold-prod"
+  customSecrets: []
+  manageSecretsYourself: false
+  common:
+    labels:
+      environment: "production"
+      cloud-provider: "azure"
+    annotations: {}
+  optional:
+    intercom: "false"
+    pylon: "false"
+    googleAuth: "false"
+
+# Azure-specific infrastructure configurations
+nginx:
+  port: 80
+  gcpNegName: ""
+
+datadog:
+  install: true
+  env: "production"
+  host: "datadog-agent.datadog.svc.cluster.local"
+  logs:
+    port: 10518
+  metrics:
+    port: 8125
+  apm:
+    port: 8126
+
+# Azure Service Account configurations with Azure AD Workload Identity
+server:
+  serviceAccount:
+    create: true
+    automount: true
+    annotations:
+      azure.workload.identity/client-id: "your-client-id"
+      azure.workload.identity/tenant-id: "your-tenant-id"
+    roleArn: ""
+    name: "datafold-server"
+
+scheduler:
+  serviceAccount:
+    create: true
+    automount: true
+    annotations:
+      azure.workload.identity/client-id: "your-client-id"
+      azure.workload.identity/tenant-id: "your-tenant-id"
+    roleArn: ""
+    name: "datafold-scheduler"
+
+dfshell:
+  serviceAccount:
+    create: true
+    automount: true
+    annotations:
+      azure.workload.identity/client-id: "your-client-id"
+      azure.workload.identity/tenant-id: "your-tenant-id"
+    roleArn: ""
+    name: "datafold-dfshell"
+
+operator:
+  serviceAccount:
+    create: true
+    automount: true
+    annotations:
+      azure.workload.identity/client-id: "your-client-id"
+      azure.workload.identity/tenant-id: "your-tenant-id"
+    roleArn: ""
+    name: "datafold-operator"
+
+worker:
+  serviceAccount:
+    create: true
+    automount: true
+    annotations:
+      azure.workload.identity/client-id: "your-client-id"
+      azure.workload.identity/tenant-id: "your-tenant-id"
+    roleArn: ""
+    name: "datafold-worker"
+
+worker-interactive:
+  serviceAccount:
+    create: true
+    automount: true
+    annotations:
+      azure.workload.identity/client-id: "your-client-id"
+      azure.workload.identity/tenant-id: "your-tenant-id"
+    roleArn: ""
+    name: "datafold-worker-interactive"
+
+worker-catalog:
+  serviceAccount:
+    create: true
+    automount: true
+    annotations:
+      azure.workload.identity/client-id: "your-client-id"
+      azure.workload.identity/tenant-id: "your-tenant-id"
+    roleArn: ""
+    name: "datafold-worker-catalog"
+
+worker-singletons:
+  serviceAccount:
+    create: true
+    automount: true
+    annotations:
+      azure.workload.identity/client-id: "your-client-id"
+      azure.workload.identity/tenant-id: "your-tenant-id"
+    roleArn: ""
+    name: "datafold-worker-singletons"
+
+worker-monitor:
+  serviceAccount:
+    create: true
+    automount: true
+    annotations:
+      azure.workload.identity/client-id: "your-client-id"
+      azure.workload.identity/tenant-id: "your-tenant-id"
+    roleArn: ""
+    name: "datafold-worker-monitor"
+
+worker-temporal:
+  serviceAccount:
+    create: true
+    automount: true
+    annotations:
+      azure.workload.identity/client-id: "your-client-id"
+      azure.workload.identity/tenant-id: "your-tenant-id"
+    roleArn: ""
+    name: "datafold-worker-temporal"
+
+storage-worker:
+  serviceAccount:
+    create: true
+    automount: true
+    annotations:
+      azure.workload.identity/client-id: "your-client-id"
+      azure.workload.identity/tenant-id: "your-tenant-id"
+    roleArn: ""
+    name: "datafold-storage-worker"
+
+# Azure Database configurations (Azure Database)
+clickhouse:
+  user: "default"
+  password: "your-clickhouse-password"
+  port: 9000
+  database: "clickhouse"
+  # For Azure, you might use Azure Database for PostgreSQL or external ClickHouse
+  # host: "your-clickhouse-server.database.windows.net"
+
+redis:
+  password: "your-redis-password"
+  port: 6379
+  # For Azure, you might use Azure Cache for Redis
+  # host: "your-redis-cache.redis.cache.windows.net"
+
+postgres:
+  user: "datafold"
+  password: "your-postgres-password"
+  database: "datafold"
+  port: 5432
+  ro_user: "datafold_ro"
+  ro_password: "your-readonly-password"
+  datadog_password: "your-datadog-password"
+  # For Azure, you might use Azure Database for PostgreSQL
+  # host: "your-postgres-server.database.windows.net" 
