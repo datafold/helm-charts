@@ -1,4 +1,4 @@
-# Default values for datafold-operator
+# Default values for datafold-manager
 # This is a YAML-formatted file.
 
 # Operator configuration
@@ -8,10 +8,10 @@ operator:
     repository: us-docker.pkg.dev/datadiff-mm/datafold/datafold-operator
     tag: "latest"
     pullPolicy: Always
-  
+
   # Operator deployment configuration
   replicas: 1
-  
+
   # Resource limits and requests
   resources:
     limits:
@@ -20,18 +20,17 @@ operator:
     requests:
       cpu: 10m
       memory: 512Mi
-  
+
   # Operator arguments
   args:
-    - --leader-elect
     - --health-probe-bind-address=:8081
-  
+
   # Security context
   securityContext:
     runAsNonRoot: true
     seccompProfile:
       type: RuntimeDefault
-  
+
   # Health checks
   livenessProbe:
     httpGet:
@@ -39,7 +38,7 @@ operator:
       port: 8081
     initialDelaySeconds: 15
     periodSeconds: 20
-  
+
   readinessProbe:
     httpGet:
       path: /readyz
@@ -53,7 +52,7 @@ namespace:
   name: "datafold-apps"
   labels:
     control-plane: controller-manager
-    app.kubernetes.io/name: datafold-operator
+    app.kubernetes.io/name: datafold-manager
 
 # Service account configuration
 serviceAccount:
@@ -108,4 +107,4 @@ env: []
 volumeMounts: []
 
 # Additional volumes
-volumes: [] 
+volumes: []

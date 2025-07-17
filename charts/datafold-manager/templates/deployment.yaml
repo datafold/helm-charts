@@ -1,14 +1,14 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "datafold-operator.fullname" . }}
-  namespace: {{ include "datafold-operator.namespace" . }}
+  name: {{ include "datafold-manager.fullname" . }}
+  namespace: {{ include "datafold-manager.namespace" . }}
   labels:
-    {{- include "datafold-operator.labels" . | nindent 4 }}
+    {{- include "datafold-manager.labels" . | nindent 4 }}
 spec:
   selector:
     matchLabels:
-      {{- include "datafold-operator.selectorLabels" . | nindent 6 }}
+      {{- include "datafold-manager.selectorLabels" . | nindent 6 }}
   replicas: {{ .Values.operator.replicas }}
   template:
     metadata:
@@ -18,7 +18,7 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
       labels:
-        {{- include "datafold-operator.selectorLabels" . | nindent 8 }}
+        {{- include "datafold-manager.selectorLabels" . | nindent 8 }}
         {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -27,7 +27,7 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "datafold-operator.serviceAccountName" . }}
+      serviceAccountName: {{ include "datafold-manager.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.operator.securityContext | nindent 8 }}
       containers:
@@ -51,7 +51,7 @@ spec:
         resources:
           {{- toYaml .Values.operator.resources | nindent 10 }}
         env:
-          {{- include "datafold-operator.env" . | nindent 10 }}
+          {{- include "datafold-manager.env" . | nindent 10 }}
         {{- with .Values.volumeMounts }}
         volumeMounts:
           {{- toYaml . | nindent 10 }}
@@ -72,4 +72,4 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      terminationGracePeriodSeconds: 10 
+      terminationGracePeriodSeconds: 10

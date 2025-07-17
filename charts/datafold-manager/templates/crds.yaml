@@ -3,10 +3,6 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.18.0
-    app.kubernetes.io/managed-by: Helm
-    helm.sh/chart: datafold-operator-0.1.0
-    helm.sh/release-name: datafold-operator
-    helm.sh/release-namespace: datafold-apps
   name: datafoldapplications.datafold.datafold.com
 spec:
   group: datafold.datafold.com

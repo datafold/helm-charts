@@ -86,3 +86,9 @@ The validation runs automatically on pull requests for all three cloud providers
 
 For more information about jeeves and available commands, see [jeeves/README.md](jeeves/README.md).
 ```
+
+### Local dev install
+
+helm upgrade --install datafold-operator charts/datafold-operator \
+  --namespace datafold-apps \
+  --set namespace.name=datafold-apps
