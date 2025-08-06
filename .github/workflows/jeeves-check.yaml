@@ -34,7 +34,7 @@ jobs:
         if: steps.changed-files.outputs.any_changed == 'true'
         uses: actions/setup-python@v4
         with:
-          python-version: '3.11'
+          python-version: '3.12'
 
       - name: Install pre-commit
         if: steps.changed-files.outputs.any_changed == 'true'

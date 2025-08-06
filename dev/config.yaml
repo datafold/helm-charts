@@ -14,50 +14,180 @@ config:
   mailUseTls: "false"
   mailUseSsl: "false"
   ddEnv: "dev"
-  workerCount: "50"
+  workerCount: "15"
   webWorkers: "3"
   enableGraphInvariantsChecks: "false"
+  maxTasksPerWorker: "200"
+  maxMemPerWorker: "300000"
+  ratelimitEnabled: "true"
+  rateLimitHighLoadPerMinute: "120"
+  loggingEnabled: "true"
+  singleTenantDeploy: "true"
+  enableProcessProtection: "true"
+  enableSsrfProtection: "true"
+  logLevel: "INFO"
+  enforceHttps: "false"  # Disabled for local development
+  ddTraceEnabled: "false"
+  ddDogStatsDisable: "false"
+  floatFormat: "0,0.00[0000000]"
+  dateFormat: "YYYY-MM-DD"
+  timeFormat: "HH:mm:ss"
+  temporalAddress: "temporal-frontend.temporal.svc.cluster.local:7233"
 
 global:
-  serverName: "<replace-this>"
+  serverName: "localhost:5000"
   cloudProvider: ""  # For local development, options ("", "aws", "gcp", "azure")
   storageClass: "local-storage"  # For local development, options ("local-storage", "")
   authMethod: "password"
-  datafoldRepository: "us-docker.pkg.dev/datadiff-mm/datafold/server"
-  shellRepository: "us-docker.pkg.dev/datadiff-mm/datafold/server"
+  datafoldRepository: "us-docker.pkg.dev/datadiff-mm/datafold"
+  datafoldImage: "server"
+  shellRepository: "us-docker.pkg.dev/datadiff-mm/datafold"
   datadog:
     env: "dev"
-    install: "false"
+    install: false
   clickhouse:
     storageOnPV: "false"
+    port: 9000
+    database: "clickhouse"
   redis:
     storageOnPV: "false"
-  postgres:
-    storageOnPV: "false"
+    port: 6379
+  server:
+    port: 5000
+  nginx:
+    port: 80
+  operator:
+    allowRollback: "true"
+    releaseChannel: "stable"
+    backupCronSchedule: "0 1 * * *"
+    maintenanceWindow: ""
 
+# Worker configurations
 worker:
+  install: true
+  replicaCount: 1
+  terminationGracePeriodSeconds: "1800"
   worker:
+    queues: "celery,api,ci,interactive,freshpaint"
     tasks: 200
-    memory: 850000
-    count: 15
+    memory: "1000000"
+    count: 8
+  resources:
+    limits:
+      memory: 12000Mi
+    requests:
+      cpu: 1000m
+      memory: 12000Mi
 
 worker-interactive:
+  install: true
+  replicaCount: 1
+  terminationGracePeriodSeconds: "300"
   worker:
     queues: "interactive"
     tasks: 200
-    memory: 850000
-    count: 5
+    memory: "1000000"
+    count: 4
+  resources:
+    limits:
+      memory: 6Gi
+    requests:
+      cpu: 100m
+      memory: 6Gi
 
 worker-catalog:
+  install: true
+  replicaCount: 1
+  terminationGracePeriodSeconds: "30"
   worker:
     queues: "lineage,catalog"
     tasks: 200
-    memory: 850000
+    memory: "1000000"
     count: 5
+  resources:
+    limits:
+      memory: 13000Mi
+    requests:
+      cpu: 1000m
+      memory: 13000Mi
 
 worker-singletons:
+  install: true
+  replicaCount: 1
+  terminationGracePeriodSeconds: "30"
   worker:
     queues: "singletons"
     tasks: 200
-    memory: 850000
+    memory: "1000000"
     count: 4
+  resources:
+    limits:
+      memory: 3000Mi
+    requests:
+      cpu: 100m
+      memory: 3000Mi
+
+worker-monitor:
+  install: true
+  replicaCount: 1
+  worker:
+    queues: "alerts"
+    count: 4
+    memory: "1000000"
+  resources:
+    limits:
+      memory: 6Gi
+    requests:
+      memory: 6Gi
+
+worker-temporal:
+  install: true
+  replicaCount: 1
+  terminationGracePeriodSeconds: "5"
+
+storage-worker:
+  install: true
+  replicaCount: 0
+  terminationGracePeriodSeconds: "18000"
+  worker:
+    queues: "localstorage"
+    tasks: 200
+    memory: "1000000"
+    count: 4
+  resources:
+    limits:
+      memory: 30Gi
+    requests:
+      cpu: 100m
+      memory: 30Gi
+
+# Component installations
+redis:
+  install: true
+
+clickhouse:
+  install: true
+
+postgres:
+  install: false
+
+dfshell:
+  install: true
+
+worker-portal:
+  install: true
+
+initjob:
+  install: false
+
+operator:
+  install: true
+
+server:
+  install: true
+
+scheduler:
+  install: true
+
+nginx:
+  install: true

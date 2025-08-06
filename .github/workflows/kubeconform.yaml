@@ -1,0 +1,208 @@
+name: Kubeconform Validation
+
+on: pull_request
+
+jobs:
+  kubeconform-aws:
+    name: Kubeconform Validation - AWS
+    runs-on: ubuntu-latest
+    environment: Helm Charts
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v3.4
+        with:
+          version: v3.9.0
+
+      - name: Install kubeconform
+        run: |
+          wget https://github.com/yannh/kubeconform/releases/latest/download/kubeconform-linux-amd64.tar.gz
+          tar -xzf kubeconform-linux-amd64.tar.gz
+          sudo mv kubeconform /usr/local/bin/
+          kubeconform -v
+
+      # Python is required for jeeves
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+
+      - name: Install jeeves dependencies
+        run: |
+          cd jeeves
+          pip install -r requirements.txt
+          pip install typer-cli
+
+      - name: Set up chart-testing
+        uses: helm/chart-testing-action@v2.6.0
+        with:
+          version: v3.7.1
+
+      - name: Run chart-testing (list-changed)
+        id: list-changed
+        run: |
+          changed=$(ct list-changed --config ct.yaml)
+          if [[ -n "$changed" ]]; then
+            echo "::set-output name=changed::true"
+            echo "Changed charts: $changed"
+          fi
+
+      - name: Validate charts with kubeconform (AWS)
+        if: steps.list-changed.outputs.changed == 'true'
+        run: |
+          # Run kubeconform validation using jeeves with AWS cloud provider
+          j dev kubeconform aws
+
+  kubeconform-gcp:
+    name: Kubeconform Validation - GCP
+    runs-on: ubuntu-latest
+    environment: Helm Charts
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v3.4
+        with:
+          version: v3.9.0
+
+      - name: Install kubeconform
+        run: |
+          wget https://github.com/yannh/kubeconform/releases/latest/download/kubeconform-linux-amd64.tar.gz
+          tar -xzf kubeconform-linux-amd64.tar.gz
+          sudo mv kubeconform /usr/local/bin/
+          kubeconform -v
+
+      # Python is required for jeeves
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+
+      - name: Install jeeves dependencies
+        run: |
+          cd jeeves
+          pip install -r requirements.txt
+          pip install typer-cli
+
+      - name: Set up chart-testing
+        uses: helm/chart-testing-action@v2.6.0
+        with:
+          version: v3.7.1
+
+      - name: Run chart-testing (list-changed)
+        id: list-changed
+        run: |
+          changed=$(ct list-changed --config ct.yaml)
+          if [[ -n "$changed" ]]; then
+            echo "::set-output name=changed::true"
+            echo "Changed charts: $changed"
+          fi
+
+      - name: Validate charts with kubeconform (GCP)
+        if: steps.list-changed.outputs.changed == 'true'
+        run: |
+          # Run kubeconform validation using jeeves with GCP cloud provider
+          j dev kubeconform gcp
+
+  kubeconform-azure:
+    name: Kubeconform Validation - Azure
+    runs-on: ubuntu-latest
+    environment: Helm Charts
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v3.4
+        with:
+          version: v3.9.0
+
+      - name: Install kubeconform
+        run: |
+          wget https://github.com/yannh/kubeconform/releases/latest/download/kubeconform-linux-amd64.tar.gz
+          tar -xzf kubeconform-linux-amd64.tar.gz
+          sudo mv kubeconform /usr/local/bin/
+          kubeconform -v
+
+      # Python is required for jeeves
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+
+      - name: Install jeeves dependencies
+        run: |
+          cd jeeves
+          pip install -r requirements.txt
+          pip install typer-cli
+
+      - name: Set up chart-testing
+        uses: helm/chart-testing-action@v2.6.0
+        with:
+          version: v3.7.1
+
+      - name: Run chart-testing (list-changed)
+        id: list-changed
+        run: |
+          changed=$(ct list-changed --config ct.yaml)
+          if [[ -n "$changed" ]]; then
+            echo "::set-output name=changed::true"
+            echo "Changed charts: $changed"
+          fi
+
+      - name: Validate charts with kubeconform (Azure)
+        if: steps.list-changed.outputs.changed == 'true'
+        run: |
+          # Run kubeconform validation using jeeves with Azure cloud provider
+          j dev kubeconform azure
+
+  # Comment PR with validation results
+  comment-pr:
+    name: Comment PR with Results
+    runs-on: ubuntu-latest
+    needs: [kubeconform-aws, kubeconform-gcp, kubeconform-azure]
+    if: always() && github.event_name == 'pull_request'
+    steps:
+      - name: Comment PR with validation results
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const awsStatus = '${{ needs.kubeconform-aws.result }}';
+            const gcpStatus = '${{ needs.kubeconform-gcp.result }}';
+            const azureStatus = '${{ needs.kubeconform-azure.result }}';
+
+            let body = '## 🔍 Kubeconform Validation Results\n\n';
+
+            if (awsStatus === 'success' && gcpStatus === 'success' && azureStatus === 'success') {
+              body += '✅ **All cloud provider configurations passed Kubernetes API schema validation!**\n\n';
+              body += '| Cloud Provider | Status |\n';
+              body += '|----------------|--------|\n';
+              body += '| AWS | ✅ Passed |\n';
+              body += '| GCP | ✅ Passed |\n';
+              body += '| Azure | ✅ Passed |\n\n';
+              body += 'The rendered Kubernetes manifests conform to the Kubernetes API specification across all cloud providers.';
+            } else {
+              body += '❌ **Some cloud provider configurations failed Kubernetes API schema validation.**\n\n';
+              body += '| Cloud Provider | Status |\n';
+              body += '|----------------|--------|\n';
+              body += `| AWS | ${awsStatus === 'success' ? '✅ Passed' : '❌ Failed'} |\n`;
+              body += `| GCP | ${gcpStatus === 'success' ? '✅ Passed' : '❌ Failed'} |\n`;
+              body += `| Azure | ${azureStatus === 'success' ? '✅ Passed' : '❌ Failed'} |\n\n`;
+              body += 'Please check the workflow logs for detailed error information and fix any schema violations.';
+            }
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: body
+            });
