@@ -97,6 +97,11 @@ dependencies:
     repository: file://charts/storage-worker
     condition: storage-worker.install
     alias: storage-worker
+  - name: dma
+    version: "0.1.0"
+    repository: file://charts/dma
+    condition: dma.install
+    alias: dma
   - name: nginx
     version: "0.1.0"
     repository: file://charts/nginx

@@ -308,6 +308,9 @@ worker-monitor:
     requests:
       memory: 6Gi
 
+dma:
+  install: false
+
 storage-worker:
   install: false
   replicaCount: 0

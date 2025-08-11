@@ -1,0 +1,59 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "dma.fullname" . }}-ssh-keygen
+  labels:
+    {{- include "dma.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+spec:
+  template:
+    metadata:
+      name: {{ include "dma.fullname" . }}-ssh-keygen
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: ssh-keygen
+          image: alpine/k8s:1.28.2
+          command:
+            - /bin/sh
+            - -c
+            - |
+              set -e
+              
+              # Install openssh for key generation
+              apk add --no-cache openssh-keygen
+              
+              # Check if secret already exists
+              if kubectl get secret {{ include "dma.fullname" . }}-ssh-host-keys --namespace={{ .Release.Namespace }} >/dev/null 2>&1; then
+                echo "SSH host keys secret already exists, skipping generation"
+                exit 0
+              fi
+              
+              echo "Generating SSH host keys..."
+              
+              # Generate RSA key
+              ssh-keygen -t rsa -b 4096 -f /tmp/ssh_host_rsa_key -N "" -C "DMA RSA Host Key"
+              
+              # Generate ED25519 key  
+              ssh-keygen -t ed25519 -f /tmp/ssh_host_ed25519_key -N "" -C "DMA ED25519 Host Key"
+              
+              # Generate ECDSA key
+              ssh-keygen -t ecdsa -b 384 -f /tmp/ssh_host_ecdsa_key -N "" -C "DMA ECDSA Host Key"
+              
+              echo "Creating Kubernetes secret..."
+              
+              # Create SSH host keys secret
+              kubectl create secret generic {{ include "dma.fullname" . }}-ssh-host-keys \
+                --namespace={{ .Release.Namespace }} \
+                --from-file=ssh_host_rsa_key=/tmp/ssh_host_rsa_key \
+                --from-file=ssh_host_rsa_key.pub=/tmp/ssh_host_rsa_key.pub \
+                --from-file=ssh_host_ed25519_key=/tmp/ssh_host_ed25519_key \
+                --from-file=ssh_host_ed25519_key.pub=/tmp/ssh_host_ed25519_key.pub \
+                --from-file=ssh_host_ecdsa_key=/tmp/ssh_host_ecdsa_key \
+                --from-file=ssh_host_ecdsa_key.pub=/tmp/ssh_host_ecdsa_key.pub
+                
+              echo "SSH host keys generated and stored successfully"
+      serviceAccountName: {{ .Values.jobServiceAccount.name }}

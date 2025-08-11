@@ -1,0 +1,19 @@
+{{- if .Values.jobServiceAccount.create -}}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ .Values.jobServiceAccount.name }}
+  labels:
+    {{- include "dma.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-weight": "-8"
+subjects:
+- kind: ServiceAccount
+  name: {{ .Values.jobServiceAccount.name }}
+  namespace: {{ .Release.Namespace }}
+roleRef:
+  kind: Role
+  name: {{ .Values.jobServiceAccount.name }}
+  apiGroup: rbac.authorization.k8s.io
+{{- end }}
