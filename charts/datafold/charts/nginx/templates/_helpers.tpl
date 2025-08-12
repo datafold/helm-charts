@@ -133,6 +133,29 @@ annotations:
   appgw.ingress.kubernetes.io/override-frontend-port: "443"
   appgw.ingress.kubernetes.io/appgw-ssl-certificate: {{ .Values.ingress.sslCertificate }}
 {{- end }}
+{{- if (eq .Values.global.cloudProvider "aws") -}}
+annotations:
+  kubernetes.io/ingress.class: alb
+  alb.ingress.kubernetes.io/scheme: internal
+  alb.ingress.kubernetes.io/target-type: instance
+  alb.ingress.kubernetes.io/backend-protocol: HTTP
+  alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80}, {"HTTPS":443}]'
+  alb.ingress.kubernetes.io/ssl-redirect: '443'
+  alb.ingress.kubernetes.io/certificate-arn: {{ .Values.ingress.sslCertificate }}
+  alb.ingress.kubernetes.io/healthcheck-protocol: HTTP
+  alb.ingress.kubernetes.io/healthcheck-port: traffic-port
+  alb.ingress.kubernetes.io/healthcheck-path: {{ .Values.ingress.healthz }}
+  alb.ingress.kubernetes.io/healthcheck-interval-seconds: '15'
+  alb.ingress.kubernetes.io/healthcheck-timeout-seconds: '5'
+  alb.ingress.kubernetes.io/success-codes: '200'
+  alb.ingress.kubernetes.io/healthy-threshold-count: '2'
+  alb.ingress.kubernetes.io/unhealthy-threshold-count: '2'
+  alb.ingress.kubernetes.io/load-balancer-attributes: idle_timeout.timeout_seconds=300
+  alb.ingress.kubernetes.io/security-groups: {{ .Values.ingress.secgroups }}
+  alb.ingress.kubernetes.io/ssl-policy: "ELBSecurityPolicy-TLS13-1-2-Res-2021-06"
+  alb.ingress.kubernetes.io/subnets: {{ .Values.ingress.subnets }}
+  alb.ingress.kubernetes.io/tags: Application=datafold
+{{- end }}
 {{- end }}
 
 {{/*
@@ -141,6 +164,9 @@ Ingress Class Name
 {{- define "nginx.ingress.class" -}}
 {{- if (eq .Values.global.cloudProvider "azure") -}}
 ingressClassName: azure-application-gateway
+{{- end }}
+{{- if (eq .Values.global.cloudProvider "aws") -}}
+ingressClassName: alb
 {{- end }}
 {{- end }}
 

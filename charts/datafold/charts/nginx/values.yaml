@@ -15,8 +15,11 @@ service:
   loadBalancerIps: []
 
 ingress:
-  sslCertificate: ""
   deploy: false
+  sslCertificate: ""
+  secgroups: ""
+  subnets: ""
+  healthz: "/nginx-health"
 
 serviceAccount:
   create: false

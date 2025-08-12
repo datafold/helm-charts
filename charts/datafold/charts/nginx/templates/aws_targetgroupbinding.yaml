@@ -1,5 +1,5 @@
 {{- if .Values.global.cloudProvider -}}
-{{-   if (eq .Values.global.cloudProvider "aws") -}}
+{{-   if and (eq .Values.global.cloudProvider "aws") .Values.targetGroupArn -}}
 apiVersion: elbv2.k8s.aws/v1beta1
 kind: TargetGroupBinding
 metadata:
