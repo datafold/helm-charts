@@ -1,5 +1,9 @@
 replicaCount: 1
 
+# DMA instance prefix for multi-instance deployments
+# When set, creates unique resource names: {release}-{prefix}-{resource}
+prefix: ""
+
 image:
   repository: us-docker.pkg.dev/datadiff-mm/datafold/dmadev
   pullPolicy: IfNotPresent
@@ -42,10 +46,11 @@ service:
 resources:
   limits:
     cpu: 1000m
-    memory: 60Gi
+    # changing depending on the size of the data and nodes.
+    memory: 30Gi
   requests:
     cpu: 1000m
-    memory: 60Gi
+    memory: 30Gi
 
 storage:
   storageClass: "sc-datafold-aws"
@@ -64,7 +69,4 @@ dma:
   env: []
   ssh:
     port: 2222
-    # Username for SSH access
     username: "datafold"
-
-restartPolicy: Always

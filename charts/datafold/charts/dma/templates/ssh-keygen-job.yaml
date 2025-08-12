@@ -1,7 +1,8 @@
+{{- if .Values.ssh.createSecrets -}}
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ include "dma.fullname" . }}-ssh-keygen
+  name: {{ include "dma.names.shared-ssh-keygen-job" . }}
   labels:
     {{- include "dma.labels" . | nindent 4 }}
   annotations:
@@ -11,7 +12,7 @@ metadata:
 spec:
   template:
     metadata:
-      name: {{ include "dma.fullname" . }}-ssh-keygen
+      name: {{ include "dma.names.shared-ssh-keygen-job" . }}
     spec:
       restartPolicy: Never
       containers:
@@ -27,7 +28,7 @@ spec:
               apk add --no-cache openssh-keygen
               
               # Check if secret already exists
-              if kubectl get secret {{ include "dma.fullname" . }}-ssh-host-keys --namespace={{ .Release.Namespace }} >/dev/null 2>&1; then
+              if kubectl get secret {{ include "dma.names.shared-ssh-host-keys" . }} --namespace={{ .Release.Namespace }} >/dev/null 2>&1; then
                 echo "SSH host keys secret already exists, skipping generation"
                 exit 0
               fi
@@ -46,7 +47,7 @@ spec:
               echo "Creating Kubernetes secret..."
               
               # Create SSH host keys secret
-              kubectl create secret generic {{ include "dma.fullname" . }}-ssh-host-keys \
+              kubectl create secret generic {{ include "dma.names.shared-ssh-host-keys" . }} \
                 --namespace={{ .Release.Namespace }} \
                 --from-file=ssh_host_rsa_key=/tmp/ssh_host_rsa_key \
                 --from-file=ssh_host_rsa_key.pub=/tmp/ssh_host_rsa_key.pub \
@@ -57,3 +58,4 @@ spec:
                 
               echo "SSH host keys generated and stored successfully"
       serviceAccountName: {{ .Values.jobServiceAccount.name }}
+{{- end }}

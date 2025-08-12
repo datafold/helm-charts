@@ -1,7 +1,8 @@
+{{- if .Values.ssh.createConfigMap -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "dma.fullname" . }}-sshd-config
+  name: {{ include "dma.names.shared-configmap" . }}
   labels:
     {{- include "dma.labels" . | nindent 4 }}
 data:
@@ -21,3 +22,4 @@ data:
     GatewayPorts yes
     Port {{ .Values.dma.ssh.port }}
     PermitOpen any
+{{- end }}

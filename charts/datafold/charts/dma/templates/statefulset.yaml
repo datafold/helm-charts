@@ -1,13 +1,12 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  name: {{ include "dma.fullname" . }}
+  name: {{ include "dma.names.statefulset" . }}
   labels:
     {{- include "dma.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
-  strategy:
-    type: Recreate
+  serviceName: {{ include "dma.names.service" . }}
   selector:
     matchLabels:
       {{- include "dma.selectorLabels" . | nindent 6 }}
@@ -79,17 +78,14 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       volumes:
-        - name: dma-data
-          persistentVolumeClaim:
-            claimName: {{ include "dma.fullname" . }}-data
         # SSH configuration
         - name: sshd-config
           configMap:
-            name: {{ include "dma.fullname" . }}-sshd-config
+            name: {{ include "dma.names.shared-configmap" . }}
         # SSH host keys
         - name: ssh-host-keys
           secret:
-            secretName: {{ include "dma.fullname" . }}-ssh-host-keys
+            secretName: {{ include "dma.names.shared-ssh-host-keys" . }}
             defaultMode: 0600
         {{- with .Values.volumes }}
         {{- toYaml . | nindent 8 }}
@@ -106,3 +102,15 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+  volumeClaimTemplates:
+    - metadata:
+        name: {{ include "dma.names.volumeClaimTemplate" . }}
+        labels:
+          {{- include "dma.labels" . | nindent 10 }}
+      spec:
+        accessModes:
+          - {{ .Values.storage.accessMode }}
+        storageClassName: {{ .Values.storage.storageClass }}
+        resources:
+          requests:
+            storage: {{ .Values.storage.size }}

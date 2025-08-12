@@ -2,7 +2,7 @@ apiVersion: v2
 name: datafold
 description: Helm chart package to deploy Datafold on kubernetes.
 type: application
-version: 0.8.1
+version: 0.9.0
 appVersion: "1.0.0"
 icon: https://www.datafold.com/logo.png
 
@@ -102,6 +102,16 @@ dependencies:
     repository: file://charts/dma
     condition: dma.install
     alias: dma
+  - name: dma
+    version: "0.1.0"
+    repository: file://charts/dma
+    condition: dma2.install
+    alias: dma2
+  - name: dma
+    version: "0.1.0"
+    repository: file://charts/dma
+    condition: dma3.install
+    alias: dma3
   - name: nginx
     version: "0.1.0"
     repository: file://charts/nginx

@@ -78,3 +78,73 @@ replica-count: "{{ .Values.replicaCount }}"
 {{- toYaml . }}
 {{- end }}
 {{- end }}
+
+{{/*
+DMA resource names with consistent prefixing
+*/}}
+{{- define "dma.names.statefulset" -}}
+{{- if .Values.prefix }}
+{{- printf "%s-%s-dma-statefulset" .Release.Name .Values.prefix }}
+{{- else }}
+{{- printf "%s-dma-statefulset" .Release.Name }}
+{{- end }}
+{{- end }}
+
+{{- define "dma.names.service" -}}
+{{- if .Values.prefix }}
+{{- printf "%s-%s-dma-headless" .Release.Name .Values.prefix }}
+{{- else }}
+{{- printf "%s-dma-headless" .Release.Name }}
+{{- end }}
+{{- end }}
+
+{{- define "dma.names.configmap" -}}
+{{- if .Values.prefix }}
+{{- printf "%s-%s-dma-sshd-config" .Release.Name .Values.prefix }}
+{{- else }}
+{{- printf "%s-dma-sshd-config" .Release.Name }}
+{{- end }}
+{{- end }}
+
+{{- define "dma.names.ssh-host-keys" -}}
+{{- if .Values.prefix }}
+{{- printf "%s-%s-dma-ssh-host-keys" .Release.Name .Values.prefix }}
+{{- else }}
+{{- printf "%s-dma-ssh-host-keys" .Release.Name }}
+{{- end }}
+{{- end }}
+
+{{- define "dma.names.ssh-keygen-job" -}}
+{{- if .Values.prefix }}
+{{- printf "%s-%s-dma-ssh-keygen" .Release.Name .Values.prefix }}
+{{- else }}
+{{- printf "%s-dma-ssh-keygen" .Release.Name }}
+{{- end }}
+{{- end }}
+
+{{- define "dma.names.volumeClaimTemplate" -}}
+dma-data
+{{- end }}
+
+{{- define "dma.names.pvc" -}}
+{{- if .Values.prefix }}
+{{- printf "%s-%s-dma-data" .Release.Name .Values.prefix }}
+{{- else }}
+{{- printf "%s-dma-data" .Release.Name }}
+{{- end }}
+{{- end }}
+
+{{/*
+Shared SSH resource names (not prefixed - shared across all DMA instances)
+*/}}
+{{- define "dma.names.shared-configmap" -}}
+{{- printf "%s-dma-sshd-config" .Release.Name }}
+{{- end }}
+
+{{- define "dma.names.shared-ssh-host-keys" -}}
+{{- printf "%s-dma-ssh-host-keys" .Release.Name }}
+{{- end }}
+
+{{- define "dma.names.shared-ssh-keygen-job" -}}
+{{- printf "%s-dma-ssh-keygen" .Release.Name }}
+{{- end }}
