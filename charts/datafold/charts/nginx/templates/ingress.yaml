@@ -9,7 +9,8 @@ metadata:
 spec:
   {{- include "nginx.ingress.class" . | nindent 2 }}
   rules:
-  - http:
+  - host: {{ .Values.global.serverName }}
+    http:
       paths:
       - path: /
         pathType: Prefix
