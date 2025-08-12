@@ -141,7 +141,9 @@ annotations:
   alb.ingress.kubernetes.io/backend-protocol: HTTP
   alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80}, {"HTTPS":443}]'
   alb.ingress.kubernetes.io/ssl-redirect: '443'
+  {{- if .Values.ingress.sslCertificate }}
   alb.ingress.kubernetes.io/certificate-arn: {{ .Values.ingress.sslCertificate }}
+  {{- end }}
   alb.ingress.kubernetes.io/healthcheck-protocol: HTTP
   alb.ingress.kubernetes.io/healthcheck-port: traffic-port
   alb.ingress.kubernetes.io/healthcheck-path: {{ .Values.ingress.healthz }}
@@ -151,9 +153,13 @@ annotations:
   alb.ingress.kubernetes.io/healthy-threshold-count: '2'
   alb.ingress.kubernetes.io/unhealthy-threshold-count: '2'
   alb.ingress.kubernetes.io/load-balancer-attributes: idle_timeout.timeout_seconds=300
+  {{- if .Values.ingress.secgroups }}
   alb.ingress.kubernetes.io/security-groups: {{ .Values.ingress.secgroups }}
+  {{- end }}
   alb.ingress.kubernetes.io/ssl-policy: "ELBSecurityPolicy-TLS13-1-2-Res-2021-06"
+  {{- if .Values.ingress.subnets }}
   alb.ingress.kubernetes.io/subnets: {{ .Values.ingress.subnets }}
+  {{- end }}
   alb.ingress.kubernetes.io/tags: Application=datafold
 {{- end }}
 {{- end }}
