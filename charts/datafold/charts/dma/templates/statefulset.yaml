@@ -1,0 +1,116 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "dma.names.statefulset" . }}
+  labels:
+    {{- include "dma.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  serviceName: {{ include "dma.names.service" . }}
+  selector:
+    matchLabels:
+      {{- include "dma.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      annotations:
+        {{- include "dma.datafold.annotations" . | nindent 8 }}
+        {{- include "dma.datadog.annotations" . | nindent 8 }}
+      labels:
+        {{- include "dma.labels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ .Values.serviceAccount.name }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
+      initContainers:
+        {{- toYaml .Values.initContainers | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            {{- range .Values.dma.env }}
+            - name: {{ .name }}
+              value: {{ .value | quote }}
+            {{- end }}
+          ports:
+            - name: ssh
+              containerPort: {{ .Values.dma.ssh.port }}
+              protocol: TCP
+          volumeMounts:
+            - name: dma-data
+              mountPath: {{ .Values.storage.mountPath }}
+            # SSH configuration
+            - name: sshd-config
+              mountPath: /etc/ssh/sshd_config
+              subPath: sshd_config
+            # SSH host keys (mounted directly to /etc/ssh/ with proper permissions)
+            - name: ssh-host-keys
+              mountPath: /etc/ssh/ssh_host_rsa_key
+              subPath: ssh_host_rsa_key
+            - name: ssh-host-keys
+              mountPath: /etc/ssh/ssh_host_rsa_key.pub
+              subPath: ssh_host_rsa_key.pub
+            - name: ssh-host-keys
+              mountPath: /etc/ssh/ssh_host_ed25519_key
+              subPath: ssh_host_ed25519_key
+            - name: ssh-host-keys
+              mountPath: /etc/ssh/ssh_host_ed25519_key.pub
+              subPath: ssh_host_ed25519_key.pub
+            - name: ssh-host-keys
+              mountPath: /etc/ssh/ssh_host_ecdsa_key
+              subPath: ssh_host_ecdsa_key
+            - name: ssh-host-keys
+              mountPath: /etc/ssh/ssh_host_ecdsa_key.pub
+              subPath: ssh_host_ecdsa_key.pub
+            {{- with .Values.volumeMounts }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+        # SSH configuration
+        - name: sshd-config
+          configMap:
+            name: {{ include "dma.names.shared-configmap" . }}
+        # SSH host keys
+        - name: ssh-host-keys
+          secret:
+            secretName: {{ include "dma.names.shared-ssh-host-keys" . }}
+            defaultMode: 0600
+        {{- with .Values.volumes }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+  volumeClaimTemplates:
+    - metadata:
+        name: {{ include "dma.names.volumeClaimTemplate" . }}
+        labels:
+          {{- include "dma.labels" . | nindent 10 }}
+      spec:
+        accessModes:
+          - {{ .Values.storage.accessMode }}
+        storageClassName: {{ .Values.storage.storageClass }}
+        resources:
+          requests:
+            storage: {{ .Values.storage.size }}

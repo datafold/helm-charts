@@ -308,6 +308,37 @@ worker-monitor:
     requests:
       memory: 6Gi
 
+dma:
+  install: false
+  prefix: "one"
+  serviceAccount:
+    create: true
+  jobServiceAccount:
+    create: true
+  ssh:
+    createConfigMap: true
+    createSecrets: true
+dma2:
+  install: false
+  prefix: "two"
+  serviceAccount:
+    create: false
+  jobServiceAccount:
+    create: false
+  ssh:
+    createConfigMap: false
+    createSecrets: false
+dma3:
+  install: false
+  prefix: "three"
+  serviceAccount:
+    create: false
+  jobServiceAccount:
+    create: false
+  ssh:
+    createConfigMap: false
+    createSecrets: false
+
 storage-worker:
   install: false
   replicaCount: 0

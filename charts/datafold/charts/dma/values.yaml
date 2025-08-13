@@ -1,0 +1,72 @@
+replicaCount: 1
+
+# DMA instance prefix for multi-instance deployments
+# When set, creates unique resource names: {release}-{prefix}-{resource}
+prefix: ""
+
+image:
+  repository: us-docker.pkg.dev/datadiff-mm/datafold/dmadev
+  pullPolicy: IfNotPresent
+  tag: ""
+
+imagePullSecrets:
+  - name: datafold-docker-secret
+
+nameOverride: ""
+fullnameOverride: ""
+terminationGracePeriodSeconds: "30"
+
+serviceAccount:
+  create: true
+  automount: true
+  annotations: {}
+  roleArn: ""
+  name: "datafold-dma"
+
+jobServiceAccount:
+  create: true
+  automount: true
+  annotations: {}
+  name: "datafold-jobs"
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext:
+  runAsUser: 0
+  runAsNonRoot: false
+
+securityContext:
+  allowPrivilegeEscalation: false
+
+service:
+  type: ClusterIP
+  port: 9999 # Bogus port for headless service
+
+resources:
+  limits:
+    cpu: 1000m
+    # changing depending on the size of the data and nodes.
+    memory: 30Gi
+  requests:
+    cpu: 1000m
+    memory: 30Gi
+
+storage:
+  storageClass: "sc-datafold-aws"
+  accessMode: ReadWriteOnce
+  size: 200Gi
+  mountPath: /data
+
+volumes: []
+volumeMounts: []
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+dma:
+  env: []
+  ssh:
+    port: 2222
+    username: "datafold"
