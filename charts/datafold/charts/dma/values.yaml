@@ -7,7 +7,7 @@ prefix: ""
 image:
   repository: us-docker.pkg.dev/datadiff-mm/datafold/dmadev
   pullPolicy: IfNotPresent
-  tag: ""
+  tag: "latest"
 
 imagePullSecrets:
   - name: datafold-docker-secret
