@@ -14,18 +14,19 @@ spec:
     metadata:
       name: {{ include "dma.names.shared-ssh-keygen-job" . }}
     spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       restartPolicy: Never
       containers:
         - name: ssh-keygen
-          image: alpine/k8s:1.28.2
+          image: us-docker.pkg.dev/datadiff-mm/datafold/dmadev:latest
           command:
             - /bin/sh
             - -c
             - |
               set -e
-              
-              # Install openssh for key generation
-              apk add --no-cache openssh-keygen
               
               # Check if secret already exists
               if kubectl get secret {{ include "dma.names.shared-ssh-host-keys" . }} --namespace={{ .Release.Namespace }} >/dev/null 2>&1; then
