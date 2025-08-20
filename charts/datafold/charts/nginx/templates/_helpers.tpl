@@ -79,7 +79,11 @@ Setting the service type for the service
 {{-   if (eq .Values.global.cloudProvider "aws") -}}
 NodePort
 {{-   else if (eq .Values.global.cloudProvider "gcp") -}}
+{{-     if (eq .Values.ingress.deploy true) -}}
 ClusterIP
+{{-     else -}}
+ClusterIP
+{{-     end -}}
 {{-   else if (eq .Values.global.cloudProvider "azure") -}}
 ClusterIP
 {{-   end }}
@@ -119,13 +123,23 @@ Service annotations
 NEG annotations for Google Cloud
 */}}
 {{- if (eq .Values.global.cloudProvider "gcp") -}}
+{{- if .Values.global.nginx.gcpNegName -}}
 annotations:
   cloud.google.com/neg: '{"exposed_ports": {"{{ .Values.global.nginx.port }}":{"name": "{{ .Values.global.nginx.gcpNegName }}"}}}'
+{{- end }}
+{{- if (eq .Values.ingress.deploy true) -}}
+annotations:
+    cloud.google.com/neg: '{"ingress": true}'
+    cloud.google.com/backend-config: '{"default": "{{ include "nginx.fullname" . }}"}'
+{{- end }}
 {{- end }}
 {{- end }}
 
 {{/*
 Ingress annotations
+Important Google:
+* Google does not support FrontendConfig for ILB
+* You cannot use Managed Certificates with ILB, you have to provide them in secrets
 */}}
 {{- define "nginx.ingress.annotations" -}}
 {{- if (eq .Values.global.cloudProvider "azure") -}}
@@ -161,6 +175,29 @@ annotations:
   alb.ingress.kubernetes.io/subnets: {{ .Values.ingress.subnets }}
   {{- end }}
   alb.ingress.kubernetes.io/tags: Application=datafold
+{{- end }}
+{{- if (eq .Values.global.cloudProvider "gcp") -}}
+{{- if (eq .Values.ingress.deploy true) -}}
+annotations:
+  {{- if (eq .Values.ingress.internal true) }}
+  kubernetes.io/ingress.class: gce-internal
+  {{- else }}
+  kubernetes.io/ingress.class: gce
+  networking.gke.io/v1beta1.FrontendConfig: {{ include "nginx.fullname" . }}
+  {{- end }}
+  {{- if (eq .Values.ingress.certificateMethod "managed") }}
+  networking.gke.io/managed-certificates: {{ include "nginx.fullname" . }}
+  {{- end }}
+  {{- if .Values.ingress.staticIpName  }}
+  kubernetes.io/ingress.global-static-ip-name: {{ .Values.ingress.staticIpName }}
+  {{- end }}
+  {{- if (eq .Values.ingress.certificateMethod "preshared") }}
+  {{- if .Values.ingress.presharedCertificate }}
+  ingress.gcp.kubernetes.io/pre-shared-cert: {{ .Values.ingress.presharedCertificate }}
+  {{- end }}
+  {{- end }}
+  kubernetes.io/ingress.allow-http: "false"
+{{- end }}
 {{- end }}
 {{- end }}
 

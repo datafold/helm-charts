@@ -1,0 +1,246 @@
+{{- if .Values.rbac.create -}}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "datafold-manager.fullname" . }}-role
+  labels:
+    {{- include "datafold-manager.labels" . | nindent 4 }}
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - events
+  verbs:
+  - create
+  - patch
+- apiGroups:
+  - datafold.datafold.com
+  resources:
+  - datafoldapplications
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - datafold.datafold.com
+  resources:
+  - datafoldapplications/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - datafold.datafold.com
+  resources:
+  - datafoldapplications/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - apiextensions.k8s.io
+  resources:
+  - customresourcedefinitions
+  verbs:
+  - get
+  - list
+  - patch
+  - update
+  - watch
+  - create
+  - update
+  - patch
+#- apiGroups:
+#  - ""
+#  resources:
+#  - namespaces
+#  verbs:
+#  - get
+#  - list
+#  - watch
+- apiGroups:
+  - ""
+  resources:
+  - nodes
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - storage.k8s.io
+  resources:
+  - storageclasses
+  resourceNames:
+  - sc-datafold-aws
+  - sc-datafold-scratch
+  verbs:
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - storage.k8s.io
+  resources:
+  - storageclasses
+  verbs:
+  - create
+# Special role we need to be able to assign CR to datafold-operator
+# Ideally we get rid of this asap.
+- apiGroups:
+  - rbac.authorization.k8s.io
+  resources:
+  - clusterroles
+  - clusterrolebindings
+  resourceNames:
+  - datafold-operator
+  verbs:
+  - get
+  - list
+  - watch
+  - delete
+  - patch
+  - update
+- apiGroups:
+  - rbac.authorization.k8s.io
+  resources:
+  - clusterroles
+  - clusterrolebindings
+  verbs:
+  - create
+# Framework: admission webhook configuration management.
+- apiGroups:
+  - "admissionregistration.k8s.io/v1"
+  - "admissionregistration.k8s.io/v1beta1"
+  resources:
+  - "validatingwebhookconfigurations"
+  - "mutatingwebhookconfigurations"
+  verbs:
+  - create
+  - patch
+
+# Permissions allocated for transitive purposes (going to datafold-operator)
+- apiGroups:
+  - kopf.dev
+  resources:
+  - clusterkopfpeerings
+  verbs:
+  - list
+  - watch
+  - patch
+  - get
+- apiGroups:
+  - apiextensions.k8s.io
+  resources:
+  - customresourcedefinitions
+  verbs:
+  - list
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - namespaces
+  verbs:
+  - list
+  - watch
+- apiGroups:
+  - crds.datafold.com
+  resources:
+  - dfappmanagers
+  verbs:
+  - list
+  - watch
+{{- end }}
+
+{{- if .Values.rbac.create }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "datafold-manager.fullname" . }}-rolebinding
+  labels:
+    {{- include "datafold-manager.labels" . | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ include "datafold-manager.fullname" . }}-role
+subjects:
+- kind: ServiceAccount
+  name: {{ include "datafold-manager.serviceAccountName" . }}
+  namespace: {{ include "datafold-manager.namespace" . }}
+{{- end }}
+
+{{- if .Values.metrics.enabled }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "datafold-manager.fullname" . }}-metrics-reader
+  namespace: {{ include "datafold-manager.namespace" . }}
+  labels:
+    {{- include "datafold-manager.labels" . | nindent 4 }}
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - endpoints
+  verbs:
+  - get
+  - list
+  - watch
+{{- end }}
+
+{{- if .Values.metrics.enabled }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "datafold-manager.fullname" . }}-metrics-auth-reader
+  namespace: {{ include "datafold-manager.namespace" . }}
+  labels:
+    {{- include "datafold-manager.labels" . | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ include "datafold-manager.fullname" . }}-metrics-reader
+subjects:
+- kind: ServiceAccount
+  name: {{ include "datafold-manager.serviceAccountName" . }}
+  namespace: {{ include "datafold-manager.namespace" . }}
+{{- end }}
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "datafold-manager.fullname" . }}-role
+  namespace: {{ include "datafold-manager.namespace" . }}
+  labels:
+    {{- include "datafold-manager.labels" . | nindent 4 }}
+rules:
+- apiGroups:
+  - "*"
+  resources:
+  - "*"
+  verbs:
+  - "*"
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "datafold-manager.fullname" . }}-rolebinding
+  namespace: {{ include "datafold-manager.namespace" . }}
+  labels:
+    {{- include "datafold-manager.labels" . | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ include "datafold-manager.fullname" . }}-role
+subjects:
+- kind: ServiceAccount
+  name: {{ include "datafold-manager.serviceAccountName" . }}
+  namespace: {{ include "datafold-manager.namespace" . }}

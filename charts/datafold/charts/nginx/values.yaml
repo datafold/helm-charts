@@ -16,10 +16,16 @@ service:
 
 ingress:
   deploy: false
-  sslCertificate: ""
+  internal: false
+  cloudArmorPolicy: ""
+  certificateMethod: "managed"
   secgroups: ""
+  sslCertificate: ""
+  sslPolicy: ""
+  staticIpName: ""
   subnets: ""
-  healthz: "/nginx-health"
+  presharedCertificate: ""
+  tlsSecretName: ""
 
 serviceAccount:
   create: false
