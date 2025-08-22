@@ -61,16 +61,10 @@ redis:
 clickhouse:
   install: true
 
-postgres:
-  install: true
-
 dfshell:
   install: true
 
 worker-portal:
-  install: false
-
-initjob:
   install: false
 
 operator:
