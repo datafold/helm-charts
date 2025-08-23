@@ -150,7 +150,12 @@ annotations:
 {{- if (eq .Values.global.cloudProvider "aws") -}}
 annotations:
   kubernetes.io/ingress.class: alb
+  alb.ingress.kubernetes.io/load-balancer-name: {{ .Release.Name }}
+  {{- if (eq .Values.ingress.internal true) }}
   alb.ingress.kubernetes.io/scheme: internal
+  {{- else }}
+  alb.ingress.kubernetes.io/scheme: internet-facing
+  {{- end }}
   alb.ingress.kubernetes.io/target-type: instance
   alb.ingress.kubernetes.io/backend-protocol: HTTP
   alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80}, {"HTTPS":443}]'
@@ -166,11 +171,11 @@ annotations:
   alb.ingress.kubernetes.io/success-codes: '200'
   alb.ingress.kubernetes.io/healthy-threshold-count: '2'
   alb.ingress.kubernetes.io/unhealthy-threshold-count: '2'
-  alb.ingress.kubernetes.io/load-balancer-attributes: idle_timeout.timeout_seconds=300
+  alb.ingress.kubernetes.io/load-balancer-attributes: {{ .Values.ingress.awsAttributes }}
   {{- if .Values.ingress.secgroups }}
   alb.ingress.kubernetes.io/security-groups: {{ .Values.ingress.secgroups }}
   {{- end }}
-  alb.ingress.kubernetes.io/ssl-policy: "ELBSecurityPolicy-TLS13-1-2-Res-2021-06"
+  alb.ingress.kubernetes.io/ssl-policy: {{ .Values.ingress.awsSecurityPolicy }}
   {{- if .Values.ingress.subnets }}
   alb.ingress.kubernetes.io/subnets: {{ .Values.ingress.subnets }}
   {{- end }}
