@@ -89,7 +89,7 @@ dependencies:
     repository: file://charts/storage-worker
     condition: storage-worker.install
     alias: storage-worker
-  - name: storage-worker-large
+  - name: storage-worker
     version: "0.1.1"
     repository: file://charts/storage-worker
     condition: storage-worker-large.install
