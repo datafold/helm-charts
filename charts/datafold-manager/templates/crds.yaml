@@ -46,9 +46,20 @@ spec:
                     default: clickhouse
                     description: Database specifies the database name
                     type: string
-                  password:
-                    description: Password specifies the ClickHouse password
-                    type: string
+                  passwordSecret:
+                    description: PasswordSecret references the secret containing the
+                      ClickHouse password
+                    properties:
+                      keyName:
+                        description: KeyName is the key within the secret
+                        type: string
+                      secretName:
+                        description: SecretName is the name of the secret
+                        type: string
+                    required:
+                    - keyName
+                    - secretName
+                    type: object
                   port:
                     default: 9000
                     description: Port specifies the port for ClickHouse server
@@ -1054,9 +1065,20 @@ spec:
                     description: DefaultSender specifies the default sender email
                       address
                     type: string
-                  password:
-                    description: Password specifies the SMTP password
-                    type: string
+                  passwordSecret:
+                    description: PasswordSecret references the secret containing the
+                      SMTP password
+                    properties:
+                      keyName:
+                        description: KeyName is the key within the secret
+                        type: string
+                      secretName:
+                        description: SecretName is the name of the secret
+                        type: string
+                    required:
+                    - keyName
+                    - secretName
+                    type: object
                   server:
                     description: Server specifies the SMTP server address
                     type: string
@@ -1065,7 +1087,6 @@ spec:
                     type: string
                 required:
                 - defaultSender
-                - password
                 - server
                 - username
                 type: object
@@ -1203,58 +1224,57 @@ spec:
                   datadog:
                     description: Datadog contains Datadog-specific configuration
                     properties:
-                      configuration:
-                        description: Configuration contains Datadog configuration
-                          settings
+                      apm:
+                        default: false
+                        description: APM enables Application Performance Monitoring
+                        type: boolean
+                      applicationId:
+                        description: ApplicationId contains the Datadog application
+                          ID
+                        type: string
+                      clientToken:
+                        description: ClientToken contains the Datadog client token
+                        type: string
+                      monitorPostgres:
+                        default: true
+                        description: MonitorPostgres enables PostgreSQL monitoring
+                        type: boolean
+                      npm:
+                        description: NPM contains Network Performance Monitoring configuration
                         properties:
-                          apm:
-                            default: false
-                            description: APM enables Application Performance Monitoring
-                            type: boolean
-                          monitorPostgres:
+                          dnsstats:
                             default: true
-                            description: MonitorPostgres enables PostgreSQL monitoring
+                            description: Dnsstats enables DNS statistics collection
                             type: boolean
-                          npm:
-                            description: NPM contains Network Performance Monitoring
-                              configuration
-                            properties:
-                              dnsstats:
-                                default: true
-                                description: Dnsstats enables DNS statistics collection
-                                type: boolean
-                              enabled:
-                                default: true
-                                description: Enabled enables Network Performance Monitoring
-                                type: boolean
-                            required:
-                            - dnsstats
-                            - enabled
-                            type: object
+                          enabled:
+                            default: true
+                            description: Enabled enables Network Performance Monitoring
+                            type: boolean
                         required:
-                        - apm
-                        - monitorPostgres
-                        - npm
-                        type: object
-                      secrets:
-                        description: Secrets contains Datadog secret references
-                        properties:
-                          apiKey:
-                            description: ApiKey contains the Datadog API key
-                            type: string
-                          appKey:
-                            description: AppKey contains the Datadog app key
-                            type: string
-                          applicationId:
-                            description: ApplicationId contains the Datadog application
-                              ID
-                            type: string
-                          clientToken:
-                            description: ClientToken contains the Datadog client token
-                            type: string
+                        - dnsstats
+                        - enabled
                         type: object
                     required:
-                    - configuration
+                    - apm
+                    - monitorPostgres
+                    - npm
+                    type: object
+                  monitoringApiKey:
+                    default:
+                      keyName: monitoringApiKey
+                      secretName: datafold-operator-secrets
+                    description: MonitoringApiKeySecret references the secret containing
+                      the monitoring API key
+                    properties:
+                      keyName:
+                        description: KeyName is the key within the secret
+                        type: string
+                      secretName:
+                        description: SecretName is the name of the secret
+                        type: string
+                    required:
+                    - keyName
+                    - secretName
                     type: object
                   type:
                     default: none
@@ -1263,6 +1283,8 @@ spec:
                     - none
                     - datadog
                     type: string
+                required:
+                - monitoringApiKey
                 type: object
               nginx:
                 description: Nginx contains configuration for the nginx component
@@ -1295,25 +1317,57 @@ spec:
                   database:
                     description: Database specifies the database name
                     type: string
-                  datadog_password:
-                    description: DatadogPassword specifies the Datadog monitoring
-                      password
-                    type: string
-                  password:
-                    description: Password specifies the PostgreSQL password
-                    type: string
+                  passwordSecret:
+                    description: PasswordSecret references the secret containing the
+                      PostgreSQL password
+                    properties:
+                      keyName:
+                        description: KeyName is the key within the secret
+                        type: string
+                      secretName:
+                        description: SecretName is the name of the secret
+                        type: string
+                    required:
+                    - keyName
+                    - secretName
+                    type: object
                   port:
                     default: 5432
                     description: Port specifies the port for PostgreSQL server
                     format: int32
                     type: integer
-                  ro_password:
-                    description: ROPassword specifies the read-only user password
-                    type: string
+                  postgresMonitoringPasswordSecret:
+                    description: PostgresMonitoringPasswordSecret references the secret
+                      containing the Datadog monitoring password
+                    properties:
+                      keyName:
+                        description: KeyName is the key within the secret
+                        type: string
+                      secretName:
+                        description: SecretName is the name of the secret
+                        type: string
+                    required:
+                    - keyName
+                    - secretName
+                    type: object
                   ro_user:
                     default: datafold_ro
                     description: ROUser specifies the read-only user
                     type: string
+                  roPasswordSecret:
+                    description: ROPasswordSecret references the secret containing
+                      the read-only user password
+                    properties:
+                      keyName:
+                        description: KeyName is the key within the secret
+                        type: string
+                      secretName:
+                        description: SecretName is the name of the secret
+                        type: string
+                    required:
+                    - keyName
+                    - secretName
+                    type: object
                   server:
                     description: Server specifies the PostgreSQL server address
                     type: string
@@ -1324,9 +1378,20 @@ spec:
               redis:
                 description: Redis contains configuration for Redis cache
                 properties:
-                  password:
-                    description: Password specifies the Redis password
-                    type: string
+                  passwordSecret:
+                    description: PasswordSecret references the secret containing the
+                      Redis password
+                    properties:
+                      keyName:
+                        description: KeyName is the key within the secret
+                        type: string
+                      secretName:
+                        description: SecretName is the name of the secret
+                        type: string
+                    required:
+                    - keyName
+                    - secretName
+                    type: object
                   port:
                     default: 6379
                     description: Port specifies the port for Redis server
