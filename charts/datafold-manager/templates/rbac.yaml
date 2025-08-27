@@ -89,6 +89,16 @@ rules:
   - storageclasses
   verbs:
   - create
+- apiGroups:
+  - ""
+  resources:
+  - persistentvolumes
+  verbs:
+  - create
+  - get
+  - list
+  - patch
+  - update
 # Special role we need to be able to assign CR to datafold-operator
 # Ideally we get rid of this asap.
 - apiGroups:

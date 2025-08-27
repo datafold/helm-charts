@@ -67,10 +67,15 @@ spec:
                     description: ClickHouse enables ClickHouse database
                     properties:
                       enabled:
-                        default: true
                         description: Enabled specifies whether this component should
                           be installed
                         type: boolean
+                      rawValues:
+                        description: |-
+                          RawValues contains arbitrary Helm values to pass directly to this component's subchart
+                          These values will be merged with the component's default values and can override any
+                          configuration option supported by the component's Helm chart
+                        x-kubernetes-preserve-unknown-fields: true
                       replicas:
                         description: Replicas specifies the number of replicas for
                           this component
@@ -81,16 +86,210 @@ spec:
                           for this component
                         properties:
                           limits:
-                            additionalProperties:
-                              type: string
                             description: Limits specifies the maximum resources that
                               can be used
+                            properties:
+                              cpu:
+                                description: CPU specifies the maximum CPU resources
+                                type: string
+                              memory:
+                                description: Memory specifies the maximum memory resources
+                                type: string
                             type: object
                           requests:
-                            additionalProperties:
-                              type: string
                             description: Requests specifies the minimum resources
                               that should be allocated
+                            properties:
+                              cpu:
+                                description: CPU specifies the minimum CPU resources
+                                type: string
+                              memory:
+                                description: Memory specifies the minimum memory resources
+                                type: string
+                            type: object
+                        type: object
+                    type: object
+                  dfshell:
+                    description: Dfshell enables the dfshell component
+                    properties:
+                      enabled:
+                        description: Enabled specifies whether this component should
+                          be installed
+                        type: boolean
+                      rawValues:
+                        description: |-
+                          RawValues contains arbitrary Helm values to pass directly to this component's subchart
+                          These values will be merged with the component's default values and can override any
+                          configuration option supported by the component's Helm chart
+                        x-kubernetes-preserve-unknown-fields: true
+                      replicas:
+                        description: Replicas specifies the number of replicas for
+                          this component
+                        format: int32
+                        type: integer
+                      resources:
+                        description: Resources specifies the resource requirements
+                          for this component
+                        properties:
+                          limits:
+                            description: Limits specifies the maximum resources that
+                              can be used
+                            properties:
+                              cpu:
+                                description: CPU specifies the maximum CPU resources
+                                type: string
+                              memory:
+                                description: Memory specifies the maximum memory resources
+                                type: string
+                            type: object
+                          requests:
+                            description: Requests specifies the minimum resources
+                              that should be allocated
+                            properties:
+                              cpu:
+                                description: CPU specifies the minimum CPU resources
+                                type: string
+                              memory:
+                                description: Memory specifies the minimum memory resources
+                                type: string
+                            type: object
+                        type: object
+                    type: object
+                  dma:
+                    description: Dma enables the DMA component
+                    properties:
+                      enabled:
+                        description: Enabled specifies whether this component should
+                          be installed
+                        type: boolean
+                      rawValues:
+                        description: |-
+                          RawValues contains arbitrary Helm values to pass directly to this component's subchart
+                          These values will be merged with the component's default values and can override any
+                          configuration option supported by the component's Helm chart
+                        x-kubernetes-preserve-unknown-fields: true
+                      replicas:
+                        description: Replicas specifies the number of replicas for
+                          this component
+                        format: int32
+                        type: integer
+                      resources:
+                        description: Resources specifies the resource requirements
+                          for this component
+                        properties:
+                          limits:
+                            description: Limits specifies the maximum resources that
+                              can be used
+                            properties:
+                              cpu:
+                                description: CPU specifies the maximum CPU resources
+                                type: string
+                              memory:
+                                description: Memory specifies the maximum memory resources
+                                type: string
+                            type: object
+                          requests:
+                            description: Requests specifies the minimum resources
+                              that should be allocated
+                            properties:
+                              cpu:
+                                description: CPU specifies the minimum CPU resources
+                                type: string
+                              memory:
+                                description: Memory specifies the minimum memory resources
+                                type: string
+                            type: object
+                        type: object
+                    type: object
+                  dma2:
+                    description: Dma2 enables the second DMA instance
+                    properties:
+                      enabled:
+                        description: Enabled specifies whether this component should
+                          be installed
+                        type: boolean
+                      rawValues:
+                        description: |-
+                          RawValues contains arbitrary Helm values to pass directly to this component's subchart
+                          These values will be merged with the component's default values and can override any
+                          configuration option supported by the component's Helm chart
+                        x-kubernetes-preserve-unknown-fields: true
+                      replicas:
+                        description: Replicas specifies the number of replicas for
+                          this component
+                        format: int32
+                        type: integer
+                      resources:
+                        description: Resources specifies the resource requirements
+                          for this component
+                        properties:
+                          limits:
+                            description: Limits specifies the maximum resources that
+                              can be used
+                            properties:
+                              cpu:
+                                description: CPU specifies the maximum CPU resources
+                                type: string
+                              memory:
+                                description: Memory specifies the maximum memory resources
+                                type: string
+                            type: object
+                          requests:
+                            description: Requests specifies the minimum resources
+                              that should be allocated
+                            properties:
+                              cpu:
+                                description: CPU specifies the minimum CPU resources
+                                type: string
+                              memory:
+                                description: Memory specifies the minimum memory resources
+                                type: string
+                            type: object
+                        type: object
+                    type: object
+                  dma3:
+                    description: Dma3 enables the third DMA instance
+                    properties:
+                      enabled:
+                        description: Enabled specifies whether this component should
+                          be installed
+                        type: boolean
+                      rawValues:
+                        description: |-
+                          RawValues contains arbitrary Helm values to pass directly to this component's subchart
+                          These values will be merged with the component's default values and can override any
+                          configuration option supported by the component's Helm chart
+                        x-kubernetes-preserve-unknown-fields: true
+                      replicas:
+                        description: Replicas specifies the number of replicas for
+                          this component
+                        format: int32
+                        type: integer
+                      resources:
+                        description: Resources specifies the resource requirements
+                          for this component
+                        properties:
+                          limits:
+                            description: Limits specifies the maximum resources that
+                              can be used
+                            properties:
+                              cpu:
+                                description: CPU specifies the maximum CPU resources
+                                type: string
+                              memory:
+                                description: Memory specifies the maximum memory resources
+                                type: string
+                            type: object
+                          requests:
+                            description: Requests specifies the minimum resources
+                              that should be allocated
+                            properties:
+                              cpu:
+                                description: CPU specifies the minimum CPU resources
+                                type: string
+                              memory:
+                                description: Memory specifies the minimum memory resources
+                                type: string
                             type: object
                         type: object
                     type: object
@@ -98,10 +297,15 @@ spec:
                     description: Nginx enables the nginx ingress
                     properties:
                       enabled:
-                        default: true
                         description: Enabled specifies whether this component should
                           be installed
                         type: boolean
+                      rawValues:
+                        description: |-
+                          RawValues contains arbitrary Helm values to pass directly to this component's subchart
+                          These values will be merged with the component's default values and can override any
+                          configuration option supported by the component's Helm chart
+                        x-kubernetes-preserve-unknown-fields: true
                       replicas:
                         description: Replicas specifies the number of replicas for
                           this component
@@ -112,16 +316,26 @@ spec:
                           for this component
                         properties:
                           limits:
-                            additionalProperties:
-                              type: string
                             description: Limits specifies the maximum resources that
                               can be used
+                            properties:
+                              cpu:
+                                description: CPU specifies the maximum CPU resources
+                                type: string
+                              memory:
+                                description: Memory specifies the maximum memory resources
+                                type: string
                             type: object
                           requests:
-                            additionalProperties:
-                              type: string
                             description: Requests specifies the minimum resources
                               that should be allocated
+                            properties:
+                              cpu:
+                                description: CPU specifies the minimum CPU resources
+                                type: string
+                              memory:
+                                description: Memory specifies the minimum memory resources
+                                type: string
                             type: object
                         type: object
                     type: object
@@ -129,10 +343,15 @@ spec:
                     description: Operator enables the operator component
                     properties:
                       enabled:
-                        default: true
                         description: Enabled specifies whether this component should
                           be installed
                         type: boolean
+                      rawValues:
+                        description: |-
+                          RawValues contains arbitrary Helm values to pass directly to this component's subchart
+                          These values will be merged with the component's default values and can override any
+                          configuration option supported by the component's Helm chart
+                        x-kubernetes-preserve-unknown-fields: true
                       replicas:
                         description: Replicas specifies the number of replicas for
                           this component
@@ -143,16 +362,26 @@ spec:
                           for this component
                         properties:
                           limits:
-                            additionalProperties:
-                              type: string
                             description: Limits specifies the maximum resources that
                               can be used
+                            properties:
+                              cpu:
+                                description: CPU specifies the maximum CPU resources
+                                type: string
+                              memory:
+                                description: Memory specifies the maximum memory resources
+                                type: string
                             type: object
                           requests:
-                            additionalProperties:
-                              type: string
                             description: Requests specifies the minimum resources
                               that should be allocated
+                            properties:
+                              cpu:
+                                description: CPU specifies the minimum CPU resources
+                                type: string
+                              memory:
+                                description: Memory specifies the minimum memory resources
+                                type: string
                             type: object
                         type: object
                     type: object
@@ -160,10 +389,15 @@ spec:
                     description: Redis enables Redis cache
                     properties:
                       enabled:
-                        default: true
                         description: Enabled specifies whether this component should
                           be installed
                         type: boolean
+                      rawValues:
+                        description: |-
+                          RawValues contains arbitrary Helm values to pass directly to this component's subchart
+                          These values will be merged with the component's default values and can override any
+                          configuration option supported by the component's Helm chart
+                        x-kubernetes-preserve-unknown-fields: true
                       replicas:
                         description: Replicas specifies the number of replicas for
                           this component
@@ -174,16 +408,26 @@ spec:
                           for this component
                         properties:
                           limits:
-                            additionalProperties:
-                              type: string
                             description: Limits specifies the maximum resources that
                               can be used
+                            properties:
+                              cpu:
+                                description: CPU specifies the maximum CPU resources
+                                type: string
+                              memory:
+                                description: Memory specifies the maximum memory resources
+                                type: string
                             type: object
                           requests:
-                            additionalProperties:
-                              type: string
                             description: Requests specifies the minimum resources
                               that should be allocated
+                            properties:
+                              cpu:
+                                description: CPU specifies the minimum CPU resources
+                                type: string
+                              memory:
+                                description: Memory specifies the minimum memory resources
+                                type: string
                             type: object
                         type: object
                     type: object
@@ -191,10 +435,15 @@ spec:
                     description: Scheduler enables the scheduler component
                     properties:
                       enabled:
-                        default: true
                         description: Enabled specifies whether this component should
                           be installed
                         type: boolean
+                      rawValues:
+                        description: |-
+                          RawValues contains arbitrary Helm values to pass directly to this component's subchart
+                          These values will be merged with the component's default values and can override any
+                          configuration option supported by the component's Helm chart
+                        x-kubernetes-preserve-unknown-fields: true
                       replicas:
                         description: Replicas specifies the number of replicas for
                           this component
@@ -205,16 +454,26 @@ spec:
                           for this component
                         properties:
                           limits:
-                            additionalProperties:
-                              type: string
                             description: Limits specifies the maximum resources that
                               can be used
+                            properties:
+                              cpu:
+                                description: CPU specifies the maximum CPU resources
+                                type: string
+                              memory:
+                                description: Memory specifies the maximum memory resources
+                                type: string
                             type: object
                           requests:
-                            additionalProperties:
-                              type: string
                             description: Requests specifies the minimum resources
                               that should be allocated
+                            properties:
+                              cpu:
+                                description: CPU specifies the minimum CPU resources
+                                type: string
+                              memory:
+                                description: Memory specifies the minimum memory resources
+                                type: string
                             type: object
                         type: object
                     type: object
@@ -222,10 +481,15 @@ spec:
                     description: Server enables the main Datafold server
                     properties:
                       enabled:
-                        default: true
                         description: Enabled specifies whether this component should
                           be installed
                         type: boolean
+                      rawValues:
+                        description: |-
+                          RawValues contains arbitrary Helm values to pass directly to this component's subchart
+                          These values will be merged with the component's default values and can override any
+                          configuration option supported by the component's Helm chart
+                        x-kubernetes-preserve-unknown-fields: true
                       replicas:
                         description: Replicas specifies the number of replicas for
                           this component
@@ -236,16 +500,72 @@ spec:
                           for this component
                         properties:
                           limits:
-                            additionalProperties:
-                              type: string
                             description: Limits specifies the maximum resources that
                               can be used
+                            properties:
+                              cpu:
+                                description: CPU specifies the maximum CPU resources
+                                type: string
+                              memory:
+                                description: Memory specifies the maximum memory resources
+                                type: string
                             type: object
                           requests:
-                            additionalProperties:
-                              type: string
                             description: Requests specifies the minimum resources
                               that should be allocated
+                            properties:
+                              cpu:
+                                description: CPU specifies the minimum CPU resources
+                                type: string
+                              memory:
+                                description: Memory specifies the minimum memory resources
+                                type: string
+                            type: object
+                        type: object
+                    type: object
+                  storage-worker:
+                    description: StorageWorker enables the storage worker
+                    properties:
+                      enabled:
+                        description: Enabled specifies whether this component should
+                          be installed
+                        type: boolean
+                      rawValues:
+                        description: |-
+                          RawValues contains arbitrary Helm values to pass directly to this component's subchart
+                          These values will be merged with the component's default values and can override any
+                          configuration option supported by the component's Helm chart
+                        x-kubernetes-preserve-unknown-fields: true
+                      replicas:
+                        description: Replicas specifies the number of replicas for
+                          this component
+                        format: int32
+                        type: integer
+                      resources:
+                        description: Resources specifies the resource requirements
+                          for this component
+                        properties:
+                          limits:
+                            description: Limits specifies the maximum resources that
+                              can be used
+                            properties:
+                              cpu:
+                                description: CPU specifies the maximum CPU resources
+                                type: string
+                              memory:
+                                description: Memory specifies the maximum memory resources
+                                type: string
+                            type: object
+                          requests:
+                            description: Requests specifies the minimum resources
+                              that should be allocated
+                            properties:
+                              cpu:
+                                description: CPU specifies the minimum CPU resources
+                                type: string
+                              memory:
+                                description: Memory specifies the minimum memory resources
+                                type: string
                             type: object
                         type: object
                     type: object
@@ -253,10 +573,15 @@ spec:
                     description: Worker enables the worker components
                     properties:
                       enabled:
-                        default: true
                         description: Enabled specifies whether this component should
                           be installed
                         type: boolean
+                      rawValues:
+                        description: |-
+                          RawValues contains arbitrary Helm values to pass directly to this component's subchart
+                          These values will be merged with the component's default values and can override any
+                          configuration option supported by the component's Helm chart
+                        x-kubernetes-preserve-unknown-fields: true
                       replicas:
                         description: Replicas specifies the number of replicas for
                           this component
@@ -267,20 +592,461 @@ spec:
                           for this component
                         properties:
                           limits:
-                            additionalProperties:
-                              type: string
                             description: Limits specifies the maximum resources that
                               can be used
+                            properties:
+                              cpu:
+                                description: CPU specifies the maximum CPU resources
+                                type: string
+                              memory:
+                                description: Memory specifies the maximum memory resources
+                                type: string
                             type: object
                           requests:
-                            additionalProperties:
-                              type: string
                             description: Requests specifies the minimum resources
                               that should be allocated
+                            properties:
+                              cpu:
+                                description: CPU specifies the minimum CPU resources
+                                type: string
+                              memory:
+                                description: Memory specifies the minimum memory resources
+                                type: string
+                            type: object
+                        type: object
+                    type: object
+                  worker-catalog:
+                    description: WorkerCatalog enables the catalog worker
+                    properties:
+                      enabled:
+                        description: Enabled specifies whether this component should
+                          be installed
+                        type: boolean
+                      rawValues:
+                        description: |-
+                          RawValues contains arbitrary Helm values to pass directly to this component's subchart
+                          These values will be merged with the component's default values and can override any
+                          configuration option supported by the component's Helm chart
+                        x-kubernetes-preserve-unknown-fields: true
+                      replicas:
+                        description: Replicas specifies the number of replicas for
+                          this component
+                        format: int32
+                        type: integer
+                      resources:
+                        description: Resources specifies the resource requirements
+                          for this component
+                        properties:
+                          limits:
+                            description: Limits specifies the maximum resources that
+                              can be used
+                            properties:
+                              cpu:
+                                description: CPU specifies the maximum CPU resources
+                                type: string
+                              memory:
+                                description: Memory specifies the maximum memory resources
+                                type: string
+                            type: object
+                          requests:
+                            description: Requests specifies the minimum resources
+                              that should be allocated
+                            properties:
+                              cpu:
+                                description: CPU specifies the minimum CPU resources
+                                type: string
+                              memory:
+                                description: Memory specifies the minimum memory resources
+                                type: string
+                            type: object
+                        type: object
+                    type: object
+                  worker-interactive:
+                    description: WorkerInteractive enables the interactive worker
+                    properties:
+                      enabled:
+                        description: Enabled specifies whether this component should
+                          be installed
+                        type: boolean
+                      rawValues:
+                        description: |-
+                          RawValues contains arbitrary Helm values to pass directly to this component's subchart
+                          These values will be merged with the component's default values and can override any
+                          configuration option supported by the component's Helm chart
+                        x-kubernetes-preserve-unknown-fields: true
+                      replicas:
+                        description: Replicas specifies the number of replicas for
+                          this component
+                        format: int32
+                        type: integer
+                      resources:
+                        description: Resources specifies the resource requirements
+                          for this component
+                        properties:
+                          limits:
+                            description: Limits specifies the maximum resources that
+                              can be used
+                            properties:
+                              cpu:
+                                description: CPU specifies the maximum CPU resources
+                                type: string
+                              memory:
+                                description: Memory specifies the maximum memory resources
+                                type: string
+                            type: object
+                          requests:
+                            description: Requests specifies the minimum resources
+                              that should be allocated
+                            properties:
+                              cpu:
+                                description: CPU specifies the minimum CPU resources
+                                type: string
+                              memory:
+                                description: Memory specifies the minimum memory resources
+                                type: string
+                            type: object
+                        type: object
+                    type: object
+                  worker-lineage:
+                    description: WorkerLineage enables the lineage worker
+                    properties:
+                      enabled:
+                        description: Enabled specifies whether this component should
+                          be installed
+                        type: boolean
+                      rawValues:
+                        description: |-
+                          RawValues contains arbitrary Helm values to pass directly to this component's subchart
+                          These values will be merged with the component's default values and can override any
+                          configuration option supported by the component's Helm chart
+                        x-kubernetes-preserve-unknown-fields: true
+                      replicas:
+                        description: Replicas specifies the number of replicas for
+                          this component
+                        format: int32
+                        type: integer
+                      resources:
+                        description: Resources specifies the resource requirements
+                          for this component
+                        properties:
+                          limits:
+                            description: Limits specifies the maximum resources that
+                              can be used
+                            properties:
+                              cpu:
+                                description: CPU specifies the maximum CPU resources
+                                type: string
+                              memory:
+                                description: Memory specifies the maximum memory resources
+                                type: string
+                            type: object
+                          requests:
+                            description: Requests specifies the minimum resources
+                              that should be allocated
+                            properties:
+                              cpu:
+                                description: CPU specifies the minimum CPU resources
+                                type: string
+                              memory:
+                                description: Memory specifies the minimum memory resources
+                                type: string
+                            type: object
+                        type: object
+                    type: object
+                  worker-monitor:
+                    description: WorkerMonitor enables the monitor worker
+                    properties:
+                      enabled:
+                        description: Enabled specifies whether this component should
+                          be installed
+                        type: boolean
+                      rawValues:
+                        description: |-
+                          RawValues contains arbitrary Helm values to pass directly to this component's subchart
+                          These values will be merged with the component's default values and can override any
+                          configuration option supported by the component's Helm chart
+                        x-kubernetes-preserve-unknown-fields: true
+                      replicas:
+                        description: Replicas specifies the number of replicas for
+                          this component
+                        format: int32
+                        type: integer
+                      resources:
+                        description: Resources specifies the resource requirements
+                          for this component
+                        properties:
+                          limits:
+                            description: Limits specifies the maximum resources that
+                              can be used
+                            properties:
+                              cpu:
+                                description: CPU specifies the maximum CPU resources
+                                type: string
+                              memory:
+                                description: Memory specifies the maximum memory resources
+                                type: string
+                            type: object
+                          requests:
+                            description: Requests specifies the minimum resources
+                              that should be allocated
+                            properties:
+                              cpu:
+                                description: CPU specifies the minimum CPU resources
+                                type: string
+                              memory:
+                                description: Memory specifies the minimum memory resources
+                                type: string
+                            type: object
+                        type: object
+                    type: object
+                  worker-portal:
+                    description: WorkerPortal enables the worker portal
+                    properties:
+                      enabled:
+                        description: Enabled specifies whether this component should
+                          be installed
+                        type: boolean
+                      rawValues:
+                        description: |-
+                          RawValues contains arbitrary Helm values to pass directly to this component's subchart
+                          These values will be merged with the component's default values and can override any
+                          configuration option supported by the component's Helm chart
+                        x-kubernetes-preserve-unknown-fields: true
+                      replicas:
+                        description: Replicas specifies the number of replicas for
+                          this component
+                        format: int32
+                        type: integer
+                      resources:
+                        description: Resources specifies the resource requirements
+                          for this component
+                        properties:
+                          limits:
+                            description: Limits specifies the maximum resources that
+                              can be used
+                            properties:
+                              cpu:
+                                description: CPU specifies the maximum CPU resources
+                                type: string
+                              memory:
+                                description: Memory specifies the maximum memory resources
+                                type: string
+                            type: object
+                          requests:
+                            description: Requests specifies the minimum resources
+                              that should be allocated
+                            properties:
+                              cpu:
+                                description: CPU specifies the minimum CPU resources
+                                type: string
+                              memory:
+                                description: Memory specifies the minimum memory resources
+                                type: string
+                            type: object
+                        type: object
+                    type: object
+                  worker-singletons:
+                    description: WorkerSingletons enables the singletons worker
+                    properties:
+                      enabled:
+                        description: Enabled specifies whether this component should
+                          be installed
+                        type: boolean
+                      rawValues:
+                        description: |-
+                          RawValues contains arbitrary Helm values to pass directly to this component's subchart
+                          These values will be merged with the component's default values and can override any
+                          configuration option supported by the component's Helm chart
+                        x-kubernetes-preserve-unknown-fields: true
+                      replicas:
+                        description: Replicas specifies the number of replicas for
+                          this component
+                        format: int32
+                        type: integer
+                      resources:
+                        description: Resources specifies the resource requirements
+                          for this component
+                        properties:
+                          limits:
+                            description: Limits specifies the maximum resources that
+                              can be used
+                            properties:
+                              cpu:
+                                description: CPU specifies the maximum CPU resources
+                                type: string
+                              memory:
+                                description: Memory specifies the maximum memory resources
+                                type: string
+                            type: object
+                          requests:
+                            description: Requests specifies the minimum resources
+                              that should be allocated
+                            properties:
+                              cpu:
+                                description: CPU specifies the minimum CPU resources
+                                type: string
+                              memory:
+                                description: Memory specifies the minimum memory resources
+                                type: string
+                            type: object
+                        type: object
+                    type: object
+                  worker-temporal:
+                    description: WorkerTemporal enables the temporal worker
+                    properties:
+                      enabled:
+                        description: Enabled specifies whether this component should
+                          be installed
+                        type: boolean
+                      rawValues:
+                        description: |-
+                          RawValues contains arbitrary Helm values to pass directly to this component's subchart
+                          These values will be merged with the component's default values and can override any
+                          configuration option supported by the component's Helm chart
+                        x-kubernetes-preserve-unknown-fields: true
+                      replicas:
+                        description: Replicas specifies the number of replicas for
+                          this component
+                        format: int32
+                        type: integer
+                      resources:
+                        description: Resources specifies the resource requirements
+                          for this component
+                        properties:
+                          limits:
+                            description: Limits specifies the maximum resources that
+                              can be used
+                            properties:
+                              cpu:
+                                description: CPU specifies the maximum CPU resources
+                                type: string
+                              memory:
+                                description: Memory specifies the maximum memory resources
+                                type: string
+                            type: object
+                          requests:
+                            description: Requests specifies the minimum resources
+                              that should be allocated
+                            properties:
+                              cpu:
+                                description: CPU specifies the minimum CPU resources
+                                type: string
+                              memory:
+                                description: Memory specifies the minimum memory resources
+                                type: string
+                            type: object
+                        type: object
+                    type: object
+                  worker2:
+                    description: Worker2 enables the second worker instance
+                    properties:
+                      enabled:
+                        description: Enabled specifies whether this component should
+                          be installed
+                        type: boolean
+                      rawValues:
+                        description: |-
+                          RawValues contains arbitrary Helm values to pass directly to this component's subchart
+                          These values will be merged with the component's default values and can override any
+                          configuration option supported by the component's Helm chart
+                        x-kubernetes-preserve-unknown-fields: true
+                      replicas:
+                        description: Replicas specifies the number of replicas for
+                          this component
+                        format: int32
+                        type: integer
+                      resources:
+                        description: Resources specifies the resource requirements
+                          for this component
+                        properties:
+                          limits:
+                            description: Limits specifies the maximum resources that
+                              can be used
+                            properties:
+                              cpu:
+                                description: CPU specifies the maximum CPU resources
+                                type: string
+                              memory:
+                                description: Memory specifies the maximum memory resources
+                                type: string
+                            type: object
+                          requests:
+                            description: Requests specifies the minimum resources
+                              that should be allocated
+                            properties:
+                              cpu:
+                                description: CPU specifies the minimum CPU resources
+                                type: string
+                              memory:
+                                description: Memory specifies the minimum memory resources
+                                type: string
+                            type: object
+                        type: object
+                    type: object
+                  worker3:
+                    description: Worker3 enables the third worker instance
+                    properties:
+                      enabled:
+                        description: Enabled specifies whether this component should
+                          be installed
+                        type: boolean
+                      rawValues:
+                        description: |-
+                          RawValues contains arbitrary Helm values to pass directly to this component's subchart
+                          These values will be merged with the component's default values and can override any
+                          configuration option supported by the component's Helm chart
+                        x-kubernetes-preserve-unknown-fields: true
+                      replicas:
+                        description: Replicas specifies the number of replicas for
+                          this component
+                        format: int32
+                        type: integer
+                      resources:
+                        description: Resources specifies the resource requirements
+                          for this component
+                        properties:
+                          limits:
+                            description: Limits specifies the maximum resources that
+                              can be used
+                            properties:
+                              cpu:
+                                description: CPU specifies the maximum CPU resources
+                                type: string
+                              memory:
+                                description: Memory specifies the maximum memory resources
+                                type: string
+                            type: object
+                          requests:
+                            description: Requests specifies the minimum resources
+                              that should be allocated
+                            properties:
+                              cpu:
+                                description: CPU specifies the minimum CPU resources
+                                type: string
+                              memory:
+                                description: Memory specifies the minimum memory resources
+                                type: string
                             type: object
                         type: object
                     type: object
                 type: object
+              customVars:
+                description: CustomVars contains custom environment variables to be
+                  applied to the deployment
+                items:
+                  description: CustomVar defines a custom environment variable
+                  properties:
+                    name:
+                      description: Name is the name of the environment variable
+                      type: string
+                    value:
+                      description: Value is the value of the environment variable
+                      type: string
+                  required:
+                  - name
+                  - value
+                  type: object
+                type: array
               email:
                 description: Email contains configuration for email server settings
                 properties:
@@ -335,6 +1101,10 @@ spec:
                     description: Environment specifies the deployment environment
                       (e.g., production, staging, development)
                     type: string
+                  portalCertData:
+                    description: PortalCertData is the optional certificate data to
+                      verify which portal we're connecting to
+                    type: string
                   portalUrl:
                     description: PortalUrl is the optional URL to override the default
                       portal endpoint
@@ -352,6 +1122,14 @@ spec:
                   aws:
                     description: AWS contains Amazon Web Services specific configuration
                     properties:
+                      securityGroups:
+                        description: SecurityGroups specifies the security groups
+                          to use for the load balancer
+                        type: string
+                      subnets:
+                        description: Subnets specifies the subnets to use for the
+                          load balancer
+                        type: string
                       targetGroupArn:
                         description: |-
                           TargetGroupName specifies the name of the existing target group
@@ -554,11 +1332,6 @@ spec:
                     description: Port specifies the port for Redis server
                     format: int32
                     type: integer
-                  storageOnPV:
-                    default: "true"
-                    description: StorageOnPV specifies whether to use persistent volume
-                      storage
-                    type: string
                 type: object
               secrets:
                 description: Secrets contains references to customer-managed secrets
@@ -614,10 +1387,28 @@ spec:
                     - keyName
                     - secretName
                     type: object
+                  pylonId:
+                    default:
+                      keyName: pylonId
+                      secretName: datafold-operator-secrets
+                    description: PylonIdSecret references the secret containing the
+                      pylon ID
+                    properties:
+                      keyName:
+                        description: KeyName is the key within the secret
+                        type: string
+                      secretName:
+                        description: SecretName is the name of the secret
+                        type: string
+                    required:
+                    - keyName
+                    - secretName
+                    type: object
                 required:
                 - apiKey
                 - databaseEncryptionKey
                 - installPassword
+                - pylonId
                 type: object
               values:
                 additionalProperties:
