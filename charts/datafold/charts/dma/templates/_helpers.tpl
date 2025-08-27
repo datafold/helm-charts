@@ -48,7 +48,6 @@ Selector labels
 */}}
 {{- define "dma.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "dma.name" . }}
-app.kubernetes.io/part-of: datafold
 {{- end }}
 
 {{/*
