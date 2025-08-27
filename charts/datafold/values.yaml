@@ -348,3 +348,19 @@ storage-worker:
     requests:
       cpu: 100m
       memory: 30Gi
+
+storage-worker-large:
+  install: false
+  replicaCount: 0
+  terminationGracePeriodSeconds: "18000"
+  worker:
+    queues: "localstorage-large"
+    tasks: 200
+    memory: "1000000"
+    count: 4
+  resources:
+    limits:
+      memory: 120Gi
+    requests:
+      cpu: 100m
+      memory: 120Gi
