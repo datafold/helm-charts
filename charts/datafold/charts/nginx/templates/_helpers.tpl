@@ -179,6 +179,12 @@ annotations:
   {{- if .Values.ingress.subnets }}
   alb.ingress.kubernetes.io/subnets: {{ .Values.ingress.subnets }}
   {{- end }}
+  {{- if .Values.ingress.awsIngressGroupName }}
+  alb.ingress.kubernetes.io/group.name: {{ .Values.ingress.awsIngressGroupName }}
+  {{- end }}
+  {{- if .Values.ingress.awsIngressGroupOrder }}
+  alb.ingress.kubernetes.io/group.order: {{ .Values.ingress.awsIngressGroupOrder }}
+  {{- end }}
   alb.ingress.kubernetes.io/tags: Application=datafold
 {{- end }}
 {{- if (eq .Values.global.cloudProvider "gcp") -}}

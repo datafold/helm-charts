@@ -29,6 +29,8 @@ ingress:
   awsSecurityPolicy: "ELBSecurityPolicy-TLS13-1-2-Res-2021-06"
   awsAttributes: "idle_timeout.timeout_seconds=300"
   healthz: "/nginx-health"
+  awsIngressGroupName: ""
+  awsIngressGroupOrder: ""
 
 serviceAccount:
   create: false
