@@ -1268,10 +1268,8 @@ spec:
                   azure:
                     description: Azure contains Microsoft Azure specific configuration
                     properties:
-                      backendPoolName:
-                        description: |-
-                          BackendPoolName specifies the name of the existing backend pool
-                          This is used when DeployLoadBalancer is false to connect to an existing load balancer
+                      sslPolicy:
+                        description: SslPolicy specifies an SSL policy to use.
                         type: string
                     type: object
                   deployLoadBalancer:
