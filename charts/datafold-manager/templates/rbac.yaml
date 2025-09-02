@@ -86,12 +86,11 @@ rules:
   resources:
   - persistentvolumes
   resourceNames:
-  - clickhouse-data
-  - clickhouse-logs
-  - redis-data
+  - clickhouse-data-volume
+  - clickhouse-logs-volume
+  - redis-data-volume
   verbs:
   - get
-  - list
   - watch
   - delete
   - patch
@@ -102,6 +101,7 @@ rules:
   - persistentvolumes
   verbs:
   - create
+  - list
 # Special role we need to be able to assign CR to datafold-operator
 # Ideally we get rid of this asap.
 - apiGroups:

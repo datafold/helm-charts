@@ -1143,6 +1143,17 @@ spec:
                   aws:
                     description: AWS contains Amazon Web Services specific configuration
                     properties:
+                      ingressGroupName:
+                        description: |-
+                          IngressGroupName specifies the name of the ingress group for shared load balancers
+                          Multiple ingress resources with the same group name will share the same load balancer
+                        type: string
+                      ingressGroupOrder:
+                        description: |-
+                          IngressGroupOrder specifies the order of this ingress within the group
+                          Lower numbers have higher priority
+                        format: int32
+                        type: integer
                       securityGroups:
                         description: SecurityGroups specifies the security groups
                           to use for the load balancer
