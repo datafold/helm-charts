@@ -71,7 +71,7 @@ spec:
               - -c
               - /app/bin/docker-entrypoint celery_healthcheck
             initialDelaySeconds: 60
-            periodSeconds: 180
+            periodSeconds: 120
             failureThreshold: 2
             successThreshold: 1
             timeoutSeconds: 30
