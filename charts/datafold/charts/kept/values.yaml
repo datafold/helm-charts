@@ -1,0 +1,55 @@
+replicaCount: 1
+
+image:
+  repository: us-docker.pkg.dev/datadiff-mm/datafold/kept
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+imagePullSecrets:
+  - name: datafold-docker-secret
+
+nameOverride: ""
+fullnameOverride: ""
+terminationGracePeriodSeconds: "30"
+
+storage:
+  dataSize: 100Gi
+  storageClass: ""
+
+podAnnotations: {}
+
+podSecurityContext:
+  runAsNonRoot: false
+
+securityContext:
+  allowPrivilegeEscalation: false
+
+service:
+  type: ClusterIP
+
+resources:
+  limits:
+    memory: 6000Mi
+  requests:
+    cpu: 100m
+    memory: 6000Mi
+
+nodeSelector: {}
+
+tolerations:
+  - key: clickhouse
+    operator: "Equal"
+    value: reserved
+
+affinity:
+  podAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+              - key: app.kubernetes.io/name
+                operator: In
+                values:
+                  - clickhouse
+          topologyKey: kubernetes.io/hostname
