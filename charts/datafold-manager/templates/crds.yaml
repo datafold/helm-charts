@@ -1281,6 +1281,42 @@ spec:
                     format: int32
                     type: integer
                 type: object
+              maintenanceWindow:
+                description: MaintenanceWindow contains configuration for the maintenance
+                  window
+                properties:
+                  days:
+                    description: |-
+                      Days specifies which days this maintenance window applies to
+                      Each string must be one of: monday, tuesday, wednesday, thursday, friday, saturday, sunday, daily
+                    items:
+                      description: MaintenanceDay represents a day of the week or
+                        daily
+                      enum:
+                      - monday
+                      - tuesday
+                      - wednesday
+                      - thursday
+                      - friday
+                      - saturday
+                      - sunday
+                      - daily
+                      type: string
+                    minItems: 1
+                    type: array
+                  end:
+                    description: |-
+                      End time in HH:MM format (24-hour format, UTC)
+                      Can span midnight (e.g., "22:00" to "02:00")
+                    type: string
+                  start:
+                    description: Start time in HH:MM format (24-hour format, UTC)
+                    type: string
+                required:
+                - days
+                - end
+                - start
+                type: object
               monitoring:
                 description: Monitoring contains configuration for monitoring and
                   observability
