@@ -158,6 +158,8 @@ secrets:
   operator:
     apiKey: ""
     portalUrl: ""
+  claude:
+    apiKey: ""
 
 worker-temporal:
   install: true
