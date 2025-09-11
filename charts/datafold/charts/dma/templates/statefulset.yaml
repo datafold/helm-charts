@@ -56,6 +56,11 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.labels['app.kubernetes.io/component']
+            - name: ANTHROPIC_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "datafold.secrets" . }}
+                  key: DATAFOLD_DMA_CLAUDE_KEY
           ports:
             - name: ssh
               containerPort: {{ .Values.dma.ssh.port }}
