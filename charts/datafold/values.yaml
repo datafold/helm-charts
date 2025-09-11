@@ -61,7 +61,7 @@ redis:
   install: true
 
 kept:
-  install: true
+  install: false
 
 clickhouse:
   install: true
