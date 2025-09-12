@@ -1616,11 +1616,21 @@ spec:
                         component status
                       type: string
                     phase:
+                      allOf:
+                      - enum:
+                        - Running
+                        - Failed
+                        - Pending
+                        - Unknown
+                        - Disabled
+                      - enum:
+                        - Running
+                        - Failed
+                        - Pending
+                        - Unknown
+                        - Disabled
                       description: Phase represents the current phase of the component
                       type: string
-                    ready:
-                      description: Ready indicates if the component is ready
-                      type: boolean
                   type: object
                 description: Components tracks the status of individual components
                 type: object
@@ -1682,11 +1692,23 @@ spec:
                   - type
                   type: object
                 type: array
+              healthCheckAttempts:
+                default: 0
+                description: |-
+                  HealthCheckAttempts tracks the number of attempts made for the current health check trigger
+                  This is reset when a new trigger value is detected
+                format: int32
+                type: integer
               lastAppliedValues:
                 additionalProperties:
                   type: string
                 description: LastAppliedValues stores the last applied Helm values
                 type: object
+              lastHealthCheckTrigger:
+                description: |-
+                  LastHealthCheckTrigger records the trigger value of the last health check that was performed
+                  This serves as both the trigger value and timestamp for when the last health check was run
+                type: string
               observedGeneration:
                 description: ObservedGeneration tracks the observed generation of
                   the spec
@@ -1701,6 +1723,8 @@ spec:
                 - Failed
                 - Updating
                 type: string
+            required:
+            - healthCheckAttempts
             type: object
         type: object
     served: true
