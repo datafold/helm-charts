@@ -1723,6 +1723,43 @@ spec:
                 - Failed
                 - Updating
                 type: string
+              services:
+                description: Services tracks the connectivity status of external services
+                items:
+                  description: ServiceStatus represents the connectivity status of
+                    an external service
+                  properties:
+                    lastCheckTime:
+                      description: LastCheckTime is the last time the connectivity
+                        was checked
+                      format: date-time
+                      type: string
+                    message:
+                      description: Message provides additional information about the
+                        service connectivity
+                      type: string
+                    name:
+                      description: Name is the name of the service (e.g., "redis",
+                        "postgres", "clickhouse")
+                      type: string
+                    status:
+                      allOf:
+                      - enum:
+                        - Reachable
+                        - Unreachable
+                        - Unknown
+                      - enum:
+                        - Reachable
+                        - Unreachable
+                        - Unknown
+                      description: Status represents the connectivity status of the
+                        service
+                      type: string
+                  required:
+                  - name
+                  - status
+                  type: object
+                type: array
             required:
             - healthCheckAttempts
             type: object
