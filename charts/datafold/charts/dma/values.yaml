@@ -69,6 +69,8 @@ dma:
   ssh:
     port: 2222
     username: "datafold"
+  use_bedrock: "1"
+  bedrock_region: "us-east-1"
 
 # ConfigMap to load environment variables from
 configMapName: "datafold-config"
