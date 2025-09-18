@@ -70,6 +70,16 @@ spec:
               value: "{{ .Values.dma.use_bedrock }}"
             - name: AWS_REGION
               value: {{ .Values.dma.bedrock_region }}
+            - name: ANTHROPIC_MODEL
+              value: {{ .Values.dma.anthropic_model }}
+            - name: ANTHROPIC_SMALL_FAST_MODEL
+              value: {{ .Values.dma.anthropic_small_fast_model }}
+            - name: DISABLE_PROMPT_CACHING
+              value: "{{ .Values.dma.disable_prompt_caching }}"
+            - name: CLAUDE_CODE_MAX_OUTPUT_TOKENS
+              value: "{{ .Values.dma.claude_max_output_tokens }}"
+            - name: MAX_THINKING_TOKENS
+              value: "{{ .Values.dma.claude_max_thinking_tokens }}"
           ports:
             - name: ssh
               containerPort: {{ .Values.dma.ssh.port }}
