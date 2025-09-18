@@ -40,7 +40,7 @@ spec:
           envFrom:
             - configMapRef:
                 name: {{ .Values.configMapName }}
-          env: 
+          env:
             {{ include "datafold.env" . | nindent 12 }}
             - name: DATAFOLD_DATADOG_CLIENT_TOKEN
               valueFrom:
@@ -61,6 +61,11 @@ spec:
                 secretKeyRef:
                   name: {{ include "datafold.secrets" . }}
                   key: DATAFOLD_DMA_CLAUDE_KEY
+            - name: DATAFOLD_DMA_DOCS_AUTH_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "datafold.secrets" . }}
+                  key: DATAFOLD_DMA_DOCS_AUTH_KEY
           ports:
             - name: ssh
               containerPort: {{ .Values.dma.ssh.port }}

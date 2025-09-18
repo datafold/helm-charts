@@ -160,6 +160,7 @@ secrets:
     portalUrl: ""
   claude:
     apiKey: ""
+    datafoldDocsAuthKey: ""
 
 worker-temporal:
   install: true
