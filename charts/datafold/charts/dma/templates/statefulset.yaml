@@ -67,7 +67,7 @@ spec:
                   name: {{ include "datafold.secrets" . }}
                   key: DATAFOLD_DMA_DOCS_AUTH_KEY
             - name: CLAUDE_CODE_USE_BEDROCK
-              value: {{ .Values.dma.use_bedrock }}
+              value: "{{ .Values.dma.use_bedrock }}"
             - name: AWS_REGION
               value: {{ .Values.dma.bedrock_region }}
           ports:
