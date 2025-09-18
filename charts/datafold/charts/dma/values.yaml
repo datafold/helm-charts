@@ -71,6 +71,11 @@ dma:
     username: "datafold"
   use_bedrock: "1"
   bedrock_region: "us-east-1"
+  anthropic_model: "anthropic.claude-sonnet-4-20250514-v1:0"
+  ahthropic_small_fast_model: "anthropic.claude-3-5-haiku-20241022-v1:0"
+  disable_prompt_caching: "0"
+  claude_max_output_tokens: "4096"
+  claude_max_thinking_tokens: "1024"
 
 # ConfigMap to load environment variables from
 configMapName: "datafold-config"
