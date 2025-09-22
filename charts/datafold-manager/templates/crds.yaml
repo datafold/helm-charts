@@ -1755,6 +1755,23 @@ spec:
                       description: Status represents the connectivity status of the
                         service
                       type: string
+                    tableValidationLastCheckTime:
+                      description: TableValidationLastCheckTime is the last time the
+                        table validation was checked
+                      format: date-time
+                      type: string
+                    tableValidationMessage:
+                      description: TableValidationMessage provides additional information
+                        about the table validation
+                      type: string
+                    tableValidationStatus:
+                      description: TableValidationStatus represents the table validation
+                        status (for services that support table validation)
+                      enum:
+                      - TablesPresent
+                      - TablesNotPresent
+                      - Unknown
+                      type: string
                   required:
                   - name
                   - status
