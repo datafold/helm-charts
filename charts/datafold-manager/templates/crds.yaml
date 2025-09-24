@@ -1755,6 +1755,40 @@ spec:
                       description: Status represents the connectivity status of the
                         service
                       type: string
+                    storageLastCheckTime:
+                      description: StorageLastCheckTime is the last time the storage
+                        availability was checked
+                      format: date-time
+                      type: string
+                    storageMessage:
+                      description: StorageMessage provides additional information
+                        about the storage availability
+                      type: string
+                    storageStatus:
+                      description: StorageStatus represents the storage availability
+                        status (for services that support storage checks)
+                      enum:
+                      - Sufficient
+                      - Insufficient
+                      - Unknown
+                      type: string
+                    tableValidationLastCheckTime:
+                      description: TableValidationLastCheckTime is the last time the
+                        table validation was checked
+                      format: date-time
+                      type: string
+                    tableValidationMessage:
+                      description: TableValidationMessage provides additional information
+                        about the table validation
+                      type: string
+                    tableValidationStatus:
+                      description: TableValidationStatus represents the table validation
+                        status (for services that support table validation)
+                      enum:
+                      - TablesPresent
+                      - TablesNotPresent
+                      - Unknown
+                      type: string
                   required:
                   - name
                   - status
