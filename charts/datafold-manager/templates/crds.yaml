@@ -1168,6 +1168,10 @@ spec:
                     description: Environment specifies the deployment environment
                       (e.g., production, staging, development)
                     type: string
+                  githubServer:
+                    description: GithubServer is the optional GitHub server URL for
+                      GitHub integration
+                    type: string
                   portalCertData:
                     description: PortalCertData is the optional certificate data to
                       verify which portal we're connecting to
