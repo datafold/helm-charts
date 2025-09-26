@@ -74,7 +74,7 @@ dma:
   anthropic_model: ""
   anthropic_small_fast_model: ""
   disable_prompt_caching: "0"
-  claude_max_output_tokens: "4096"
+  claude_max_output_tokens: "32768"
   claude_max_thinking_tokens: "1024"
 
 # ConfigMap to load environment variables from
