@@ -56,13 +56,12 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.labels['app.kubernetes.io/component']
-            {{- if and .Values.secrets.claude .Values.secrets.claude.datafoldDocsAuthKey }}
             - name: DATAFOLD_DMA_DOCS_AUTH_KEY
               valueFrom:
                 secretKeyRef:
                   name: {{ include "datafold.secrets" . }}
                   key: DATAFOLD_DMA_DOCS_AUTH_KEY
-            {{- end }}
+                  optional: true
             - name: CLAUDE_CODE_USE_BEDROCK
               value: "{{ .Values.dma.use_bedrock }}"
             - name: AWS_REGION
