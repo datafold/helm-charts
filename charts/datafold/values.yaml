@@ -49,6 +49,9 @@ global:
       port: 8125
     apm:
       port: 8126
+  signoz:
+    endpoint: "http://signoz-otel-collector:4318/v1/logs"
+    ingestionKey: ""
   operator:
     allowRollback: "false"
     releaseChannel: "change-this"
@@ -96,6 +99,7 @@ config:
   ratelimitEnabled: "true"
   rateLimitHighLoadPerMinute: "120"
   loggingEnabled: "true"
+  loggingProvider: "datadog"
   singleTenantDeploy: "true"
   mailPort: "587"
   mailUseTls: "true"
