@@ -18,6 +18,11 @@ data:
   DATAFOLD_LINEAGE_TESTING_DB: "{{ .Values.config.lineageTestingDb }}"
   DATAFOLD_LOG_LEVEL: "{{ .Values.config.logLevel }}"
   DATAFOLD_LOGGING_ENABLED: "{{ .Values.config.loggingEnabled }}"
+  DATAFOLD_LOGGING_PROVIDER: "{{ .Values.config.loggingProvider }}"
+  DATAFOLD_SIGNOZ_ENDPOINT: "{{ .Values.global.signoz.endpoint }}"
+{{- if .Values.global.signoz.ingestionKey }}
+  DATAFOLD_SIGNOZ_INGESTION_KEY: "{{ .Values.global.signoz.ingestionKey }}"
+{{- end }}
   DATAFOLD_MAIL_PORT: "{{ .Values.config.mailPort }}"
   DATAFOLD_MAIL_USE_TLS: "{{ .Values.config.mailUseTls }}"
   DATAFOLD_MAIL_USE_SSL: "{{ .Values.config.mailUseSsl }}"

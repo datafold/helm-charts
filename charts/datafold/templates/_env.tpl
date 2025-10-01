@@ -94,6 +94,14 @@
   value: "{{ include "datafold.datadog.logs.host" . }}:{{ include "datafold.datadog.logs.port" . }}"
 - name: DATAFOLD_DATADOG_METRICS_ADDRESS
   value: "$(DATADOG_HOST_IP):{{ include "datafold.datadog.metrics.port" . }}"
+- name: COMPONENT_NAME
+  valueFrom:
+    fieldRef:
+      fieldPath: metadata.labels['app.kubernetes.io/component']
+- name: DATAFOLD_SIGNOZ_SERVICE_NAME
+  valueFrom:
+    fieldRef:
+      fieldPath: metadata.labels['app.kubernetes.io/component']
 {{- range $custom_secret := .Values.global.customSecrets }}
 - name: {{ $custom_secret.name }}
   valueFrom:
