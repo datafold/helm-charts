@@ -56,7 +56,7 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.labels['app.kubernetes.io/component']
-            {{- if .Values.secrets.claude.datafoldDocsAuthKey }}
+            {{- if and .Values.secrets.claude .Values.secrets.claude.datafoldDocsAuthKey }}
             - name: DATAFOLD_DMA_DOCS_AUTH_KEY
               valueFrom:
                 secretKeyRef:
