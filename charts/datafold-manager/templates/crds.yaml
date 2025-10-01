@@ -1536,6 +1536,20 @@ spec:
                     - keyName
                     - secretName
                     type: object
+                  claudeDmaDocsKey:
+                    description: ClaudeDmaDocsKeySecret references the secret containing
+                      the Claude DMA docs authentication key
+                    properties:
+                      keyName:
+                        description: KeyName is the key within the secret
+                        type: string
+                      secretName:
+                        description: SecretName is the name of the secret
+                        type: string
+                    required:
+                    - keyName
+                    - secretName
+                    type: object
                   databaseEncryptionKey:
                     default:
                       keyName: databaseEncryptionKey
