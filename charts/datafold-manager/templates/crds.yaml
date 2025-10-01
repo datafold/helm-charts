@@ -1383,45 +1383,12 @@ spec:
                   signoz:
                     description: SignOz contains SignOz-specific configuration
                     properties:
-                      enableLogs:
-                        default: true
-                        description: EnableLogs enables log collection
-                        type: boolean
-                      enableMetrics:
-                        default: true
-                        description: EnableMetrics enables metrics collection
-                        type: boolean
-                      enableTraces:
-                        default: true
-                        description: EnableTraces enables trace collection
-                        type: boolean
                       endpoint:
                         default: http://signoz-otel-collector:4318/v1/logs
                         description: Endpoint specifies the SignOz OTEL collector
                           endpoint
                         type: string
-                      ingestionKeySecret:
-                        description: IngestionKeySecret references the secret containing
-                          the SignOz ingestion key
-                        properties:
-                          keyName:
-                            description: KeyName is the key within the secret
-                            type: string
-                          secretName:
-                            description: SecretName is the name of the secret
-                            type: string
-                        required:
-                        - keyName
-                        - secretName
-                        type: object
-                      serviceName:
-                        description: ServiceName specifies the service name for SignOz
-                          tracing
-                        type: string
                     required:
-                    - enableLogs
-                    - enableMetrics
-                    - enableTraces
                     - endpoint
                     type: object
                   type:
