@@ -1,0 +1,21 @@
+apiVersion: datafold.datafold.com/v1alpha1
+kind: DatafoldApplication
+metadata:
+  name: datafold-deploy
+  namespace: datafold
+spec:
+  global:
+    serverName: datafold.example.com
+    environment: production
+    clusterName: datafold-cluster
+    portalUrl: https://portal.datafold.com
+    deployment: datafold-production
+  # SignOz Monitoring Configuration
+  monitoring:
+    type: signoz
+    monitoringApiKey:
+      secretName: datafold-operator-secrets
+      keyName: monitoringApiKey
+    signoz:
+      # SignOz OTEL collector endpoint
+      endpoint: "http://signoz-otel-collector:4318/v1/logs"

@@ -1,0 +1,206 @@
+apiVersion: datafold.datafold.com/v1alpha1
+kind: DatafoldApplication
+metadata:
+  name: datafold-deploy
+  namespace: datafold
+spec:
+  global:
+    serverName: datafold.example.com
+    environment: development
+    clusterName: datafold-cluster
+    portalUrl: https://portal.datafold.com
+    deployment: datafold-minimal
+  # Required secrets (create these in your namespace)
+  secrets:
+    apiKey:
+      secretName: datafold-operator-secrets
+      keyName: apiKey
+    databaseEncryptionKey:
+      secretName: datafold-operator-secrets
+      keyName: databaseEncryptionKey
+    installPassword:
+      secretName: datafold-operator-secrets
+      keyName: installPassword
+  # Database configurations
+  postgres:
+    server: datafold-postgres.example.com
+    port: 5432
+    user: datafold
+    passwordSecret:
+      secretName: datafold-operator-secrets
+      keyName: postgresPassword
+    database: datafold
+  clickhouse:
+    port: 9000
+    database: clickhouse
+    user: default
+    passwordSecret:
+      secretName: datafold-operator-secrets
+      keyName: clickhousePassword
+  redis:
+    passwordSecret:
+      secretName: datafold-operator-secrets
+      keyName: redisPassword
+    port: 6379
+  # Email configuration
+  email:
+    server: email-smtp.us-west-2.amazonaws.com
+    defaultSender: noreply@datafold.com
+    username: "your-smtp-username"
+    passwordSecret:
+      secretName: datafold-operator-secrets
+      keyName: emailPassword
+  # Ingress configuration
+  ingress:
+    deployLoadBalancer: true
+    internal: false
+    aws:
+      subnets: "subnet-12345678,subnet-87654321"
+      securityGroups: "sg-12345678,sg-87654321"
+  # Nginx configuration
+  nginx:
+    loadBalancerIps:
+      - "10.0.1.100"
+    vpcCidrBlock: "10.0.0.0/16"
+  # Minimal component set
+  components:
+    server:
+      enabled: true
+      replicas: 1
+      resources:
+        limits:
+          cpu: "1000m"
+          memory: "2Gi"
+        requests:
+          cpu: "500m"
+          memory: "1Gi"
+      rawValues:
+        serviceAccount:
+          name: datafold-server
+          roleArn: "arn:aws:iam::123456789012:role/datafold-user"
+    worker:
+      enabled: true
+      replicas: 1
+      resources:
+        limits:
+          cpu: "1000m"
+          memory: "2Gi"
+        requests:
+          cpu: "500m"
+          memory: "1Gi"
+      rawValues:
+        serviceAccount:
+          name: datafold-worker
+          roleArn: "arn:aws:iam::123456789012:role/datafold-user"
+    nginx:
+      enabled: true
+      replicas: 1
+      resources:
+        limits:
+          cpu: "500m"
+          memory: "512Mi"
+        requests:
+          cpu: "250m"
+          memory: "256Mi"
+    clickhouse:
+      enabled: true
+      replicas: 1
+      resources:
+        limits:
+          cpu: "2000m"
+          memory: "4Gi"
+        requests:
+          cpu: "1000m"
+          memory: "2Gi"
+      rawValues:
+        config:
+          s3_bucket: "datafold-clickhouse-backups"
+          s3_region: "us-west-2"
+          s3_backup_role: "arn:aws:iam::123456789012:role/datafold-clickhouse-backup"
+        storage:
+          dataSize: 100
+          logSize: 20
+    redis:
+      enabled: true
+      replicas: 1
+      resources:
+        limits:
+          cpu: "500m"
+          memory: "1Gi"
+        requests:
+          cpu: "250m"
+          memory: "512Mi"
+      rawValues:
+        storage:
+          dataSize: 20
+    scheduler:
+      enabled: true
+      replicas: 1
+      resources:
+        limits:
+          cpu: "500m"
+          memory: "1Gi"
+        requests:
+          cpu: "250m"
+          memory: "512Mi"
+      rawValues:
+        serviceAccount:
+          name: datafold-scheduler
+          roleArn: "arn:aws:iam::123456789012:role/datafold-user"
+    operator:
+      enabled: true
+      replicas: 1
+      resources:
+        limits:
+          cpu: "250m"
+          memory: "512Mi"
+        requests:
+          cpu: "125m"
+          memory: "256Mi"
+      rawValues:
+        serviceAccount:
+          name: datafold-operator
+          roleArn: "arn:aws:iam::123456789012:role/datafold-user"
+    storage-worker:
+      enabled: true
+      replicas: 1
+      resources:
+        limits:
+          cpu: "1000m"
+          memory: "2Gi"
+        requests:
+          cpu: "500m"
+          memory: "1Gi"
+      rawValues:
+        serviceAccount:
+          name: datafold-storage-worker
+          roleArn: "arn:aws:iam::123456789012:role/datafold-user"
+        storage:
+          dataSize: 50
+    # Disable additional worker components for minimal deployment
+    worker2:
+      enabled: false
+    worker3:
+      enabled: false
+    worker-catalog:
+      enabled: false
+    worker-interactive:
+      enabled: false
+    worker-singletons:
+      enabled: false
+    worker-lineage:
+      enabled: false
+    worker-portal:
+      enabled: false
+    worker-temporal:
+      enabled: false
+    worker-monitor:
+      enabled: false
+    dfshell:
+      enabled: false
+    dma:
+      enabled: false
+    dma2:
+      enabled: false
+    dma3:
+      enabled: false

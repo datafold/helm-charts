@@ -1,0 +1,399 @@
+apiVersion: datafold.datafold.com/v1alpha1
+kind: DatafoldApplication
+metadata:
+  name: datafold-deploy
+  namespace: datafold
+spec:
+  global:
+    serverName: datafold.example.com
+    environment: production
+    clusterName: datafold-cluster
+    portalUrl: https://portal.datafold.com
+    portalCertData: |
+      -----BEGIN CERTIFICATE-----
+      MIIFyTCCBLGgAwIBAgIQDHefRAtAlWtoaHZmi8FMhjANBgkqhkiG9w0BAQsFADA8
+      MQswCQYDVQQGEwJVUzEPMA0GA1UEChMGQW1hem9uMRwwGgYDVQQDExNBbWF6b24g
+      UlNBIDIwNDggTTAzMB4XDTI1MDgwNDAwMDAwMFoXDTI2MDkwMjIzNTk1OVowHjEc
+      MBoGA1UEAxMTcG9ydGFsLmRhdGFmb2xkLmNvbTCCASIwDQYJKoZIhvcNAQEBBQAD
+      ggEPADCCAQoCggEBAPUN1RNYVUjxsFZqkdRYgG+zQ9qVtSFl/bjjkscMcfSdeNKn
+      Qiyt5T3XbcPrBLENPqEXevx2RHyzgmIPe+8coaTFBZ1OvLeA00reF5Q8yNdmUOCt
+      UNr7zENI84YAEhMScCrCxYLH96aPmxTyEEB63RI39swWpawO/7CL3gluu8H7D2cq
+      SUnPrp7PNqI+09Jxxjj2odOa6LA/B1hRtyzU1iwa+rHDp2fexb0zsxDyIubD4iD7
+      oGlAN1J32FAvKO1oT0Kxyoe57VxIboolLGjMQkD+Yp3PH/WDNNmOcGUbSxKm0zap
+      suv78NsIt+ee+kUjsftP8gk3GuGBRqrOqg68xSkCAwEAAaOCAuMwggLfMB8GA1Ud
+      IwQYMBaAFFXZGF/SHMwB4Vi0vqvZVUIB1y4CMB0GA1UdDgQWBBRlp6kUJ281KGA2
+      mYNdwrRgw+iYoTAeBgNVHREEFzAVghNwb3J0YWwuZGF0YWZvbGQuY29tMBMGA1Ud
+      IAQMMAowCAYGZ4EMAQIBMA4GA1UdDwEB/wQEAwIFoDATBgNVHSUEDDAKBggrBgEF
+      BQcDATA7BgNVHR8ENDAyMDCgLqAshipodHRwOi8vY3JsLnIybTAzLmFtYXpvbnRy
+      dXN0LmNvbS9yMm0wMy5jcmwwdQYIKwYBBQUHAQEEaTBnMC0GCCsGAQUFBzABhiFo
+      dHRwOi8vb2NzcC5yMm0wMy5hbWF6b250cnVzdC5jb20wNgYIKwYBBQUHMAKGKmh0
+      dHA6Ly9jcnQucjJtMDMuYW1hem9udHJ1c3QuY29tL3IybTAzLmNlcjAMBgNVHRMB
+      Af8EAjAAMIIBfwYKKwYBBAHWeQIEAgSCAW8EggFrAWkAdgDXbX0Q0af1d8LH6V/X
+      AL/5gskzWmXh0LMBcxfAyMVpdwAAAZhyhucKAAAEAwBHMEUCIQDDzkzyyICB3ZZW
+      rfJ7nm0uWhWQl20j7zK3tzK8z/98gQIgGo7iG5iqHDG8UK5u5VruC84LVbAa+zBz
+      PLTebiIE9YoAdgDCMX5XRRmjRe5/ON6ykEHrx8IhWiK/f9W1rXaa2Q5SzQAAAZhy
+      hudGAAAEAwBHMEUCIQDGiE0ap+d41T1CnVB5ufCbKGv204BYN0riOzuXnEK/jgIg
+      ayVlYYhcz7lfFr6zgXDAjvUmOLyO4rYYf+NoTBj8R4IAdwCUTkOH+uzB74HzGSQm
+      qBhlAcfTXzgCAT9yZ31VNy4Z2AAAAZhyhudYAAAEAwBIMEYCIQC+1zrqWF0MjBXu
+      HXfC4LGfxqndvGE8Ju8TWpf6PjrR0gIhAOwh7nXIgjH0HOhHPuynd9S0eO0rXzxs
+      S84VqhRZAuClMA0GCSqGSIb3DQEBCwUAA4IBAQAR/Jx8tluSbTiZvckXDz75UGR6
+      r3EDPmOu6va3m/5P/1G9l2OLv+VoZ9LVdAIi3GZFhKawZ8ayjN1P0la2E6nV3AUX
+      PYYommMxmjW9q8/F1E+uk7kkkr1LJwYEUvLUqPOPA92C5nggFziIViaIP7QdWcbv
+      YFP7lxIdx2bsqgqBq2TlAMczCOlyPLbXengcOxerLaKiJwVouT8YRoCwv2BrzEZc
+      FZ7pD+e8GgZnvj+fkqArMj/FrIzkmcDDKVknd09aEYFVD8QtfcKLmsgwjhV0yTzp
+      4f2BGXNOX9qT+j+mn+DGEP5/NnhQ+SzG1GJfMDqH2tyne37ztDR3v7oXtmLE
+      -----END CERTIFICATE-----
+    deployment: datafold-production
+  monitoring:
+    type: datadog
+    monitoringApiKey:
+      secretName: datafold-operator-secrets
+      keyName: monitoringApiKey
+    datadog:
+      apm: false
+      monitorPostgres: true
+      npm:
+        enabled: true
+        dnsstats: true
+      clientToken: "your-datadog-client-token"
+      applicationId: "your-datadog-application-id"
+  freshpaint:
+    url: https://api.perfalytics.com/track
+    frontendToken: "your-frontend-token"
+    backendToken: "your-backend-token"
+    avoToken: "your-avo-token"
+  clickhouse:
+    port: 9000
+    database: clickhouse
+    user: default
+    passwordSecret:
+      secretName: datafold-operator-secrets
+      keyName: clickhousePassword
+  operator:
+    version: 1.2.9
+  email:
+    server: email-smtp.us-west-2.amazonaws.com
+    defaultSender: noreply@datafold.com
+    username: "your-smtp-username"
+    passwordSecret:
+      secretName: datafold-operator-secrets
+      keyName: emailPassword
+  postgres:
+    server: datafold-postgres.example.com
+    port: 5432
+    user: datafold
+    passwordSecret:
+      secretName: datafold-operator-secrets
+      keyName: postgresPassword
+    database: datafold
+    ro_user: datafold_ro
+    roPasswordSecret:
+      secretName: datafold-operator-secrets
+      keyName: postgresROPassword
+    postgresMonitoringPasswordSecret:
+      secretName: datafold-operator-secrets
+      keyName: postgresMonitoringPassword
+  ingress:
+    deployLoadBalancer: true
+    internal: false
+    sslCertificate: "arn:aws:acm:us-west-2:123456789012:certificate/your-certificate-id"
+    aws:
+      subnets: "subnet-12345678,subnet-87654321"
+      securityGroups: "sg-12345678,sg-87654321"
+  maintenanceWindow:
+    days:
+      - monday
+      - tuesday
+      - wednesday
+      - thursday
+      - friday
+    end: "07:00"
+    start: "05:00"
+  redis:
+    passwordSecret:
+      secretName: datafold-operator-secrets
+      keyName: redisPassword
+    port: 6379
+  nginx:
+    loadBalancerIps:
+      - "10.0.1.100"
+      - "10.0.1.101"
+    vpcCidrBlock: "10.0.0.0/16"
+  secrets:
+    apiKey:
+      secretName: datafold-operator-secrets
+      keyName: apiKey
+    databaseEncryptionKey:
+      secretName: datafold-operator-secrets
+      keyName: databaseEncryptionKey
+    installPassword:
+      secretName: datafold-operator-secrets
+      keyName: installPassword
+  components:
+    dfshell:
+      enabled: true
+      replicas: 1
+      resources:
+        limits:
+          cpu: "500m"
+          memory: "1Gi"
+        requests:
+          cpu: "250m"
+          memory: "512Mi"
+      rawValues:
+        serviceAccount:
+          name: datafold-dfshell
+          roleArn: "arn:aws:iam::123456789012:role/datafold-dfshell"
+    server:
+      enabled: true
+      replicas: 2
+      resources:
+        limits:
+          cpu: "2000m"
+          memory: "4Gi"
+        requests:
+          cpu: "1000m"
+          memory: "2Gi"
+      rawValues:
+        serviceAccount:
+          name: datafold-server
+          roleArn: "arn:aws:iam::123456789012:role/datafold-server"
+    worker:
+      enabled: true
+      replicas: 3
+      resources:
+        limits:
+          cpu: "2000m"
+          memory: "4Gi"
+        requests:
+          cpu: "1000m"
+          memory: "2Gi"
+      rawValues:
+        serviceAccount:
+          name: datafold-worker
+          roleArn: "arn:aws:iam::123456789012:role/datafold-worker"
+        worker:
+          count: 2
+          memory: "2000000"
+    worker2:
+      enabled: true
+      replicas: 2
+      resources:
+        limits:
+          cpu: "2000m"
+          memory: "4Gi"
+        requests:
+          cpu: "1000m"
+          memory: "2Gi"
+      rawValues:
+        serviceAccount:
+          name: datafold-worker2
+          roleArn: "arn:aws:iam::123456789012:role/datafold-worker2"
+    worker3:
+      enabled: true
+      replicas: 2
+      resources:
+        limits:
+          cpu: "2000m"
+          memory: "4Gi"
+        requests:
+          cpu: "1000m"
+          memory: "2Gi"
+      rawValues:
+        serviceAccount:
+          name: datafold-worker3
+          roleArn: "arn:aws:iam::123456789012:role/datafold-worker3"
+    worker-catalog:
+      enabled: true
+      replicas: 1
+      resources:
+        limits:
+          cpu: "1000m"
+          memory: "2Gi"
+        requests:
+          cpu: "500m"
+          memory: "1Gi"
+      rawValues:
+        serviceAccount:
+          name: datafold-worker-catalog
+          roleArn: "arn:aws:iam::123456789012:role/datafold-worker-catalog"
+    worker-interactive:
+      enabled: true
+      replicas: 2
+      resources:
+        limits:
+          cpu: "2000m"
+          memory: "4Gi"
+        requests:
+          cpu: "1000m"
+          memory: "2Gi"
+      rawValues:
+        serviceAccount:
+          name: datafold-worker-interactive
+          roleArn: "arn:aws:iam::123456789012:role/datafold-worker-interactive"
+    worker-singletons:
+      enabled: true
+      replicas: 1
+      resources:
+        limits:
+          cpu: "1000m"
+          memory: "2Gi"
+        requests:
+          cpu: "500m"
+          memory: "1Gi"
+      rawValues:
+        serviceAccount:
+          name: datafold-worker-singletons
+          roleArn: "arn:aws:iam::123456789012:role/datafold-worker-singletons"
+    worker-lineage:
+      enabled: true
+      replicas: 1
+      resources:
+        limits:
+          cpu: "1000m"
+          memory: "2Gi"
+        requests:
+          cpu: "500m"
+          memory: "1Gi"
+      rawValues:
+        serviceAccount:
+          name: datafold-worker-lineage
+          roleArn: "arn:aws:iam::123456789012:role/datafold-worker-lineage"
+    worker-portal:
+      enabled: true
+      replicas: 1
+      resources:
+        limits:
+          cpu: "1000m"
+          memory: "2Gi"
+        requests:
+          cpu: "500m"
+          memory: "1Gi"
+      rawValues:
+        serviceAccount:
+          name: datafold-worker-portal
+          roleArn: "arn:aws:iam::123456789012:role/datafold-worker-portal"
+    worker-temporal:
+      enabled: true
+      replicas: 1
+      resources:
+        limits:
+          cpu: "1000m"
+          memory: "2Gi"
+        requests:
+          cpu: "500m"
+          memory: "1Gi"
+      rawValues:
+        serviceAccount:
+          name: datafold-worker-temporal
+          roleArn: "arn:aws:iam::123456789012:role/datafold-worker-temporal"
+    worker-monitor:
+      enabled: true
+      replicas: 1
+      resources:
+        limits:
+          cpu: "1000m"
+          memory: "2Gi"
+        requests:
+          cpu: "500m"
+          memory: "1Gi"
+      rawValues:
+        serviceAccount:
+          name: datafold-worker-monitor
+          roleArn: "arn:aws:iam::123456789012:role/datafold-worker-monitor"
+        worker:
+          queues: "alerts"
+          count: 4
+          memory: "2000000"
+    clickhouse:
+      enabled: true
+      replicas: 1
+      resources:
+        limits:
+          cpu: "4000m"
+          memory: "8Gi"
+        requests:
+          cpu: "2000m"
+          memory: "4Gi"
+      rawValues:
+        config:
+          s3_bucket: "datafold-clickhouse-backups"
+          s3_region: "us-west-2"
+          s3_backup_role: "arn:aws:iam::123456789012:role/datafold-clickhouse-backup"
+        storage:
+          dataSize: 500
+          dataVolumeId: "vol-12345678"
+          logSize: 100
+          logVolumeId: "vol-87654321"
+    redis:
+      enabled: true
+      replicas: 1
+      resources:
+        limits:
+          cpu: "1000m"
+          memory: "2Gi"
+        requests:
+          cpu: "500m"
+          memory: "1Gi"
+      rawValues:
+        storage:
+          dataSize: 100
+          dataVolumeId: "vol-11223344"
+    nginx:
+      enabled: true
+      replicas: 2
+      resources:
+        limits:
+          cpu: "1000m"
+          memory: "1Gi"
+        requests:
+          cpu: "500m"
+          memory: "512Mi"
+    scheduler:
+      enabled: true
+      replicas: 1
+      resources:
+        limits:
+          cpu: "1000m"
+          memory: "2Gi"
+        requests:
+          cpu: "500m"
+          memory: "1Gi"
+      rawValues:
+        serviceAccount:
+          name: datafold-scheduler
+          roleArn: "arn:aws:iam::123456789012:role/datafold-scheduler"
+    operator:
+      enabled: true
+      replicas: 1
+      resources:
+        limits:
+          cpu: "500m"
+          memory: "1Gi"
+        requests:
+          cpu: "250m"
+          memory: "512Mi"
+      rawValues:
+        serviceAccount:
+          name: datafold-operator
+          roleArn: "arn:aws:iam::123456789012:role/datafold-operator"
+    storage-worker:
+      enabled: true
+      replicas: 2
+      resources:
+        limits:
+          cpu: "2000m"
+          memory: "4Gi"
+        requests:
+          cpu: "1000m"
+          memory: "2Gi"
+      rawValues:
+        serviceAccount:
+          name: datafold-storage-worker
+          roleArn: "arn:aws:iam::123456789012:role/datafold-storage-worker"
+        worker:
+          tasks: 1
+          count: 1
+          tasks_ack_late: "true"
+        storage:
+          dataSize: 200

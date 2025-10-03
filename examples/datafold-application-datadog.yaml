@@ -1,0 +1,31 @@
+apiVersion: datafold.datafold.com/v1alpha1
+kind: DatafoldApplication
+metadata:
+  name: datafold-deploy
+  namespace: datafold
+spec:
+  global:
+    serverName: datafold.example.com
+    environment: production
+    clusterName: datafold-cluster
+    portalUrl: https://portal.datafold.com
+    deployment: datafold-production
+  # Datadog Monitoring Configuration
+  monitoring:
+    type: datadog
+    monitoringApiKey:
+      secretName: datafold-operator-secrets
+      keyName: monitoringApiKey
+    datadog:
+      # Application Performance Monitoring
+      apm: true
+      # PostgreSQL monitoring
+      monitorPostgres: true
+      # Network Performance Monitoring
+      npm:
+        enabled: true
+        dnsstats: true
+      # Datadog client token (public token)
+      clientToken: "pub1234567890abcdef1234567890abcdef"
+      # Datadog application ID
+      applicationId: "12345678-1234-1234-1234-123456789012"

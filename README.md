@@ -1,9 +1,89 @@
 # Getting started
 
-Official helm charts for deploying datafold into k8s.
+Official helm charts for deploying Datafold into Kubernetes.
 
-This repository is in development and the instructions for installation and
-upgrades will be added later.
+## Preferred Method: Deploy with Datafold Operator
+
+The recommended way to deploy Datafold is using our operator, which provides a simpler and more manageable deployment experience.
+
+### Prerequisites
+
+You'll need two files from Datafold:
+- `datafold-operator-secrets.yaml` - Contains application secrets and configuration
+- `datafold-docker-secret.yaml` - Contains Docker registry credentials
+
+### Step 1: Create Namespace
+
+Create a namespace for your Datafold deployment:
+
+```shell
+kubectl create namespace datafold-apps
+kubectl config set-context --current --namespace=datafold-apps
+```
+
+### Step 2: Deploy Docker Secrets
+
+Deploy the Docker registry secret to allow pulling private Datafold images:
+
+```shell
+kubectl apply -f datafold-docker-secret.yaml
+```
+
+### Step 3: Configure and Deploy Application Secrets
+
+Update the `datafold-operator-secrets.yaml` file with your specific configuration (namespace, keys,
+email server password, etc.) and deploy it:
+
+```shell
+kubectl apply -f datafold-operator-secrets.yaml
+```
+
+### Step 4: Add Helm Repository
+
+Add the Datafold Helm repository:
+
+```shell
+helm repo add datafold https://charts.datafold.com
+helm repo update
+```
+
+### Step 5: Deploy the Operator
+
+Deploy the Datafold operator using the datafold-manager chart:
+
+```shell
+helm upgrade --install datafold-manager datafold/datafold-manager \
+  --namespace datafold-apps \
+  --set namespace.name=datafold-apps
+```
+
+### Step 6: Create DatafoldApplication
+
+Create a `DatafoldApplication` custom resource to define your Datafold deployment. See the `examples/` directory for configuration templates:
+
+```shell
+kubectl apply -f examples/datafold-application-full.yaml
+```
+
+The operator will automatically deploy and manage your Datafold application based on the `DatafoldApplication` specification.
+
+### Configuration Examples
+
+The `examples/` directory contains various `DatafoldApplication` configuration templates for different deployment scenarios:
+
+- `datafold-application-full.yaml` - Complete production configuration with all components
+- `datafold-application-minimal.yaml` - Minimal configuration for development/testing
+- `datafold-application-aws-lb.yaml` - AWS-specific configuration with load balancer
+- `datafold-application-gcp-lb.yaml` - GCP-specific configuration with load balancer
+- `datafold-application-signoz.yaml` - Configuration with SigNoz monitoring
+- `datafold-application-datadog.yaml` - Configuration with Datadog monitoring
+
+Choose the example that best matches your environment and customize it as needed.
+
+## Alternative Method: Direct Helm Charts Deployment
+
+For users who prefer the traditional Helm charts approach or need more direct control over the deployment.
+This method is significantly harder and more complex.
 
 ### Prepare your shell environment
 
@@ -32,23 +112,34 @@ kubectl create secret docker-registry datafold-docker-secret \
   --docker-email=support@datafold.com
 ```
 
+### Create a values.yaml file
+
+The helm chart requires a complete `values.yaml` file that merges configuration from multiple sources. You can use our example as a starting point:
+
+```shell
+# Copy and customize the example values file
+cp examples/old-method-values-example.yaml values.yaml
+
+# Edit values.yaml with your specific configuration:
+# - Update serverName, clusterName, and other global settings
+# - Configure your database connection details
+# - Set up AWS load balancer ARNs and target groups
+# - Adjust resource limits and worker counts as needed
+```
+
+The example file is based on a real dedicated cloud deployment and includes all necessary configuration sections.
+
 ### Install from our helm repo
 
 Make sure to use the latest release from the helm-charts from our release list:
 
 https://github.com/datafold/helm-charts/releases
 
-(replace 0.6.84 with the most recent release number)
-
-```
+```shell
 helm repo add datafold https://charts.datafold.com
+helm repo update
 helm upgrade --install datafold datafold/datafold \
-  --version 0.6.84 \
-  --set global.datafoldVersion="<version_tag>" \
-  --set global.serverName="<access-url-on-lb>" \
-  --set global.cloudProvider="aws" \
-  --set global.awsTargetGroupArn="<replace-with-target-group-arn>" \
-  --set global.awsLbCtrlArn="<replace-with-load-balancer-controller-role-arn>"
+  --values values.yaml
 
 ## Development and Validation
 

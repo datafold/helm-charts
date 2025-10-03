@@ -1,0 +1,24 @@
+apiVersion: datafold.datafold.com/v1alpha1
+kind: DatafoldApplication
+metadata:
+  name: datafold-deploy
+  namespace: datafold
+spec:
+  global:
+    serverName: datafold.example.com
+    environment: production
+    clusterName: datafold-cluster
+    portalUrl: https://portal.datafold.com
+    deployment: datafold-production
+  # AWS Load Balancer Configuration
+  ingress:
+    deployLoadBalancer: true
+    internal: false
+    aws:
+      # Subnets for the load balancer (public subnets for external LB)
+      subnets: "subnet-12345678,subnet-87654321"
+      # Security groups for the load balancer
+      securityGroups: "sg-12345678,sg-87654321"
+      # Optional: Ingress group configuration for shared load balancers
+      ingressGroupName: "datafold-ingress-group"
+      ingressGroupOrder: 1

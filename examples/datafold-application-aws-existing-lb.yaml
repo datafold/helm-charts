@@ -1,0 +1,19 @@
+apiVersion: datafold.datafold.com/v1alpha1
+kind: DatafoldApplication
+metadata:
+  name: datafold-deploy
+  namespace: datafold
+spec:
+  global:
+    serverName: datafold.example.com
+    environment: production
+    clusterName: datafold-cluster
+    portalUrl: https://portal.datafold.com
+    deployment: datafold-production
+  # AWS Existing Load Balancer Configuration
+  ingress:
+    deployLoadBalancer: false  # Use existing load balancer
+    internal: false
+    aws:
+      # Target Group ARN of the existing load balancer
+      targetGroupArn: "arn:aws:elasticloadbalancing:us-west-2:123456789012:targetgroup/existing-target-group/1234567890123456"
