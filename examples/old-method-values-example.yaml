@@ -1,0 +1,87 @@
+global:
+  cloudProvider: aws
+  datadog:
+    env: prod
+    install: true
+  operator:
+    allowRollback: false
+    backupCronSchedule: 0 1 * * *
+    maintenanceWindow: ''
+  datafoldVersion: latest
+  serverName: datafold.example.com
+  awsTargetGroupArn: arn:aws:elasticloadbalancing:region:account:targetgroup/name/id
+  awsLbCtrlArn: arn:aws:iam::account:role/load-balancer-controller-role
+  clusterName: datafold-cluster
+  vpcCidr: 10.0.0.0/16
+postgres:
+  install: false
+datadog:
+  configuration:
+    monitorPostgres: true
+config:
+  portalCertData: '-----BEGIN CERTIFICATE-----\nMIIFyTCCBLGgAwIBAgIQDHefRAtAlWtoaHZmi8FMhjANBgkqhkiG9w0BAQsFADA8\nMQswCQYDVQQGEwJVUzEPMA0GA1UEChMGQW1hem9uMRwwGgYDVQQDExNBbWF6b24g\nUlNBIDIwNDggTTAzMB4XDTI1MDgwNDAwMDAwMFoXDTI2MDkwMjIzNTk1OVowHjEc\nMBoGA1UEAxMTcG9ydGFsLmRhdGFmb2xkLmNvbTCCASIwDQYJKoZIhvcNAQEBBQAD\nggEPADCCAQoCggEBAPUN1RNYVUjxsFZqkdRYgG+zQ9qVtSFl/bjjkscMcfSdeNKn\nQiyt5T3XbcPrBLENPqEXevx2RHyzgmIPe+8coaTFBZ1OvLeA00reF5Q8yNdmUOCt\nUNr7zENI84YAEhMScCrCxYLH96aPmxTyEEB63RI39swWpawO/7CL3gluu8H7D2cq\nSUnPrp7PNqI+09Jxxjj2odOa6LA/B1hRtyzU1iwa+rHDp2fexb0zsxDyIubD4iD7\noGlAN1J32FAvKO1oT0Kxyoe57VxIboolLGjMQkD+Yp3PH/WDNNmOcGUbSxKm0zap\nsuv78NsIt+ee+kUjsftP8gk3GuGBRqrOqg68xSkCAwEAAaOCAuMwggLfMB8GA1Ud\nIwQYMBaAFFXZGF/SHMwB4Vi0vqvZVUIB1y4CMB0GA1UdDgQWBBRlp6kUJ281KGA2\nmYNdwrRgw+iYoTAeBgNVHREEFzAVghNwb3J0YWwuZGF0YWZvbGQuY29tMBMGA1Ud\nIAQMMAowCAYGZ4EMAQIBMA4GA1UdDwEB/wQEAwIFoDATBgNVHSUEDDAKBggrBgEF\nBQcDATA7BgNVHR8ENDAyMDCgLqAshipodHRwOi8vY3JsLnIybTAzLmFtYXpvbnRy\ndXN0LmNvbS9yMm0wMy5jcmwwdQYIKwYBBQUHAQEEaTBnMC0GCCsGAQUFBzABhiFo\ndHRwOi8vb2NzcC5yMm0wMy5hbWF6b250cnVzdC5jb20wNgYIKwYBBQUHMAKGKmh0\ndHA6Ly9jcnQucjJtMDMuYW1hem9udHJ1c3QuY29tL3IybTAzLmNlcjAMBgNVHRMB\nAf8EAjAAMIIBfwYKKwYBBAHWeQIEAgSCAW8EggFrAWkAdgDXbX0Q0af1d8LH6V/X\nAL/5gskzWmXh0LMBcxfAyMVpdwAAAZhyhucKAAAEAwBHMEUCIQDDzkzyyICB3ZZW\nrfJ7nm0uWhWQl20j7zK3tzK8z/98gQIgGo7iG5iqHDG8UK5u5VruC84LVbAa+zBz\nPLTebiIE9YoAdgDCMX5XRRmjRe5/ON6ykEHrx8IhWiK/f9W1rXaa2Q5SzQAAAZhy\nhudGAAAEAwBHMEUCIQDGiE0ap+d41T1CnVB5ufCbKGv204BYN0riOzuXnEK/jgIg\nayVlYYhcz7lfFr6zgXDAjvUmOLyO4rYYf+NoTBj8R4IAdwCUTkOH+uzB74HzGSQm\nqBhlAcfTXzgCAT9yZ31VNy4Z2AAAAZhyhudYAAAEAwBIMEYCIQC+1zrqWF0MjBXu\nHXfC4LGfxqndvGE8Ju8TWpf6PjrR0gIhAOwh7nXIgjH0HOhHPuynd9S0eO0rXzxs\nS84VqhRZAuClMA0GCSqGSIb3DQEBCwUAA4IBAQAR/Jx8tluSbTiZvckXDz75UGR6\nr3EDPmOu6va3m/5P/1G9l2OLv+VoZ9LVdAIi3GZFhKawZ8ayjN1P0la2E6nV3AUX\nPYYommMxmjW9q8/F1E+uk7kkkr1LJwYEUvLUqPOPA92C5nggFziIViaIP7QdWcbv\nYFP7lxIdx2bsqgqBq2TlAMczCOlyPLbXengcOxerLaKiJwVouT8YRoCwv2BrzEZc\nFZ7pD+e8GgZnvj+fkqArMj/FrIzkmcDDKVknd09aEYFVD8QtfcKLmsgwjhV0yTzp\n4f2BGXNOX9qT+j+mn+DGEP5/NnhQ+SzG1GJfMDqH2tyne37ztDR3v7oXtmLE\n-----END
+    CERTIFICATE-----\n'
+clickhouse:
+  resources:
+    requests:
+      memory: 8Gi
+  # affinity:
+  #   nodeAffinity:
+  #     requiredDuringSchedulingIgnoredDuringExecution:
+  #       nodeSelectorTerms:
+  #       - matchExpressions:
+  #         - key: clickhouse
+  #           operator: In
+  #           values:
+  #           - reserved
+  config:
+    s3_bucket: your-backup-bucket
+    s3_region: us-west-2
+    s3_backup_role: arn:aws:iam::account:role/backup-role
+  storage:
+    dataSize: 100
+    logSize: 10
+worker:
+  install: true
+  worker:
+    count: 4
+worker-monitor:
+  install: true
+  replicaCount: 1
+  worker:
+    queues: alerts
+    count: 4
+    memory: '2000000'
+  resources:
+    limits:
+      memory: 6Gi
+    requests:
+      memory: 6Gi
+storage-worker:
+  install: true
+  replicaCount: 1
+  resources:
+    limits:
+      memory: 3Gi
+    requests:
+      memory: 3Gi
+worker-portal:
+  install: true
+secrets:
+  postgres:
+    server: postgres.example.com
+    port: 5432
+    user: datafold
+    password: your-postgres-password
+    database: datafold
+  apiKey: your-api-key
+  databaseEncryptionKey: your-encryption-key
+  installPassword: your-install-password
+redis:
+  storage:
+    dataSize: 20
+nginx:
+  service:
+    loadBalancerIps:
+    - 1.2.3.4
+    - 5.6.7.8

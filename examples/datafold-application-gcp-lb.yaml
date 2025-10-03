@@ -1,0 +1,30 @@
+apiVersion: datafold.datafold.com/v1alpha1
+kind: DatafoldApplication
+metadata:
+  name: datafold-deploy
+  namespace: datafold
+spec:
+  global:
+    serverName: datafold.example.com
+    environment: production
+    clusterName: datafold-cluster
+    portalUrl: https://portal.datafold.com
+    deployment: datafold-production
+  # GCP Load Balancer Configuration
+  ingress:
+    deployLoadBalancer: true
+    internal: false
+    sslCertificate: "datafold-ssl-cert"  # Name of the SSL certificate in GCP
+    google:
+      # Certificate method: managed, preshared, or secret
+      certificateMethod: "managed"
+      # Optional: Static IP name for the load balancer
+      staticIpName: "datafold-static-ip"
+      # Optional: SSL policy for the load balancer (create this yourself)
+      sslPolicy: "datafold-ssl-policy"
+      # Optional: Cloud Armor policy for DDoS protection (create this yourself)
+      cloudArmorPolicy: "datafold-cloud-armor-policy"
+      # Optional: Preshared certificate (if using preshared method)
+      # presharedCertificate: "datafold-preshared-cert"
+      # Optional: Custom TLS secret (if using secret method). Create this yourself.
+      # tlsSecretName: "datafold-tls-secret"
