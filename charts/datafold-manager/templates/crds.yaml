@@ -1408,8 +1408,6 @@ spec:
                     - signoz
                     type: string
                 required:
-                - loggingEnabled
-                - metricsEnabled
                 - monitoringApiKey
                 type: object
               nginx:
