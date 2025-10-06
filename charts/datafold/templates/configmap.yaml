@@ -18,7 +18,8 @@ data:
   DATAFOLD_LINEAGE_TESTING_DB: "{{ .Values.config.lineageTestingDb }}"
   DATAFOLD_LOG_LEVEL: "{{ .Values.config.logLevel }}"
   DATAFOLD_LOGGING_ENABLED: "{{ .Values.config.loggingEnabled }}"
-  DATAFOLD_LOGGING_PROVIDER: "{{ .Values.config.loggingProvider }}"
+  DATAFOLD_MONITORING_PROVIDER: "{{ .Values.config.monitoringProvider }}"
+  DATAFOLD_METRICS_ENABLED: "{{ .Values.config.metricsEnabled }}"
   DATAFOLD_SIGNOZ_ENDPOINT: "{{ .Values.global.signoz.endpoint }}"
 {{- if .Values.global.signoz.ingestionKey }}
   DATAFOLD_SIGNOZ_INGESTION_KEY: "{{ .Values.global.signoz.ingestionKey }}"
