@@ -1363,6 +1363,14 @@ spec:
                     - monitorPostgres
                     - npm
                     type: object
+                  loggingEnabled:
+                    default: true
+                    description: LoggingEnabled enables logging functionality
+                    type: boolean
+                  metricsEnabled:
+                    default: true
+                    description: MetricsEnabled enables metrics collection
+                    type: boolean
                   monitoringApiKey:
                     default:
                       keyName: monitoringApiKey
@@ -1400,6 +1408,8 @@ spec:
                     - signoz
                     type: string
                 required:
+                - loggingEnabled
+                - metricsEnabled
                 - monitoringApiKey
                 type: object
               nginx:
@@ -1422,7 +1432,7 @@ spec:
                 description: Operator contains configuration for the operator component
                 properties:
                   version:
-                    default: 1.2.8
+                    default: 1.2.10
                     description: Version specifies the version/tag of the operator
                       image
                     type: string
