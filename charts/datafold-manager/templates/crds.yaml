@@ -1364,13 +1364,13 @@ spec:
                     - npm
                     type: object
                   loggingEnabled:
-                    default: true
+                    default: "true"
                     description: LoggingEnabled enables logging functionality
-                    type: boolean
+                    type: string
                   metricsEnabled:
-                    default: true
+                    default: "true"
                     description: MetricsEnabled enables metrics collection
-                    type: boolean
+                    type: string
                   monitoringApiKey:
                     default:
                       keyName: monitoringApiKey
