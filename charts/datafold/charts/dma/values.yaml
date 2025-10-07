@@ -77,7 +77,7 @@ dma:
   claude_max_output_tokens: "32768"
   claude_max_thinking_tokens: "1024"
   claude_mcp_timeout: "50000"
-  claude_max_mcp_output_tokens: "120000"
+  claude_max_mcp_output_tokens: "30000"
 
 # ConfigMap to load environment variables from
 configMapName: "datafold-config"
