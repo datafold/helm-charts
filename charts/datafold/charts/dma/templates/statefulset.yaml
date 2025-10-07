@@ -76,6 +76,10 @@ spec:
               value: "{{ .Values.dma.claude_max_output_tokens }}"
             - name: MAX_THINKING_TOKENS
               value: "{{ .Values.dma.claude_max_thinking_tokens }}"
+            - name: MCP_TIMEOUT
+              value: "{{ .Values.dma.claude_mcp_timeout }}"
+            - name: MAX_MCP_OUTPUT_TOKENS
+              value: "{{ .Values.dma.claude_max_mcp_output_tokens }}"
           ports:
             - name: ssh
               containerPort: {{ .Values.dma.ssh.port }}
