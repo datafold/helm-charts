@@ -45,11 +45,9 @@ service:
 
 resources:
   limits:
-    cpu: 1000m
-    # changing depending on the size of the data and nodes.
     memory: 30Gi
   requests:
-    cpu: 1000m
+    cpu: 100m
     memory: 30Gi
 
 storage:
