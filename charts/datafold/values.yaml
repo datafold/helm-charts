@@ -50,7 +50,7 @@ global:
     apm:
       port: 8126
   signoz:
-    endpoint: "http://signoz-otel-collector:4318/v1/logs"
+    endpoint: "http://signoz-otel-collector:4318"
     ingestionKey: ""
   operator:
     allowRollback: "false"
