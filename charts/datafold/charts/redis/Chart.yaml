@@ -3,4 +3,4 @@ name: redis
 description: A Helm chart to run redis on Kubernetes
 type: application
 version: 0.1.0
-appVersion: "5.0-alpine"
+appVersion: "7.2.11-alpine"
