@@ -79,3 +79,7 @@ dma:
 
 # ConfigMap to load environment variables from
 configMapName: "datafold-config"
+
+# Custom environment variables for DMA pod only
+# Format: [{"name": "VAR_NAME", "value": "var_value"}, ...]
+customEnvVars: []
