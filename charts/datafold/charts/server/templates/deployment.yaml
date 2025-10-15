@@ -8,11 +8,13 @@ spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
+  progressDeadlineSeconds: {{ .Values.progressDeadlineSeconds }}
+  minReadySeconds: {{ .Values.minReadySeconds }}
   strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxSurge: {{ .Values.replicaCount }}
-      maxUnavailable: 0
+      maxSurge: 1
+      maxUnavailable: 1
   selector:
     matchLabels:
       {{- include "server.selectorLabels" . | nindent 6 }}

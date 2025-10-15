@@ -77,3 +77,6 @@ affinity:
         topologyKey: "kubernetes.io/hostname"
 
 initContainers: []
+
+progressDeadlineSeconds: 600
+minReadySeconds: 30
