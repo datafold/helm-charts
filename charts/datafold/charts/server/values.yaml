@@ -42,10 +42,10 @@ ingress:
 
 resources:
   limits:
-    memory: 6Gi
+    memory: 7Gi
   requests:
     cpu: 500m
-    memory: 6Gi
+    memory: 7Gi
 
 autoscaling:
   enabled: false

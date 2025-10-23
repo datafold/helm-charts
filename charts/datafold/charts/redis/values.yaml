@@ -17,7 +17,7 @@ aof:
   autoRewriteMinSize: "64mb"  # Minimum size for AOF rewrite
 
 storage:
-  dataSize: 2Gi
+  dataSize: 50Gi
   name: datafold-redis-storage
   storageClass: ""
   dataVolumeId: ""
@@ -35,10 +35,10 @@ service:
 
 resources:
   limits:
-    memory: 6000Mi
+    memory: 2Gi
   requests:
     cpu: 100m
-    memory: 6000Mi
+    memory: 2Gi
 
 nodeSelector: {}
 

@@ -44,10 +44,10 @@ securityContext:
 
 resources:
   limits:
-    memory: 12000Mi
+    memory: 15Gi
   requests:
     cpu: 1000m
-    memory: 12000Mi
+    memory: 15Gi
 
 autoscaling:
   enabled: false
