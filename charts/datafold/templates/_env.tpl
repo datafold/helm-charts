@@ -102,6 +102,11 @@
   valueFrom:
     fieldRef:
       fieldPath: metadata.labels['app.kubernetes.io/component']
+- name: DATAFOLD_API_ORG_CREATION_DONOR_TOKENS
+  valueFrom:
+    secretKeyRef:
+      name: {{ include "datafold.secrets" . }}
+      key: DATAFOLD_API_ORG_CREATION_DONOR_TOKENS
 {{- range $custom_secret := .Values.global.customSecrets }}
 - name: {{ $custom_secret.name }}
   valueFrom:
