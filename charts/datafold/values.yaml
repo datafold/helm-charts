@@ -166,6 +166,7 @@ secrets:
   claude:
     apiKey: ""
     datafoldDocsAuthKey: ""
+  apiOrgCreationDonorTokens: ""
 
 worker-temporal:
   install: true
