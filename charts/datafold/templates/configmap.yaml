@@ -57,6 +57,9 @@ data:
 {{- if (eq .Values.config.permitUnsafeLocalStorageMode "true" ) }}
   DATAFOLD_PERMIT_UNSAFE_LOCALSTORAGE_MODE: "true"
 {{- end }}
+{{- if .Values.secrets.apiOrgCreationDonorTokens }}
+  DATAFOLD_API_ORG_CREATION_DONOR_TOKENS: "{{ .Values.secrets.apiOrgCreationDonorTokens }}"
+{{- end }}
   INSTALLATION_NAME: '{{ .Values.global.deployment }}'
   DATAFOLD_CELERY_RESULT_EXPIRES: "86400"
   DATAFOLD_CUSTOMER_ADAPTATION: "{{ .Values.config.customerAdaptation }}"

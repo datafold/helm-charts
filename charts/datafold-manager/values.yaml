@@ -6,7 +6,7 @@ operator:
   # Operator image configuration
   image:
     repository: us-docker.pkg.dev/datadiff-mm/datafold/datafold-operator
-    tag: "1.1.8"
+    tag: "1.1.9"
     pullPolicy: Always
 
   # Operator deployment configuration
@@ -16,10 +16,10 @@ operator:
   resources:
     limits:
       cpu: 500m
-      memory: 1024Mi
+      memory: 400Mi
     requests:
       cpu: 10m
-      memory: 512Mi
+      memory: 400Mi
 
   # Operator arguments
   args:

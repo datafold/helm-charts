@@ -166,6 +166,7 @@ secrets:
   claude:
     apiKey: ""
     datafoldDocsAuthKey: ""
+  apiOrgCreationDonorTokens: ""
 
 worker-temporal:
   install: true
@@ -229,10 +230,10 @@ worker-catalog:
     count: 5
   resources:
     limits:
-      memory: 13000Mi
+      memory: 8Gi
     requests:
       cpu: 1000m
-      memory: 13000Mi
+      memory: 8Gi
   affinity:
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
@@ -277,10 +278,10 @@ worker-singletons:
     count: 4
   resources:
     limits:
-      memory: 3000Mi
+      memory: 5Gi
     requests:
       cpu: 100m
-      memory: 3000Mi
+      memory: 5Gi
 
 worker-lineage:
   install: false
@@ -311,9 +312,9 @@ worker-monitor:
     memory: "1000000"
   resources:
     limits:
-      memory: 6Gi
+      memory: 8Gi
     requests:
-      memory: 6Gi
+      memory: 8Gi
 
 dma:
   install: false
@@ -357,10 +358,10 @@ storage-worker:
     count: 4
   resources:
     limits:
-      memory: 30Gi
+      memory: 15Gi
     requests:
       cpu: 100m
-      memory: 30Gi
+      memory: 15Gi
 
 storage-worker-large:
   install: false
@@ -373,7 +374,7 @@ storage-worker-large:
     count: 4
   resources:
     limits:
-      memory: 120Gi
+      memory: 30Gi
     requests:
       cpu: 100m
-      memory: 120Gi
+      memory: 30Gi
