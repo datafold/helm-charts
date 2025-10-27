@@ -1,7 +1,8 @@
 replicaCount: 1
 
-# DMA instance prefix for multi-instance deployments
-# When set, creates unique resource names: {release}-{prefix}-{resource}
+# Template mode - when true, adds "datafold.com/dma-type: template" label
+isTemplate: false
+
 prefix: ""
 
 image:

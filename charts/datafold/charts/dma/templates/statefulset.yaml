@@ -4,6 +4,7 @@ metadata:
   name: {{ include "dma.names.statefulset" . }}
   labels:
     {{- include "dma.labels" . | nindent 4 }}
+    {{- include "dma.templatelabels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   serviceName: {{ include "dma.names.service" . }}
@@ -25,7 +26,7 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ .Values.serviceAccount.name }}
+      serviceAccountName: {{ include "dma.names.serviceaccount" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}

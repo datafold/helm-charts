@@ -107,6 +107,7 @@
     secretKeyRef:
       name: {{ include "datafold.secrets" . }}
       key: DATAFOLD_API_ORG_CREATION_DONOR_TOKENS
+      optional: true
 {{- range $custom_secret := .Values.global.customSecrets }}
 - name: {{ $custom_secret.name }}
   valueFrom:

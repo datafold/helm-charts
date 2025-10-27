@@ -347,6 +347,19 @@ dma3:
     createConfigMap: false
     createSecrets: false
 
+dmatemplate:
+  install: false
+  isTemplate: true
+  replicaCount: 0  # MUST always be 0 - this is a template
+  prefix: "template"
+  serviceAccount:
+    create: true
+  jobServiceAccount:
+    create: false
+  ssh:
+    createConfigMap: false
+    createSecrets: false
+
 storage-worker:
   install: false
   replicaCount: 0

@@ -4,6 +4,7 @@ metadata:
   name: {{ include "dma.names.service" . }}
   labels:
     {{- include "dma.labels" . | nindent 4 }}
+    {{- include "dma.templatelabels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
   clusterIP: None
