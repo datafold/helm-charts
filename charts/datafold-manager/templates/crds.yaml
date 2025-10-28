@@ -305,6 +305,52 @@ spec:
                             type: object
                         type: object
                     type: object
+                  dmatemplate:
+                    description: DmaTemplate enables the DMA template instance
+                    properties:
+                      enabled:
+                        description: Enabled specifies whether this component should
+                          be installed
+                        type: boolean
+                      rawValues:
+                        description: |-
+                          RawValues contains arbitrary Helm values to pass directly to this component's subchart
+                          These values will be merged with the component's default values and can override any
+                          configuration option supported by the component's Helm chart
+                        x-kubernetes-preserve-unknown-fields: true
+                      replicas:
+                        description: Replicas specifies the number of replicas for
+                          this component
+                        format: int32
+                        type: integer
+                      resources:
+                        description: Resources specifies the resource requirements
+                          for this component
+                        properties:
+                          limits:
+                            description: Limits specifies the maximum resources that
+                              can be used
+                            properties:
+                              cpu:
+                                description: CPU specifies the maximum CPU resources
+                                type: string
+                              memory:
+                                description: Memory specifies the maximum memory resources
+                                type: string
+                            type: object
+                          requests:
+                            description: Requests specifies the minimum resources
+                              that should be allocated
+                            properties:
+                              cpu:
+                                description: CPU specifies the minimum CPU resources
+                                type: string
+                              memory:
+                                description: Memory specifies the minimum memory resources
+                                type: string
+                            type: object
+                        type: object
+                    type: object
                   kept:
                     description: Kept enables the graph server
                     properties:
