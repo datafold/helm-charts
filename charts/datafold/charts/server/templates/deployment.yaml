@@ -86,10 +86,6 @@ spec:
                 secretKeyRef:
                   name: {{ include "datafold.secrets" . }}
                   key: DATAFOLD_DATADOG_APPLICATION_ID
-            - name: COMPONENT_NAME
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.labels['app.kubernetes.io/component']
             {{- if (eq .Values.global.optional.pylon "true") }}
             - name: DATAFOLD_PYLON_APP_ID
               valueFrom:
