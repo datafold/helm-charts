@@ -43,6 +43,12 @@ app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{ include "datafold.labels" . }}
 {{- end }}
 
+{{- define "dma.templatelabels" -}}
+{{- if .Values.isTemplate }}
+datafold.com/dma-type: template
+{{- end }}
+{{- end }}
+
 {{/*
 Selector labels
 */}}
@@ -97,27 +103,11 @@ DMA resource names with consistent prefixing
 {{- end }}
 {{- end }}
 
-{{- define "dma.names.configmap" -}}
+{{- define "dma.names.serviceaccount" -}}
 {{- if .Values.prefix }}
-{{- printf "%s-%s-dma-sshd-config" .Release.Name .Values.prefix }}
+{{- printf "%s-%s-dma-sa" .Release.Name .Values.prefix }}
 {{- else }}
-{{- printf "%s-dma-sshd-config" .Release.Name }}
-{{- end }}
-{{- end }}
-
-{{- define "dma.names.ssh-host-keys" -}}
-{{- if .Values.prefix }}
-{{- printf "%s-%s-dma-ssh-host-keys" .Release.Name .Values.prefix }}
-{{- else }}
-{{- printf "%s-dma-ssh-host-keys" .Release.Name }}
-{{- end }}
-{{- end }}
-
-{{- define "dma.names.ssh-keygen-job" -}}
-{{- if .Values.prefix }}
-{{- printf "%s-%s-dma-ssh-keygen" .Release.Name .Values.prefix }}
-{{- else }}
-{{- printf "%s-dma-ssh-keygen" .Release.Name }}
+{{- printf "%s-dma-sa" .Release.Name }}
 {{- end }}
 {{- end }}
 
