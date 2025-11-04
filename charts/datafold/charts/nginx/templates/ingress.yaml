@@ -1,4 +1,4 @@
-{{- if (eq .Values.ingress.deploy true) -}}
+{{- if or (eq .Values.ingress.deploy true) (eq .Values.global.cloudProvider "azure") -}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:

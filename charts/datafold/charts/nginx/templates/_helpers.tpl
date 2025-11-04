@@ -143,9 +143,30 @@ Important Google:
 */}}
 {{- define "nginx.ingress.annotations" -}}
 {{- if (eq .Values.global.cloudProvider "azure") -}}
+{{- if (eq .Values.ingress.deploy true) -}}
+annotations:
+  appgw.ingress.kubernetes.io/appgw-ssl-certificate: {{ .Values.ingress.sslCertificate }}
+  appgw.ingress.kubernetes.io/backend-hostname: {{ .Values.global.serverName }}
+  appgw.ingress.kubernetes.io/ssl-redirect: "true"
+  {{- if .Values.ingress.sslPolicy }}
+  appgw.ingress.kubernetes.io/appgw-ssl-profile: {{ .Values.ingress.sslPolicy }}
+  {{- end }}
+  {{- if (eq .Values.ingress.internal true) }}
+  appgw.ingress.kubernetes.io/use-private-ip: "true"
+  {{- else }}
+  appgw.ingress.kubernetes.io/use-private-ip: "false"
+  {{- end }}
+  appgw.ingress.kubernetes.io/request-timeout: "300"
+  appgw.ingress.kubernetes.io/health-probe-port: "80"
+  appgw.ingress.kubernetes.io/health-probe-path: {{ .Values.ingress.healthz }}
+  appgw.ingress.kubernetes.io/backend-protocol: http
+  appgw.ingress.kubernetes.io/health-probe-timeout: "5"
+  appgw.ingress.kubernetes.io/health-probe-interval: "15"
+{{- else }}
 annotations:
   appgw.ingress.kubernetes.io/override-frontend-port: "443"
   appgw.ingress.kubernetes.io/appgw-ssl-certificate: {{ .Values.ingress.sslCertificate }}
+{{- end }}
 {{- end }}
 {{- if (eq .Values.global.cloudProvider "aws") -}}
 annotations:
