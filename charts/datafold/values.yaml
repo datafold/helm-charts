@@ -167,6 +167,7 @@ secrets:
     apiKey: ""
     datafoldDocsAuthKey: ""
   apiOrgCreationDonorTokens: ""
+  apiOrgDonorTokenList: ""
 
 worker-temporal:
   install: true
