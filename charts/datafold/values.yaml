@@ -131,6 +131,7 @@ secrets:
   googleclientSecret: ""
   intercomId: ""
   pylonId: ""
+  pylonIdentitySecret: ""
   database:
     encryptionKey: "-"
   mail:

@@ -92,6 +92,12 @@ spec:
                 secretKeyRef:
                   name: {{ include "datafold.secrets" . }}
                   key: DATAFOLD_PYLON_APP_ID
+            - name: DATAFOLD_PYLON_IDENTITY_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "datafold.secrets" . }}
+                  key: DATAFOLD_PYLON_IDENTITY_SECRET
+                  optional: true
             {{- end }}
             {{- if (eq .Values.global.optional.googleAuth "true") }}
             - name: DATAFOLD_GOOGLE_CLIENT_ID
