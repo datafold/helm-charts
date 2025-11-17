@@ -75,7 +75,7 @@ Datafold annotations
 {{- define "worker-portal.datafold.annotations" -}}
 replica-count: "{{ .Values.replicaCount }}"
 {{- with .Values.podAnnotations }}
-{{- toYaml . }}
+{{- toYaml . | nindent 0 }}
 {{- end }}
 {{- end }}
 

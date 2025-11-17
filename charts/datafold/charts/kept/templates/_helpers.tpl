@@ -108,6 +108,6 @@ ad.datadoghq.com/{{ .Chart.Name }}.logs: >-
   }]
 {{- end }}
 {{- with .Values.podAnnotations }}
-{{- toYaml . }}
+{{- toYaml . | nindent 0 }}
 {{- end }}
 {{- end }}
