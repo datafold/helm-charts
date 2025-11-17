@@ -121,6 +121,6 @@ ad.datadoghq.com/redis.checks: |
   }
 {{- end }}
 {{- with .Values.podAnnotations }}
-{{- toYaml . }}
+{{- toYaml . | nindent 0 }}
 {{- end }}
 {{- end }}

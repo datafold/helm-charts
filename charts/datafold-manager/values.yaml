@@ -6,7 +6,7 @@ operator:
   # Operator image configuration
   image:
     repository: us-docker.pkg.dev/datadiff-mm/datafold/datafold-operator
-    tag: "1.1.13"
+    tag: "1.1.14"
     pullPolicy: Always
 
   # Operator deployment configuration
