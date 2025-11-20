@@ -1207,6 +1207,19 @@ spec:
                     description: ClusterName specifies the name of the Kubernetes
                       cluster
                     type: string
+                  customSecrets:
+                    description: CustomSecrets is a list of custom secret names to
+                      be injected as environment variables
+                    items:
+                      type: string
+                    type: array
+                  datafoldImage:
+                    description: DatafoldImage specifies the Datafold image name
+                    type: string
+                  datafoldRepository:
+                    description: DatafoldRepository specifies the Docker repository
+                      for Datafold images
+                    type: string
                   deployment:
                     description: Deployment specifies the deployment name
                     type: string
@@ -1218,6 +1231,11 @@ spec:
                     description: GithubServer is the optional GitHub server URL for
                       GitHub integration
                     type: string
+                  manageSecretsYourself:
+                    default: false
+                    description: ManageSecretsYourself indicates whether secrets are
+                      managed externally
+                    type: boolean
                   portalCertData:
                     description: PortalCertData is the optional certificate data to
                       verify which portal we're connecting to
@@ -1229,7 +1247,16 @@ spec:
                   serverName:
                     description: ServerName is the domain name for the Datafold server
                     type: string
+                  shellRepository:
+                    description: ShellRepository specifies the Docker repository for
+                      shell images
+                    type: string
+                  storageClass:
+                    description: StorageClass specifies the storage class to use for
+                      persistent volumes
+                    type: string
                 required:
+                - manageSecretsYourself
                 - serverName
                 type: object
               ingress:
@@ -1376,6 +1403,10 @@ spec:
                         default: false
                         description: APM enables Application Performance Monitoring
                         type: boolean
+                      apmPort:
+                        description: ApmPort specifies the port for Datadog APM
+                        format: int32
+                        type: integer
                       applicationId:
                         description: ApplicationId contains the Datadog application
                           ID
@@ -1383,6 +1414,17 @@ spec:
                       clientToken:
                         description: ClientToken contains the Datadog client token
                         type: string
+                      host:
+                        description: Host specifies the Datadog agent host
+                        type: string
+                      logsPort:
+                        description: LogsPort specifies the port for Datadog logs
+                        format: int32
+                        type: integer
+                      metricsPort:
+                        description: MetricsPort specifies the port for Datadog metrics
+                        format: int32
+                        type: integer
                       monitorPostgres:
                         default: true
                         description: MonitorPostgres enables PostgreSQL monitoring
