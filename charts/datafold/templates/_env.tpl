@@ -108,6 +108,12 @@
       name: {{ include "datafold.secrets" . }}
       key: DATAFOLD_API_ORG_CREATION_DONOR_TOKENS
       optional: true
+- name: DATAFOLD_ANTHROPIC_API_KEY
+  valueFrom:
+    secretKeyRef:
+      name: {{ include "datafold.secrets" . }}
+      key: DATAFOLD_ANTHROPIC_API_KEY
+      optional: true
 {{- range $custom_secret := .Values.global.customSecrets }}
 - name: {{ $custom_secret.name }}
   valueFrom:
