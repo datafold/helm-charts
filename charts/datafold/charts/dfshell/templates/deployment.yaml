@@ -34,8 +34,7 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.global.shellRepository }}/{{ .Values.global.datafoldImage }}:{{ .Values.global.datafoldVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          args:
-            {{- toYaml $.Values.command | nindent 10 }}
+          args: ["{{ .Values.command }}"]
           envFrom:
             - configMapRef:
                 name: {{ include "datafold.configmap" . }}

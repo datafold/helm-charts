@@ -9,9 +9,7 @@ nameOverride: ""
 fullnameOverride: ""
 terminationGracePeriodSeconds: "5"
 
-command:
-  - "/bin/sleep"
-  - "infinity"
+command: "start_console_daemon"
 
 serviceAccount:
   create: true

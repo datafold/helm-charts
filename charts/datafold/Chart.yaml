@@ -2,7 +2,7 @@ apiVersion: v2
 name: datafold
 description: Helm chart package to deploy Datafold on kubernetes.
 type: application
-version: 0.10.31
+version: 0.10.32
 appVersion: "1.0.0"
 icon: https://www.datafold.com/logo.png
 
