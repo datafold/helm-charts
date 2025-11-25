@@ -46,6 +46,136 @@ entries:
   datafold:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2025-11-25T16:04:18.985099953Z"
+    dependencies:
+    - condition: redis.install
+      name: redis
+      repository: file://charts/redis
+      version: '*.*.*'
+    - condition: kept.install
+      name: kept
+      repository: file://charts/kept
+      version: '*.*.*'
+    - condition: clickhouse.install
+      name: clickhouse
+      repository: file://charts/clickhouse
+      version: '*.*.*'
+    - condition: dfshell.install
+      name: dfshell
+      repository: file://charts/dfshell
+      version: '*.*.*'
+    - condition: worker-portal.install
+      name: worker-portal
+      repository: file://charts/worker-portal
+      version: '*.*.*'
+    - condition: worker-temporal.install
+      name: worker-temporal
+      repository: file://charts/worker-temporal
+      version: '*.*.*'
+    - condition: operator.install
+      name: operator
+      repository: file://charts/operator
+      version: '*.*.*'
+    - condition: server.install
+      name: server
+      repository: file://charts/server
+      version: '*.*.*'
+    - condition: scheduler.install
+      name: scheduler
+      repository: file://charts/scheduler
+      version: '*.*.*'
+    - alias: worker
+      condition: worker.install
+      name: worker
+      repository: file://charts/worker
+      version: '*.*.*'
+    - alias: worker2
+      condition: worker2.install
+      name: worker
+      repository: file://charts/worker
+      version: '*.*.*'
+    - alias: worker3
+      condition: worker3.install
+      name: worker
+      repository: file://charts/worker
+      version: '*.*.*'
+    - alias: worker-catalog
+      condition: worker-catalog.install
+      name: worker
+      repository: file://charts/worker
+      version: 0.1.0
+    - alias: worker-interactive
+      condition: worker-interactive.install
+      name: worker
+      repository: file://charts/worker
+      version: 0.1.0
+    - alias: worker-singletons
+      condition: worker-singletons.install
+      name: worker
+      repository: file://charts/worker
+      version: 0.1.0
+    - alias: worker-lineage
+      condition: worker-lineage.install
+      name: worker
+      repository: file://charts/worker
+      version: 0.1.0
+    - alias: worker-monitor
+      condition: worker-monitor.install
+      name: worker
+      repository: file://charts/worker
+      version: 0.1.0
+    - alias: storage-worker
+      condition: storage-worker.install
+      name: storage-worker
+      repository: file://charts/storage-worker
+      version: 0.1.1
+    - alias: storage-worker-large
+      condition: storage-worker-large.install
+      name: storage-worker
+      repository: file://charts/storage-worker
+      version: 0.1.1
+    - alias: dma
+      condition: dma.install
+      name: dma
+      repository: file://charts/dma
+      version: 0.1.0
+    - alias: dma2
+      condition: dma2.install
+      name: dma
+      repository: file://charts/dma
+      version: 0.1.0
+    - alias: dma3
+      condition: dma3.install
+      name: dma
+      repository: file://charts/dma
+      version: 0.1.0
+    - alias: dmatemplate
+      condition: dmatemplate.install
+      name: dma
+      repository: file://charts/dma
+      version: 0.1.0
+    - condition: nginx.install
+      name: nginx
+      repository: file://charts/nginx
+      version: 0.1.0
+    - condition: global.datadog.install
+      name: datadog
+      repository: file://charts/datadog
+      version: '*.*.*'
+    description: Helm chart package to deploy Datafold on kubernetes.
+    digest: a0e47747e75fedfe7b04dd0a489f53dce4725ef8c7fb13432c429ab5d48cbfae
+    icon: https://www.datafold.com/logo.png
+    maintainers:
+    - email: support@datafold.com
+      name: datafold
+      url: https://datafold.com
+    name: datafold
+    type: application
+    urls:
+    - https://github.com/datafold/helm-charts/releases/download/datafold-0.10.31/datafold-0.10.31.tgz
+    version: 0.10.31
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2025-11-17T18:46:28.091285333Z"
     dependencies:
     - condition: redis.install
@@ -19804,6 +19934,27 @@ entries:
   datafold-manager:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2025-11-25T16:04:19.155323336Z"
+    description: Helm chart for Datafold Operator
+    digest: d25706fd6f260cc05ca11a0f85114764bea5c823af16baf0e0fc5ec0347a73ce
+    home: https://datafold.com
+    icon: https://www.datafold.com/logo.png
+    keywords:
+    - datafold
+    - operator
+    - kubernetes
+    - data-quality
+    maintainers:
+    - email: support@datafold.com
+      name: datafold
+      url: https://datafold.com
+    name: datafold-manager
+    type: application
+    urls:
+    - https://github.com/datafold/helm-charts/releases/download/datafold-manager-0.1.40/datafold-manager-0.1.40.tgz
+    version: 0.1.40
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2025-11-20T11:36:08.138061785Z"
     description: Helm chart for Datafold Operator
     digest: e54fb9ecf99359e81bdf272a8891c2c0cef627ae925de8d9851748ff0bb63abb
@@ -20657,4 +20808,4 @@ entries:
     urls:
     - https://github.com/datafold/helm-charts/releases/download/gcp-bootstrap-0.1.0/gcp-bootstrap-0.1.0.tgz
     version: 0.1.0
-generated: "2025-11-20T11:36:08.138708546Z"
+generated: "2025-11-25T16:04:19.156735478Z"
