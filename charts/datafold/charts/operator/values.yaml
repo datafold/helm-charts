@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   pullPolicy: Always
-  tag: "1.2.9"
+  tag: "1.2.11"
 
 imagePullSecrets:
   - name: datafold-docker-secret
@@ -19,9 +19,12 @@ serviceAccount:
 podAnnotations: {}
 podLabels: {}
 
-podSecurityContext: {}
+podSecurityContext:
+  runAsUser: 1000
+  runAsNonRoot: true
 
-securityContext: {}
+securityContext:
+  allowPrivilegeEscalation: false
 
 resources:
   limits:
@@ -30,9 +33,13 @@ resources:
     cpu: 100m
     memory: 200Mi
 
-volumes: []
+volumes:
+  - name: tmp
+    emptyDir: {}
 
-volumeMounts: []
+volumeMounts:
+  - name: tmp
+    mountPath: /tmp
 
 nodeSelector: {}
 
