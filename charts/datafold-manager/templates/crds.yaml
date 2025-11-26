@@ -1611,6 +1611,20 @@ spec:
               secrets:
                 description: Secrets contains references to customer-managed secrets
                 properties:
+                  anthropicApiKey:
+                    description: AnthropicApiKeySecret references the secret containing
+                      the Anthropic API key for DMA containers
+                    properties:
+                      keyName:
+                        description: KeyName is the key within the secret
+                        type: string
+                      secretName:
+                        description: SecretName is the name of the secret
+                        type: string
+                    required:
+                    - keyName
+                    - secretName
+                    type: object
                   apiKey:
                     default:
                       keyName: apiKey
@@ -1642,15 +1656,6 @@ spec:
                     - keyName
                     - secretName
                     type: object
-                  anthropicApiKey:
-                    description: AnthropicApiKeySecret references the secret containing
-                      the Anthropic API key
-                    properties:
-                      keyName:
-                        description: KeyName is the key within the secret
-                        type: string
-                      secretName:
-                        description: SecretName is the name of the secret
                   claudeApiKey:
                     description: ClaudeApiKeySecret references the secret containing
                       the Claude API key for DMA containers
