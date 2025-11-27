@@ -104,11 +104,7 @@ DMA resource names with consistent prefixing
 {{- end }}
 
 {{- define "dma.names.serviceaccount" -}}
-{{- if .Values.prefix }}
-{{- printf "%s-%s-dma-sa" .Release.Name .Values.prefix }}
-{{- else }}
-{{- printf "%s-dma-sa" .Release.Name }}
-{{- end }}
+{{- printf "%s-dma" .Release.Name }}
 {{- end }}
 
 {{- define "dma.names.volumeClaimTemplate" -}}
