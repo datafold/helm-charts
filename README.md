@@ -80,6 +80,21 @@ The `examples/` directory contains various `DatafoldApplication` configuration t
 
 Choose the example that best matches your environment and customize it as needed.
 
+### Getting the Latest Application Version
+
+To fetch the most recent version of the Datafold application from the portal, you can use the following curl command:
+
+```bash
+curl -L https://portal.datafold.com/operator/v1/config \
+     --header "Content-Type: application/json" \
+     --header "Authorization: Bearer YOUR_API_KEY" \
+     | jq -r '.version'
+```
+
+Replace `YOUR_API_KEY` with your actual API key from the `datafold-operator-secrets.yaml` file. The command will return the latest version string that you can use in your `DatafoldApplication` configuration.
+
+**Note**: If you're using a custom portal URL (different from `https://portal.datafold.com`), replace the URL in the command accordingly.
+
 ## Alternative Method: Direct Helm Charts Deployment
 
 For users who prefer the traditional Helm charts approach or need more direct control over the deployment.
