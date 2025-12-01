@@ -42,6 +42,10 @@ config:
   # One of: s3, gcs, azblob. Leave empty to auto-detect based on "global.cloudProvider".
   remote_storage: ""
 
+  # Skip binary checksum checks (useful for Bottlerocket OS and other environments where checksums may fail)
+  # See: https://github.com/clickhouse/clickhouse/issues/83637
+  skip_binary_checksum_checks: "false"
+
 secrets:
   clickhouse_backup_sa: "b3ZlcnJpZGVfdGhpcwoKCg=="
   azblob_account_key: "override_this"
