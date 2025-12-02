@@ -37,7 +37,7 @@ Service Account name
 {{- if .Values.serviceAccount.name }}
 {{- .Values.serviceAccount.name }}
 {{- else }}
-{{- printf "%s-%s" .Release.Name .Chart.Name }}
+{{- include "worker.name" . }}
 {{- end }}
 {{- end }}
 

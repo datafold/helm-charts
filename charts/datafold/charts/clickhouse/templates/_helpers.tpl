@@ -54,10 +54,10 @@ app.kubernetes.io/name: {{ include "clickhouse.name" . }}
 Create the name of the service account to use
 */}}
 {{- define "clickhouse.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create }}
-{{- default (include "clickhouse.fullname" .) .Values.serviceAccount.name }}
+{{- if .Values.serviceAccount.name }}
+{{- .Values.serviceAccount.name }}
 {{- else }}
-{{- default "default" .Values.serviceAccount.name }}
+{{- include "clickhouse.name" . }}
 {{- end }}
 {{- end }}
 
