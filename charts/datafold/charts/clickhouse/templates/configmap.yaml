@@ -19,3 +19,4 @@ data:
   AZBLOB_ACCOUNT_NAME: "{{ .Values.config.azblob_account_name }}"
   AZBLOB_CONTAINER: "{{ .Values.config.azblob_container }}"
   AZBLOB_USE_MANAGED_IDENTITY: "true"
+  SKIP_BINARY_CHECKSUM_CHECKS: "{{ .Values.config.skip_binary_checksum_checks }}"
