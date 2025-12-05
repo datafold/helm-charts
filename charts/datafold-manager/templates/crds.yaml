@@ -1474,16 +1474,26 @@ spec:
                     - keyName
                     - secretName
                     type: object
-                  signoz:
-                    description: SignOz contains SignOz-specific configuration
+                  opentelemetry:
+                    description: OpenTelemetryConfig contains OpenTelemetry-specific
+                      configuration
                     properties:
-                      endpoint:
-                        default: http://signoz-otel-collector:4318
-                        description: Endpoint specifies the SignOz OTEL collector
-                          endpoint
+                      headerName:
+                        description: |-
+                          HeaderName specifies the header name for ingestion key
+                          The ingestion key itself comes from the monitoringApiKey secret
                         type: string
-                    required:
-                    - endpoint
+                      logsEndpoint:
+                        description: LogsEndpoint specifies the OpenTelemetry logs
+                          OTLP endpoint
+                        type: string
+                      metricsEndpoint:
+                        description: MetricsEndpoint specifies the OpenTelemetry metrics
+                          OTLP endpoint
+                        type: string
+                      serviceName:
+                        description: ServiceName specifies the service name in OpenTelemetry
+                        type: string
                     type: object
                   type:
                     default: none
@@ -1491,7 +1501,7 @@ spec:
                     enum:
                     - none
                     - datadog
-                    - signoz
+                    - opentelemetry
                     type: string
                 required:
                 - monitoringApiKey

@@ -49,9 +49,12 @@ global:
       port: 8125
     apm:
       port: 8126
-  signoz:
-    endpoint: "http://signoz-otel-collector:4318"
+  opentelemetry:
+    metricsEndpoint: "http://signoz-otel-collector:4318/v1/metrics"
+    logsEndpoint: "http://signoz-otel-collector:4318/v1/logs"
+    serviceName: "datafold"
     ingestionKey: ""
+    headerName: "signoz-ingestion-key"
   operator:
     allowRollback: "false"
     releaseChannel: "change-this"

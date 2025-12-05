@@ -20,9 +20,20 @@ data:
   DATAFOLD_LOGGING_ENABLED: "{{ .Values.config.loggingEnabled }}"
   DATAFOLD_MONITORING_PROVIDER: "{{ .Values.config.monitoringProvider }}"
   DATAFOLD_METRICS_ENABLED: "{{ .Values.config.metricsEnabled }}"
-  DATAFOLD_SIGNOZ_ENDPOINT: "{{ .Values.global.signoz.endpoint }}"
-{{- if .Values.global.signoz.ingestionKey }}
-  DATAFOLD_SIGNOZ_INGESTION_KEY: "{{ .Values.global.signoz.ingestionKey }}"
+{{- if .Values.global.opentelemetry.metricsEndpoint }}
+  DATAFOLD_OPENTELEMETRY_METRICS_ENDPOINT: "{{ .Values.global.opentelemetry.metricsEndpoint }}"
+{{- end }}
+{{- if .Values.global.opentelemetry.logsEndpoint }}
+  DATAFOLD_OPENTELEMETRY_LOGS_ENDPOINT: "{{ .Values.global.opentelemetry.logsEndpoint }}"
+{{- end }}
+{{- if .Values.global.opentelemetry.serviceName }}
+  DATAFOLD_OPENTELEMETRY_SERVICE_NAME: "{{ .Values.global.opentelemetry.serviceName }}"
+{{- end }}
+{{- if .Values.global.opentelemetry.ingestionKey }}
+  DATAFOLD_OPENTELEMETRY_INGESTION_KEY: "{{ .Values.global.opentelemetry.ingestionKey }}"
+{{- end }}
+{{- if .Values.global.opentelemetry.headerName }}
+  DATAFOLD_OPENTELEMETRY_HEADER_NAME: "{{ .Values.global.opentelemetry.headerName }}"
 {{- end }}
   DATAFOLD_MAIL_PORT: "{{ .Values.config.mailPort }}"
   DATAFOLD_MAIL_USE_TLS: "{{ .Values.config.mailUseTls }}"
