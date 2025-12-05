@@ -75,7 +75,7 @@ The `examples/` directory contains various `DatafoldApplication` configuration t
 - `datafold-application-minimal.yaml` - Minimal configuration for development/testing
 - `datafold-application-aws-lb.yaml` - AWS-specific configuration with load balancer
 - `datafold-application-gcp-lb.yaml` - GCP-specific configuration with load balancer
-- `datafold-application-signoz.yaml` - Configuration with SigNoz monitoring
+- `datafold-application-signoz.yaml` - Configuration with OpenTelemetry monitoring (e.g., Signoz, SignalFX)
 - `datafold-application-datadog.yaml` - Configuration with Datadog monitoring
 
 Choose the example that best matches your environment and customize it as needed.

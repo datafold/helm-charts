@@ -10,12 +10,20 @@ spec:
     clusterName: datafold-cluster
     portalUrl: https://portal.datafold.com
     deployment: datafold-production
-  # SignOz Monitoring Configuration
+  # OpenTelemetry Monitoring Configuration
   monitoring:
-    type: signoz
+    type: opentelemetry
     monitoringApiKey:
       secretName: datafold-operator-secrets
       keyName: monitoringApiKey
-    signoz:
-      # SignOz OTEL collector endpoint
-      endpoint: "http://signoz-otel-collector:4318/v1/logs"
+    opentelemetry:
+      # OpenTelemetry metrics OTLP endpoint
+      metricsEndpoint: "http://signoz-otel-collector:4318/v1/metrics"
+      # OpenTelemetry logs OTLP endpoint
+      logsEndpoint: "http://signoz-otel-collector:4318/v1/logs"
+      # Service name in OpenTelemetry
+      serviceName: "datafold"
+      # Optional: Ingestion key for authentication
+      ingestionKey: ""
+      # Optional: Header name for ingestion key (default: signoz-ingestion-key)
+      headerName: ""

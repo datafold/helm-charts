@@ -98,7 +98,7 @@
   valueFrom:
     fieldRef:
       fieldPath: metadata.labels['app.kubernetes.io/component']
-- name: DATAFOLD_SIGNOZ_SERVICE_NAME
+- name: DATAFOLD_OPENTELEMETRY_SERVICE_NAME
   valueFrom:
     fieldRef:
       fieldPath: metadata.labels['app.kubernetes.io/component']
