@@ -4,7 +4,13 @@ metadata:
   name: {{ include "kept.data.pvc.name" . }}
   labels:
     {{- include "kept.labels" . | nindent 4 }}
-  annotations: {}
+    {{- with .Values.chartLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  annotations:
+    {{- with .Values.chartAnnotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 spec:
   accessModes:
     - ReadWriteOnce

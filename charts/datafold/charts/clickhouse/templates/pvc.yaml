@@ -4,7 +4,13 @@ metadata:
   name: {{ include "clickhouse.data.pvc.name" . }}
   labels:
     {{- include "clickhouse.labels" . | nindent 4 }}
-  annotations: {}
+    {{- with .Values.chartLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  annotations:
+    {{- with .Values.chartAnnotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 spec:
   accessModes:
     - ReadWriteOnce
@@ -22,7 +28,13 @@ metadata:
   name: {{ include "clickhouse.logs.pvc.name" . }}
   labels:
     {{- include "clickhouse.labels" . | nindent 4 }}
-  annotations: {}
+    {{- with .Values.chartLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  annotations:
+    {{- with .Values.chartAnnotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 spec:
   accessModes:
     - ReadWriteOnce

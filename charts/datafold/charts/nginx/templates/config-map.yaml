@@ -110,4 +110,11 @@ metadata:
   labels:
     app.kubernetes.io/name: nginx
     app.kubernetes.io/version: 1.0.0
+    {{- with .Values.chartLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
   name: {{ include "nginx.configMap" . }}
+  {{- with .Values.chartAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}

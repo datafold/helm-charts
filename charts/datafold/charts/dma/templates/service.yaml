@@ -5,6 +5,13 @@ metadata:
   labels:
     {{- include "dma.labels" . | nindent 4 }}
     {{- include "dma.templatelabels" . | nindent 4 }}
+    {{- with .Values.chartLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with .Values.chartAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   type: {{ .Values.service.type }}
   clusterIP: None

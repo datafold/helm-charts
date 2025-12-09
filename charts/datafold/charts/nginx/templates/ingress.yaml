@@ -5,7 +5,17 @@ metadata:
   name: {{ include "nginx.fullname" . }}
   labels:
     {{- include "nginx.labels" . | nindent 4 }}
-  {{- include "nginx.ingress.annotations" . | nindent 2 }}
+    {{- with .Values.chartLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  annotations:
+    {{- $ingressAnnotations := include "nginx.ingress.annotations" . }}
+    {{- if $ingressAnnotations }}
+    {{- $ingressAnnotations | nindent 4 }}
+    {{- end }}
+    {{- with .Values.chartAnnotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 spec:
   {{- include "nginx.ingress.class" . | nindent 2 }}
   defaultBackend:

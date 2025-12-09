@@ -27,6 +27,8 @@ global:
 nginx:
   port: 80
   gcpNegName: "datafold-neg"  # GCP Network Endpoint Group
+  ingress:
+    deploy: true
 
 datadog:
   install: true

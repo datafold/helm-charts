@@ -27,6 +27,8 @@ global:
 nginx:
   port: 80
   gcpNegName: ""
+  ingress:
+    deploy: true  # Note: Ingress is always deployed for Azure, but setting explicitly for consistency
 
 datadog:
   install: true

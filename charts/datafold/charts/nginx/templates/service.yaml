@@ -4,7 +4,14 @@ metadata:
   name: {{ include "nginx.fullname" . }}
   labels:
     {{- include "nginx.labels" . | nindent 4 }}
-  {{- include "nginx.loadbalancer.annotations" . | nindent 2 }}
+    {{- with .Values.chartLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  annotations:
+    {{- include "nginx.loadbalancer.annotations" . | nindent 4 }}
+    {{- with .Values.chartAnnotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 spec:
   ports:
   - name: http

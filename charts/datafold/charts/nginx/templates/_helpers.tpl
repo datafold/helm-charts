@@ -124,13 +124,11 @@ NEG annotations for Google Cloud
 */}}
 {{- if (eq .Values.global.cloudProvider "gcp") -}}
 {{- if .Values.global.nginx.gcpNegName -}}
-annotations:
-  cloud.google.com/neg: '{"exposed_ports": {"{{ .Values.global.nginx.port }}":{"name": "{{ .Values.global.nginx.gcpNegName }}"}}}'
+cloud.google.com/neg: '{"exposed_ports": {"{{ .Values.global.nginx.port }}":{"name": "{{ .Values.global.nginx.gcpNegName }}"}}}'
 {{- end }}
 {{- if (eq .Values.ingress.deploy true) -}}
-annotations:
-    cloud.google.com/neg: '{"ingress": true}'
-    cloud.google.com/backend-config: '{"default": "{{ include "nginx.fullname" . }}"}'
+cloud.google.com/neg: '{"ingress": true}'
+cloud.google.com/backend-config: '{"default": "{{ include "nginx.fullname" . }}"}'
 {{- end }}
 {{- end }}
 {{- end }}
@@ -144,91 +142,89 @@ Important Google:
 {{- define "nginx.ingress.annotations" -}}
 {{- if (eq .Values.global.cloudProvider "azure") -}}
 {{- if (eq .Values.ingress.deploy true) -}}
-annotations:
-  appgw.ingress.kubernetes.io/appgw-ssl-certificate: {{ .Values.ingress.sslCertificate }}
-  appgw.ingress.kubernetes.io/backend-hostname: {{ .Values.global.serverName }}
-  appgw.ingress.kubernetes.io/ssl-redirect: "true"
-  {{- if .Values.ingress.sslPolicy }}
-  appgw.ingress.kubernetes.io/appgw-ssl-profile: {{ .Values.ingress.sslPolicy }}
-  {{- end }}
-  {{- if (eq .Values.ingress.internal true) }}
-  appgw.ingress.kubernetes.io/use-private-ip: "true"
-  {{- else }}
-  appgw.ingress.kubernetes.io/use-private-ip: "false"
-  {{- end }}
-  appgw.ingress.kubernetes.io/request-timeout: "300"
-  appgw.ingress.kubernetes.io/health-probe-port: "80"
-  appgw.ingress.kubernetes.io/health-probe-path: {{ .Values.ingress.healthz }}
-  appgw.ingress.kubernetes.io/backend-protocol: http
-  appgw.ingress.kubernetes.io/health-probe-timeout: "5"
-  appgw.ingress.kubernetes.io/health-probe-interval: "15"
+appgw.ingress.kubernetes.io/appgw-ssl-certificate: {{ .Values.ingress.sslCertificate }}
+appgw.ingress.kubernetes.io/backend-hostname: {{ .Values.global.serverName }}
+appgw.ingress.kubernetes.io/ssl-redirect: "true"
+{{- if .Values.ingress.sslPolicy }}
+appgw.ingress.kubernetes.io/appgw-ssl-profile: {{ .Values.ingress.sslPolicy }}
+{{- end }}
+{{- if (eq .Values.ingress.internal true) }}
+appgw.ingress.kubernetes.io/use-private-ip: "true"
 {{- else }}
-annotations:
-  appgw.ingress.kubernetes.io/override-frontend-port: "443"
-  appgw.ingress.kubernetes.io/appgw-ssl-certificate: {{ .Values.ingress.sslCertificate }}
+appgw.ingress.kubernetes.io/use-private-ip: "false"
+{{- end }}
+appgw.ingress.kubernetes.io/request-timeout: "300"
+appgw.ingress.kubernetes.io/health-probe-port: "80"
+appgw.ingress.kubernetes.io/health-probe-path: {{ .Values.ingress.healthz }}
+appgw.ingress.kubernetes.io/backend-protocol: http
+appgw.ingress.kubernetes.io/health-probe-timeout: "5"
+appgw.ingress.kubernetes.io/health-probe-interval: "15"
+{{- else }}
+appgw.ingress.kubernetes.io/override-frontend-port: "443"
+appgw.ingress.kubernetes.io/appgw-ssl-certificate: {{ .Values.ingress.sslCertificate }}
 {{- end }}
 {{- end }}
+
 {{- if (eq .Values.global.cloudProvider "aws") -}}
-annotations:
-  kubernetes.io/ingress.class: alb
-  alb.ingress.kubernetes.io/load-balancer-name: {{ .Release.Name }}
-  {{- if (eq .Values.ingress.internal true) }}
-  alb.ingress.kubernetes.io/scheme: internal
-  {{- else }}
-  alb.ingress.kubernetes.io/scheme: internet-facing
-  {{- end }}
-  alb.ingress.kubernetes.io/target-type: instance
-  alb.ingress.kubernetes.io/backend-protocol: HTTP
-  alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80}, {"HTTPS":443}]'
-  alb.ingress.kubernetes.io/ssl-redirect: '443'
-  {{- if .Values.ingress.sslCertificate }}
-  alb.ingress.kubernetes.io/certificate-arn: {{ .Values.ingress.sslCertificate }}
-  {{- end }}
-  alb.ingress.kubernetes.io/healthcheck-protocol: HTTP
-  alb.ingress.kubernetes.io/healthcheck-port: traffic-port
-  alb.ingress.kubernetes.io/healthcheck-path: {{ .Values.ingress.healthz }}
-  alb.ingress.kubernetes.io/healthcheck-interval-seconds: '15'
-  alb.ingress.kubernetes.io/healthcheck-timeout-seconds: '5'
-  alb.ingress.kubernetes.io/success-codes: '200'
-  alb.ingress.kubernetes.io/healthy-threshold-count: '2'
-  alb.ingress.kubernetes.io/unhealthy-threshold-count: '2'
-  alb.ingress.kubernetes.io/load-balancer-attributes: {{ .Values.ingress.awsAttributes }}
-  {{- if .Values.ingress.secgroups }}
-  alb.ingress.kubernetes.io/security-groups: {{ .Values.ingress.secgroups }}
-  {{- end }}
-  alb.ingress.kubernetes.io/ssl-policy: {{ .Values.ingress.awsSecurityPolicy }}
-  {{- if .Values.ingress.subnets }}
-  alb.ingress.kubernetes.io/subnets: {{ .Values.ingress.subnets }}
-  {{- end }}
-  {{- if .Values.ingress.awsIngressGroupName }}
-  alb.ingress.kubernetes.io/group.name: {{ .Values.ingress.awsIngressGroupName }}
-  {{- end }}
-  {{- if .Values.ingress.awsIngressGroupOrder }}
-  alb.ingress.kubernetes.io/group.order: {{ .Values.ingress.awsIngressGroupOrder }}
-  {{- end }}
-  alb.ingress.kubernetes.io/tags: Application=datafold
+kubernetes.io/ingress.class: alb
+alb.ingress.kubernetes.io/load-balancer-name: {{ .Release.Name }}
+{{- if (eq .Values.ingress.internal true) }}
+alb.ingress.kubernetes.io/scheme: internal
+{{- else }}
+alb.ingress.kubernetes.io/scheme: internet-facing
 {{- end }}
+alb.ingress.kubernetes.io/target-type: instance
+alb.ingress.kubernetes.io/backend-protocol: HTTP
+alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80}, {"HTTPS":443}]'
+alb.ingress.kubernetes.io/ssl-redirect: '443'
+{{- if .Values.ingress.sslCertificate }}
+alb.ingress.kubernetes.io/certificate-arn: {{ .Values.ingress.sslCertificate }}
+{{- end }}
+alb.ingress.kubernetes.io/healthcheck-protocol: HTTP
+alb.ingress.kubernetes.io/healthcheck-port: traffic-port
+alb.ingress.kubernetes.io/healthcheck-path: {{ .Values.ingress.healthz }}
+alb.ingress.kubernetes.io/healthcheck-interval-seconds: '15'
+alb.ingress.kubernetes.io/healthcheck-timeout-seconds: '5'
+alb.ingress.kubernetes.io/success-codes: '200'
+alb.ingress.kubernetes.io/healthy-threshold-count: '2'
+alb.ingress.kubernetes.io/unhealthy-threshold-count: '2'
+alb.ingress.kubernetes.io/load-balancer-attributes: {{ .Values.ingress.awsAttributes }}
+{{- if .Values.ingress.secgroups }}
+alb.ingress.kubernetes.io/security-groups: {{ .Values.ingress.secgroups }}
+{{- end }}
+alb.ingress.kubernetes.io/ssl-policy: {{ .Values.ingress.awsSecurityPolicy }}
+{{- if .Values.ingress.subnets }}
+alb.ingress.kubernetes.io/subnets: {{ .Values.ingress.subnets }}
+{{- end }}
+{{- if .Values.ingress.awsIngressGroupName }}
+alb.ingress.kubernetes.io/group.name: {{ .Values.ingress.awsIngressGroupName }}
+{{- end }}
+{{- if .Values.ingress.awsIngressGroupOrder }}
+alb.ingress.kubernetes.io/group.order: {{ .Values.ingress.awsIngressGroupOrder }}
+{{- end }}
+alb.ingress.kubernetes.io/tags: Application=datafold
+{{- end }}
+
 {{- if (eq .Values.global.cloudProvider "gcp") -}}
 {{- if (eq .Values.ingress.deploy true) -}}
-annotations:
-  {{- if (eq .Values.ingress.internal true) }}
-  kubernetes.io/ingress.class: gce-internal
-  {{- else }}
-  kubernetes.io/ingress.class: gce
-  networking.gke.io/v1beta1.FrontendConfig: {{ include "nginx.fullname" . }}
-  {{- end }}
-  {{- if (eq .Values.ingress.certificateMethod "managed") }}
-  networking.gke.io/managed-certificates: {{ include "nginx.fullname" . }}
-  {{- end }}
-  {{- if .Values.ingress.staticIpName  }}
-  kubernetes.io/ingress.global-static-ip-name: {{ .Values.ingress.staticIpName }}
-  {{- end }}
-  {{- if (eq .Values.ingress.certificateMethod "preshared") }}
-  {{- if .Values.ingress.presharedCertificate }}
-  ingress.gcp.kubernetes.io/pre-shared-cert: {{ .Values.ingress.presharedCertificate }}
-  {{- end }}
-  {{- end }}
-  kubernetes.io/ingress.allow-http: "false"
+{{- if (eq .Values.ingress.internal true) }}
+kubernetes.io/ingress.class: gce-internal
+{{- else }}
+kubernetes.io/ingress.class: gce
+networking.gke.io/v1beta1.FrontendConfig: {{ include "nginx.fullname" . }}
+{{- end }}
+{{- if (eq .Values.ingress.certificateMethod "managed") }}
+networking.gke.io/managed-certificates: {{ include "nginx.fullname" . }}
+{{- end }}
+{{- if .Values.ingress.staticIpName  }}
+kubernetes.io/ingress.global-static-ip-name: {{ .Values.ingress.staticIpName }}
+{{- end }}
+{{- if (eq .Values.ingress.certificateMethod "preshared") }}
+{{- if .Values.ingress.presharedCertificate }}
+ingress.gcp.kubernetes.io/pre-shared-cert: {{ .Values.ingress.presharedCertificate }}
+{{- end }}
+{{- end }}
+kubernetes.io/ingress.allow-http: "false"
 {{- end }}
 {{- end }}
 {{- end }}
