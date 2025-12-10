@@ -4,6 +4,13 @@ metadata:
   name: {{ include "datafold.redis.server" . }}
   labels:
     {{- include "redis.labels" . | nindent 4 }}
+    {{- with .Values.chartLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with .Values.chartAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   type: {{ .Values.service.type }}
   ports:

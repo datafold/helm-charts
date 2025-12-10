@@ -18,6 +18,9 @@ storage:
 
 podAnnotations: {}
 
+chartLabels: {}
+chartAnnotations: {}
+
 podSecurityContext:
   runAsNonRoot: false
 

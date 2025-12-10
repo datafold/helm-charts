@@ -19,6 +19,9 @@ serviceAccount:
   roleArn: ""
   name: ""
 
+chartLabels: {}
+chartAnnotations: {}
+
 podAnnotations: {}
 podLabels: {}
 

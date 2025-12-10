@@ -2,6 +2,14 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ include "clickhouse.xmlconfig" . }}
+  {{- with .Values.chartLabels }}
+  labels:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.chartAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 data:
   overrides.xml: |-
     <yandex>

@@ -5,7 +5,13 @@ metadata:
   name: {{ .Values.storage.storageClass | quote }}
   labels:
     {{- include "worker.labels" . | nindent 4 }}
-  annotations: {}
+    {{- with .Values.chartLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  annotations:
+    {{- with .Values.chartAnnotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 provisioner: "kubernetes.io/aws-ebs"
 reclaimPolicy: "Delete"
 parameters:
@@ -22,7 +28,13 @@ metadata:
   name: {{ .Values.storage.storageClass | quote }}
   labels:
     {{- include "worker.labels" . | nindent 4 }}
-  annotations: {}
+    {{- with .Values.chartLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  annotations:
+    {{- with .Values.chartAnnotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 provisioner: "kubernetes.io/gce-pd"
 reclaimPolicy: "Delete"
 parameters:
@@ -38,7 +50,13 @@ metadata:
   name: {{ .Values.storage.storageClass | quote }}
   labels:
     {{- include "worker.labels" . | nindent 4 }}
-  annotations: {}
+    {{- with .Values.chartLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  annotations:
+    {{- with .Values.chartAnnotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 provisioner: "disk.csi.azure.com"
 reclaimPolicy: "Delete"
 parameters:

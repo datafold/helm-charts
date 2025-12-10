@@ -5,6 +5,13 @@ metadata:
   name: {{ include "dma.names.shared-configmap" . }}
   labels:
     {{- include "dma.labels" . | nindent 4 }}
+    {{- with .Values.chartLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with .Values.chartAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 data:
   sshd_config: |
     AllowUsers {{ .Values.dma.ssh.username }} root

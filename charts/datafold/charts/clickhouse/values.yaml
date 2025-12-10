@@ -59,6 +59,9 @@ serviceAccount:
 podAnnotations: {}
 podLabels: {}
 
+chartLabels: {}
+chartAnnotations: {}
+
 podSecurityContext:
   fsGroup: 101
   fsGroupChangePolicy: "OnRootMismatch"

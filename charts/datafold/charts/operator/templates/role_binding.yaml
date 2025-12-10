@@ -3,6 +3,14 @@ kind: RoleBinding
 metadata:
   namespace: {{ .Release.Namespace }}
   name: {{ include "operator.fullname" . }}
+  {{- with .Values.chartLabels }}
+  labels:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.chartAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 subjects:
 - kind: ServiceAccount
   name: {{ .Values.serviceAccount.name }}

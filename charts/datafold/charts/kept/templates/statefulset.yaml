@@ -4,6 +4,13 @@ metadata:
   name: {{ include "kept.fullname" . }}
   labels:
     {{- include "kept.labels" . | nindent 4 }}
+    {{- with .Values.chartLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with .Values.chartAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   serviceName: kept
   replicas: 1

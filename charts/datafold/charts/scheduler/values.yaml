@@ -22,6 +22,9 @@ serviceAccount:
 podAnnotations: {}
 podLabels: {}
 
+chartLabels: {}
+chartAnnotations: {}
+
 podSecurityContext:
   runAsUser: 1000
   runAsNonRoot: true

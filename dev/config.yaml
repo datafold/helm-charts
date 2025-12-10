@@ -2,12 +2,24 @@ dfshell:
   command:
     - "/bin/sleep"
     - "infinity"
+  chartLabels:
+    test-label: "dfshell-test"
+  chartAnnotations:
+    test-annotation: "dfshell-test"
 
 server:
   command: "dev_server"
+  chartLabels:
+    test-label: "server-test"
+  chartAnnotations:
+    test-annotation: "server-test"
 
 scheduler:
   command: "dev_scheduler"
+  chartLabels:
+    test-label: "scheduler-test"
+  chartAnnotations:
+    test-annotation: "scheduler-test"
 
 config:
   mailPort: "25"
@@ -78,6 +90,10 @@ worker:
     requests:
       cpu: 1000m
       memory: 12000Mi
+  chartLabels:
+    test-label: "worker-test"
+  chartAnnotations:
+    test-annotation: "worker-test"
 
 worker-interactive:
   install: true
@@ -144,6 +160,10 @@ worker-temporal:
   install: true
   replicaCount: 1
   terminationGracePeriodSeconds: "5"
+  chartLabels:
+    test-label: "worker-temporal-test"
+  chartAnnotations:
+    test-annotation: "worker-temporal-test"
 
 storage-worker:
   install: true
@@ -160,34 +180,61 @@ storage-worker:
     requests:
       cpu: 100m
       memory: 30Gi
+  chartLabels:
+    test-label: "storage-worker-test"
+  chartAnnotations:
+    test-annotation: "storage-worker-test"
 
 # Component installations
 redis:
   install: true
+  chartLabels:
+    test-label: "redis-test"
+  chartAnnotations:
+    test-annotation: "redis-test"
 
 clickhouse:
   install: true
+  chartLabels:
+    test-label: "clickhouse-test"
+  chartAnnotations:
+    test-annotation: "clickhouse-test"
 
 postgres:
   install: false
 
 dfshell:
   install: true
+  # chartLabels and chartAnnotations already set above
 
 worker-portal:
   install: true
+  chartLabels:
+    test-label: "worker-portal-test"
+  chartAnnotations:
+    test-annotation: "worker-portal-test"
 
 initjob:
   install: false
 
 operator:
   install: true
+  chartLabels:
+    test-label: "operator-test"
+  chartAnnotations:
+    test-annotation: "operator-test"
 
 server:
   install: true
+  # chartLabels and chartAnnotations already set above
 
 scheduler:
   install: true
+  # chartLabels and chartAnnotations already set above
 
 nginx:
   install: true
+  chartLabels:
+    test-label: "nginx-test"
+  chartAnnotations:
+    test-annotation: "nginx-test"

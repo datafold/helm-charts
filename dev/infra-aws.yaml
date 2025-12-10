@@ -27,6 +27,8 @@ global:
 nginx:
   port: 80
   gcpNegName: ""
+  ingress:
+    deploy: true
 
 datadog:
   install: true

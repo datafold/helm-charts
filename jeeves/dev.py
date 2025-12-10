@@ -130,7 +130,7 @@ def render():
 @dev.command()
 def kubeconform(
     cloud_provider: CloudProvider,
-    kubernetes_version: str = "1.30.0",
+    kubernetes_version: str = "1.33.0",
     strict: bool = True,
     skip_list: str = "",
     output_format: str = "text",
@@ -212,7 +212,16 @@ def kubeconform(
                 kubeconform_cmd.append("-strict")
 
             # Add default skip list for custom resources that aren't in standard Kubernetes API
-            default_skip_list = "TargetGroupBinding,DatadogAgent,DfAppManager"
+            default_skip_list = ",".join(
+                [
+                    "TargetGroupBinding",
+                    "DatadogAgent",
+                    "DfAppManager",
+                    "BackendConfig",
+                    "FrontendConfig",
+                    "ManagedCertificate",
+                ]
+            )
             if skip_list:
                 final_skip_list = f"{skip_list},{default_skip_list}"
             else:

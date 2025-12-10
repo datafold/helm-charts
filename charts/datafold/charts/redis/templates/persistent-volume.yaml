@@ -3,12 +3,23 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: {{ include "redis.data.pv.name" . }}
-{{- if (eq .Values.global.cloudProvider "azure") }}
+  {{- if (eq .Values.global.cloudProvider "azure") }}
   annotations:
     pv.kubernetes.io/provisioned-by: disk.csi.azure.com
-{{- end }}
+    {{- with .Values.chartAnnotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- else }}
+  {{- with .Values.chartAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- end }}
   labels:
     {{- include "redis.labels" . | nindent 4 }}
+    {{- with .Values.chartLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 spec:
   accessModes:
     - ReadWriteOnce

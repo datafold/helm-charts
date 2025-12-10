@@ -33,6 +33,9 @@ jobServiceAccount:
 podAnnotations: {}
 podLabels: {}
 
+chartLabels: {}
+chartAnnotations: {}
+
 podSecurityContext:
   runAsUser: 0
   runAsNonRoot: false
