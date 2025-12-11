@@ -1595,6 +1595,13 @@ spec:
                     description: User specifies the PostgreSQL user
                     type: string
                 type: object
+              rawValues:
+                description: |-
+                  RawValues contains arbitrary Helm values to be applied as base overrides
+                  These values are evaluated first, before any other specific configuration,
+                  allowing more specific fields to override them if defined. This supports
+                  nested/hierarchical structures unlike the deprecated Values field.
+                x-kubernetes-preserve-unknown-fields: true
               redis:
                 description: Redis contains configuration for Redis cache
                 properties:
@@ -1767,11 +1774,6 @@ spec:
                 - databaseEncryptionKey
                 - installPassword
                 - pylonId
-                type: object
-              values:
-                additionalProperties:
-                  type: string
-                description: Values contains custom Helm values to override defaults
                 type: object
             required:
             - global

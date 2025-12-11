@@ -5,5 +5,12 @@ metadata:
   labels:
     {{- include "datafold.labels" . | nindent 4 }}
     app.kubernetes.io/part-of: datafold
+    {{- with .Values.toplevel.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with .Values.toplevel.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   datafoldVersion: "{{ .Values.global.datafoldVersion }}"

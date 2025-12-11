@@ -9,10 +9,7 @@ metadata:
     {{- toYaml . | nindent 4 }}
     {{- end }}
   annotations:
-    {{- $ingressAnnotations := include "nginx.ingress.annotations" . }}
-    {{- if $ingressAnnotations }}
-    {{- $ingressAnnotations | nindent 4 }}
-    {{- end }}
+    {{- include "nginx.ingress.annotations" . | nindent 4 }}
     {{- with .Values.chartAnnotations }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
