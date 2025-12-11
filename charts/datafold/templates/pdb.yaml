@@ -3,6 +3,14 @@ apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
   name: kube-dns-pdb
+  {{- with .Values.toplevel.labels }}
+  labels:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.toplevel.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   maxUnavailable: 1
   selector:

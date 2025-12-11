@@ -1,3 +1,11 @@
+toplevel:
+  labels:
+    test-toplevel-label: "dev-test"
+    managed-by: "helm"
+  annotations:
+    test-toplevel-annotation: "dev-test"
+    description: "Toplevel test annotation for dev"
+
 dfshell:
   command:
     - "/bin/sleep"

@@ -173,6 +173,11 @@ secrets:
   apiOrgCreationDonorTokens: ""
   anthropicApiKey: ""
 
+# Chart-level labels and annotations applied to resources in this top level chart
+toplevel:
+  labels: {}
+  annotations: {}
+
 worker-temporal:
   install: true
 
