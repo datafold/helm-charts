@@ -79,3 +79,28 @@ replica-count: "{{ .Values.replicaCount }}"
 {{- end }}
 {{- end }}
 
+{{/*
+Volumes - ephemeral storage for exports etc.
+*/}}
+{{- define "worker-temporal.volumes" -}}
+- name: data
+  ephemeral:
+    volumeClaimTemplate:
+      metadata:
+        labels:
+          {{- include "worker-temporal.labels" . | nindent 10 }}
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: {{ .Values.storage.storageClass | quote }}
+        resources:
+          requests:
+            storage: {{ .Values.storage.dataSize | quote }}
+{{- end -}}
+
+{{/*
+Volume mounts for ephemeral storage
+*/}}
+{{- define "worker-temporal.volume.mounts" -}}
+- name: data
+  mountPath: /data
+{{- end -}}
