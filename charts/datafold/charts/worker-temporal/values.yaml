@@ -30,6 +30,12 @@ chartAnnotations: {}
 podSecurityContext:
   runAsUser: 1000
   runAsNonRoot: true
+  fsGroup: 1000
+  fsGroupChangePolicy: "OnRootMismatch"
+
+storage:
+  dataSize: 300Gi
+  storageClass: "sc-datafold-temporal"
 
 securityContext:
   allowPrivilegeEscalation: False
