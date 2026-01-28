@@ -19,6 +19,7 @@ data:
         </logger>
 
         <!-- Docs: https://kb.altinity.com/altinity-kb-setup-and-maintenance/altinity-kb-server-config-files/ -->
+        <text_log remove="1" />
         <trace_log remove="1" />
         <query_log remove="1" />
     </yandex>
