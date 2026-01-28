@@ -68,6 +68,7 @@ rules:
   resourceNames:
   - sc-datafold-aws
   - sc-datafold-scratch
+  - sc-datafold-temporal
   verbs:
   - delete
   - get
