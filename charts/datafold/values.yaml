@@ -25,6 +25,9 @@ global:
     port: 9000
     storageOnPV: "true"
     database: "clickhouse"
+  memgraph:
+    port: 7687
+    storageOnPV: "true"
   postgres:
     server: ""
     port: 5432
@@ -71,6 +74,9 @@ kept:
 
 clickhouse:
   install: true
+
+memgraph:
+  install: false
 
 dfshell:
   install: true

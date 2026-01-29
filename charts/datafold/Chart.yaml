@@ -2,7 +2,7 @@ apiVersion: v2
 name: datafold
 description: Helm chart package to deploy Datafold on kubernetes.
 type: application
-version: 0.10.43
+version: 0.10.44
 appVersion: "1.0.0"
 icon: https://www.datafold.com/logo.png
 
@@ -122,6 +122,10 @@ dependencies:
     version: "0.1.0"
     repository: file://charts/nginx
     condition: nginx.install
+  - name: memgraph
+    version: "*.*.*"
+    repository: file://charts/memgraph
+    condition: memgraph.install
   - name: datadog
     version: "*.*.*"
     repository: file://charts/datadog

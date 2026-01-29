@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "memgraph.pvc.name" . }}
+  labels:
+    {{- include "memgraph.labels" . | nindent 4 }}
+    {{- with .Values.chartLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  annotations:
+    {{- with .Values.chartAnnotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.storage.dataSize | quote }}
+{{- if .Values.storage.volumeId }}
+  volumeName: {{ include "memgraph.pv.name" . }}
+{{- end }}
+  {{- include "datafold.storageClass" . | nindent 2 }}

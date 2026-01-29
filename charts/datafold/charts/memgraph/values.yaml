@@ -1,0 +1,48 @@
+replicaCount: 1
+
+image:
+  repository: memgraph/memgraph
+  pullPolicy: IfNotPresent
+  tag: ""
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+terminationGracePeriodSeconds: 60
+
+storage:
+  dataSize: 50Gi
+  storageClass: ""
+  volumeId: ""
+
+podAnnotations: {}
+
+chartLabels: {}
+chartAnnotations: {}
+
+podSecurityContext:
+  fsGroup: 103
+
+securityContext:
+  allowPrivilegeEscalation: false
+
+initSecurityContext:
+  runAsUser: 0
+  runAsGroup: 0
+
+service:
+  type: ClusterIP
+  port: 7687
+
+resources:
+  requests:
+    cpu: 500m
+    memory: 512Mi
+  limits:
+    memory: 4Gi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
