@@ -1414,6 +1414,13 @@ spec:
                       clientToken:
                         description: ClientToken contains the Datadog client token
                         type: string
+                      containerIncludeExtraNamespaces:
+                        description: |-
+                          ContainerIncludeExtraNamespaces lists extra Kubernetes namespaces to include for
+                          container log and metric collection (in addition to the release namespace, temporal, dmadocs).
+                        items:
+                          type: string
+                        type: array
                       host:
                         description: Host specifies the Datadog agent host
                         type: string

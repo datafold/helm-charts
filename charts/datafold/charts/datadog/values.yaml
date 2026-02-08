@@ -54,3 +54,8 @@ configuration:
   npm:
     enabled: "false"
     dnsstats: "false"
+
+# Extra Kubernetes namespaces to include for container log and metric collection
+# (in addition to the release namespace, temporal, and dmadocs). Set via DatafoldApplication
+# monitoring.datadog.containerIncludeExtraNamespaces (e.g. ["arc-runners", "arc-system"]).
+containerIncludeExtraNamespaces: []
