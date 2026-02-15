@@ -34,8 +34,6 @@ global:
   redis:
     port: 6379
     storageOnPV: "true"
-  kept:
-    port: 8003
   server:
     # Application will fail if the port is not set to 5000
     port: 5000
@@ -69,9 +67,6 @@ global:
 redis:
   install: true
 
-kept:
-  install: false
-
 clickhouse:
   install: true
 
@@ -80,9 +75,6 @@ memgraph:
 
 dfshell:
   install: true
-
-worker-portal:
-  install: false
 
 operator:
   install: true

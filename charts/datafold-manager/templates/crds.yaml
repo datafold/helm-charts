@@ -1821,6 +1821,47 @@ spec:
                 - installPassword
                 - pylonId
                 type: object
+              sleepConfiguration:
+                description: SleepConfiguration contains configuration for putting
+                  the deployment to sleep when inactive
+                properties:
+                  enabled:
+                    default: "false"
+                    description: Enabled controls whether sleep is active. Use "true"
+                      or "false" (string). Default is "false".
+                    enum:
+                    - true
+                    - false
+                    type: string
+                  inactivityIntervalMinutes:
+                    default: 240
+                    description: InactivityIntervalMinutes is the number of minutes
+                      of no active users (from status_check) before putting the app
+                      to sleep
+                    format: int32
+                    type: integer
+                  notUntil:
+                    description: NotUntil forces the app to stay active until this
+                      UTC timestamp. If empty/nil, treated as 1970-01-01 00:00:00
+                      UTC
+                    format: date-time
+                    type: string
+                  statusCheckTokenSecretRef:
+                    description: StatusCheckTokenSecretRef references the secret that
+                      holds the status_check token (same as global.statusCheckToken
+                      in Helm)
+                    properties:
+                      key:
+                        description: Key is the key within the secret
+                        type: string
+                      name:
+                        description: Name is the name of the secret
+                        type: string
+                    required:
+                    - key
+                    - name
+                    type: object
+                type: object
             required:
             - global
             - ingress
@@ -2021,6 +2062,20 @@ spec:
                   - status
                   type: object
                 type: array
+              sleepStatus:
+                description: SleepStatus tracks sleep-related state (current release
+                  and last update)
+                properties:
+                  currentRelease:
+                    description: CurrentRelease is the release/version the operator
+                      last recorded (from portal at last successful apply)
+                    type: string
+                  lastReleaseUpdate:
+                    description: LastReleaseUpdate is the UTC timestamp when that
+                      version was recorded
+                    format: date-time
+                    type: string
+                type: object
             required:
             - healthCheckAttempts
             type: object
