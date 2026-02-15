@@ -2,7 +2,7 @@ apiVersion: v2
 name: datafold
 description: Helm chart package to deploy Datafold on kubernetes.
 type: application
-version: 0.10.45
+version: 0.10.46
 appVersion: "1.0.0"
 icon: https://www.datafold.com/logo.png
 
@@ -16,10 +16,6 @@ dependencies:
     version: "*.*.*"
     repository: file://charts/redis
     condition: redis.install
-  - name: kept
-    version: "*.*.*"
-    repository: file://charts/kept
-    condition: kept.install
   - name: clickhouse
     version: "*.*.*"
     repository: file://charts/clickhouse
@@ -28,10 +24,6 @@ dependencies:
     version: "*.*.*"
     repository: file://charts/dfshell
     condition: dfshell.install
-  - name: worker-portal
-    version: "*.*.*"
-    repository: file://charts/worker-portal
-    condition: worker-portal.install
   - name: worker-temporal
     version: "*.*.*"
     repository: file://charts/worker-temporal

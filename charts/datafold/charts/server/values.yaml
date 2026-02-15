@@ -12,6 +12,9 @@ terminationGracePeriodSeconds: "120"
 
 command: "server"
 
+# Optional: set to a number of minutes to set DATAFOLD_USER_ACTIVITY_INTERVAL_MINUTES
+# userActivityIntervalMinutes:
+
 serviceAccount:
   create: true
   automount: true

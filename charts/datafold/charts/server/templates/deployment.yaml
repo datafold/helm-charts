@@ -106,6 +106,10 @@ spec:
                   key: DATAFOLD_PYLON_IDENTITY_SECRET
                   optional: true
             {{- end }}
+            {{- if .Values.userActivityIntervalMinutes }}
+            - name: DATAFOLD_USER_ACTIVITY_INTERVAL_MINUTES
+              value: {{ .Values.userActivityIntervalMinutes | quote }}
+            {{- end }}
             {{- if (eq .Values.global.optional.googleAuth "true") }}
             - name: DATAFOLD_GOOGLE_CLIENT_ID
               valueFrom:
