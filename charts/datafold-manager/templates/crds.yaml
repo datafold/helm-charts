@@ -1877,8 +1877,8 @@ spec:
                     description: Enabled controls whether sleep is active. Use "true"
                       or "false" (string). Default is "false".
                     enum:
-                    - true
-                    - false
+                    - "true"
+                    - "false"
                     type: string
                   inactivityIntervalMinutes:
                     default: 240
