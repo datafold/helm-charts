@@ -1,12 +1,24 @@
 # Default values for datafold-manager
 # This is a YAML-formatted file.
 
+# When true (default), install cluster-wide resources: CRDs and ClusterRole/ClusterRoleBinding.
+# Set to false when deploying the manager in an additional namespace where another release
+# already owns the CRDs and cluster RBAC, to avoid conflicts.
+# When false, set existingClusterRoleName to the ClusterRole name from the primary release
+# (e.g. "<primary-release-name>-role") so this release creates only a ClusterRoleBinding
+# granting the same permissions to this namespace's ServiceAccount.
+installClusterResources: true
+
+# When installClusterResources is false, name of the existing ClusterRole to bind to
+# (from the primary datafold-manager release). Example: "datafold-manager-role".
+existingClusterRoleName: "datafold-manager-role"
+
 # Operator configuration
 operator:
   # Operator image configuration
   image:
     repository: us-docker.pkg.dev/datadiff-mm/datafold/datafold-operator
-    tag: "1.1.32"
+    tag: "1.1.34"
     pullPolicy: Always
 
   # Operator deployment configuration

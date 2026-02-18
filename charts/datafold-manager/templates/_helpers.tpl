@@ -53,6 +53,26 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
+Name of the ClusterRole to bind to: existingClusterRoleName when set (secondary install),
+otherwise the role we create (fullname-role) for the primary install.
+*/}}
+{{- define "datafold-manager.clusterRoleName" -}}
+{{- if .Values.existingClusterRoleName -}}
+{{- .Values.existingClusterRoleName -}}
+{{- else -}}
+{{- include "datafold-manager.fullname" . -}}-role
+{{- end -}}
+{{- end -}}
+
+{{/*
+Name of the ClusterRoleBinding. When using an existing ClusterRole (existingClusterRoleName set),
+suffix with release namespace so each release has its own binding and does not clash with the primary.
+*/}}
+{{- define "datafold-manager.clusterRoleBindingName" -}}
+{{- include "datafold-manager.fullname" . -}}-rolebinding{{- if .Values.existingClusterRoleName -}}-{{- .Release.Namespace -}}{{- end -}}
+{{- end -}}
+
+{{/*
 Create the name of the service account to use
 */}}
 {{- define "datafold-manager.serviceAccountName" -}}
