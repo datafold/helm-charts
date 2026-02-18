@@ -84,5 +84,9 @@ affinity:
 
 initContainers: []
 
+# Extra environment variables for server pod only
+# Supports full Kubernetes env var spec including valueFrom/secretKeyRef
+env: []
+
 progressDeadlineSeconds: 600
 minReadySeconds: 30
