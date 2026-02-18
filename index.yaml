@@ -22014,6 +22014,27 @@ entries:
   datafold-manager:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2026-02-18T17:57:07.309540361Z"
+    description: Helm chart for Datafold Operator
+    digest: 93ed1e86caa583cc9e2171c4bf068e0f026c23007ccd2eb0a074d4756e8230ba
+    home: https://datafold.com
+    icon: https://www.datafold.com/logo.png
+    keywords:
+    - datafold
+    - operator
+    - kubernetes
+    - data-quality
+    maintainers:
+    - email: support@datafold.com
+      name: datafold
+      url: https://datafold.com
+    name: datafold-manager
+    type: application
+    urls:
+    - https://github.com/datafold/helm-charts/releases/download/datafold-manager-0.1.59/datafold-manager-0.1.59.tgz
+    version: 0.1.59
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2026-02-17T13:05:56.421766214Z"
     description: Helm chart for Datafold Operator
     digest: 993fdadd40416a40469923e8599c2a34434577844b00363e1b2132def06f0720
@@ -23266,4 +23287,4 @@ entries:
     urls:
     - https://github.com/datafold/helm-charts/releases/download/gcp-bootstrap-0.1.0/gcp-bootstrap-0.1.0.tgz
     version: 0.1.0
-generated: "2026-02-18T11:50:23.787408618Z"
+generated: "2026-02-18T17:57:07.310033327Z"
