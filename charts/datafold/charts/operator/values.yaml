@@ -22,6 +22,10 @@ podLabels: {}
 chartLabels: {}
 chartAnnotations: {}
 
+# When set, skip creating the ClusterRole and instead bind to this existing one.
+# Used for secondary deployments where the primary release owns the ClusterRole.
+existingClusterRoleName: ""
+
 podSecurityContext:
   runAsUser: 1000
   runAsNonRoot: true
