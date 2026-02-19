@@ -1,3 +1,4 @@
+{{- if .Values.installClusterResources }}
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
@@ -1254,11 +1255,12 @@ spec:
                     description: ClusterName specifies the name of the Kubernetes
                       cluster
                     type: string
-                  createStorageClass:
-                    default: true
+                  secondaryDeployment:
+                    default: false
                     description: |-
-                      CreateStorageClass controls whether the Helm chart creates StorageClass resources.
-                      Set to false when StorageClasses already exist (e.g., created by another release on the same cluster).
+                      SecondaryDeployment indicates this is a secondary deployment sharing cluster-scoped resources
+                      with a primary deployment. When true, the Helm chart skips creating StorageClass resources
+                      and appends a namespace-derived hash suffix to PersistentVolume names to avoid collisions.
                     type: boolean
                   customSecrets:
                     description: CustomSecrets is a list of custom secret names to
@@ -2137,3 +2139,4 @@ spec:
     storage: true
     subresources:
       status: {}
+{{- end }}

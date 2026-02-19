@@ -65,14 +65,14 @@ Create the name of the service account to use
 Name of the clickhouse data volume
 */}}
 {{- define "clickhouse.data.pv.name" -}}
-{{- include "clickhouse.name" . }}-data-volume
+{{- include "clickhouse.name" . }}-data-volume{{ include "datafold.namespaceSuffix" . }}
 {{- end -}}
 
 {{/*
 Name of the clickhouse logs volume
 */}}
 {{- define "clickhouse.logs.pv.name" -}}
-{{- include "clickhouse.name" . }}-logs-volume
+{{- include "clickhouse.name" . }}-logs-volume{{ include "datafold.namespaceSuffix" . }}
 {{- end -}}
 
 {{/*
