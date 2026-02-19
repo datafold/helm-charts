@@ -20,5 +20,4 @@ subjects:
 roleRef:
   kind: Role
   name: {{ include "datadog.fullname" . }}
-  namespace: {{ .Values.global.deployment }}
-  apiGroup: ""
+  apiGroup: rbac.authorization.k8s.io
