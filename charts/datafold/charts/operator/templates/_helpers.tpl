@@ -21,6 +21,7 @@ If release name contains chart name it will be used as a full name.
 {{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" }}
 {{- end }}
 {{- end }}
+{{- if .Values.global.secondaryDeployment -}}-{{- .Release.Namespace -}}{{- end -}}
 {{- end }}
 
 {{/*
@@ -49,6 +50,18 @@ Selector labels
 app.kubernetes.io/name: {{ include "operator.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
+
+{{/*
+Name of the ClusterRole to bind to: existingClusterRoleName when set (secondary install),
+otherwise the role we create (fullname) for the primary install.
+*/}}
+{{- define "operator.clusterRoleName" -}}
+{{- if .Values.existingClusterRoleName -}}
+{{- .Values.existingClusterRoleName -}}
+{{- else -}}
+{{- include "operator.fullname" . -}}
+{{- end -}}
+{{- end -}}
 
 {{/*
 Datadog annotations
