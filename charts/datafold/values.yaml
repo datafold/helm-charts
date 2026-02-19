@@ -11,6 +11,7 @@ global:
   storageClass: ""
   awsTargetGroupArn: ""
   vpcCidr: ""
+  createStorageClass: "true"
   cloudProvider: ""
   authMethod: "password"
   statusCheckToken: "magic_token"
