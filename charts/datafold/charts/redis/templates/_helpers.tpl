@@ -65,7 +65,7 @@ Create the name of the service account to use
 Name of the redis data volume
 */}}
 {{- define "redis.data.pv.name" -}}
-{{- include "redis.name" . }}-data-volume
+{{- include "redis.name" . }}-data-volume{{ include "datafold.namespaceSuffix" . }}
 {{- end -}}
 
 {{/*

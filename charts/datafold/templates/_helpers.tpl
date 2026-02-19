@@ -85,6 +85,17 @@ Template to derive storage class to use
 {{- end -}}
 
 {{/*
+Generates a short suffix from the namespace for cluster-scoped resources (PVs, StorageClasses)
+to avoid naming collisions when multiple deployments share a cluster.
+Only active when global.secondaryDeployment is true.
+*/}}
+{{- define "datafold.namespaceSuffix" -}}
+{{- if .Values.global.secondaryDeployment -}}
+-{{ .Release.Namespace | sha256sum | trunc 4 }}
+{{- end -}}
+{{- end -}}
+
+{{/*
 Name of the datafold secrets location
 */}}
 {{- define "datafold.secrets" -}}
