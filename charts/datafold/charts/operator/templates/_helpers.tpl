@@ -6,11 +6,11 @@ Expand the name of the chart.
 {{- end }}
 
 {{/*
-Create a default fully qualified app name.
-We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
-If release name contains chart name it will be used as a full name.
+Base fully qualified app name without secondary deployment suffix.
+Used as the ClusterRole name (shared across deployments) and as the
+foundation for operator.fullname.
 */}}
-{{- define "operator.fullname" -}}
+{{- define "operator.baseName" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -21,6 +21,14 @@ If release name contains chart name it will be used as a full name.
 {{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" }}
 {{- end }}
 {{- end }}
+{{- end }}
+
+{{/*
+Create a default fully qualified app name.
+For secondary deployments, appends the namespace to avoid cluster-scoped name clashes.
+*/}}
+{{- define "operator.fullname" -}}
+{{- include "operator.baseName" . -}}
 {{- if .Values.global.secondaryDeployment -}}-{{- .Release.Namespace -}}{{- end -}}
 {{- end }}
 
@@ -52,14 +60,14 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
-Name of the ClusterRole to bind to: existingClusterRoleName when set (secondary install),
-otherwise the role we create (fullname) for the primary install.
+Name of the ClusterRole to bind to: existingClusterRoleName when set,
+otherwise the base name (without namespace suffix) which matches the primary's ClusterRole.
 */}}
 {{- define "operator.clusterRoleName" -}}
 {{- if .Values.existingClusterRoleName -}}
 {{- .Values.existingClusterRoleName -}}
 {{- else -}}
-{{- include "operator.fullname" . -}}
+{{- include "operator.baseName" . -}}
 {{- end -}}
 {{- end -}}
 
