@@ -126,7 +126,6 @@ config:
   temporalAddress: "temporal-frontend.temporal.svc.cluster.local:7233"
   customVars: []
 
-
 secrets:
   installMePassword: "-"
   googleClientId: ""
