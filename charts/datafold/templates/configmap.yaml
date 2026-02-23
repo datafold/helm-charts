@@ -64,9 +64,7 @@ data:
 {{- if .Values.config.temporalAddress }}
   TEMPORAL_ADDRESS: "{{ .Values.config.temporalAddress }}"
 {{- end }}
-{{- if .Values.config.temporalNamespace }}
-  TEMPORAL_NAMESPACE: "{{ .Values.config.temporalNamespace }}"
-{{- end }}
+  TEMPORAL_NAMESPACE: "{{ .Values.config.temporalNamespace | default .Release.Namespace }}"
 {{- if .Values.config.gitlabServer }}
   GITLAB_SERVER: "{{ .Values.config.gitlabServer }}"
 {{- end }}
