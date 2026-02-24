@@ -65,6 +65,7 @@ data:
   TEMPORAL_ADDRESS: "{{ .Values.config.temporalAddress }}"
 {{- end }}
   TEMPORAL_NAMESPACE: "{{ .Values.config.temporalNamespace | default .Release.Namespace }}"
+  TEMPORAL_MAX_CONCURRENCY: "{{ .Values.config.temporalMaxConcurrency }}"
 {{- if .Values.config.gitlabServer }}
   GITLAB_SERVER: "{{ .Values.config.gitlabServer }}"
 {{- end }}
