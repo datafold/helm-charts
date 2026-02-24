@@ -2,6 +2,21 @@
 
 Official helm charts for deploying Datafold into Kubernetes.
 
+## Prerequisites: Deploy Temporal and PostgreSQL
+
+Datafold depends on Temporal for workflow orchestration, which in turn requires
+a PostgreSQL database. **Both must be deployed and healthy before deploying
+Datafold itself.**
+
+Follow the instructions in [Temporal and PostgreSQL Prerequisites](docs/temporal-prerequisites.md)
+to deploy these dependencies. Datafold provides this guide to help you get
+started, but note that Temporal, PostgreSQL, and the Zalando Postgres Operator
+are third-party components -- Datafold's support is scoped to the Datafold
+application, not the underlying dependencies.
+
+Once Temporal and PostgreSQL are running, proceed with the Datafold deployment
+below.
+
 ## Preferred Method: Deploy with Datafold Operator
 
 The recommended way to deploy Datafold is using our operator, which provides a simpler and more manageable deployment experience.
