@@ -82,6 +82,27 @@ spec:
           value: "image:gcr.io/datadoghq.* kube_namespace:.*"
         - name: DD_CONTAINER_INCLUDE
           value: "kube_namespace:{{ .Release.Namespace }} kube_namespace:temporal kube_namespace:dmadocs{{ range (.Values.containerIncludeExtraNamespaces | default list) }} kube_namespace:{{ . }}{{ end }}"
+        {{- if .Values.customerMonitoring.enabled }}
+        - name: CUSTOMER_DD_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "datafold.secrets" . }}
+              key: DATAFOLD_CUSTOMER_DD_API_KEY
+        {{- if .Values.customerMonitoring.metrics }}
+        - name: DD_ADDITIONAL_ENDPOINTS
+          value: '{"https://app.{{ .Values.customerMonitoring.site }}": ["$(CUSTOMER_DD_API_KEY)"]}'
+        {{- end }}
+        {{- if .Values.customerMonitoring.logs }}
+        - name: DD_LOGS_CONFIG_USE_HTTP
+          value: "true"
+        - name: DD_LOGS_CONFIG_ADDITIONAL_ENDPOINTS
+          value: '[{"api_key": "$(CUSTOMER_DD_API_KEY)", "Host": "agent-http-intake.logs.{{ .Values.customerMonitoring.site }}", "Port": 443, "is_reliable": true}]'
+        {{- end }}
+        {{- if .Values.customerMonitoring.apm }}
+        - name: DD_APM_ADDITIONAL_ENDPOINTS
+          value: '{"https://trace.agent.{{ .Values.customerMonitoring.site }}": ["$(CUSTOMER_DD_API_KEY)"]}'
+        {{- end }}
+        {{- end }}
       tolerations:
         - operator: Equal
           key: clickhouse

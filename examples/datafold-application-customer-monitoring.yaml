@@ -1,0 +1,46 @@
+apiVersion: datafold.datafold.com/v1alpha1
+kind: DatafoldApplication
+metadata:
+  name: datafold-deploy
+  namespace: datafold
+spec:
+  global:
+    serverName: datafold.example.com
+    environment: production
+    clusterName: datafold-cluster
+    portalUrl: https://portal.datafold.com
+    deployment: datafold-production
+  # Datadog Monitoring with Customer Dual Shipping
+  #
+  # This configuration enables dual-shipping of metrics, logs, and/or APM traces
+  # to the customer's own Datadog account. The customer gets full visibility into
+  # their Datafold resource usage (the four golden signals: latency, traffic,
+  # errors, saturation) and can create their own dashboards and alerts.
+  monitoring:
+    type: datadog
+    monitoringApiKey:
+      secretName: datafold-operator-secrets
+      keyName: monitoringApiKey
+    datadog:
+      apm: false
+      monitorPostgres: true
+      npm:
+        enabled: true
+        dnsstats: true
+      clientToken: "your-datadog-client-token"
+      applicationId: "your-datadog-application-id"
+    # Customer monitoring: forward observability data to the customer's Datadog account
+    customerMonitoring:
+      enabled: true
+      # The customer's Datadog site (datadoghq.com, datadoghq.eu, us3.datadoghq.com, etc.)
+      site: "datadoghq.com"
+      # Forward infrastructure and custom metrics
+      metrics: true
+      # Forward application logs
+      logs: true
+      # Forward APM traces (requires apm: true above)
+      apm: false
+      # Secret containing the customer's Datadog API key
+      apiKeySecret:
+        secretName: datafold-operator-secrets
+        keyName: customerDatadogApiKey

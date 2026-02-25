@@ -59,3 +59,16 @@ configuration:
 # (in addition to the release namespace, temporal, and dmadocs). Set via DatafoldApplication
 # monitoring.datadog.containerIncludeExtraNamespaces (e.g. ["arc-runners", "arc-system"]).
 containerIncludeExtraNamespaces: []
+
+# Customer monitoring: dual-ship metrics, logs, and/or APM traces to the customer's
+# own Datadog account so they have visibility into their Datafold resource usage.
+# The customer's API key is read from the main secrets (DATAFOLD_CUSTOMER_DD_API_KEY).
+customerMonitoring:
+  enabled: false
+  # Datadog site for the customer's account (e.g. datadoghq.com, datadoghq.eu,
+  # us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ddog-gov.com)
+  site: "datadoghq.com"
+  # Which signal types to forward to the customer's Datadog account
+  metrics: true
+  logs: true
+  apm: false
