@@ -31,11 +31,22 @@ Create chart name and version as used by the chart label.
 {{- end }}
 
 {{/*
+Service Account name
+*/}}
+{{- define "worker-temporal.serviceAccountName" -}}
+{{- if .Values.serviceAccount.name }}
+{{- .Values.serviceAccount.name }}
+{{- else }}
+{{- include "worker-temporal.name" . }}
+{{- end }}
+{{- end }}
+
+{{/*
 Common labels
 */}}
 {{- define "worker-temporal.labels" -}}
 helm.sh/chart: {{ include "worker-temporal.chart" . }}
-app.kubernetes.io/component: command-line
+app.kubernetes.io/component: {{ include "worker-temporal.name" . }}
 {{ include "worker-temporal.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
@@ -58,8 +69,8 @@ Datadog annotations
 {{- if (eq .Values.global.datadog.install true) }}
 ad.datadoghq.com/{{ .Chart.Name }}.logs: >-
   [{
-    "source": "datafold-worker-temporal",
-    "service": "datafold-worker-temporal",
+    "source": "datafold-{{ .Chart.Name }}",
+    "service": "datafold-{{ .Chart.Name }}",
     "log_processing_rules": [{
       "type": "multi_line",
       "name": "log_start_with_date",
@@ -83,6 +94,7 @@ replica-count: "{{ .Values.replicaCount }}"
 Volumes - ephemeral storage for exports etc.
 */}}
 {{- define "worker-temporal.volumes" -}}
+{{- if .Values.storage.enabled }}
 - name: data
   ephemeral:
     volumeClaimTemplate:
@@ -95,12 +107,15 @@ Volumes - ephemeral storage for exports etc.
         resources:
           requests:
             storage: {{ .Values.storage.dataSize | quote }}
+{{- end }}
 {{- end -}}
 
 {{/*
 Volume mounts for ephemeral storage
 */}}
 {{- define "worker-temporal.volume.mounts" -}}
+{{- if .Values.storage.enabled }}
 - name: data
   mountPath: /data
+{{- end }}
 {{- end -}}

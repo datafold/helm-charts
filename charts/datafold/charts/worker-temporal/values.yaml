@@ -19,7 +19,7 @@ serviceAccount:
   automount: true
   annotations: {}
   roleArn: ""
-  name: "datafold-worker-temporal"
+  name: ""
 
 podAnnotations: {}
 podLabels: {}
@@ -34,6 +34,7 @@ podSecurityContext:
   fsGroupChangePolicy: "OnRootMismatch"
 
 storage:
+  enabled: false
   dataSize: 300Gi
   storageClass: "sc-datafold-temporal"
 
@@ -46,6 +47,8 @@ resources:
   requests:
     cpu: 100m
     memory: 1000Mi
+
+extraEnv: []
 
 volumes: []
 
