@@ -2,7 +2,7 @@
 
 This document describes how to configure Datafold's monitoring infrastructure to
 forward observability data (metrics, logs, APM traces) to a customer's own
-monitoring account, giving them visibility into the four golden signals for their
+Datadog account, giving them visibility into the four golden signals for their
 Datafold deployment: **latency**, **traffic**, **errors**, and **saturation**.
 
 ## Overview
@@ -20,6 +20,9 @@ By default, all of this data is sent to Datafold's own Datadog account. With
 customer monitoring enabled, the Datadog agent **dual-ships** the same data to
 the customer's Datadog account, so they can build their own dashboards, set up
 alerts, and receive notifications when resource thresholds are being approached.
+
+The entire feature is self-contained in the `datadog` subchart. No changes are
+required to the parent Datafold chart, the application code, or the CRD.
 
 ## Prerequisites
 
@@ -40,60 +43,62 @@ alerts, and receive notifications when resource thresholds are being approached.
 
 ## Configuration
 
+### Step 1: Provide the Customer's Datadog API Key
+
+The customer's API key needs to be present in the shared Kubernetes secret under
+the key `DATAFOLD_CUSTOMER_DD_API_KEY`. Use the existing `customSecrets`
+mechanism:
+
+```yaml
+global:
+  customSecrets:
+    - name: DATAFOLD_CUSTOMER_DD_API_KEY
+      value: "<customer-datadog-api-key>"
+```
+
+If the customer manages their own secrets (`global.manageSecretsYourself: true`),
+add the key `DATAFOLD_CUSTOMER_DD_API_KEY` directly to their secret.
+
+### Step 2: Enable Dual Shipping on the Datadog Subchart
+
+Set the `customerMonitoring` values on the `datadog` subchart:
+
+```yaml
+datadog:
+  customerMonitoring:
+    enabled: true
+    site: "datadoghq.com"   # Customer's Datadog site
+    metrics: true            # Forward infrastructure + custom metrics
+    logs: true               # Forward application + container logs
+    apm: false               # Forward APM traces (requires apm enabled)
+```
+
+Each signal type can be independently toggled.
+
 ### Via DatafoldApplication CRD
 
-Add the `customerMonitoring` section under `monitoring`:
+Use `components.datadog.rawValues` and `secrets.customSecrets`:
 
 ```yaml
 apiVersion: datafold.datafold.com/v1alpha1
 kind: DatafoldApplication
-metadata:
-  name: datafold-deploy
-  namespace: datafold
 spec:
-  monitoring:
-    type: datadog
-    monitoringApiKey:
-      secretName: datafold-operator-secrets
-      keyName: monitoringApiKey
+  secrets:
+    customSecrets:
+      - name: DATAFOLD_CUSTOMER_DD_API_KEY
+        value: "<customer-datadog-api-key>"
+  components:
     datadog:
-      apm: false
-      monitorPostgres: true
-      npm:
-        enabled: true
-        dnsstats: true
-    customerMonitoring:
-      enabled: true
-      site: "datadoghq.com"
-      metrics: true
-      logs: true
-      apm: false
-      apiKeySecret:
-        secretName: datafold-operator-secrets
-        keyName: customerDatadogApiKey
+      rawValues:
+        customerMonitoring:
+          enabled: true
+          site: "datadoghq.com"
+          metrics: true
+          logs: true
+          apm: false
 ```
 
-The customer's Datadog API key must be stored in the referenced Kubernetes
-secret before enabling this feature.
-
-### Via Helm Values
-
-Set the following values in your Helm deployment:
-
-```yaml
-global:
-  datadog:
-    customerMonitoring:
-      enabled: true
-      site: "datadoghq.com"
-      metrics: true
-      logs: true
-      apm: false
-
-secrets:
-  datadog:
-    customerApiKey: "<customer-datadog-api-key>"
-```
+See `examples/datafold-application-customer-monitoring.yaml` for a full example.
 
 ## What Gets Forwarded
 

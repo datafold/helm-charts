@@ -60,6 +60,20 @@ configuration:
 # monitoring.datadog.containerIncludeExtraNamespaces (e.g. ["arc-runners", "arc-system"]).
 containerIncludeExtraNamespaces: []
 
-# Customer monitoring is configured via global.datadog.customerMonitoring in the
-# parent chart values. It dual-ships metrics, logs, and/or APM traces to the
-# customer's own Datadog account. See docs/customer-resource-monitoring.md.
+# Customer monitoring: dual-ship metrics, logs, and/or APM traces to the customer's
+# own Datadog account so they have visibility into their Datafold resource usage.
+# The customer's API key must be present in the shared secret under the key
+# DATAFOLD_CUSTOMER_DD_API_KEY. Use global.customSecrets to inject it:
+#   global:
+#     customSecrets:
+#       - name: DATAFOLD_CUSTOMER_DD_API_KEY
+#         value: "<customer-datadog-api-key>"
+customerMonitoring:
+  enabled: false
+  # Datadog site for the customer's account (e.g. datadoghq.com, datadoghq.eu,
+  # us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ddog-gov.com)
+  site: "datadoghq.com"
+  # Which signal types to forward to the customer's Datadog account
+  metrics: true
+  logs: true
+  apm: false

@@ -51,12 +51,6 @@ global:
       port: 8125
     apm:
       port: 8126
-    customerMonitoring:
-      enabled: false
-      site: "datadoghq.com"
-      metrics: true
-      logs: true
-      apm: false
   opentelemetry:
     metricsEndpoint: "http://signoz-otel-collector:4318/v1/metrics"
     logsEndpoint: "http://signoz-otel-collector:4318/v1/logs"
@@ -164,7 +158,6 @@ secrets:
     appKey: ""
     clientToken: "client-token"
     applicationId: "application-id"
-    customerApiKey: ""
   freshpaint:
     backendToken: ""
     frontendToken: ""

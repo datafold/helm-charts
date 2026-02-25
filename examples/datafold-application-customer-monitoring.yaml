@@ -16,6 +16,9 @@ spec:
   # to the customer's own Datadog account. The customer gets full visibility into
   # their Datafold resource usage (the four golden signals: latency, traffic,
   # errors, saturation) and can create their own dashboards and alerts.
+  #
+  # The customer's Datadog API key is injected into the shared secret via
+  # customSecrets. The datadog subchart reads it from there.
   monitoring:
     type: datadog
     monitoringApiKey:
@@ -29,18 +32,22 @@ spec:
         dnsstats: true
       clientToken: "your-datadog-client-token"
       applicationId: "your-datadog-application-id"
-    # Customer monitoring: forward observability data to the customer's Datadog account
-    customerMonitoring:
-      enabled: true
-      # The customer's Datadog site (datadoghq.com, datadoghq.eu, us3.datadoghq.com, etc.)
-      site: "datadoghq.com"
-      # Forward infrastructure and custom metrics
-      metrics: true
-      # Forward application logs
-      logs: true
-      # Forward APM traces (requires apm: true above)
-      apm: false
-      # Secret containing the customer's Datadog API key
-      apiKeySecret:
-        secretName: datafold-operator-secrets
-        keyName: customerDatadogApiKey
+  # Inject the customer's Datadog API key into the shared Kubernetes secret.
+  # The Datadog agent's dual-shipping configuration references this key.
+  secrets:
+    customSecrets:
+      - name: DATAFOLD_CUSTOMER_DD_API_KEY
+        value: "<customer-datadog-api-key>"
+  # Enable dual-shipping on the datadog subchart.
+  # These values are passed to the datadog subchart via the components rawValues.
+  components:
+    datadog:
+      rawValues:
+        customerMonitoring:
+          enabled: true
+          # Customer's Datadog site (datadoghq.com, datadoghq.eu, us3.datadoghq.com, etc.)
+          site: "datadoghq.com"
+          # Forward metrics, logs, and/or APM traces
+          metrics: true
+          logs: true
+          apm: false
