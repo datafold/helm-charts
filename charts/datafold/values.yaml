@@ -180,6 +180,77 @@ toplevel:
 worker-temporal:
   install: true
 
+worker-compute:
+  install: false
+  replicaCount: 1
+  extraEnv:
+    - name: TEMPORAL_TASK_QUEUES
+      value: "datadiff,translation"
+  resources:
+    limits:
+      memory: 4Gi
+    requests:
+      cpu: 500m
+      memory: 4Gi
+
+worker-highmem:
+  install: false
+  replicaCount: 1
+  extraEnv:
+    - name: TEMPORAL_TASK_QUEUES
+      value: "lineage,catalog"
+  resources:
+    limits:
+      memory: 20Gi
+    requests:
+      cpu: 100m
+      memory: 20Gi
+
+worker-realtime:
+  install: false
+  replicaCount: 1
+  extraEnv:
+    - name: TEMPORAL_TASK_QUEUES
+      value: "interactive,api"
+  resources:
+    limits:
+      memory: 4Gi
+    requests:
+      cpu: 200m
+      memory: 4Gi
+
+worker-storage:
+  install: false
+  replicaCount: 1
+  extraEnv:
+    - name: TEMPORAL_TASK_QUEUES
+      value: "localstorage,replication"
+  storage:
+    enabled: true
+    dataSize: 100Gi
+  resources:
+    limits:
+      memory: 15Gi
+    requests:
+      cpu: 100m
+      memory: 15Gi
+
+worker-storage-high:
+  install: false
+  replicaCount: 1
+  extraEnv:
+    - name: TEMPORAL_TASK_QUEUES
+      value: "localstorage-large"
+  storage:
+    enabled: true
+    dataSize: 100Gi
+  resources:
+    limits:
+      memory: 30Gi
+    requests:
+      cpu: 100m
+      memory: 30Gi
+
 worker:
   install: true
   replicaCount: 1
