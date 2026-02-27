@@ -44,10 +44,10 @@ AWS (EKS), GCP (GKE), and Azure (AKS).
 │  │  Admin Tools  │                                      │
 │  └───────────────┘                                      │
 └──────────────────────────┬──────────────────────────────┘
-                           │ temporal-database.postgres-operator
+                           │ temporal-database.temporal
                            │ .svc.cluster.local:5432
 ┌──────────────────────────┴──────────────────────────────┐
-│  Kubernetes Namespace: postgres-operator                │
+│  Kubernetes Namespace: temporal                         │
 │                                                         │
 │  ┌──────────────────────────────┐                       │
 │  │  PostgreSQL                  │                       │
@@ -61,7 +61,7 @@ AWS (EKS), GCP (GKE), and Azure (AKS).
 
 Temporal consists of four server services (Frontend, History, Matching, Worker),
 a Web UI, and admin tools. These run in the `temporal` Kubernetes namespace.
-All state is stored in PostgreSQL, which runs in the `postgres-operator`
+All state is stored in PostgreSQL, which runs in the `temporal`
 namespace managed by the Zalando Postgres Operator. Logical backups go to
 cloud object storage.
 
@@ -76,9 +76,9 @@ Deploy components in this order. Each step depends on the previous one.
 | 1 | Cloud storage bucket | S3 / GCS / Azure Blob for PostgreSQL backups |
 | 2 | IAM / Workload Identity | Service account binding so pods can write to the bucket |
 | 3 | Zalando Postgres Operator | Helm chart `postgres-operator` v1.14.0+ |
-| 4 | PostgreSQL cluster CR | Creates `temporal-database` with two databases |
-| 5 | Temporal Helm chart | Points at the PostgreSQL cluster |
-| 6 | Grant DML privileges | One-time SQL grants for the runtime database user |
+| 4 | Create Temporal namespace | Required before deploying the PostgreSQL cluster or Temporal |
+| 5 | PostgreSQL cluster CR | Creates `temporal-database` with two databases |
+| 6 | Temporal Helm chart | Points at the PostgreSQL cluster |
 | 7 | Temporal namespace | One-time admin operation via `temporal-admintools` pod |
 
 ---
@@ -121,7 +121,7 @@ account via Workload Identity Federation:
 gcloud iam service-accounts add-iam-policy-binding \
   <GSA_NAME>@<PROJECT_ID>.iam.gserviceaccount.com \
   --role roles/iam.workloadIdentityUser \
-  --member "serviceAccount:<PROJECT_ID>.svc.id.goog[postgres-operator/postgres-pod]"
+  --member "serviceAccount:<PROJECT_ID>.svc.id.goog[temporal/postgres-pod]"
 ```
 
 ### Azure (AKS)
@@ -137,7 +137,7 @@ az identity federated-credential create \
   --identity-name <MANAGED_IDENTITY_NAME> \
   --resource-group <RESOURCE_GROUP> \
   --issuer <AKS_OIDC_ISSUER_URL> \
-  --subject system:serviceaccount:postgres-operator:postgres-pod
+  --subject system:serviceaccount:temporal:postgres-pod
 ```
 
 ---
@@ -155,100 +155,84 @@ helm repo add postgres-operator-charts \
 helm repo update
 ```
 
-### Create Operator Values File
-
-Create a file called `postgres-operator-values.yaml` with the configuration
-for your cloud provider.
-
-#### AWS (EKS)
-
-```yaml
-configLogicalBackup:
-  logical_backup_provider: "s3"
-  logical_backup_s3_bucket: "<DEPLOYMENT_NAME>-postgres-backups"
-  logical_backup_s3_region: "<AWS_REGION>"
-  logical_backup_s3_sse: "AES256"
-  logical_backup_schedule: "30 00 * * *"
-
-configKubernetes:
-  pod_service_account_name: "postgres-pod"
-  pod_service_account_definition: |
-    {
-      "apiVersion": "v1",
-      "kind": "ServiceAccount",
-      "metadata": {
-        "name": "postgres-pod",
-        "annotations": {
-          "eks.amazonaws.com/role-arn": "arn:aws:iam::<ACCOUNT_ID>:role/<DEPLOYMENT_NAME>-postgres-backup"
-        }
-      }
-    }
-```
-
-#### GCP (GKE)
-
-```yaml
-configLogicalBackup:
-  logical_backup_provider: "gcs"
-  logical_backup_gcs_bucket: "<DEPLOYMENT_NAME>-postgres-backups"
-  logical_backup_schedule: "30 00 * * *"
-
-configKubernetes:
-  pod_service_account_name: "postgres-pod"
-  pod_service_account_definition: |
-    {
-      "apiVersion": "v1",
-      "kind": "ServiceAccount",
-      "metadata": {
-        "name": "postgres-pod",
-        "annotations": {
-          "iam.gke.io/gcp-service-account": "<GSA_NAME>@<PROJECT_ID>.iam.gserviceaccount.com"
-        }
-      }
-    }
-```
-
-#### Azure (AKS)
-
-```yaml
-configLogicalBackup:
-  logical_backup_provider: "az"
-  logical_backup_azure_storage_account_name: "<STORAGE_ACCOUNT>"
-  logical_backup_azure_storage_container: "<CONTAINER_NAME>"
-  logical_backup_azure_storage_account_key: "<STORAGE_KEY>"
-  logical_backup_schedule: "30 00 * * *"
-
-configKubernetes:
-  pod_service_account_name: "postgres-pod"
-  pod_service_account_definition: |
-    {
-      "apiVersion": "v1",
-      "kind": "ServiceAccount",
-      "metadata": {
-        "name": "postgres-pod",
-        "labels": {
-          "azure.workload.identity/use": "true"
-        },
-        "annotations": {
-          "azure.workload.identity/client-id": "<MANAGED_IDENTITY_CLIENT_ID>"
-        }
-      }
-    }
-```
-
 ### Install the Operator
 
 ```bash
 helm upgrade --install postgres-operator postgres-operator-charts/postgres-operator \
   --namespace postgres-operator --create-namespace \
-  --values postgres-operator-values.yaml \
   --version 1.14.0 \
   --wait --timeout 3m
 ```
 
+### Configure the Operator
+
+After installation the operator's configuration is stored in an
+`OperatorConfiguration` custom resource on the cluster. Edit it in place:
+
+```bash
+kubectl edit operatorconfiguration postgres-operator -n postgres
+```
+
+Update only the `configuration.logical_backup` and `configuration.kubernetes`
+sections for your cloud provider.
+
+#### AWS (EKS)
+
+```yaml
+configuration:
+  logical_backup:
+    logical_backup_provider: s3
+    logical_backup_s3_bucket: "<DEPLOYMENT_NAME>-postgres-backups"
+    logical_backup_s3_region: "<AWS_REGION>"
+    logical_backup_s3_sse: AES256
+    logical_backup_schedule: "30 00 * * *"
+  kubernetes:
+    pod_service_account_name: postgres-pod
+    pod_service_account_definition: '{"apiVersion":"v1","kind":"ServiceAccount","metadata":{"name":"postgres-pod","annotations":{"eks.amazonaws.com/role-arn":"arn:aws:iam::<ACCOUNT_ID>:role/<DEPLOYMENT_NAME>-postgres-backup"}}}'
+```
+
+#### GCP (GKE)
+
+```yaml
+configuration:
+  logical_backup:
+    logical_backup_provider: gcs
+    logical_backup_gcs_bucket: "<DEPLOYMENT_NAME>-postgres-backups"
+    logical_backup_schedule: "30 00 * * *"
+  kubernetes:
+    pod_service_account_name: postgres-pod
+    pod_service_account_definition: '{"apiVersion":"v1","kind":"ServiceAccount","metadata":{"name":"postgres-pod","annotations":{"iam.gke.io/gcp-service-account":"<GSA_NAME>@<PROJECT_ID>.iam.gserviceaccount.com"}}}'
+```
+
+#### Azure (AKS)
+
+```yaml
+configuration:
+  logical_backup:
+    logical_backup_provider: az
+    logical_backup_azure_storage_account_name: "<STORAGE_ACCOUNT>"
+    logical_backup_azure_storage_container: "<CONTAINER_NAME>"
+    logical_backup_azure_storage_account_key: "<STORAGE_KEY>"
+    logical_backup_schedule: "30 00 * * *"
+  kubernetes:
+    pod_service_account_name: postgres-pod
+    pod_service_account_definition: '{"apiVersion":"v1","kind":"ServiceAccount","metadata":{"name":"postgres-pod","labels":{"azure.workload.identity/use":"true"},"annotations":{"azure.workload.identity/client-id":"<MANAGED_IDENTITY_CLIENT_ID>"}}}'
+```
+
 ---
 
-## Step 4: Deploy PostgreSQL Cluster
+## Step 4: Create the Temporal Namespace
+
+The PostgreSQL cluster and Temporal are both deployed into the `temporal`
+namespace. Create it before either is applied:
+
+```bash
+kubectl create namespace temporal
+```
+
+---
+
+## Step 5: Deploy PostgreSQL Cluster
 
 Create a file called `temporal-database.yaml` with the following PostgreSQL
 cluster custom resource. The Zalando operator will create a StatefulSet, a
@@ -260,7 +244,7 @@ apiVersion: "acid.zalan.do/v1"
 kind: postgresql
 metadata:
   name: temporal-database
-  namespace: postgres-operator
+  namespace: temporal
 spec:
   enableLogicalBackup: true
   teamId: "datafold"
@@ -275,14 +259,13 @@ spec:
     version: "17"
 
   users:
-    temporal_datafold:
+    temporal:
       - superuser
       - createdb
-    tuser: []
 
   databases:
-    temporal: temporal_datafold
-    temporal_visibility: temporal_datafold
+    temporal: temporal
+    temporal_visibility: temporal
 
   resources:
     requests:
@@ -301,18 +284,16 @@ provider (e.g., `gp3` for AWS, `pd-ssd` for GCP, `managed-premium` for Azure).
 ```bash
 kubectl apply -f temporal-database.yaml
 kubectl wait --for=condition=Ready pod/temporal-database-0 \
-  -n postgres-operator --timeout=5m
+  -n temporal --timeout=5m
 ```
 
 ### Credentials
 
-The operator creates a Kubernetes Secret for each database user. The two
-relevant secrets are:
+The operator creates a Kubernetes Secret for the database user:
 
 | User | Secret Name | Purpose |
 |------|-------------|---------|
-| `temporal_datafold` | `temporal-datafold.temporal-database.credentials.postgresql.acid.zalan.do` | Superuser for schema creation and migrations. Used by Temporal's schema init jobs. |
-| `tuser` | `tuser.temporal-database.credentials.postgresql.acid.zalan.do` | Unprivileged runtime user for day-to-day DML operations. Used by the Temporal server. |
+| `temporal` | `temporal.temporal-database.credentials.postgresql.acid.zalan.do` | Database owner used by both schema init jobs and the Temporal server. |
 
 **Volume sizing:** 20Gi is adequate for the expected workload. Temporal's
 database usage scales with the number of open (in-flight) workflows and
@@ -320,7 +301,7 @@ retained history, not the total number of completed workflows.
 
 ---
 
-## Step 5: Install Temporal
+## Step 6: Install Temporal
 
 ### Add the Helm Repository
 
@@ -330,12 +311,15 @@ helm repo update
 ```
 
 Pin the chart version explicitly in your install command (`--version`) to
-ensure reproducible deployments. Use the latest stable version >= 1.0.0. You
-can list available versions with:
+ensure reproducible deployments. List available versions with:
 
 ```bash
 helm search repo temporal/temporal --versions
 ```
+
+The `APP VERSION` column shows the Temporal server version. Find the row with
+the app version you want and use the corresponding `CHART VERSION` as
+`<CHART_VERSION>`.
 
 ### Create Temporal Values File
 
@@ -351,11 +335,11 @@ server:
         driver: "sql"
         sql:
           driver: "postgres12"
-          host: temporal-database.postgres-operator.svc.cluster.local
+          host: temporal-database.temporal.svc.cluster.local
           port: 5432
           database: temporal
-          user: tuser
-          existingSecret: tuser.temporal-database.credentials.postgresql.acid.zalan.do
+          user: temporal
+          existingSecret: temporal.temporal-database.credentials.postgresql.acid.zalan.do
           maxConns: 20
           maxIdleConns: 20
           maxConnLifetime: "1h"
@@ -367,11 +351,11 @@ server:
         driver: "sql"
         sql:
           driver: "postgres12"
-          host: temporal-database.postgres-operator.svc.cluster.local
+          host: temporal-database.temporal.svc.cluster.local
           port: 5432
           database: temporal_visibility
-          user: tuser
-          existingSecret: tuser.temporal-database.credentials.postgresql.acid.zalan.do
+          user: temporal
+          existingSecret: temporal.temporal-database.credentials.postgresql.acid.zalan.do
           maxConns: 20
           maxIdleConns: 20
           maxConnLifetime: "1h"
@@ -462,51 +446,6 @@ deployment, which is sufficient for the expected Datafold workload.
 
 ---
 
-## Step 6: Grant DML Privileges to Runtime User
-
-The Zalando operator creates `tuser` but does not automatically grant it
-access to the `temporal` and `temporal_visibility` databases. This must be
-done **once** after the Temporal schema init jobs have completed (they create
-the tables as `temporal_datafold`).
-
-Connect to the database:
-
-```bash
-kubectl exec -it temporal-database-0 -n postgres-operator -- \
-  psql -U postgres
-```
-
-Run the following SQL:
-
-```sql
-GRANT CONNECT ON DATABASE temporal TO tuser;
-GRANT CONNECT ON DATABASE temporal_visibility TO tuser;
-
-\c temporal
-GRANT USAGE ON SCHEMA public TO tuser;
-GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO tuser;
-ALTER DEFAULT PRIVILEGES FOR ROLE temporal_datafold IN SCHEMA public
-  GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO tuser;
-GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO tuser;
-ALTER DEFAULT PRIVILEGES FOR ROLE temporal_datafold IN SCHEMA public
-  GRANT USAGE, SELECT ON SEQUENCES TO tuser;
-
-\c temporal_visibility
-GRANT USAGE ON SCHEMA public TO tuser;
-GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO tuser;
-ALTER DEFAULT PRIVILEGES FOR ROLE temporal_datafold IN SCHEMA public
-  GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO tuser;
-GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO tuser;
-ALTER DEFAULT PRIVILEGES FOR ROLE temporal_datafold IN SCHEMA public
-  GRANT USAGE, SELECT ON SEQUENCES TO tuser;
-```
-
-The `ALTER DEFAULT PRIVILEGES` statements ensure that tables created by future
-schema migrations (run as `temporal_datafold`) are automatically accessible to
-`tuser`. This is a one-time operation.
-
----
-
 ## Step 7: Register Temporal Namespace
 
 Each Datafold deployment uses its own Temporal logical namespace, named
@@ -516,6 +455,7 @@ performed after the Temporal Helm chart is deployed.
 ```bash
 kubectl exec -it deploy/temporal-admintools -n temporal -- \
   temporal operator namespace create \
+    --address temporal-frontend:7233 \
     --namespace <DEPLOYMENT_NAME>-datafold \
     --retention 72h
 ```
@@ -543,7 +483,7 @@ All Temporal services (frontend, history, matching, worker) should be
 ### Check PostgreSQL
 
 ```bash
-kubectl get pods -n postgres-operator -l cluster-name=temporal-database
+kubectl get pods -n temporal -l cluster-name=temporal-database
 ```
 
 The `temporal-database-0` pod should be `Running` / `1/1`.
