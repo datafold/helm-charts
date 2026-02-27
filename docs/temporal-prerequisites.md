@@ -8,6 +8,28 @@ This guide walks you through deploying PostgreSQL (via the Zalando Postgres
 Operator) and Temporal on Kubernetes. It is cloud-agnostic and works on
 AWS (EKS), GCP (GKE), and Azure (AKS).
 
+> **Managed cloud databases:** As an alternative to the Zalando Postgres
+> Operator, you can use a managed PostgreSQL service such as AWS RDS, GCP
+> Cloud SQL, or Azure Database for PostgreSQL. Provisioning and operating those
+> services is well-documented by each cloud provider. If you go that route,
+> skip Steps 1–5 and instead ensure two prerequisites before proceeding to
+> Step 6:
+>
+> 1. **Network connectivity** – The Kubernetes cluster must be able to reach
+>    the database endpoint on port 5432. This typically requires the database
+>    to be in the same VPC (or a peered VPC) and for the cluster's node
+>    security group / firewall rules to be allowed through.
+>
+> 2. **Database configuration** – Create two databases (`temporal` and
+>    `temporal_visibility`) and a dedicated user that owns both. The user
+>    must have full DDL privileges so that Temporal's schema init jobs can
+>    create tables and indexes on first startup. Store the password in a
+>    Kubernetes Secret in the `temporal` namespace and reference it via
+>    `existingSecret` in the Temporal values file (see Step 6). Set
+>    `schema.createDatabase.enabled: false` since the databases already
+>    exist, and set `postgresql.enabled: false` to skip the in-cluster
+>    PostgreSQL subchart.
+
 > **Support scope:** Temporal, PostgreSQL, and the Zalando Postgres Operator
 > are third-party open-source components. Datafold provides these deployment
 > instructions as guidance to help you get started, but **Datafold's support
