@@ -125,6 +125,8 @@ config:
   customerAdaptation: ""
   temporalAddress: "temporal-frontend.temporal.svc.cluster.local:7233"
   temporalMaxConcurrency: "25"
+  taskEngine: "celery"
+  workerPoolType: ""
   customVars: []
 
 secrets:
@@ -179,6 +181,16 @@ toplevel:
 
 worker-temporal:
   install: true
+  replicaCount: 1
+  extraEnv:
+    - name: TEMPORAL_TASK_QUEUES
+      value: "all"
+  resources:
+    limits:
+      memory: 4Gi
+    requests:
+      cpu: 500m
+      memory: 4Gi
 
 worker-compute:
   install: false
