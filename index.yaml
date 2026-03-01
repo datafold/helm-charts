@@ -46,6 +46,157 @@ entries:
   datafold:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2026-03-01T11:09:52.10325597Z"
+    dependencies:
+    - condition: redis.install
+      name: redis
+      repository: file://charts/redis
+      version: '*.*.*'
+    - condition: clickhouse.install
+      name: clickhouse
+      repository: file://charts/clickhouse
+      version: '*.*.*'
+    - condition: dfshell.install
+      name: dfshell
+      repository: file://charts/dfshell
+      version: '*.*.*'
+    - condition: worker-temporal.install
+      name: worker-temporal
+      repository: file://charts/worker-temporal
+      version: '*.*.*'
+    - alias: worker-compute
+      condition: worker-compute.install
+      name: worker-temporal
+      repository: file://charts/worker-temporal
+      version: '*.*.*'
+    - alias: worker-highmem
+      condition: worker-highmem.install
+      name: worker-temporal
+      repository: file://charts/worker-temporal
+      version: '*.*.*'
+    - alias: worker-realtime
+      condition: worker-realtime.install
+      name: worker-temporal
+      repository: file://charts/worker-temporal
+      version: '*.*.*'
+    - alias: worker-storage
+      condition: worker-storage.install
+      name: worker-temporal
+      repository: file://charts/worker-temporal
+      version: '*.*.*'
+    - alias: worker-storage-high
+      condition: worker-storage-high.install
+      name: worker-temporal
+      repository: file://charts/worker-temporal
+      version: '*.*.*'
+    - condition: operator.install
+      name: operator
+      repository: file://charts/operator
+      version: '*.*.*'
+    - condition: server.install
+      name: server
+      repository: file://charts/server
+      version: '*.*.*'
+    - condition: scheduler.install
+      name: scheduler
+      repository: file://charts/scheduler
+      version: '*.*.*'
+    - alias: worker
+      condition: worker.install
+      name: worker
+      repository: file://charts/worker
+      version: '*.*.*'
+    - alias: worker2
+      condition: worker2.install
+      name: worker
+      repository: file://charts/worker
+      version: '*.*.*'
+    - alias: worker3
+      condition: worker3.install
+      name: worker
+      repository: file://charts/worker
+      version: '*.*.*'
+    - alias: worker-catalog
+      condition: worker-catalog.install
+      name: worker
+      repository: file://charts/worker
+      version: 0.1.0
+    - alias: worker-interactive
+      condition: worker-interactive.install
+      name: worker
+      repository: file://charts/worker
+      version: 0.1.0
+    - alias: worker-singletons
+      condition: worker-singletons.install
+      name: worker
+      repository: file://charts/worker
+      version: 0.1.0
+    - alias: worker-lineage
+      condition: worker-lineage.install
+      name: worker
+      repository: file://charts/worker
+      version: 0.1.0
+    - alias: worker-monitor
+      condition: worker-monitor.install
+      name: worker
+      repository: file://charts/worker
+      version: 0.1.0
+    - alias: storage-worker
+      condition: storage-worker.install
+      name: storage-worker
+      repository: file://charts/storage-worker
+      version: 0.1.1
+    - alias: storage-worker-large
+      condition: storage-worker-large.install
+      name: storage-worker
+      repository: file://charts/storage-worker
+      version: 0.1.1
+    - alias: dma
+      condition: dma.install
+      name: dma
+      repository: file://charts/dma
+      version: 0.1.0
+    - alias: dma2
+      condition: dma2.install
+      name: dma
+      repository: file://charts/dma
+      version: 0.1.0
+    - alias: dma3
+      condition: dma3.install
+      name: dma
+      repository: file://charts/dma
+      version: 0.1.0
+    - alias: dmatemplate
+      condition: dmatemplate.install
+      name: dma
+      repository: file://charts/dma
+      version: 0.1.0
+    - condition: nginx.install
+      name: nginx
+      repository: file://charts/nginx
+      version: 0.1.0
+    - condition: memgraph.install
+      name: memgraph
+      repository: file://charts/memgraph
+      version: '*.*.*'
+    - condition: global.datadog.install
+      name: datadog
+      repository: file://charts/datadog
+      version: '*.*.*'
+    description: Helm chart package to deploy Datafold on kubernetes.
+    digest: d48104a27a94c59a52c0528ec74887c3ef51377618dd2c194943135c78e3ec22
+    icon: https://www.datafold.com/logo.png
+    maintainers:
+    - email: support@datafold.com
+      name: datafold
+      url: https://datafold.com
+    name: datafold
+    type: application
+    urls:
+    - https://github.com/datafold/helm-charts/releases/download/datafold-0.10.56/datafold-0.10.56.tgz
+    version: 0.10.56
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2026-02-25T16:37:34.274039253Z"
     dependencies:
     - condition: redis.install
@@ -23047,6 +23198,27 @@ entries:
   datafold-manager:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2026-03-01T11:09:52.237006712Z"
+    description: Helm chart for Datafold Operator
+    digest: bb026eef0ee796a18c6024bc993b23a48c8399df558aa3798b51875ddc4140f4
+    home: https://datafold.com
+    icon: https://www.datafold.com/logo.png
+    keywords:
+    - datafold
+    - operator
+    - kubernetes
+    - data-quality
+    maintainers:
+    - email: support@datafold.com
+      name: datafold
+      url: https://datafold.com
+    name: datafold-manager
+    type: application
+    urls:
+    - https://github.com/datafold/helm-charts/releases/download/datafold-manager-0.1.69/datafold-manager-0.1.69.tgz
+    version: 0.1.69
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2026-02-25T18:26:18.380887047Z"
     description: Helm chart for Datafold Operator
     digest: dec406ccedc2d6ed5db27b5efc9965fdc5ecaef14edc106a3a85e33b232729fd
@@ -24509,4 +24681,4 @@ entries:
     urls:
     - https://github.com/datafold/helm-charts/releases/download/gcp-bootstrap-0.1.0/gcp-bootstrap-0.1.0.tgz
     version: 0.1.0
-generated: "2026-02-25T18:26:18.382069426Z"
+generated: "2026-03-01T11:09:52.237887554Z"
