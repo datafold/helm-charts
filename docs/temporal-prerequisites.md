@@ -97,7 +97,7 @@ Deploy components in this order. Each step depends on the previous one.
 |------|-----------|-------|
 | 1 | Cloud storage bucket | S3 / GCS / Azure Blob for PostgreSQL backups |
 | 2 | IAM / Workload Identity | Service account binding so pods can write to the bucket |
-| 3 | Zalando Postgres Operator | Helm chart `postgres-operator` v1.14.0+ |
+| 3 | Zalando Postgres Operator | Helm chart `postgres-operator` v1.15.1+ |
 | 4 | Create Temporal namespace | Required before deploying the PostgreSQL cluster or Temporal |
 | 5 | PostgreSQL cluster CR | Creates `temporal-database` with two databases |
 | 6 | Temporal Helm chart | Points at the PostgreSQL cluster |
@@ -182,7 +182,7 @@ helm repo update
 ```bash
 helm upgrade --install postgres-operator postgres-operator-charts/postgres-operator \
   --namespace postgres-operator --create-namespace \
-  --version 1.14.0 \
+  --version 1.15.1 \
   --wait --timeout 3m
 ```
 
@@ -320,6 +320,46 @@ The operator creates a Kubernetes Secret for the database user:
 **Volume sizing:** 20Gi is adequate for the expected workload. Temporal's
 database usage scales with the number of open (in-flight) workflows and
 retained history, not the total number of completed workflows.
+
+### Verify Backup
+
+Before proceeding, confirm that the backup CronJob can run successfully and
+that the pod has permission to write to the backup bucket. Trigger a manual
+backup job from the CronJob the operator created:
+
+```bash
+kubectl create job --from=cronjob/logical-backup-temporal-database \
+  logical-backup-temporal-database-manual \
+  -n temporal
+```
+
+Wait for the job pod to complete:
+
+```bash
+kubectl wait --for=condition=complete \
+  job/logical-backup-temporal-database-manual \
+  -n temporal --timeout=5m
+```
+
+If the job does not complete within the timeout, check the pod logs to
+diagnose the failure:
+
+```bash
+kubectl logs -n temporal \
+  -l job-name=logical-backup-temporal-database-manual --tail=50
+```
+
+Common causes of failure are missing or misconfigured IAM permissions (the
+`postgres-pod` service account cannot write to the bucket) and an incorrect
+bucket name or region in the `OperatorConfiguration`. Resolve any errors
+before continuing -- if backups are broken at this stage they will remain
+broken after Temporal is deployed.
+
+Once the job shows `Complete`, clean it up:
+
+```bash
+kubectl delete job logical-backup-temporal-database-manual -n temporal
+```
 
 ---
 
