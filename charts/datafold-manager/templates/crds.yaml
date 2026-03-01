@@ -2252,6 +2252,14 @@ spec:
                     description: StorageClass specifies the storage class to use for
                       persistent volumes
                     type: string
+                  taskEngine:
+                    default: celery
+                    description: TaskEngine specifies the task engine to use (e.g.,
+                      "celery", "temporal")
+                    type: string
+                  workerPoolType:
+                    description: WorkerPoolType specifies the worker pool type
+                    type: string
                 required:
                 - manageSecretsYourself
                 - serverName
@@ -2821,34 +2829,13 @@ spec:
                     - "true"
                     - "false"
                     type: string
-                  inactivityIntervalMinutes:
-                    default: 240
-                    description: InactivityIntervalMinutes is the number of minutes
-                      of no active users (from status_check) before putting the app
-                      to sleep
-                    format: int32
-                    type: integer
-                  notUntil:
-                    description: NotUntil forces the app to stay active until this
-                      UTC timestamp. If empty/nil, treated as 1970-01-01 00:00:00
-                      UTC
+                  wakeUntil:
+                    description: |-
+                      WakeUntil is a UTC date+time until which the app should stay awake (e.g. "2026-03-01T14:00:00Z").
+                      Automatically set to now+2h on each new release. Users can also set this
+                      manually to wake the app or extend the wake period.
                     format: date-time
                     type: string
-                  statusCheckTokenSecretRef:
-                    description: StatusCheckTokenSecretRef references the secret that
-                      holds the status_check token (same as global.statusCheckToken
-                      in Helm)
-                    properties:
-                      key:
-                        description: Key is the key within the secret
-                        type: string
-                      name:
-                        description: Name is the name of the secret
-                        type: string
-                    required:
-                    - key
-                    - name
-                    type: object
                 type: object
             required:
             - global
