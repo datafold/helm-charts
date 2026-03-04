@@ -771,6 +771,12 @@ spec:
                     description: WorkerCompute enables the compute temporal worker
                       (datadiff, translation queues)
                     properties:
+                      command:
+                        description: Command is the container command (e.g. ["./manage.py",
+                          "temporal", "start-worker"])
+                        items:
+                          type: string
+                        type: array
                       enabled:
                         description: Enabled specifies whether this component should
                           be installed
@@ -896,6 +902,49 @@ spec:
                           - name
                           type: object
                         type: array
+                      keda:
+                        description: Keda holds KEDA scaling configuration for this
+                          temporal worker
+                        properties:
+                          activationTargetQueueSize:
+                            description: ActivationTargetQueueSize is the activation
+                              target queue size
+                            type: string
+                          authRef:
+                            description: AuthRef is the name of a TriggerAuthentication
+                              for Temporal
+                            type: string
+                          cooldownPeriod:
+                            description: CooldownPeriod is the KEDA cooldown period
+                              in seconds
+                            format: int32
+                            type: integer
+                          enabled:
+                            description: Enabled turns on KEDA scaling for this worker
+                            type: boolean
+                          maxReplicas:
+                            description: MaxReplicas is the maximum replica count
+                            format: int32
+                            type: integer
+                          minReplicas:
+                            description: MinReplicas is the minimum replica count
+                            format: int32
+                            type: integer
+                          pollingInterval:
+                            description: PollingInterval is the KEDA polling interval
+                              in seconds
+                            format: int32
+                            type: integer
+                          scaleDownStabilizationWindowSeconds:
+                            description: ScaleDownStabilizationWindowSeconds is the
+                              scale-down stabilization window
+                            format: int32
+                            type: integer
+                          targetQueueSize:
+                            description: TargetQueueSize is the target queue size
+                              for scaling
+                            type: string
+                        type: object
                       rawValues:
                         description: |-
                           RawValues contains arbitrary Helm values to pass directly to this component's subchart
@@ -945,12 +994,42 @@ spec:
                           enabled:
                             description: Enabled specifies whether storage is enabled
                             type: boolean
+                          storageClass:
+                            description: StorageClass specifies the storage class
+                              for the volume
+                            type: string
                         type: object
+                      temporal:
+                        description: Temporal holds per-worker Temporal settings (taskQueues,
+                          maxConcurrency, workerPoolType)
+                        properties:
+                          maxConcurrency:
+                            description: MaxConcurrency sets TEMPORAL_MAX_CONCURRENCY
+                            type: string
+                          taskQueues:
+                            description: TaskQueues is a comma-separated list of task
+                              queues or "all"
+                            type: string
+                          workerPoolType:
+                            description: WorkerPoolType sets DATAFOLD_WORKER_POOL_TYPE
+                            type: string
+                        type: object
+                      terminationGracePeriodSeconds:
+                        description: TerminationGracePeriodSeconds is the pod termination
+                          grace period
+                        format: int64
+                        type: integer
                     type: object
                   worker-highmem:
                     description: WorkerHighmem enables the high-memory temporal worker
                       (lineage, catalog queues)
                     properties:
+                      command:
+                        description: Command is the container command (e.g. ["./manage.py",
+                          "temporal", "start-worker"])
+                        items:
+                          type: string
+                        type: array
                       enabled:
                         description: Enabled specifies whether this component should
                           be installed
@@ -1076,6 +1155,49 @@ spec:
                           - name
                           type: object
                         type: array
+                      keda:
+                        description: Keda holds KEDA scaling configuration for this
+                          temporal worker
+                        properties:
+                          activationTargetQueueSize:
+                            description: ActivationTargetQueueSize is the activation
+                              target queue size
+                            type: string
+                          authRef:
+                            description: AuthRef is the name of a TriggerAuthentication
+                              for Temporal
+                            type: string
+                          cooldownPeriod:
+                            description: CooldownPeriod is the KEDA cooldown period
+                              in seconds
+                            format: int32
+                            type: integer
+                          enabled:
+                            description: Enabled turns on KEDA scaling for this worker
+                            type: boolean
+                          maxReplicas:
+                            description: MaxReplicas is the maximum replica count
+                            format: int32
+                            type: integer
+                          minReplicas:
+                            description: MinReplicas is the minimum replica count
+                            format: int32
+                            type: integer
+                          pollingInterval:
+                            description: PollingInterval is the KEDA polling interval
+                              in seconds
+                            format: int32
+                            type: integer
+                          scaleDownStabilizationWindowSeconds:
+                            description: ScaleDownStabilizationWindowSeconds is the
+                              scale-down stabilization window
+                            format: int32
+                            type: integer
+                          targetQueueSize:
+                            description: TargetQueueSize is the target queue size
+                              for scaling
+                            type: string
+                        type: object
                       rawValues:
                         description: |-
                           RawValues contains arbitrary Helm values to pass directly to this component's subchart
@@ -1125,7 +1247,31 @@ spec:
                           enabled:
                             description: Enabled specifies whether storage is enabled
                             type: boolean
+                          storageClass:
+                            description: StorageClass specifies the storage class
+                              for the volume
+                            type: string
                         type: object
+                      temporal:
+                        description: Temporal holds per-worker Temporal settings (taskQueues,
+                          maxConcurrency, workerPoolType)
+                        properties:
+                          maxConcurrency:
+                            description: MaxConcurrency sets TEMPORAL_MAX_CONCURRENCY
+                            type: string
+                          taskQueues:
+                            description: TaskQueues is a comma-separated list of task
+                              queues or "all"
+                            type: string
+                          workerPoolType:
+                            description: WorkerPoolType sets DATAFOLD_WORKER_POOL_TYPE
+                            type: string
+                        type: object
+                      terminationGracePeriodSeconds:
+                        description: TerminationGracePeriodSeconds is the pod termination
+                          grace period
+                        format: int64
+                        type: integer
                     type: object
                   worker-interactive:
                     description: WorkerInteractive enables the interactive worker
@@ -1269,6 +1415,12 @@ spec:
                     description: WorkerRealtime enables the realtime temporal worker
                       (interactive, api queues)
                     properties:
+                      command:
+                        description: Command is the container command (e.g. ["./manage.py",
+                          "temporal", "start-worker"])
+                        items:
+                          type: string
+                        type: array
                       enabled:
                         description: Enabled specifies whether this component should
                           be installed
@@ -1394,6 +1546,49 @@ spec:
                           - name
                           type: object
                         type: array
+                      keda:
+                        description: Keda holds KEDA scaling configuration for this
+                          temporal worker
+                        properties:
+                          activationTargetQueueSize:
+                            description: ActivationTargetQueueSize is the activation
+                              target queue size
+                            type: string
+                          authRef:
+                            description: AuthRef is the name of a TriggerAuthentication
+                              for Temporal
+                            type: string
+                          cooldownPeriod:
+                            description: CooldownPeriod is the KEDA cooldown period
+                              in seconds
+                            format: int32
+                            type: integer
+                          enabled:
+                            description: Enabled turns on KEDA scaling for this worker
+                            type: boolean
+                          maxReplicas:
+                            description: MaxReplicas is the maximum replica count
+                            format: int32
+                            type: integer
+                          minReplicas:
+                            description: MinReplicas is the minimum replica count
+                            format: int32
+                            type: integer
+                          pollingInterval:
+                            description: PollingInterval is the KEDA polling interval
+                              in seconds
+                            format: int32
+                            type: integer
+                          scaleDownStabilizationWindowSeconds:
+                            description: ScaleDownStabilizationWindowSeconds is the
+                              scale-down stabilization window
+                            format: int32
+                            type: integer
+                          targetQueueSize:
+                            description: TargetQueueSize is the target queue size
+                              for scaling
+                            type: string
+                        type: object
                       rawValues:
                         description: |-
                           RawValues contains arbitrary Helm values to pass directly to this component's subchart
@@ -1443,7 +1638,31 @@ spec:
                           enabled:
                             description: Enabled specifies whether storage is enabled
                             type: boolean
+                          storageClass:
+                            description: StorageClass specifies the storage class
+                              for the volume
+                            type: string
                         type: object
+                      temporal:
+                        description: Temporal holds per-worker Temporal settings (taskQueues,
+                          maxConcurrency, workerPoolType)
+                        properties:
+                          maxConcurrency:
+                            description: MaxConcurrency sets TEMPORAL_MAX_CONCURRENCY
+                            type: string
+                          taskQueues:
+                            description: TaskQueues is a comma-separated list of task
+                              queues or "all"
+                            type: string
+                          workerPoolType:
+                            description: WorkerPoolType sets DATAFOLD_WORKER_POOL_TYPE
+                            type: string
+                        type: object
+                      terminationGracePeriodSeconds:
+                        description: TerminationGracePeriodSeconds is the pod termination
+                          grace period
+                        format: int64
+                        type: integer
                     type: object
                   worker-singletons:
                     description: WorkerSingletons enables the singletons worker
@@ -1495,6 +1714,12 @@ spec:
                     description: WorkerStorage enables the storage temporal worker
                       (localstorage, replication queues)
                     properties:
+                      command:
+                        description: Command is the container command (e.g. ["./manage.py",
+                          "temporal", "start-worker"])
+                        items:
+                          type: string
+                        type: array
                       enabled:
                         description: Enabled specifies whether this component should
                           be installed
@@ -1620,6 +1845,49 @@ spec:
                           - name
                           type: object
                         type: array
+                      keda:
+                        description: Keda holds KEDA scaling configuration for this
+                          temporal worker
+                        properties:
+                          activationTargetQueueSize:
+                            description: ActivationTargetQueueSize is the activation
+                              target queue size
+                            type: string
+                          authRef:
+                            description: AuthRef is the name of a TriggerAuthentication
+                              for Temporal
+                            type: string
+                          cooldownPeriod:
+                            description: CooldownPeriod is the KEDA cooldown period
+                              in seconds
+                            format: int32
+                            type: integer
+                          enabled:
+                            description: Enabled turns on KEDA scaling for this worker
+                            type: boolean
+                          maxReplicas:
+                            description: MaxReplicas is the maximum replica count
+                            format: int32
+                            type: integer
+                          minReplicas:
+                            description: MinReplicas is the minimum replica count
+                            format: int32
+                            type: integer
+                          pollingInterval:
+                            description: PollingInterval is the KEDA polling interval
+                              in seconds
+                            format: int32
+                            type: integer
+                          scaleDownStabilizationWindowSeconds:
+                            description: ScaleDownStabilizationWindowSeconds is the
+                              scale-down stabilization window
+                            format: int32
+                            type: integer
+                          targetQueueSize:
+                            description: TargetQueueSize is the target queue size
+                              for scaling
+                            type: string
+                        type: object
                       rawValues:
                         description: |-
                           RawValues contains arbitrary Helm values to pass directly to this component's subchart
@@ -1669,12 +1937,42 @@ spec:
                           enabled:
                             description: Enabled specifies whether storage is enabled
                             type: boolean
+                          storageClass:
+                            description: StorageClass specifies the storage class
+                              for the volume
+                            type: string
                         type: object
+                      temporal:
+                        description: Temporal holds per-worker Temporal settings (taskQueues,
+                          maxConcurrency, workerPoolType)
+                        properties:
+                          maxConcurrency:
+                            description: MaxConcurrency sets TEMPORAL_MAX_CONCURRENCY
+                            type: string
+                          taskQueues:
+                            description: TaskQueues is a comma-separated list of task
+                              queues or "all"
+                            type: string
+                          workerPoolType:
+                            description: WorkerPoolType sets DATAFOLD_WORKER_POOL_TYPE
+                            type: string
+                        type: object
+                      terminationGracePeriodSeconds:
+                        description: TerminationGracePeriodSeconds is the pod termination
+                          grace period
+                        format: int64
+                        type: integer
                     type: object
                   worker-storage-high:
                     description: WorkerStorageHigh enables the high-capacity storage
                       temporal worker (localstorage-large queue)
                     properties:
+                      command:
+                        description: Command is the container command (e.g. ["./manage.py",
+                          "temporal", "start-worker"])
+                        items:
+                          type: string
+                        type: array
                       enabled:
                         description: Enabled specifies whether this component should
                           be installed
@@ -1800,6 +2098,49 @@ spec:
                           - name
                           type: object
                         type: array
+                      keda:
+                        description: Keda holds KEDA scaling configuration for this
+                          temporal worker
+                        properties:
+                          activationTargetQueueSize:
+                            description: ActivationTargetQueueSize is the activation
+                              target queue size
+                            type: string
+                          authRef:
+                            description: AuthRef is the name of a TriggerAuthentication
+                              for Temporal
+                            type: string
+                          cooldownPeriod:
+                            description: CooldownPeriod is the KEDA cooldown period
+                              in seconds
+                            format: int32
+                            type: integer
+                          enabled:
+                            description: Enabled turns on KEDA scaling for this worker
+                            type: boolean
+                          maxReplicas:
+                            description: MaxReplicas is the maximum replica count
+                            format: int32
+                            type: integer
+                          minReplicas:
+                            description: MinReplicas is the minimum replica count
+                            format: int32
+                            type: integer
+                          pollingInterval:
+                            description: PollingInterval is the KEDA polling interval
+                              in seconds
+                            format: int32
+                            type: integer
+                          scaleDownStabilizationWindowSeconds:
+                            description: ScaleDownStabilizationWindowSeconds is the
+                              scale-down stabilization window
+                            format: int32
+                            type: integer
+                          targetQueueSize:
+                            description: TargetQueueSize is the target queue size
+                              for scaling
+                            type: string
+                        type: object
                       rawValues:
                         description: |-
                           RawValues contains arbitrary Helm values to pass directly to this component's subchart
@@ -1849,11 +2190,41 @@ spec:
                           enabled:
                             description: Enabled specifies whether storage is enabled
                             type: boolean
+                          storageClass:
+                            description: StorageClass specifies the storage class
+                              for the volume
+                            type: string
                         type: object
+                      temporal:
+                        description: Temporal holds per-worker Temporal settings (taskQueues,
+                          maxConcurrency, workerPoolType)
+                        properties:
+                          maxConcurrency:
+                            description: MaxConcurrency sets TEMPORAL_MAX_CONCURRENCY
+                            type: string
+                          taskQueues:
+                            description: TaskQueues is a comma-separated list of task
+                              queues or "all"
+                            type: string
+                          workerPoolType:
+                            description: WorkerPoolType sets DATAFOLD_WORKER_POOL_TYPE
+                            type: string
+                        type: object
+                      terminationGracePeriodSeconds:
+                        description: TerminationGracePeriodSeconds is the pod termination
+                          grace period
+                        format: int64
+                        type: integer
                     type: object
                   worker-temporal:
                     description: WorkerTemporal enables the base temporal worker
                     properties:
+                      command:
+                        description: Command is the container command (e.g. ["./manage.py",
+                          "temporal", "start-worker"])
+                        items:
+                          type: string
+                        type: array
                       enabled:
                         description: Enabled specifies whether this component should
                           be installed
@@ -1979,6 +2350,49 @@ spec:
                           - name
                           type: object
                         type: array
+                      keda:
+                        description: Keda holds KEDA scaling configuration for this
+                          temporal worker
+                        properties:
+                          activationTargetQueueSize:
+                            description: ActivationTargetQueueSize is the activation
+                              target queue size
+                            type: string
+                          authRef:
+                            description: AuthRef is the name of a TriggerAuthentication
+                              for Temporal
+                            type: string
+                          cooldownPeriod:
+                            description: CooldownPeriod is the KEDA cooldown period
+                              in seconds
+                            format: int32
+                            type: integer
+                          enabled:
+                            description: Enabled turns on KEDA scaling for this worker
+                            type: boolean
+                          maxReplicas:
+                            description: MaxReplicas is the maximum replica count
+                            format: int32
+                            type: integer
+                          minReplicas:
+                            description: MinReplicas is the minimum replica count
+                            format: int32
+                            type: integer
+                          pollingInterval:
+                            description: PollingInterval is the KEDA polling interval
+                              in seconds
+                            format: int32
+                            type: integer
+                          scaleDownStabilizationWindowSeconds:
+                            description: ScaleDownStabilizationWindowSeconds is the
+                              scale-down stabilization window
+                            format: int32
+                            type: integer
+                          targetQueueSize:
+                            description: TargetQueueSize is the target queue size
+                              for scaling
+                            type: string
+                        type: object
                       rawValues:
                         description: |-
                           RawValues contains arbitrary Helm values to pass directly to this component's subchart
@@ -2028,7 +2442,31 @@ spec:
                           enabled:
                             description: Enabled specifies whether storage is enabled
                             type: boolean
+                          storageClass:
+                            description: StorageClass specifies the storage class
+                              for the volume
+                            type: string
                         type: object
+                      temporal:
+                        description: Temporal holds per-worker Temporal settings (taskQueues,
+                          maxConcurrency, workerPoolType)
+                        properties:
+                          maxConcurrency:
+                            description: MaxConcurrency sets TEMPORAL_MAX_CONCURRENCY
+                            type: string
+                          taskQueues:
+                            description: TaskQueues is a comma-separated list of task
+                              queues or "all"
+                            type: string
+                          workerPoolType:
+                            description: WorkerPoolType sets DATAFOLD_WORKER_POOL_TYPE
+                            type: string
+                        type: object
+                      terminationGracePeriodSeconds:
+                        description: TerminationGracePeriodSeconds is the pod termination
+                          grace period
+                        format: int64
+                        type: integer
                     type: object
                   worker2:
                     description: Worker2 enables the second worker instance
@@ -2256,6 +2694,11 @@ spec:
                     default: celery
                     description: TaskEngine specifies the task engine to use (e.g.,
                       "celery", "temporal")
+                    type: string
+                  temporalAddress:
+                    description: |-
+                      TemporalAddress is the Temporal server address (e.g. "temporal-frontend.temporal.svc.cluster.local:7233").
+                      Sets config.temporalAddress (configmap TEMPORAL_ADDRESS) and global.temporal.address (KEDA endpoint).
                     type: string
                   workerPoolType:
                     description: WorkerPoolType specifies the worker pool type
@@ -3048,6 +3491,14 @@ spec:
                   lastReleaseUpdate:
                     description: LastReleaseUpdate is the UTC timestamp when that
                       version was recorded
+                    format: date-time
+                    type: string
+                  wakeUntil:
+                    description: |-
+                      WakeUntil is the controller-computed UTC deadline until which the app stays awake.
+                      Automatically set to now+2h on each deploy. Persisted in status so it
+                      survives reconciliation loops (spec.sleepConfiguration.wakeUntil is
+                      user-facing and may also be set manually; the later of the two wins).
                     format: date-time
                     type: string
                 type: object
