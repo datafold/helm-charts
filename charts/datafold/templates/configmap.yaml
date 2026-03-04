@@ -64,13 +64,9 @@ data:
 {{- if .Values.config.temporalAddress }}
   TEMPORAL_ADDRESS: "{{ .Values.config.temporalAddress }}"
 {{- end }}
-  TEMPORAL_NAMESPACE: "{{ .Values.config.temporalNamespace | default .Release.Namespace }}"
-  TEMPORAL_MAX_CONCURRENCY: "{{ .Values.config.temporalMaxConcurrency }}"
+  TEMPORAL_NAMESPACE: "{{ .Release.Namespace }}"
 {{- if .Values.config.taskEngine }}
   DATAFOLD_TASK_ENGINE: "{{ .Values.config.taskEngine }}"
-{{- end }}
-{{- if .Values.config.workerPoolType }}
-  DATAFOLD_WORKER_POOL_TYPE: "{{ .Values.config.workerPoolType }}"
 {{- end }}
 {{- if .Values.config.gitlabServer }}
   GITLAB_SERVER: "{{ .Values.config.gitlabServer }}"

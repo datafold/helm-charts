@@ -48,6 +48,29 @@ resources:
     cpu: 100m
     memory: 1000Mi
 
+temporal:
+  # taskQueues controls which Temporal task queues this worker polls.
+  # Comma-separated list or the special value "all".
+  taskQueues: "none"
+  # maxConcurrency sets TEMPORAL_MAX_CONCURRENCY — the number of concurrent activity/workflow tasks.
+  maxConcurrency: "5"
+  # workerPoolType sets DATAFOLD_WORKER_POOL_TYPE. Leave empty for the default pool type.
+  workerPoolType: ""
+
+keda:
+  enabled: true
+  minReplicas: 0
+  maxReplicas: 10
+  pollingInterval: 30
+  cooldownPeriod: 300
+  targetQueueSize: "5"
+  activationTargetQueueSize: "0"
+  scaleDown:
+    stabilizationWindowSeconds: 300
+  # authRef is the name of a pre-existing TriggerAuthentication object.
+  # Leave empty for unauthenticated access to the Temporal endpoint.
+  authRef: ""
+
 extraEnv: []
 
 volumes: []
