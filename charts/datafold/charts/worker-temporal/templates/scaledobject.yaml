@@ -1,0 +1,52 @@
+{{- if .Values.keda.enabled }}
+{{- $queues := splitList "," .Values.temporal.taskQueues }}
+{{- $multi := gt (len $queues) 1 }}
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: {{ include "worker-temporal.fullname" . }}
+  labels:
+    {{- include "worker-temporal.labels" . | nindent 4 }}
+spec:
+  scaleTargetRef:
+    name: {{ include "worker-temporal.fullname" . }}
+  minReplicaCount: {{ .Values.keda.minReplicas }}
+  maxReplicaCount: {{ .Values.keda.maxReplicas }}
+  pollingInterval: {{ .Values.keda.pollingInterval }}
+  cooldownPeriod: {{ .Values.keda.cooldownPeriod }}
+  advanced:
+    horizontalPodAutoscalerConfig:
+      behavior:
+        scaleDown:
+          stabilizationWindowSeconds: {{ .Values.keda.scaleDown.stabilizationWindowSeconds }}
+    {{- if $multi }}
+    {{- $formula := "" }}
+    {{- range $i, $q := $queues }}
+    {{- if $i }}{{- $formula = printf "%s + %s" $formula ($q | trim) }}
+    {{- else }}{{- $formula = $q | trim }}
+    {{- end }}
+    {{- end }}
+    scalingModifiers:
+      formula: {{ $formula | quote }}
+      target: {{ .Values.keda.targetQueueSize | quote }}
+      metricType: AverageValue
+    {{- end }}
+  triggers:
+  {{- range $queues }}
+  {{- $queueName := . | trim }}
+    - type: temporal
+      {{- if $multi }}
+      name: {{ $queueName }}
+      {{- end }}
+      {{- if $.Values.keda.authRef }}
+      authenticationRef:
+        name: {{ $.Values.keda.authRef | quote }}
+      {{- end }}
+      metadata:
+        namespace: {{ $.Release.Namespace | quote }}
+        taskQueue: {{ $queueName | quote }}
+        endpoint: {{ (($.Values.global).temporal).address | quote }}
+        targetQueueSize: {{ $.Values.keda.targetQueueSize | quote }}
+        activationTargetQueueSize: {{ $.Values.keda.activationTargetQueueSize | quote }}
+  {{- end }}
+{{- end }}

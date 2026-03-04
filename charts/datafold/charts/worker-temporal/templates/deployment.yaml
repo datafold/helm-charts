@@ -60,6 +60,18 @@ spec:
                 secretKeyRef:
                   name: {{ include "datafold.secrets" . }}
                   key: DATAFOLD_DATADOG_APPLICATION_ID
+            {{- if .Values.temporal.taskQueues }}
+            - name: TEMPORAL_TASK_QUEUES
+              value: {{ .Values.temporal.taskQueues | quote }}
+            {{- end }}
+            {{- if .Values.temporal.maxConcurrency }}
+            - name: TEMPORAL_MAX_CONCURRENCY
+              value: {{ .Values.temporal.maxConcurrency | quote }}
+            {{- end }}
+            {{- if .Values.temporal.workerPoolType }}
+            - name: DATAFOLD_WORKER_POOL_TYPE
+              value: {{ .Values.temporal.workerPoolType | quote }}
+            {{- end }}
             {{- with .Values.extraEnv }}
             {{- toYaml . | nindent 12 }}
             {{- end }}

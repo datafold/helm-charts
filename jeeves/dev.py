@@ -220,6 +220,7 @@ def kubeconform(
                     "BackendConfig",
                     "FrontendConfig",
                     "ManagedCertificate",
+                    "ScaledObject",  # KEDA CRD (worker-temporal)
                 ]
             )
             if skip_list:
