@@ -2746,6 +2746,11 @@ spec:
                         description: SslPolicy specifies an SSL policy to use.
                         type: string
                     type: object
+                  defaultBackend:
+                    description: |-
+                      DefaultBackend specifies whether this ingress should define the default backend
+                      for the ALB. Only one ingress per group should set this to true.
+                    type: boolean
                   deployLoadBalancer:
                     description: |-
                       DeployLoadBalancer specifies whether to deploy a complete load balancer
