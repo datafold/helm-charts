@@ -15,11 +15,13 @@ metadata:
     {{- end }}
 spec:
   {{- include "nginx.ingress.class" . | nindent 2 }}
+  {{- if .Values.ingress.defaultBackend }}
   defaultBackend:
     service:
       name: {{ include "nginx.fullname" . }}
       port:
         number: {{ .Values.global.nginx.port }}
+  {{- end }}
   {{- if (eq .Values.ingress.certificateMethod "secret") }}
   {{- if .Values.ingress.tlsSecretName  }}
   tls:
