@@ -769,7 +769,7 @@ spec:
                     type: object
                   worker-compute:
                     description: WorkerCompute enables the compute temporal worker
-                      (datadiff, translation queues)
+                      (xdiff, translation, monitors queues)
                     properties:
                       command:
                         description: Command is the container command (e.g. ["./manage.py",
@@ -1318,6 +1318,259 @@ spec:
                                 type: string
                             type: object
                         type: object
+                    type: object
+                  worker-io:
+                    description: WorkerIo enables the I/O temporal worker (datadiff
+                      queue)
+                    properties:
+                      command:
+                        description: Command is the container command (e.g. ["./manage.py",
+                          "temporal", "start-worker"])
+                        items:
+                          type: string
+                        type: array
+                      enabled:
+                        description: Enabled specifies whether this component should
+                          be installed
+                        type: boolean
+                      extraEnv:
+                        description: ExtraEnv specifies additional environment variables
+                          (e.g. TEMPORAL_TASK_QUEUES)
+                        items:
+                          description: EnvVar represents an environment variable present
+                            in a Container.
+                          properties:
+                            name:
+                              description: Name of the environment variable. Must
+                                be a C_IDENTIFIER.
+                              type: string
+                            value:
+                              description: |-
+                                Variable references $(VAR_NAME) are expanded
+                                using the previously defined environment variables in the container and
+                                any service environment variables. If a variable cannot be resolved,
+                                the reference in the input string will be unchanged. Double $$ are reduced
+                                to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e.
+                                "$$(VAR_NAME)" will produce the string literal "$(VAR_NAME)".
+                                Escaped references will never be expanded, regardless of whether the variable
+                                exists or not.
+                                Defaults to "".
+                              type: string
+                            valueFrom:
+                              description: Source for the environment variable's value.
+                                Cannot be used if value is not empty.
+                              properties:
+                                configMapKeyRef:
+                                  description: Selects a key of a ConfigMap.
+                                  properties:
+                                    key:
+                                      description: The key to select.
+                                      type: string
+                                    name:
+                                      default: ""
+                                      description: |-
+                                        Name of the referent.
+                                        This field is effectively required, but due to backwards compatibility is
+                                        allowed to be empty. Instances of this type with an empty value here are
+                                        almost certainly wrong.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                      type: string
+                                    optional:
+                                      description: Specify whether the ConfigMap or
+                                        its key must be defined
+                                      type: boolean
+                                  required:
+                                  - key
+                                  type: object
+                                  x-kubernetes-map-type: atomic
+                                fieldRef:
+                                  description: |-
+                                    Selects a field of the pod: supports metadata.name, metadata.namespace, `metadata.labels['<KEY>']`, `metadata.annotations['<KEY>']`,
+                                    spec.nodeName, spec.serviceAccountName, status.hostIP, status.podIP, status.podIPs.
+                                  properties:
+                                    apiVersion:
+                                      description: Version of the schema the FieldPath
+                                        is written in terms of, defaults to "v1".
+                                      type: string
+                                    fieldPath:
+                                      description: Path of the field to select in
+                                        the specified API version.
+                                      type: string
+                                  required:
+                                  - fieldPath
+                                  type: object
+                                  x-kubernetes-map-type: atomic
+                                resourceFieldRef:
+                                  description: |-
+                                    Selects a resource of the container: only resources limits and requests
+                                    (limits.cpu, limits.memory, limits.ephemeral-storage, requests.cpu, requests.memory and requests.ephemeral-storage) are currently supported.
+                                  properties:
+                                    containerName:
+                                      description: 'Container name: required for volumes,
+                                        optional for env vars'
+                                      type: string
+                                    divisor:
+                                      anyOf:
+                                      - type: integer
+                                      - type: string
+                                      description: Specifies the output format of
+                                        the exposed resources, defaults to "1"
+                                      pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                                      x-kubernetes-int-or-string: true
+                                    resource:
+                                      description: 'Required: resource to select'
+                                      type: string
+                                  required:
+                                  - resource
+                                  type: object
+                                  x-kubernetes-map-type: atomic
+                                secretKeyRef:
+                                  description: Selects a key of a secret in the pod's
+                                    namespace
+                                  properties:
+                                    key:
+                                      description: The key of the secret to select
+                                        from.  Must be a valid secret key.
+                                      type: string
+                                    name:
+                                      default: ""
+                                      description: |-
+                                        Name of the referent.
+                                        This field is effectively required, but due to backwards compatibility is
+                                        allowed to be empty. Instances of this type with an empty value here are
+                                        almost certainly wrong.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                      type: string
+                                    optional:
+                                      description: Specify whether the Secret or its
+                                        key must be defined
+                                      type: boolean
+                                  required:
+                                  - key
+                                  type: object
+                                  x-kubernetes-map-type: atomic
+                              type: object
+                          required:
+                          - name
+                          type: object
+                        type: array
+                      keda:
+                        description: Keda holds KEDA scaling configuration for this
+                          temporal worker
+                        properties:
+                          activationTargetQueueSize:
+                            description: ActivationTargetQueueSize is the activation
+                              target queue size
+                            type: string
+                          authRef:
+                            description: AuthRef is the name of a TriggerAuthentication
+                              for Temporal
+                            type: string
+                          cooldownPeriod:
+                            description: CooldownPeriod is the KEDA cooldown period
+                              in seconds
+                            format: int32
+                            type: integer
+                          enabled:
+                            description: Enabled turns on KEDA scaling for this worker
+                            type: boolean
+                          maxReplicas:
+                            description: MaxReplicas is the maximum replica count
+                            format: int32
+                            type: integer
+                          minReplicas:
+                            description: MinReplicas is the minimum replica count
+                            format: int32
+                            type: integer
+                          pollingInterval:
+                            description: PollingInterval is the KEDA polling interval
+                              in seconds
+                            format: int32
+                            type: integer
+                          scaleDownStabilizationWindowSeconds:
+                            description: ScaleDownStabilizationWindowSeconds is the
+                              scale-down stabilization window
+                            format: int32
+                            type: integer
+                          targetQueueSize:
+                            description: TargetQueueSize is the target queue size
+                              for scaling
+                            type: string
+                        type: object
+                      rawValues:
+                        description: |-
+                          RawValues contains arbitrary Helm values to pass directly to this component's subchart
+                          These values will be merged with the component's default values and can override any
+                          configuration option supported by the component's Helm chart
+                        x-kubernetes-preserve-unknown-fields: true
+                      replicas:
+                        description: Replicas specifies the number of replicas for
+                          this component
+                        format: int32
+                        type: integer
+                      resources:
+                        description: Resources specifies the resource requirements
+                          for this component
+                        properties:
+                          limits:
+                            description: Limits specifies the maximum resources that
+                              can be used
+                            properties:
+                              cpu:
+                                description: CPU specifies the maximum CPU resources
+                                type: string
+                              memory:
+                                description: Memory specifies the maximum memory resources
+                                type: string
+                            type: object
+                          requests:
+                            description: Requests specifies the minimum resources
+                              that should be allocated
+                            properties:
+                              cpu:
+                                description: CPU specifies the minimum CPU resources
+                                type: string
+                              memory:
+                                description: Memory specifies the minimum memory resources
+                                type: string
+                            type: object
+                        type: object
+                      storage:
+                        description: Storage configures ephemeral storage for the
+                          temporal worker
+                        properties:
+                          dataSize:
+                            description: DataSize specifies the size of the storage
+                              volume (e.g. "100Gi")
+                            type: string
+                          enabled:
+                            description: Enabled specifies whether storage is enabled
+                            type: boolean
+                          storageClass:
+                            description: StorageClass specifies the storage class
+                              for the volume
+                            type: string
+                        type: object
+                      temporal:
+                        description: Temporal holds per-worker Temporal settings (taskQueues,
+                          maxConcurrency, workerPoolType)
+                        properties:
+                          maxConcurrency:
+                            description: MaxConcurrency sets TEMPORAL_MAX_CONCURRENCY
+                            type: string
+                          taskQueues:
+                            description: TaskQueues is a comma-separated list of task
+                              queues or "all"
+                            type: string
+                          workerPoolType:
+                            description: WorkerPoolType sets DATAFOLD_WORKER_POOL_TYPE
+                            type: string
+                        type: object
+                      terminationGracePeriodSeconds:
+                        description: TerminationGracePeriodSeconds is the pod termination
+                          grace period
+                        format: int64
+                        type: integer
                     type: object
                   worker-lineage:
                     description: WorkerLineage enables the lineage worker
