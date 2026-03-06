@@ -55,7 +55,7 @@ temporal:
   # maxConcurrency sets TEMPORAL_MAX_CONCURRENCY — the number of concurrent activity/workflow tasks.
   maxConcurrency: "5"
   # workerPoolType sets DATAFOLD_WORKER_POOL_TYPE. Leave empty for the default pool type.
-  workerPoolType: ""
+  workerPoolType: "thread"
 
 keda:
   enabled: true
