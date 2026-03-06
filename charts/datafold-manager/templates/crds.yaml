@@ -3269,9 +3269,8 @@ spec:
                 description: Operator contains configuration for the operator component
                 properties:
                   version:
-                    default: 1.2.10
                     description: Version specifies the version/tag of the operator
-                      image
+                      image. If empty, the default from the Helm chart is used.
                     type: string
                 type: object
               postgres:
