@@ -2889,10 +2889,30 @@ spec:
                       cluster
                     type: string
                   customSecrets:
-                    description: CustomSecrets is a list of custom secret names to
-                      be injected as environment variables
+                    description: CustomSecrets is a list of custom secret references
+                      to be injected as environment variables. Each entry specifies
+                      the env var name, the Kubernetes Secret to read from, and the
+                      key within that secret.
                     items:
-                      type: string
+                      description: CustomSecret defines a reference to a Kubernetes
+                        Secret key to be injected as an environment variable
+                      properties:
+                        envVarName:
+                          description: EnvVarName is the name of the environment variable
+                            to set
+                          type: string
+                        secretKey:
+                          description: SecretKey is the key within the Kubernetes Secret
+                          type: string
+                        secretName:
+                          description: SecretName is the name of the Kubernetes Secret
+                            to read from
+                          type: string
+                      required:
+                      - envVarName
+                      - secretKey
+                      - secretName
+                      type: object
                     type: array
                   datafoldImage:
                     description: DatafoldImage specifies the Datafold image name

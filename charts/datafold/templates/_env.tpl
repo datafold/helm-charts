@@ -115,10 +115,10 @@
       key: DATAFOLD_ANTHROPIC_API_KEY
       optional: true
 {{- range $custom_secret := .Values.global.customSecrets }}
-- name: {{ $custom_secret.name }}
+- name: {{ $custom_secret.envVarName }}
   valueFrom:
     secretKeyRef:
-      name: {{ include "datafold.secrets" $ }}
-      key: {{ $custom_secret.name }}
+      name: {{ $custom_secret.secretName }}
+      key: {{ $custom_secret.secretKey }}
 {{- end }}
 {{- end -}}
