@@ -46,6 +46,162 @@ entries:
   datafold:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2026-03-07T12:21:16.854389317Z"
+    dependencies:
+    - condition: redis.install
+      name: redis
+      repository: file://charts/redis
+      version: '*.*.*'
+    - condition: clickhouse.install
+      name: clickhouse
+      repository: file://charts/clickhouse
+      version: '*.*.*'
+    - condition: dfshell.install
+      name: dfshell
+      repository: file://charts/dfshell
+      version: '*.*.*'
+    - condition: worker-temporal.install
+      name: worker-temporal
+      repository: file://charts/worker-temporal
+      version: '*.*.*'
+    - alias: worker-io
+      condition: worker-io.install
+      name: worker-temporal
+      repository: file://charts/worker-temporal
+      version: '*.*.*'
+    - alias: worker-compute
+      condition: worker-compute.install
+      name: worker-temporal
+      repository: file://charts/worker-temporal
+      version: '*.*.*'
+    - alias: worker-highmem
+      condition: worker-highmem.install
+      name: worker-temporal
+      repository: file://charts/worker-temporal
+      version: '*.*.*'
+    - alias: worker-realtime
+      condition: worker-realtime.install
+      name: worker-temporal
+      repository: file://charts/worker-temporal
+      version: '*.*.*'
+    - alias: worker-storage
+      condition: worker-storage.install
+      name: worker-temporal
+      repository: file://charts/worker-temporal
+      version: '*.*.*'
+    - alias: worker-storage-high
+      condition: worker-storage-high.install
+      name: worker-temporal
+      repository: file://charts/worker-temporal
+      version: '*.*.*'
+    - condition: operator.install
+      name: operator
+      repository: file://charts/operator
+      version: '*.*.*'
+    - condition: server.install
+      name: server
+      repository: file://charts/server
+      version: '*.*.*'
+    - condition: scheduler.install
+      name: scheduler
+      repository: file://charts/scheduler
+      version: '*.*.*'
+    - alias: worker
+      condition: worker.install
+      name: worker
+      repository: file://charts/worker
+      version: '*.*.*'
+    - alias: worker2
+      condition: worker2.install
+      name: worker
+      repository: file://charts/worker
+      version: '*.*.*'
+    - alias: worker3
+      condition: worker3.install
+      name: worker
+      repository: file://charts/worker
+      version: '*.*.*'
+    - alias: worker-catalog
+      condition: worker-catalog.install
+      name: worker
+      repository: file://charts/worker
+      version: 0.1.0
+    - alias: worker-interactive
+      condition: worker-interactive.install
+      name: worker
+      repository: file://charts/worker
+      version: 0.1.0
+    - alias: worker-singletons
+      condition: worker-singletons.install
+      name: worker
+      repository: file://charts/worker
+      version: 0.1.0
+    - alias: worker-lineage
+      condition: worker-lineage.install
+      name: worker
+      repository: file://charts/worker
+      version: 0.1.0
+    - alias: worker-monitor
+      condition: worker-monitor.install
+      name: worker
+      repository: file://charts/worker
+      version: 0.1.0
+    - alias: storage-worker
+      condition: storage-worker.install
+      name: storage-worker
+      repository: file://charts/storage-worker
+      version: 0.1.1
+    - alias: storage-worker-large
+      condition: storage-worker-large.install
+      name: storage-worker
+      repository: file://charts/storage-worker
+      version: 0.1.1
+    - alias: dma
+      condition: dma.install
+      name: dma
+      repository: file://charts/dma
+      version: 0.1.0
+    - alias: dma2
+      condition: dma2.install
+      name: dma
+      repository: file://charts/dma
+      version: 0.1.0
+    - alias: dma3
+      condition: dma3.install
+      name: dma
+      repository: file://charts/dma
+      version: 0.1.0
+    - alias: dmatemplate
+      condition: dmatemplate.install
+      name: dma
+      repository: file://charts/dma
+      version: 0.1.0
+    - condition: nginx.install
+      name: nginx
+      repository: file://charts/nginx
+      version: 0.1.0
+    - condition: memgraph.install
+      name: memgraph
+      repository: file://charts/memgraph
+      version: '*.*.*'
+    - condition: global.datadog.install
+      name: datadog
+      repository: file://charts/datadog
+      version: '*.*.*'
+    description: Helm chart package to deploy Datafold on kubernetes.
+    digest: 3bdbf321952f3bd212504209086b5969e7ef9a48ab0a36b6177bbf92baf2da3f
+    icon: https://www.datafold.com/logo.png
+    maintainers:
+    - email: support@datafold.com
+      name: datafold
+      url: https://datafold.com
+    name: datafold
+    type: application
+    urls:
+    - https://github.com/datafold/helm-charts/releases/download/datafold-0.10.62/datafold-0.10.62.tgz
+    version: 0.10.62
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2026-03-06T12:36:51.448092646Z"
     dependencies:
     - condition: redis.install
@@ -23963,6 +24119,27 @@ entries:
   datafold-manager:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2026-03-07T12:21:17.000900185Z"
+    description: Helm chart for Datafold Operator
+    digest: 2658c1426efe636c097eb7bb6f207903acdf21a35c07deb1104d50cd5af86748
+    home: https://datafold.com
+    icon: https://www.datafold.com/logo.png
+    keywords:
+    - datafold
+    - operator
+    - kubernetes
+    - data-quality
+    maintainers:
+    - email: support@datafold.com
+      name: datafold
+      url: https://datafold.com
+    name: datafold-manager
+    type: application
+    urls:
+    - https://github.com/datafold/helm-charts/releases/download/datafold-manager-0.1.79/datafold-manager-0.1.79.tgz
+    version: 0.1.79
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2026-03-06T12:36:51.642341206Z"
     description: Helm chart for Datafold Operator
     digest: f4580aec17226dc38d9d5c49cbcb4f21d39026cebf898f2da43fb37af361d98d
@@ -25635,4 +25812,4 @@ entries:
     urls:
     - https://github.com/datafold/helm-charts/releases/download/gcp-bootstrap-0.1.0/gcp-bootstrap-0.1.0.tgz
     version: 0.1.0
-generated: "2026-03-06T12:36:51.643143596Z"
+generated: "2026-03-07T12:21:17.001886193Z"
