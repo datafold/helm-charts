@@ -105,6 +105,20 @@ spec:
                               cpu:
                                 description: CPU specifies the maximum CPU resources
                                 type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the maximum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the maximum 1Gi
+                                  hugepages (e.g. "1Gi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the maximum 2Mi
+                                  hugepages (e.g. "128Mi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
                               memory:
                                 description: Memory specifies the maximum memory resources
                                 type: string
@@ -115,6 +129,20 @@ spec:
                             properties:
                               cpu:
                                 description: CPU specifies the minimum CPU resources
+                                type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the minimum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the minimum 1Gi
+                                  hugepages (e.g. "1Gi"). Must equal limits when both
+                                  are set.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the minimum 2Mi
+                                  hugepages (e.g. "128Mi"). Must equal limits when
+                                  both are set.
                                 type: string
                               memory:
                                 description: Memory specifies the minimum memory resources
@@ -151,6 +179,20 @@ spec:
                               cpu:
                                 description: CPU specifies the maximum CPU resources
                                 type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the maximum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the maximum 1Gi
+                                  hugepages (e.g. "1Gi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the maximum 2Mi
+                                  hugepages (e.g. "128Mi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
                               memory:
                                 description: Memory specifies the maximum memory resources
                                 type: string
@@ -161,6 +203,20 @@ spec:
                             properties:
                               cpu:
                                 description: CPU specifies the minimum CPU resources
+                                type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the minimum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the minimum 1Gi
+                                  hugepages (e.g. "1Gi"). Must equal limits when both
+                                  are set.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the minimum 2Mi
+                                  hugepages (e.g. "128Mi"). Must equal limits when
+                                  both are set.
                                 type: string
                               memory:
                                 description: Memory specifies the minimum memory resources
@@ -197,6 +253,20 @@ spec:
                               cpu:
                                 description: CPU specifies the maximum CPU resources
                                 type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the maximum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the maximum 1Gi
+                                  hugepages (e.g. "1Gi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the maximum 2Mi
+                                  hugepages (e.g. "128Mi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
                               memory:
                                 description: Memory specifies the maximum memory resources
                                 type: string
@@ -207,6 +277,20 @@ spec:
                             properties:
                               cpu:
                                 description: CPU specifies the minimum CPU resources
+                                type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the minimum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the minimum 1Gi
+                                  hugepages (e.g. "1Gi"). Must equal limits when both
+                                  are set.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the minimum 2Mi
+                                  hugepages (e.g. "128Mi"). Must equal limits when
+                                  both are set.
                                 type: string
                               memory:
                                 description: Memory specifies the minimum memory resources
@@ -243,6 +327,20 @@ spec:
                               cpu:
                                 description: CPU specifies the maximum CPU resources
                                 type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the maximum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the maximum 1Gi
+                                  hugepages (e.g. "1Gi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the maximum 2Mi
+                                  hugepages (e.g. "128Mi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
                               memory:
                                 description: Memory specifies the maximum memory resources
                                 type: string
@@ -253,6 +351,20 @@ spec:
                             properties:
                               cpu:
                                 description: CPU specifies the minimum CPU resources
+                                type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the minimum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the minimum 1Gi
+                                  hugepages (e.g. "1Gi"). Must equal limits when both
+                                  are set.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the minimum 2Mi
+                                  hugepages (e.g. "128Mi"). Must equal limits when
+                                  both are set.
                                 type: string
                               memory:
                                 description: Memory specifies the minimum memory resources
@@ -289,6 +401,20 @@ spec:
                               cpu:
                                 description: CPU specifies the maximum CPU resources
                                 type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the maximum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the maximum 1Gi
+                                  hugepages (e.g. "1Gi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the maximum 2Mi
+                                  hugepages (e.g. "128Mi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
                               memory:
                                 description: Memory specifies the maximum memory resources
                                 type: string
@@ -299,6 +425,20 @@ spec:
                             properties:
                               cpu:
                                 description: CPU specifies the minimum CPU resources
+                                type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the minimum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the minimum 1Gi
+                                  hugepages (e.g. "1Gi"). Must equal limits when both
+                                  are set.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the minimum 2Mi
+                                  hugepages (e.g. "128Mi"). Must equal limits when
+                                  both are set.
                                 type: string
                               memory:
                                 description: Memory specifies the minimum memory resources
@@ -335,6 +475,20 @@ spec:
                               cpu:
                                 description: CPU specifies the maximum CPU resources
                                 type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the maximum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the maximum 1Gi
+                                  hugepages (e.g. "1Gi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the maximum 2Mi
+                                  hugepages (e.g. "128Mi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
                               memory:
                                 description: Memory specifies the maximum memory resources
                                 type: string
@@ -345,6 +499,20 @@ spec:
                             properties:
                               cpu:
                                 description: CPU specifies the minimum CPU resources
+                                type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the minimum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the minimum 1Gi
+                                  hugepages (e.g. "1Gi"). Must equal limits when both
+                                  are set.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the minimum 2Mi
+                                  hugepages (e.g. "128Mi"). Must equal limits when
+                                  both are set.
                                 type: string
                               memory:
                                 description: Memory specifies the minimum memory resources
@@ -381,6 +549,20 @@ spec:
                               cpu:
                                 description: CPU specifies the maximum CPU resources
                                 type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the maximum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the maximum 1Gi
+                                  hugepages (e.g. "1Gi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the maximum 2Mi
+                                  hugepages (e.g. "128Mi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
                               memory:
                                 description: Memory specifies the maximum memory resources
                                 type: string
@@ -391,6 +573,20 @@ spec:
                             properties:
                               cpu:
                                 description: CPU specifies the minimum CPU resources
+                                type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the minimum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the minimum 1Gi
+                                  hugepages (e.g. "1Gi"). Must equal limits when both
+                                  are set.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the minimum 2Mi
+                                  hugepages (e.g. "128Mi"). Must equal limits when
+                                  both are set.
                                 type: string
                               memory:
                                 description: Memory specifies the minimum memory resources
@@ -427,6 +623,20 @@ spec:
                               cpu:
                                 description: CPU specifies the maximum CPU resources
                                 type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the maximum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the maximum 1Gi
+                                  hugepages (e.g. "1Gi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the maximum 2Mi
+                                  hugepages (e.g. "128Mi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
                               memory:
                                 description: Memory specifies the maximum memory resources
                                 type: string
@@ -437,6 +647,20 @@ spec:
                             properties:
                               cpu:
                                 description: CPU specifies the minimum CPU resources
+                                type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the minimum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the minimum 1Gi
+                                  hugepages (e.g. "1Gi"). Must equal limits when both
+                                  are set.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the minimum 2Mi
+                                  hugepages (e.g. "128Mi"). Must equal limits when
+                                  both are set.
                                 type: string
                               memory:
                                 description: Memory specifies the minimum memory resources
@@ -473,6 +697,20 @@ spec:
                               cpu:
                                 description: CPU specifies the maximum CPU resources
                                 type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the maximum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the maximum 1Gi
+                                  hugepages (e.g. "1Gi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the maximum 2Mi
+                                  hugepages (e.g. "128Mi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
                               memory:
                                 description: Memory specifies the maximum memory resources
                                 type: string
@@ -483,6 +721,20 @@ spec:
                             properties:
                               cpu:
                                 description: CPU specifies the minimum CPU resources
+                                type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the minimum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the minimum 1Gi
+                                  hugepages (e.g. "1Gi"). Must equal limits when both
+                                  are set.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the minimum 2Mi
+                                  hugepages (e.g. "128Mi"). Must equal limits when
+                                  both are set.
                                 type: string
                               memory:
                                 description: Memory specifies the minimum memory resources
@@ -519,6 +771,20 @@ spec:
                               cpu:
                                 description: CPU specifies the maximum CPU resources
                                 type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the maximum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the maximum 1Gi
+                                  hugepages (e.g. "1Gi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the maximum 2Mi
+                                  hugepages (e.g. "128Mi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
                               memory:
                                 description: Memory specifies the maximum memory resources
                                 type: string
@@ -529,6 +795,20 @@ spec:
                             properties:
                               cpu:
                                 description: CPU specifies the minimum CPU resources
+                                type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the minimum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the minimum 1Gi
+                                  hugepages (e.g. "1Gi"). Must equal limits when both
+                                  are set.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the minimum 2Mi
+                                  hugepages (e.g. "128Mi"). Must equal limits when
+                                  both are set.
                                 type: string
                               memory:
                                 description: Memory specifies the minimum memory resources
@@ -565,6 +845,20 @@ spec:
                               cpu:
                                 description: CPU specifies the maximum CPU resources
                                 type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the maximum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the maximum 1Gi
+                                  hugepages (e.g. "1Gi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the maximum 2Mi
+                                  hugepages (e.g. "128Mi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
                               memory:
                                 description: Memory specifies the maximum memory resources
                                 type: string
@@ -575,6 +869,20 @@ spec:
                             properties:
                               cpu:
                                 description: CPU specifies the minimum CPU resources
+                                type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the minimum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the minimum 1Gi
+                                  hugepages (e.g. "1Gi"). Must equal limits when both
+                                  are set.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the minimum 2Mi
+                                  hugepages (e.g. "128Mi"). Must equal limits when
+                                  both are set.
                                 type: string
                               memory:
                                 description: Memory specifies the minimum memory resources
@@ -611,6 +919,20 @@ spec:
                               cpu:
                                 description: CPU specifies the maximum CPU resources
                                 type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the maximum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the maximum 1Gi
+                                  hugepages (e.g. "1Gi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the maximum 2Mi
+                                  hugepages (e.g. "128Mi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
                               memory:
                                 description: Memory specifies the maximum memory resources
                                 type: string
@@ -621,6 +943,20 @@ spec:
                             properties:
                               cpu:
                                 description: CPU specifies the minimum CPU resources
+                                type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the minimum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the minimum 1Gi
+                                  hugepages (e.g. "1Gi"). Must equal limits when both
+                                  are set.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the minimum 2Mi
+                                  hugepages (e.g. "128Mi"). Must equal limits when
+                                  both are set.
                                 type: string
                               memory:
                                 description: Memory specifies the minimum memory resources
@@ -658,6 +994,20 @@ spec:
                               cpu:
                                 description: CPU specifies the maximum CPU resources
                                 type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the maximum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the maximum 1Gi
+                                  hugepages (e.g. "1Gi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the maximum 2Mi
+                                  hugepages (e.g. "128Mi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
                               memory:
                                 description: Memory specifies the maximum memory resources
                                 type: string
@@ -668,6 +1018,20 @@ spec:
                             properties:
                               cpu:
                                 description: CPU specifies the minimum CPU resources
+                                type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the minimum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the minimum 1Gi
+                                  hugepages (e.g. "1Gi"). Must equal limits when both
+                                  are set.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the minimum 2Mi
+                                  hugepages (e.g. "128Mi"). Must equal limits when
+                                  both are set.
                                 type: string
                               memory:
                                 description: Memory specifies the minimum memory resources
@@ -704,6 +1068,20 @@ spec:
                               cpu:
                                 description: CPU specifies the maximum CPU resources
                                 type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the maximum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the maximum 1Gi
+                                  hugepages (e.g. "1Gi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the maximum 2Mi
+                                  hugepages (e.g. "128Mi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
                               memory:
                                 description: Memory specifies the maximum memory resources
                                 type: string
@@ -714,6 +1092,20 @@ spec:
                             properties:
                               cpu:
                                 description: CPU specifies the minimum CPU resources
+                                type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the minimum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the minimum 1Gi
+                                  hugepages (e.g. "1Gi"). Must equal limits when both
+                                  are set.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the minimum 2Mi
+                                  hugepages (e.g. "128Mi"). Must equal limits when
+                                  both are set.
                                 type: string
                               memory:
                                 description: Memory specifies the minimum memory resources
@@ -750,6 +1142,20 @@ spec:
                               cpu:
                                 description: CPU specifies the maximum CPU resources
                                 type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the maximum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the maximum 1Gi
+                                  hugepages (e.g. "1Gi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the maximum 2Mi
+                                  hugepages (e.g. "128Mi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
                               memory:
                                 description: Memory specifies the maximum memory resources
                                 type: string
@@ -760,6 +1166,20 @@ spec:
                             properties:
                               cpu:
                                 description: CPU specifies the minimum CPU resources
+                                type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the minimum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the minimum 1Gi
+                                  hugepages (e.g. "1Gi"). Must equal limits when both
+                                  are set.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the minimum 2Mi
+                                  hugepages (e.g. "128Mi"). Must equal limits when
+                                  both are set.
                                 type: string
                               memory:
                                 description: Memory specifies the minimum memory resources
@@ -967,6 +1387,20 @@ spec:
                               cpu:
                                 description: CPU specifies the maximum CPU resources
                                 type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the maximum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the maximum 1Gi
+                                  hugepages (e.g. "1Gi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the maximum 2Mi
+                                  hugepages (e.g. "128Mi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
                               memory:
                                 description: Memory specifies the maximum memory resources
                                 type: string
@@ -977,6 +1411,20 @@ spec:
                             properties:
                               cpu:
                                 description: CPU specifies the minimum CPU resources
+                                type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the minimum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the minimum 1Gi
+                                  hugepages (e.g. "1Gi"). Must equal limits when both
+                                  are set.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the minimum 2Mi
+                                  hugepages (e.g. "128Mi"). Must equal limits when
+                                  both are set.
                                 type: string
                               memory:
                                 description: Memory specifies the minimum memory resources
@@ -1000,15 +1448,14 @@ spec:
                             type: string
                         type: object
                       temporal:
-                        description: Temporal holds per-worker Temporal settings (taskQueues,
+                        description: Temporal holds per-worker Temporal settings (taskQueue,
                           maxConcurrency, workerPoolType)
                         properties:
                           maxConcurrency:
                             description: MaxConcurrency sets TEMPORAL_MAX_CONCURRENCY
                             type: string
-                          taskQueues:
-                            description: TaskQueues is a comma-separated list of task
-                              queues or "all"
+                          taskQueue:
+                            description: TaskQueue sends tasks to a type of worker
                             type: string
                           workerPoolType:
                             description: WorkerPoolType sets DATAFOLD_WORKER_POOL_TYPE
@@ -1220,6 +1667,20 @@ spec:
                               cpu:
                                 description: CPU specifies the maximum CPU resources
                                 type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the maximum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the maximum 1Gi
+                                  hugepages (e.g. "1Gi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the maximum 2Mi
+                                  hugepages (e.g. "128Mi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
                               memory:
                                 description: Memory specifies the maximum memory resources
                                 type: string
@@ -1230,6 +1691,20 @@ spec:
                             properties:
                               cpu:
                                 description: CPU specifies the minimum CPU resources
+                                type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the minimum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the minimum 1Gi
+                                  hugepages (e.g. "1Gi"). Must equal limits when both
+                                  are set.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the minimum 2Mi
+                                  hugepages (e.g. "128Mi"). Must equal limits when
+                                  both are set.
                                 type: string
                               memory:
                                 description: Memory specifies the minimum memory resources
@@ -1253,15 +1728,14 @@ spec:
                             type: string
                         type: object
                       temporal:
-                        description: Temporal holds per-worker Temporal settings (taskQueues,
+                        description: Temporal holds per-worker Temporal settings (taskQueue,
                           maxConcurrency, workerPoolType)
                         properties:
                           maxConcurrency:
                             description: MaxConcurrency sets TEMPORAL_MAX_CONCURRENCY
                             type: string
-                          taskQueues:
-                            description: TaskQueues is a comma-separated list of task
-                              queues or "all"
+                          taskQueue:
+                            description: TaskQueue sends tasks to a type of worker
                             type: string
                           workerPoolType:
                             description: WorkerPoolType sets DATAFOLD_WORKER_POOL_TYPE
@@ -1302,6 +1776,20 @@ spec:
                               cpu:
                                 description: CPU specifies the maximum CPU resources
                                 type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the maximum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the maximum 1Gi
+                                  hugepages (e.g. "1Gi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the maximum 2Mi
+                                  hugepages (e.g. "128Mi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
                               memory:
                                 description: Memory specifies the maximum memory resources
                                 type: string
@@ -1312,6 +1800,20 @@ spec:
                             properties:
                               cpu:
                                 description: CPU specifies the minimum CPU resources
+                                type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the minimum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the minimum 1Gi
+                                  hugepages (e.g. "1Gi"). Must equal limits when both
+                                  are set.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the minimum 2Mi
+                                  hugepages (e.g. "128Mi"). Must equal limits when
+                                  both are set.
                                 type: string
                               memory:
                                 description: Memory specifies the minimum memory resources
@@ -1519,6 +2021,20 @@ spec:
                               cpu:
                                 description: CPU specifies the maximum CPU resources
                                 type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the maximum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the maximum 1Gi
+                                  hugepages (e.g. "1Gi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the maximum 2Mi
+                                  hugepages (e.g. "128Mi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
                               memory:
                                 description: Memory specifies the maximum memory resources
                                 type: string
@@ -1529,6 +2045,20 @@ spec:
                             properties:
                               cpu:
                                 description: CPU specifies the minimum CPU resources
+                                type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the minimum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the minimum 1Gi
+                                  hugepages (e.g. "1Gi"). Must equal limits when both
+                                  are set.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the minimum 2Mi
+                                  hugepages (e.g. "128Mi"). Must equal limits when
+                                  both are set.
                                 type: string
                               memory:
                                 description: Memory specifies the minimum memory resources
@@ -1552,15 +2082,14 @@ spec:
                             type: string
                         type: object
                       temporal:
-                        description: Temporal holds per-worker Temporal settings (taskQueues,
+                        description: Temporal holds per-worker Temporal settings (taskQueue,
                           maxConcurrency, workerPoolType)
                         properties:
                           maxConcurrency:
                             description: MaxConcurrency sets TEMPORAL_MAX_CONCURRENCY
                             type: string
-                          taskQueues:
-                            description: TaskQueues is a comma-separated list of task
-                              queues or "all"
+                          taskQueue:
+                            description: TaskQueue sends tasks to a type of worker
                             type: string
                           workerPoolType:
                             description: WorkerPoolType sets DATAFOLD_WORKER_POOL_TYPE
@@ -1601,6 +2130,20 @@ spec:
                               cpu:
                                 description: CPU specifies the maximum CPU resources
                                 type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the maximum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the maximum 1Gi
+                                  hugepages (e.g. "1Gi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the maximum 2Mi
+                                  hugepages (e.g. "128Mi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
                               memory:
                                 description: Memory specifies the maximum memory resources
                                 type: string
@@ -1611,6 +2154,20 @@ spec:
                             properties:
                               cpu:
                                 description: CPU specifies the minimum CPU resources
+                                type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the minimum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the minimum 1Gi
+                                  hugepages (e.g. "1Gi"). Must equal limits when both
+                                  are set.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the minimum 2Mi
+                                  hugepages (e.g. "128Mi"). Must equal limits when
+                                  both are set.
                                 type: string
                               memory:
                                 description: Memory specifies the minimum memory resources
@@ -1647,6 +2204,20 @@ spec:
                               cpu:
                                 description: CPU specifies the maximum CPU resources
                                 type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the maximum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the maximum 1Gi
+                                  hugepages (e.g. "1Gi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the maximum 2Mi
+                                  hugepages (e.g. "128Mi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
                               memory:
                                 description: Memory specifies the maximum memory resources
                                 type: string
@@ -1657,6 +2228,20 @@ spec:
                             properties:
                               cpu:
                                 description: CPU specifies the minimum CPU resources
+                                type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the minimum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the minimum 1Gi
+                                  hugepages (e.g. "1Gi"). Must equal limits when both
+                                  are set.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the minimum 2Mi
+                                  hugepages (e.g. "128Mi"). Must equal limits when
+                                  both are set.
                                 type: string
                               memory:
                                 description: Memory specifies the minimum memory resources
@@ -1864,6 +2449,20 @@ spec:
                               cpu:
                                 description: CPU specifies the maximum CPU resources
                                 type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the maximum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the maximum 1Gi
+                                  hugepages (e.g. "1Gi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the maximum 2Mi
+                                  hugepages (e.g. "128Mi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
                               memory:
                                 description: Memory specifies the maximum memory resources
                                 type: string
@@ -1874,6 +2473,20 @@ spec:
                             properties:
                               cpu:
                                 description: CPU specifies the minimum CPU resources
+                                type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the minimum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the minimum 1Gi
+                                  hugepages (e.g. "1Gi"). Must equal limits when both
+                                  are set.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the minimum 2Mi
+                                  hugepages (e.g. "128Mi"). Must equal limits when
+                                  both are set.
                                 type: string
                               memory:
                                 description: Memory specifies the minimum memory resources
@@ -1897,15 +2510,14 @@ spec:
                             type: string
                         type: object
                       temporal:
-                        description: Temporal holds per-worker Temporal settings (taskQueues,
+                        description: Temporal holds per-worker Temporal settings (taskQueue,
                           maxConcurrency, workerPoolType)
                         properties:
                           maxConcurrency:
                             description: MaxConcurrency sets TEMPORAL_MAX_CONCURRENCY
                             type: string
-                          taskQueues:
-                            description: TaskQueues is a comma-separated list of task
-                              queues or "all"
+                          taskQueue:
+                            description: TaskQueue sends tasks to a type of worker
                             type: string
                           workerPoolType:
                             description: WorkerPoolType sets DATAFOLD_WORKER_POOL_TYPE
@@ -1946,6 +2558,20 @@ spec:
                               cpu:
                                 description: CPU specifies the maximum CPU resources
                                 type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the maximum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the maximum 1Gi
+                                  hugepages (e.g. "1Gi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the maximum 2Mi
+                                  hugepages (e.g. "128Mi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
                               memory:
                                 description: Memory specifies the maximum memory resources
                                 type: string
@@ -1956,6 +2582,20 @@ spec:
                             properties:
                               cpu:
                                 description: CPU specifies the minimum CPU resources
+                                type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the minimum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the minimum 1Gi
+                                  hugepages (e.g. "1Gi"). Must equal limits when both
+                                  are set.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the minimum 2Mi
+                                  hugepages (e.g. "128Mi"). Must equal limits when
+                                  both are set.
                                 type: string
                               memory:
                                 description: Memory specifies the minimum memory resources
@@ -2163,6 +2803,20 @@ spec:
                               cpu:
                                 description: CPU specifies the maximum CPU resources
                                 type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the maximum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the maximum 1Gi
+                                  hugepages (e.g. "1Gi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the maximum 2Mi
+                                  hugepages (e.g. "128Mi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
                               memory:
                                 description: Memory specifies the maximum memory resources
                                 type: string
@@ -2173,6 +2827,20 @@ spec:
                             properties:
                               cpu:
                                 description: CPU specifies the minimum CPU resources
+                                type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the minimum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the minimum 1Gi
+                                  hugepages (e.g. "1Gi"). Must equal limits when both
+                                  are set.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the minimum 2Mi
+                                  hugepages (e.g. "128Mi"). Must equal limits when
+                                  both are set.
                                 type: string
                               memory:
                                 description: Memory specifies the minimum memory resources
@@ -2196,15 +2864,14 @@ spec:
                             type: string
                         type: object
                       temporal:
-                        description: Temporal holds per-worker Temporal settings (taskQueues,
+                        description: Temporal holds per-worker Temporal settings (taskQueue,
                           maxConcurrency, workerPoolType)
                         properties:
                           maxConcurrency:
                             description: MaxConcurrency sets TEMPORAL_MAX_CONCURRENCY
                             type: string
-                          taskQueues:
-                            description: TaskQueues is a comma-separated list of task
-                              queues or "all"
+                          taskQueue:
+                            description: TaskQueue sends tasks to a type of worker
                             type: string
                           workerPoolType:
                             description: WorkerPoolType sets DATAFOLD_WORKER_POOL_TYPE
@@ -2416,6 +3083,20 @@ spec:
                               cpu:
                                 description: CPU specifies the maximum CPU resources
                                 type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the maximum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the maximum 1Gi
+                                  hugepages (e.g. "1Gi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the maximum 2Mi
+                                  hugepages (e.g. "128Mi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
                               memory:
                                 description: Memory specifies the maximum memory resources
                                 type: string
@@ -2426,6 +3107,20 @@ spec:
                             properties:
                               cpu:
                                 description: CPU specifies the minimum CPU resources
+                                type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the minimum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the minimum 1Gi
+                                  hugepages (e.g. "1Gi"). Must equal limits when both
+                                  are set.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the minimum 2Mi
+                                  hugepages (e.g. "128Mi"). Must equal limits when
+                                  both are set.
                                 type: string
                               memory:
                                 description: Memory specifies the minimum memory resources
@@ -2449,15 +3144,14 @@ spec:
                             type: string
                         type: object
                       temporal:
-                        description: Temporal holds per-worker Temporal settings (taskQueues,
+                        description: Temporal holds per-worker Temporal settings (taskQueue,
                           maxConcurrency, workerPoolType)
                         properties:
                           maxConcurrency:
                             description: MaxConcurrency sets TEMPORAL_MAX_CONCURRENCY
                             type: string
-                          taskQueues:
-                            description: TaskQueues is a comma-separated list of task
-                              queues or "all"
+                          taskQueue:
+                            description: TaskQueue sends tasks to a type of worker
                             type: string
                           workerPoolType:
                             description: WorkerPoolType sets DATAFOLD_WORKER_POOL_TYPE
@@ -2668,6 +3362,20 @@ spec:
                               cpu:
                                 description: CPU specifies the maximum CPU resources
                                 type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the maximum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the maximum 1Gi
+                                  hugepages (e.g. "1Gi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the maximum 2Mi
+                                  hugepages (e.g. "128Mi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
                               memory:
                                 description: Memory specifies the maximum memory resources
                                 type: string
@@ -2678,6 +3386,20 @@ spec:
                             properties:
                               cpu:
                                 description: CPU specifies the minimum CPU resources
+                                type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the minimum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the minimum 1Gi
+                                  hugepages (e.g. "1Gi"). Must equal limits when both
+                                  are set.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the minimum 2Mi
+                                  hugepages (e.g. "128Mi"). Must equal limits when
+                                  both are set.
                                 type: string
                               memory:
                                 description: Memory specifies the minimum memory resources
@@ -2701,15 +3423,14 @@ spec:
                             type: string
                         type: object
                       temporal:
-                        description: Temporal holds per-worker Temporal settings (taskQueues,
+                        description: Temporal holds per-worker Temporal settings (taskQueue,
                           maxConcurrency, workerPoolType)
                         properties:
                           maxConcurrency:
                             description: MaxConcurrency sets TEMPORAL_MAX_CONCURRENCY
                             type: string
-                          taskQueues:
-                            description: TaskQueues is a comma-separated list of task
-                              queues or "all"
+                          taskQueue:
+                            description: TaskQueue sends tasks to a type of worker
                             type: string
                           workerPoolType:
                             description: WorkerPoolType sets DATAFOLD_WORKER_POOL_TYPE
@@ -2750,6 +3471,20 @@ spec:
                               cpu:
                                 description: CPU specifies the maximum CPU resources
                                 type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the maximum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the maximum 1Gi
+                                  hugepages (e.g. "1Gi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the maximum 2Mi
+                                  hugepages (e.g. "128Mi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
                               memory:
                                 description: Memory specifies the maximum memory resources
                                 type: string
@@ -2760,6 +3495,20 @@ spec:
                             properties:
                               cpu:
                                 description: CPU specifies the minimum CPU resources
+                                type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the minimum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the minimum 1Gi
+                                  hugepages (e.g. "1Gi"). Must equal limits when both
+                                  are set.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the minimum 2Mi
+                                  hugepages (e.g. "128Mi"). Must equal limits when
+                                  both are set.
                                 type: string
                               memory:
                                 description: Memory specifies the minimum memory resources
@@ -2796,6 +3545,20 @@ spec:
                               cpu:
                                 description: CPU specifies the maximum CPU resources
                                 type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the maximum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the maximum 1Gi
+                                  hugepages (e.g. "1Gi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the maximum 2Mi
+                                  hugepages (e.g. "128Mi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
                               memory:
                                 description: Memory specifies the maximum memory resources
                                 type: string
@@ -2806,6 +3569,20 @@ spec:
                             properties:
                               cpu:
                                 description: CPU specifies the minimum CPU resources
+                                type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the minimum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the minimum 1Gi
+                                  hugepages (e.g. "1Gi"). Must equal limits when both
+                                  are set.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the minimum 2Mi
+                                  hugepages (e.g. "128Mi"). Must equal limits when
+                                  both are set.
                                 type: string
                               memory:
                                 description: Memory specifies the minimum memory resources
@@ -2889,10 +3666,9 @@ spec:
                       cluster
                     type: string
                   customSecrets:
-                    description: CustomSecrets is a list of custom secret references
-                      to be injected as environment variables. Each entry specifies
-                      the env var name, the Kubernetes Secret to read from, and the
-                      key within that secret.
+                    description: |-
+                      CustomSecrets is a list of custom secret references to be injected as environment variables.
+                      Each entry specifies the env var name, the Kubernetes Secret to read from, and the key within that secret.
                     items:
                       description: CustomSecret defines a reference to a Kubernetes
                         Secret key to be injected as an environment variable
@@ -2902,7 +3678,8 @@ spec:
                             to set
                           type: string
                         secretKey:
-                          description: SecretKey is the key within the Kubernetes Secret
+                          description: SecretKey is the key within the Kubernetes
+                            Secret
                           type: string
                         secretName:
                           description: SecretName is the name of the Kubernetes Secret
