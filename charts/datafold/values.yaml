@@ -196,7 +196,7 @@ worker-io:
   install: false
   replicaCount: 1
   temporal:
-    taskQueues: "datadiff"
+    taskQueues: "io"
     workerPoolType: "thread"
   resources:
     limits:
@@ -209,7 +209,7 @@ worker-compute:
   install: false
   replicaCount: 1
   temporal:
-    taskQueues: "xdiff,translation,monitors"
+    taskQueues: "compute"
     workerPoolType: "process"
   resources:
     limits:
@@ -222,7 +222,7 @@ worker-highmem:
   install: false
   replicaCount: 1
   temporal:
-    taskQueues: "lineage,catalog"
+    taskQueues: "highmem"
     workerPoolType: "process"
   resources:
     limits:
@@ -235,7 +235,7 @@ worker-realtime:
   install: false
   replicaCount: 1
   temporal:
-    taskQueues: "interactive,api"
+    taskQueues: "realtime"
     workerPoolType: "thread"
   resources:
     limits:
@@ -248,7 +248,7 @@ worker-storage:
   install: false
   replicaCount: 1
   temporal:
-    taskQueues: "localstorage,replication"
+    taskQueues: "storage"
     workerPoolType: "process"
   storage:
     enabled: true
@@ -264,7 +264,7 @@ worker-storage-high:
   install: false
   replicaCount: 1
   temporal:
-    taskQueues: "localstorage-large"
+    taskQueues: "storagehigh"
     workerPoolType: "process"
   storage:
     enabled: true
