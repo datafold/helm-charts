@@ -358,7 +358,7 @@ schema:
 helm upgrade --install temporal temporal/temporal \
   --namespace temporal --create-namespace \
   --values temporal-values.yaml \
-  --version <CHART_VERSION> \
+  --version 0.73.2 \
   --timeout 5m
 ```
 
@@ -523,6 +523,7 @@ resources. It is cluster-scoped and watches all namespaces.
 helm repo add postgres-operator-charts \
   https://opensource.zalando.com/postgres-operator/charts/postgres-operator
 helm repo update
+helm search repo postgres-operator-charts/postgres-operator --versions
 
 helm upgrade --install postgres-operator postgres-operator-charts/postgres-operator \
   --namespace postgres-operator --create-namespace \
