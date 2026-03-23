@@ -112,9 +112,10 @@ The datadog clusteragent overrides
 clusterAgent:
   image:
     name: gcr.io/datadoghq/cluster-agent:latest
-{{-     if (eq .Values.configuration.monitorPostgres true) }}
+{{- if or (eq .Values.configuration.monitorPostgres true) (eq .Values.configuration.monitorKeda true) }}
   extraConfd:
     configDataMap:
+{{-   if (eq .Values.configuration.monitorPostgres true) }}
       postgres.yaml: |-
         cluster_check: true
         init_config:
@@ -137,7 +138,25 @@ clusterAgent:
             query_activity:
               enabled: true
             query_timeout: 5000
-
+{{-   end }}
+{{-   if (eq .Values.configuration.monitorKeda true) }}
+      keda.yaml: |-
+        cluster_check: true
+        init_config:
+        instances:
+          - openmetrics_endpoint: http://keda-operator.keda.svc.cluster.local:8080/metrics
+            namespace: keda
+            metrics:
+              - keda_scaler_active
+              - keda_scaler_metrics_value
+              - keda_scaler_metrics_latency_seconds
+              - keda_scaler_detail_errors_total
+              - keda_scaled_object_errors_total
+              - keda_scaled_object_paused
+              - keda_internal_scale_loop_latency_seconds
+              - keda_resource_registered_total
+              - keda_trigger_registered_total
+{{-   end }}
 {{- end -}}
 {{- end -}}
 

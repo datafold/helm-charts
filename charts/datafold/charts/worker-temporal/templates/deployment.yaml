@@ -21,6 +21,18 @@ spec:
       annotations:
         {{- include "worker-temporal.datafold.annotations" . | nindent 8 }}
         {{- include "worker-temporal.datadog.annotations" . | nindent 8 }}
+        {{- if .Values.metrics.enabled }}
+        ad.datadoghq.com/{{ .Chart.Name }}.checks: |
+          {
+            "openmetrics": {
+              "instances": [{
+                "openmetrics_endpoint": "http://%%host%%:{{ .Values.metrics.port }}/metrics",
+                "namespace": "temporal_worker",
+                "metrics": ["temporal_.*"]
+              }]
+            }
+          }
+        {{- end }}
       labels:
         {{- include "worker-temporal.labels" . | nindent 8 }}
         {{- with .Values.podLabels }}
@@ -72,9 +84,19 @@ spec:
             - name: DATAFOLD_WORKER_POOL_TYPE
               value: {{ .Values.temporal.workerPoolType | quote }}
             {{- end }}
+            {{- if .Values.metrics.enabled }}
+            - name: TEMPORAL_METRICS_BIND_ADDRESS
+              value: "0.0.0.0:{{ .Values.metrics.port }}"
+            {{- end }}
             {{- with .Values.extraEnv }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
+          {{- if .Values.metrics.enabled }}
+          ports:
+            - name: metrics
+              containerPort: {{ .Values.metrics.port }}
+              protocol: TCP
+          {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           {{- if or .Values.storage.enabled .Values.volumeMounts }}

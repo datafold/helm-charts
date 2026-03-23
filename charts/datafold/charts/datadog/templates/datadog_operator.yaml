@@ -81,7 +81,7 @@ spec:
         - name: DD_CONTAINER_EXCLUDE
           value: "image:gcr.io/datadoghq.* kube_namespace:.*"
         - name: DD_CONTAINER_INCLUDE
-          value: "kube_namespace:{{ .Release.Namespace }} kube_namespace:temporal kube_namespace:dmadocs{{ range (.Values.containerIncludeExtraNamespaces | default list) }} kube_namespace:{{ . }}{{ end }}"
+          value: "kube_namespace:{{ .Release.Namespace }} kube_namespace:temporal kube_namespace:dmadocs{{ if (eq .Values.configuration.monitorKeda true) }} kube_namespace:keda{{ end }}{{ range (.Values.containerIncludeExtraNamespaces | default list) }} kube_namespace:{{ . }}{{ end }}"
       tolerations:
         - operator: Equal
           key: clickhouse

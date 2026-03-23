@@ -50,6 +50,7 @@ configuration:
     hostPortConfig: "true"
     tagCardinality: "low"
   monitorPostgres: false
+  monitorKeda: false
   clusterChecks: true
   npm:
     enabled: "false"
