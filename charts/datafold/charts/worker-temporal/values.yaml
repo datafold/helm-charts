@@ -71,6 +71,13 @@ keda:
   # Leave empty for unauthenticated access to the Temporal endpoint.
   authRef: ""
 
+metrics:
+  # Exposes a Prometheus metrics port and adds Datadog autodiscovery annotations
+  # so the DD Agent scrapes temporal_ SDK metrics. Disable only if you need to
+  # suppress metrics for a specific deployment.
+  enabled: true
+  port: 9090
+
 extraEnv: []
 
 volumes: []
