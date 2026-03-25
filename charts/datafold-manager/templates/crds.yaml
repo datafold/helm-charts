@@ -4003,6 +4003,12 @@ spec:
                       MonitorKeda enables KEDA metrics scraping for monitoring (Datadog or OpenTelemetry).
                       Renders as datadog.configuration.monitorKeda and global.opentelemetry.configuration.monitorKeda in Helm values.
                     type: boolean
+                  monitorTemporal:
+                    default: false
+                    description: |-
+                      MonitorTemporal enables Temporal monitoring (Datadog or OpenTelemetry).
+                      Renders as datadog.configuration.monitorTemporal and global.opentelemetry.configuration.monitorTemporal in Helm values.
+                    type: boolean
                   monitoringApiKey:
                     default:
                       keyName: monitoringApiKey
