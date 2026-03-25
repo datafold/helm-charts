@@ -207,6 +207,68 @@ subjects:
   namespace: {{ include "datafold-manager.namespace" . }}
 {{- end }}
 
+{{- if and .Values.rbac.create .Values.installClusterResources .Values.rbac.datadogTemporalRBAC.enabled }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "datafold-manager.fullname" . }}-datadog-temporal-rbac
+  namespace: {{ .Values.rbac.datadogTemporalRBAC.namespace }}
+  labels:
+    {{- include "datafold-manager.labels" . | nindent 4 }}
+rules:
+- apiGroups:
+  - rbac.authorization.k8s.io
+  resources:
+  - roles
+  - rolebindings
+  verbs:
+  - create
+- apiGroups:
+  - rbac.authorization.k8s.io
+  resourceNames:
+  {{- range .Values.rbac.datadogTemporalRBAC.resourceNames }}
+  - {{ . | quote }}
+  {{- end }}
+  resources:
+  - roles
+  - rolebindings
+  verbs:
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+{{- if .Values.rbac.datadogTemporalRBAC.secretResourceNames }}
+- apiGroups:
+  - ""
+  resources:
+  - secrets
+  resourceNames:
+  {{- range .Values.rbac.datadogTemporalRBAC.secretResourceNames }}
+  - {{ . | quote }}
+  {{- end }}
+  verbs:
+  - get
+{{- end }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "datafold-manager.fullname" . }}-datadog-temporal-rbac
+  namespace: {{ .Values.rbac.datadogTemporalRBAC.namespace }}
+  labels:
+    {{- include "datafold-manager.labels" . | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ include "datafold-manager.fullname" . }}-datadog-temporal-rbac
+subjects:
+- kind: ServiceAccount
+  name: {{ include "datafold-manager.serviceAccountName" . }}
+  namespace: {{ include "datafold-manager.namespace" . }}
+{{- end }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
