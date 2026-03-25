@@ -51,6 +51,7 @@ configuration:
     tagCardinality: "low"
   monitorPostgres: false
   monitorKeda: false
+  monitorTemporal: false
   clusterChecks: true
   npm:
     enabled: "false"
