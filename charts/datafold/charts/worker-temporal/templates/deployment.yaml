@@ -28,7 +28,15 @@ spec:
               "instances": [{
                 "openmetrics_endpoint": "http://%%host%%:{{ .Values.metrics.port }}/metrics",
                 "namespace": "temporal_worker",
-                "metrics": ["temporal_.*"]
+                "metrics": ["temporal_.*"],
+                "labels_mapper": {
+                  "namespace":     "namespace",
+                  "task_queue":    "task_queue",
+                  "workflow_type": "workflow_type",
+                  "activity_type": "activity_type"
+                },
+                "collect_histogram_buckets": true,
+                "histogram_buckets_as_distributions": true
               }]
             }
           }
