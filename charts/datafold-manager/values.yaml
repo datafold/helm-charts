@@ -18,7 +18,7 @@ operator:
   # Operator image configuration
   image:
     repository: us-docker.pkg.dev/datadiff-mm/datafold/datafold-operator
-    tag: "1.1.53"
+    tag: "1.1.54"
     pullPolicy: Always
 
   # Operator deployment configuration
@@ -80,6 +80,17 @@ rbac:
     create: true
   clusterRoleBinding:
     create: true
+  # Namespace Role in the Temporal namespace for Datadog Temporal Role/RoleBinding (not ClusterRole).
+  # Only rendered when installClusterResources is true (same as cluster CRDs / ClusterRole).
+  # secretResourceNames: required so the manager can create Roles that grant secret access (K8s RBAC escalation).
+  datadogTemporalRBAC:
+    # Opt-in: set true when deploying the Datadog Temporal Role/RoleBinding via this chart.
+    enabled: false
+    namespace: temporal
+    resourceNames:
+      - datafold-datadog-temporal-secrets
+    secretResourceNames:
+      - datadog.temporal-database.credentials.postgresql.acid.zalan.do
 
 # CRD configuration
 crds:
