@@ -36,7 +36,10 @@ spec:
                   "activity_type": "activity_type"
                 },
                 "collect_histogram_buckets": true,
-                "histogram_buckets_as_distributions": true
+                "histogram_buckets_as_distributions": true,
+                "ignore_tags": [
+                  "task_queue:sticky\\..*"
+                ]
               }]
             }
           }
