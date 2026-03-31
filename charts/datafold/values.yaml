@@ -180,8 +180,8 @@ toplevel:
   annotations: {}
 
 worker-temporal:
-  install: true
-  replicaCount: 1
+  install: false
+  replicaCount: 0
   temporal:
     taskQueues: "all"
     workerPoolType: "thread"
@@ -193,11 +193,13 @@ worker-temporal:
       memory: 4Gi
 
 worker-io:
-  install: false
-  replicaCount: 1
+  install: true
+  replicaCount: 0
   temporal:
     taskQueues: "io"
     workerPoolType: "thread"
+  keda:
+    minReplicas: 0
   resources:
     limits:
       memory: 4Gi
@@ -206,8 +208,7 @@ worker-io:
       memory: 4Gi
 
 worker-compute:
-  install: false
-  replicaCount: 1
+  install: true
   temporal:
     taskQueues: "compute"
     workerPoolType: "process"
@@ -219,8 +220,7 @@ worker-compute:
       memory: 10Gi
 
 worker-highmem:
-  install: false
-  replicaCount: 1
+  install: true
   temporal:
     taskQueues: "highmem"
     workerPoolType: "process"
@@ -232,11 +232,13 @@ worker-highmem:
       memory: 25Gi
 
 worker-realtime:
-  install: false
-  replicaCount: 1
+  install: true
+  replicaCount: 0
   temporal:
     taskQueues: "realtime"
     workerPoolType: "thread"
+  keda:
+    minReplicas: 0
   resources:
     limits:
       memory: 4Gi
@@ -245,8 +247,7 @@ worker-realtime:
       memory: 4Gi
 
 worker-storage:
-  install: false
-  replicaCount: 1
+  install: true
   temporal:
     taskQueues: "storage"
     workerPoolType: "process"
@@ -261,8 +262,7 @@ worker-storage:
       memory: 15Gi
 
 worker-storage-high:
-  install: false
-  replicaCount: 1
+  install: true
   temporal:
     taskQueues: "storagehigh"
     workerPoolType: "process"
