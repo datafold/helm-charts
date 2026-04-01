@@ -76,6 +76,8 @@ Deploy components in this order. Each step depends on the previous one.
 | 3 | Create Temporal namespace | Required before deploying Temporal |
 | 4 | Temporal Helm chart | Points at the managed PostgreSQL instance |
 | 5 | Temporal namespace | One-time admin operation via `temporal-admintools` pod |
+| 6 | KEDA | Required for worker autoscaling — see [keda.md](keda.md) |
+| 7 | Datafold application | Workers scale automatically via KEDA |
 
 ---
 
