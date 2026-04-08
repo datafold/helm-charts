@@ -96,5 +96,5 @@ ad.datadoghq.com/{{ .Chart.Name }}.logs: >-
 Helper to determine version
 */}}
 {{- define "operator.version" -}}
-{{ .Values.image.tag | default .Chart.AppVersion }}
+{{ .Values.image.tagOverride | default .Chart.AppVersion }}
 {{- end }}

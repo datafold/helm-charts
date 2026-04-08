@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   pullPolicy: Always
-  tag: "1.2.12"
+  tagOverride: ""
 
 imagePullSecrets:
   - name: datafold-docker-secret
