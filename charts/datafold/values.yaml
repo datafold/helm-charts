@@ -268,7 +268,7 @@ worker-storage-high:
     workerPoolType: "process"
   storage:
     enabled: true
-    dataSize: 100Gi
+    dataSize: 300Gi
   resources:
     limits:
       memory: 30Gi
