@@ -76,6 +76,24 @@ StandardSSD_LRS
 {{- end }}
 
 {{/*
+Disk parameter value for StorageClass "sc-datafold-aws" (templates/storageclass.yaml),
+used by ClickHouse, Redis, Memgraph, and related PVCs.
+AWS/GCP use parameters.type; Azure uses parameters.skuname. When global.storageClassType is non-empty, it overrides; otherwise use cloud defaults (gp3 / pd-standard / StandardSSD_LRS).
+*/}}
+{{- define "datafold.storageClassParameterType" -}}
+{{- $override := .Values.global.storageClassType | default "" | toString | trim }}
+{{- if ne $override "" -}}
+{{- $override -}}
+{{- else if eq .Values.global.cloudProvider "aws" -}}
+gp3
+{{- else if eq .Values.global.cloudProvider "gcp" -}}
+pd-standard
+{{- else if eq .Values.global.cloudProvider "azure" -}}
+StandardSSD_LRS
+{{- end -}}
+{{- end }}
+
+{{/*
 Template to derive storage class to use
 */}}
 {{- define "datafold.storageClass" -}}

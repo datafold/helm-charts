@@ -9,6 +9,7 @@ global:
     annotations: {}
   deployment: ""
   storageClass: ""
+  storageClassType: ""
   awsTargetGroupArn: ""
   vpcCidr: ""
   secondaryDeployment: false
