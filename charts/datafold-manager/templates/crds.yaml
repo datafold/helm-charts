@@ -3740,6 +3740,10 @@ spec:
                     description: StorageClass specifies the storage class to use for
                       persistent volumes
                     type: string
+                  storageClassType:
+                    description: StorageClassType specifies the disk parameter type
+                      for the storage class (e.g. "gp3" on AWS, "pd-standard" on GCP)
+                    type: string
                   taskEngine:
                     default: celery
                     description: TaskEngine specifies the task engine to use (e.g.,
