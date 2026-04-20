@@ -91,6 +91,17 @@ replica-count: "{{ .Values.replicaCount }}"
 {{- end }}
 
 {{/*
+PVC storageClassName from global.temporal.storageClassName (parent), else default.
+*/}}
+{{- define "worker-temporal.effectiveStorageClassName" -}}
+{{- if and .Values.global.temporal .Values.global.temporal.storageClassName -}}
+{{- .Values.global.temporal.storageClassName | toString | trim -}}
+{{- else -}}
+sc-datafold-temporal
+{{- end -}}
+{{- end }}
+
+{{/*
 Volumes - ephemeral storage for exports etc.
 */}}
 {{- define "worker-temporal.volumes" -}}
@@ -103,7 +114,7 @@ Volumes - ephemeral storage for exports etc.
           {{- include "worker-temporal.labels" . | nindent 10 }}
       spec:
         accessModes: [ "ReadWriteOnce" ]
-        storageClassName: {{ .Values.storage.storageClass | quote }}
+        storageClassName: {{ include "worker-temporal.effectiveStorageClassName" . | quote }}
         resources:
           requests:
             storage: {{ .Values.storage.dataSize | quote }}

@@ -63,12 +63,17 @@ parameters:
 allowVolumeExpansion: true
 volumeBindingMode: "WaitForFirstConsumer"
 {{- end }}
+{{- $gt := .Values.global.temporal | default dict }}
+{{- $createTemporalSC := true }}
+{{- if hasKey $gt "createStorageClass" }}
+{{- $createTemporalSC = $gt.createStorageClass }}
+{{- end }}
+{{- if and $createTemporalSC (eq .Values.global.cloudProvider "aws") }}
 ---
-{{- if (eq .Values.global.cloudProvider "aws") }}
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-  name: "sc-datafold-temporal"
+  name: {{ .Values.global.temporal.storageClassName | quote }}
   {{- with .Values.toplevel.labels }}
   labels:
     {{- toYaml . | nindent 4 }}
@@ -82,16 +87,16 @@ reclaimPolicy: "Delete"
 parameters:
   encrypted: "true"
   fsType: "ext4"
-  type: "gp3"
+  type: {{ include "datafold.temporalStorageClassParameterType" . | quote }}
 allowVolumeExpansion: true
 volumeBindingMode: "WaitForFirstConsumer"
 {{- end }}
-{{- if (eq .Values.global.cloudProvider "gcp") }}
+{{- if and $createTemporalSC (eq .Values.global.cloudProvider "gcp") }}
 ---
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-  name: "sc-datafold-temporal"
+  name: {{ .Values.global.temporal.storageClassName | quote }}
   {{- with .Values.toplevel.labels }}
   labels:
     {{- toYaml . | nindent 4 }}
@@ -103,17 +108,17 @@ metadata:
 provisioner: "kubernetes.io/gce-pd"
 reclaimPolicy: "Delete"
 parameters:
-  type: "pd-standard"
+  type: {{ include "datafold.temporalStorageClassParameterType" . | quote }}
   fsType: "ext4"
 allowVolumeExpansion: true
 volumeBindingMode: "WaitForFirstConsumer"
 {{- end }}
-{{- if (eq .Values.global.cloudProvider "azure") }}
+{{- if and $createTemporalSC (eq .Values.global.cloudProvider "azure") }}
 ---
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-  name: "sc-datafold-temporal"
+  name: {{ .Values.global.temporal.storageClassName | quote }}
   {{- with .Values.toplevel.labels }}
   labels:
     {{- toYaml . | nindent 4 }}
@@ -125,7 +130,7 @@ metadata:
 provisioner: "disk.csi.azure.com"
 reclaimPolicy: "Delete"
 parameters:
-  skuname: "StandardSSD_LRS"
+  skuname: {{ include "datafold.temporalStorageClassParameterType" . | quote }}
   fsType: "ext4"
 allowVolumeExpansion: true
 volumeBindingMode: "WaitForFirstConsumer"

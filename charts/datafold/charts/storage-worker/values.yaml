@@ -40,7 +40,12 @@ podSecurityContext:
 
 storage:
   dataSize: 100Gi
+  # Name used as PVC storageClassName. When createStorageClass is true, this is also metadata.name of the StorageClass the chart creates.
   storageClass: "sc-datafold-scratch"
+  # Set false if the cluster already has a StorageClass with this name (only the worker PVC is managed).
+  createStorageClass: true
+  # Non-empty: value for the cloud disk parameter (AWS/GCP parameters.type, Azure parameters.skuname). Empty: gp3 / pd-standard / StandardSSD_LRS.
+  parameterType: ""
 
 securityContext:
   allowPrivilegeEscalation: false

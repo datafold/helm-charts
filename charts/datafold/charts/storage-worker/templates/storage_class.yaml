@@ -1,4 +1,8 @@
-{{- if not .Values.global.secondaryDeployment }}
+{{- $createStorageClass := true }}
+{{- if hasKey .Values.storage "createStorageClass" }}
+{{- $createStorageClass = .Values.storage.createStorageClass }}
+{{- end }}
+{{- if and (not .Values.global.secondaryDeployment) $createStorageClass }}
 {{- if (eq .Values.global.cloudProvider "aws") }}
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
@@ -18,7 +22,7 @@ reclaimPolicy: "Delete"
 parameters:
   encrypted: "true"
   fsType: "ext4"
-  type: "gp3"
+  type: {{ include "storage-worker.parameterType" . | quote }}
 allowVolumeExpansion: true
 volumeBindingMode: "WaitForFirstConsumer"
 {{- end }}
@@ -39,7 +43,7 @@ metadata:
 provisioner: "kubernetes.io/gce-pd"
 reclaimPolicy: "Delete"
 parameters:
-  type: "pd-standard"
+  type: {{ include "storage-worker.parameterType" . | quote }}
   fsType: "ext4"
 allowVolumeExpansion: true
 volumeBindingMode: "WaitForFirstConsumer"
@@ -61,7 +65,7 @@ metadata:
 provisioner: "disk.csi.azure.com"
 reclaimPolicy: "Delete"
 parameters:
-  skuname: "StandardSSD_LRS"
+  skuname: {{ include "storage-worker.parameterType" . | quote }}
   fsType: "ext4"
 allowVolumeExpansion: true
 volumeBindingMode: "WaitForFirstConsumer"

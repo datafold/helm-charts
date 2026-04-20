@@ -36,7 +36,6 @@ podSecurityContext:
 storage:
   enabled: false
   dataSize: 300Gi
-  storageClass: "sc-datafold-temporal"
 
 securityContext:
   allowPrivilegeEscalation: False
