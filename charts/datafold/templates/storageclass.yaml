@@ -17,7 +17,7 @@ reclaimPolicy: "Retain"
 parameters:
   encrypted: "true"
   fsType: ext4
-  type: gp3
+  type: {{ include "datafold.storageClassParameterType" . | quote }}
 allowVolumeExpansion: true
 volumeBindingMode: "WaitForFirstConsumer"
 {{- end }}
@@ -38,7 +38,7 @@ provisioner: "kubernetes.io/gce-pd"
 reclaimPolicy: "Retain"
 parameters:
   fsType: ext4
-  type: pd-standard
+  type: {{ include "datafold.storageClassParameterType" . | quote }}
 allowVolumeExpansion: true
 volumeBindingMode: "WaitForFirstConsumer"
 {{- end }}
@@ -59,7 +59,7 @@ provisioner: "disk.csi.azure.com"
 reclaimPolicy: "Retain"
 parameters:
   fsType: ext4
-  skuname: StandardSSD_LRS
+  skuname: {{ include "datafold.storageClassParameterType" . | quote }}
 allowVolumeExpansion: true
 volumeBindingMode: "WaitForFirstConsumer"
 {{- end }}
