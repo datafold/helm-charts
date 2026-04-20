@@ -64,6 +64,12 @@ global:
     maintenanceWindow: ""
   temporal:
     address: "temporal-frontend.temporal.svc.cluster.local:7233"
+    # Temporal worker StorageClass (templates/storageclass.yaml) metadata.name and PVC storageClassName (worker-temporal).
+    storageClassName: sc-datafold-temporal
+    # Set false if the cluster already provides a StorageClass with storageClassName.
+    createStorageClass: true
+    # Non-empty: disk parameter for that class (AWS/GCP parameters.type, Azure parameters.skuname). Empty: gp3 / pd-standard / StandardSSD_LRS.
+    parameterType: ""
 
 # ------------------------------------------------------------------------------
 # These are properties only used by the charts and templates on this level.

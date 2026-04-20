@@ -99,6 +99,23 @@ Volume mounts for scratch local storage if enabled
 {{- end -}}
 
 {{/*
+Effective provisioner disk parameter value for StorageClass parameters (AWS/GCP: "type", Azure: "skuname").
+When storage.parameterType is non-empty, it is used for all clouds; otherwise cloud-specific defaults apply.
+*/}}
+{{- define "storage-worker.parameterType" -}}
+{{- $override := .Values.storage.parameterType | toString | trim }}
+{{- if ne $override "" -}}
+{{- $override -}}
+{{- else if eq .Values.global.cloudProvider "aws" -}}
+gp3
+{{- else if eq .Values.global.cloudProvider "gcp" -}}
+pd-standard
+{{- else if eq .Values.global.cloudProvider "azure" -}}
+StandardSSD_LRS
+{{- end -}}
+{{- end }}
+
+{{/*
 Datadog annotations
 */}}
 {{- define "worker.datadog.annotations" -}}
