@@ -79,7 +79,7 @@ spec:
         - name: CLICKHOUSE_DB
           value: {{ .Values.global.clickhouse.database }}
         - name: DD_CONTAINER_EXCLUDE
-          value: "image:gcr.io/datadoghq.* kube_namespace:.*"
+          value: "image:gcr.io/datadoghq.* image:registry.datadoghq.com/.* kube_namespace:.*"
         - name: DD_CONTAINER_INCLUDE
           value: "kube_namespace:{{ .Release.Namespace }} kube_namespace:temporal kube_namespace:dmadocs{{ if (eq .Values.configuration.monitorKeda true) }} kube_namespace:keda{{ end }}{{ range (.Values.containerIncludeExtraNamespaces | default list) }} kube_namespace:{{ . }}{{ end }}"
       tolerations:
