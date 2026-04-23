@@ -1,0 +1,228 @@
+global:
+  serverName: acme.singletenant.datafold.com
+  environment: prod
+  clusterName: acme-datafold
+  deployment: acme-datafold
+  secondaryDeployment: false
+  vpcCidr: "10.0.0.0/16"
+  postgres:
+    server: acme-datafold.abc123.us-east-1.rds.amazonaws.com
+    port: 5432
+  redis:
+    port: 6379
+  clickhouse:
+    port: 9000
+    database: clickhouse
+  awsTargetGroupArn: "arn:aws:elasticloadbalancing:us-east-1:123456789012:targetgroup/acme-datafold-app/abc123"
+  # Temporal Cloud configuration with a custom Python codec class.
+  # Use this approach when you need external key management (e.g. AWS KMS
+  # envelope encryption) instead of the built-in AES-256-GCM codec.
+  temporal:
+    # Temporal Cloud frontend address — format: <namespace>.tmprl.cloud:7233
+    address: "acme-datafold.abc123.tmprl.cloud:7233"
+    # Temporal Cloud namespace identifier (shown in the Temporal Cloud console)
+    namespace: "acme-datafold.abc123"
+    # API key for Temporal Cloud authentication.
+    apiKey: "your-temporal-cloud-api-key"
+    # corsOrigins allows the Temporal Cloud UI codec server to decode payloads
+    # for display in the workflow history view.
+    corsOrigins: "https://cloud.temporal.io"
+    # Payload encryption with a custom codec class.
+    encryption:
+      # codecClass references the Python module and class that implements the
+      # temporalio.converter.PayloadCodec interface.
+      # Format: "<module_stem>:<ClassName>"
+      # The module stem must match the fileName below (without the .py extension).
+      codecClass: "temporal_codec:KMSCodec"
+      # customCodec mounts the Python file from a ConfigMap into all Temporal
+      # containers at /datafold/plugins/<fileName>.
+      # Create the ConfigMap beforehand with:
+      #   kubectl create configmap acme-temporal-codec \
+      #     --from-file=temporal_codec.py=./temporal_codec.py \
+      #     -n acme-datafold
+      customCodec:
+        # configMapName: name of a pre-existing ConfigMap holding the codec source.
+        configMapName: acme-temporal-codec
+        # fileName: the key in the ConfigMap and the on-disk filename.
+        # Must end in .py and must match the module stem in codecClass above.
+        fileName: temporal_codec.py
+
+postgres:
+  install: false
+
+config:
+  # Switch from Celery to the Temporal task engine
+  taskEngine: temporal
+  temporalAddress: "acme-datafold.abc123.tmprl.cloud:7233"
+  monitoringProvider: datadog
+  loggingEnabled: "true"
+  metricsEnabled: "true"
+  monitorTemporal: "true"
+  monitorKeda: "true"
+
+operator:
+  install: true
+  image:
+    tag: "1.2.11"
+
+secrets:
+  operator:
+    apiKey: "your-api-key"
+    portalUrl: "https://portal.datafold.com"
+  database:
+    encryptionKey: "your-database-encryption-key"
+  installMePassword: "your-install-password"
+  postgres:
+    user: datafold
+    database: datafold
+    password: "your-postgres-password"
+    ro_user: datafold_ro
+    ro_password: "your-postgres-ro-password"
+  clickhouse:
+    user: default
+    password: "your-clickhouse-password"
+  redis:
+    password: "your-redis-password"
+  mail:
+    server: email-smtp.us-east-1.amazonaws.com
+    defaultSender: noreply@datafold.com
+    username: "<SMTP_USERNAME>"
+    password: "your-email-password"
+  datadog:
+    apiKey: "your-datadog-api-key"
+    clientToken: "<DATADOG_CLIENT_TOKEN>"
+    applicationId: "<DATADOG_APPLICATION_ID>"
+
+datadog:
+  apm: false
+  monitorPostgres: true
+  npm:
+    enabled: true
+    dnsstats: true
+  clientToken: "<DATADOG_CLIENT_TOKEN>"
+  applicationId: "<DATADOG_APPLICATION_ID>"
+  configuration:
+    monitorTemporal: true
+    monitorKeda: true
+
+nginx:
+  install: true
+  ingress:
+    deploy: false
+    internal: false
+    sslCertificate: "arn:aws:acm:us-east-1:123456789012:certificate/abc123-def4-5678-abcd-ef1234567890"
+  service:
+    loadBalancerIps:
+      - "10.0.1.100"
+      - "10.0.1.101"
+
+server:
+  install: true
+  serviceAccount:
+    name: server
+    roleArn: "arn:aws:iam::123456789012:role/acme-datafold-server"
+  resources:
+    limits:
+      memory: 4Gi
+    requests:
+      memory: 4Gi
+
+# The custom codec is applied to all Temporal workers automatically via the
+# TEMPORAL_CODEC_CLASS environment variable derived from encryption.codecClass.
+# No per-worker codec configuration is needed.
+
+worker-io:
+  install: true
+  replicaCount: 1
+  keda:
+    enabled: true
+    minReplicas: 1
+    maxReplicas: 10
+
+worker-compute:
+  install: true
+  keda:
+    enabled: true
+    minReplicas: 0
+    maxReplicas: 5
+  resources:
+    limits:
+      memory: 8Gi
+    requests:
+      memory: 8Gi
+
+worker-highmem:
+  install: true
+  keda:
+    enabled: true
+    minReplicas: 0
+    maxReplicas: 3
+  resources:
+    limits:
+      memory: 20Gi
+    requests:
+      memory: 20Gi
+
+worker-realtime:
+  install: true
+  replicaCount: 1
+  keda:
+    enabled: true
+    minReplicas: 1
+    maxReplicas: 5
+  resources:
+    limits:
+      memory: 4Gi
+    requests:
+      memory: 4Gi
+
+worker-storage:
+  install: true
+  keda:
+    enabled: true
+    minReplicas: 0
+    maxReplicas: 5
+
+worker-storage-high:
+  install: true
+  keda:
+    enabled: true
+    minReplicas: 0
+    maxReplicas: 3
+
+clickhouse:
+  install: true
+  config:
+    s3_backup_role: "arn:aws:iam::123456789012:role/acme-datafold-clickhouse-backup"
+    s3_bucket: "acme-datafold-clickhouse-backups"
+    s3_region: us-east-1
+  storage:
+    dataSize: 100
+    logSize: 40
+
+redis:
+  install: true
+
+scheduler:
+  install: true
+  serviceAccount:
+    name: scheduler
+    roleArn: "arn:aws:iam::123456789012:role/acme-datafold-scheduler"
+
+operator:
+  install: true
+  serviceAccount:
+    name: operator
+    roleArn: "arn:aws:iam::123456789012:role/acme-datafold-operator"
+
+dfshell:
+  install: true
+  serviceAccount:
+    name: dfshell
+    roleArn: "arn:aws:iam::123456789012:role/acme-datafold-dfshell"
+
+worker:
+  install: true
+  serviceAccount:
+    name: worker
+    roleArn: "arn:aws:iam::123456789012:role/acme-datafold-worker"

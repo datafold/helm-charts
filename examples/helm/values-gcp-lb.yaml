@@ -1,0 +1,29 @@
+global:
+  serverName: datafold.example.com
+  environment: production
+  clusterName: datafold-cluster
+  deployment: datafold-production
+
+secrets:
+  operator:
+    portalUrl: "https://portal.datafold.com"
+
+# GCP Cloud Load Balancer — deploy a new external HTTPS load balancer
+nginx:
+  ingress:
+    deploy: true
+    internal: false
+    # Name of the SSL certificate resource in GCP
+    sslCertificate: "datafold-ssl-cert"
+    # Certificate method: managed (Google-managed), preshared, or secret (K8s TLS secret)
+    certificateMethod: "managed"
+    # Optional: name of a reserved static external IP address
+    staticIpName: "datafold-static-ip"
+    # Optional: SSL policy for the load balancer (create this in GCP beforehand)
+    sslPolicy: "datafold-ssl-policy"
+    # Optional: Cloud Armor security policy for DDoS protection (create this in GCP beforehand)
+    cloudArmorPolicy: "datafold-cloud-armor-policy"
+    # Optional: preshared certificate name (only when certificateMethod is "preshared")
+    # presharedCertificate: "datafold-preshared-cert"
+    # Optional: K8s TLS secret name (only when certificateMethod is "secret")
+    # tlsSecretName: "datafold-tls-secret"

@@ -1,0 +1,258 @@
+apiVersion: datafold.datafold.com/v1alpha1
+kind: DatafoldApplication
+metadata:
+  name: datafold-deploy
+  namespace: acme-datafold
+spec:
+  global:
+    serverName: acme.singletenant.datafold.com
+    clusterName: acme-datafold
+    deployment: acme-datafold
+    environment: prod
+
+    # Switch from Celery to Temporal task engine
+    taskEngine: temporal
+    # Temporal Cloud frontend address — format: <namespace>.tmprl.cloud:7233
+    temporalAddress: "acme-datafold.abc123.tmprl.cloud:7233"
+
+    # Temporal Cloud configuration.
+    # For self-hosted Temporal, omit this entire block.
+    temporal:
+      # Temporal Cloud namespace identifier (shown in the Temporal Cloud console)
+      namespace: "acme-datafold.abc123"
+
+      # API key for Temporal Cloud authentication.
+      # Generate in the Temporal Cloud console under Settings → API Keys.
+      # Store the key value in datafold-operator-secrets under key "temporalApiKey".
+      apiKey:
+        secretName: datafold-operator-secrets
+        keyName: temporalApiKey
+
+      # corsOrigins allows the Temporal Cloud UI codec server to decode payloads
+      # for display in the workflow history view.
+      corsOrigins: "https://cloud.temporal.io"
+
+      # Payload encryption: all workflow inputs/outputs are encrypted with AES-256-GCM
+      # before leaving your cluster. Temporal Cloud servers see only ciphertext.
+      encryption:
+        # activeKeyId selects which key encrypts new payloads.
+        # When rotating keys, add the new key here and update activeKeyId.
+        activeKeyId: KEY_1
+
+        # Keys are stored in Kubernetes Secrets as base64-encoded 32-byte values.
+        # Generate a key with: openssl rand -base64 32
+        keys:
+          - id: KEY_1
+            valueSecret:
+              secretName: datafold-operator-secrets
+              keyName: temporalEncryptionKeyV1
+          - id: KEY_0
+            valueSecret:
+              secretName: datafold-operator-secrets
+              keyName: temporalEncryptionKeyV0
+
+    portalUrl: https://portal.datafold.com
+    secondaryDeployment: false
+
+  operator:
+    version: 1.2.11
+
+  postgres:
+    server: acme-datafold.abc123.us-east-1.rds.amazonaws.com
+    port: 5432
+    user: datafold
+    database: datafold
+    passwordSecret:
+      secretName: datafold-operator-secrets
+      keyName: postgresPassword
+    ro_user: datafold_ro
+    roPasswordSecret:
+      secretName: datafold-operator-secrets
+      keyName: postgresROPassword
+
+  redis:
+    port: 6379
+    passwordSecret:
+      secretName: datafold-operator-secrets
+      keyName: redisPassword
+
+  clickhouse:
+    port: 9000
+    database: clickhouse
+    user: default
+    passwordSecret:
+      secretName: datafold-operator-secrets
+      keyName: clickhousePassword
+
+  secrets:
+    apiKey:
+      secretName: datafold-operator-secrets
+      keyName: apiKey
+    databaseEncryptionKey:
+      secretName: datafold-operator-secrets
+      keyName: databaseEncryptionKey
+    installPassword:
+      secretName: datafold-operator-secrets
+      keyName: installPassword
+
+  monitoring:
+    type: datadog
+    monitoringApiKey:
+      secretName: datafold-operator-secrets
+      keyName: monitoringApiKey
+    loggingEnabled: "true"
+    metricsEnabled: "true"
+    monitorTemporal: true
+    monitorKeda: true
+    datadog:
+      apm: false
+      monitorPostgres: true
+      npm:
+        enabled: true
+        dnsstats: true
+      clientToken: "<DATADOG_CLIENT_TOKEN>"
+      applicationId: "<DATADOG_APPLICATION_ID>"
+
+  ingress:
+    aws:
+      targetGroupArn: "arn:aws:elasticloadbalancing:us-east-1:123456789012:targetgroup/acme-datafold-app/abc123"
+    sslCertificate: "arn:aws:acm:us-east-1:123456789012:certificate/abc123-def4-5678-abcd-ef1234567890"
+
+  nginx:
+    loadBalancerIps:
+      - "10.0.1.100"
+      - "10.0.1.101"
+    vpcCidrBlock: "10.0.0.0/16"
+
+  email:
+    server: email-smtp.us-east-1.amazonaws.com
+    defaultSender: noreply@datafold.com
+    username: "<SMTP_USERNAME>"
+    passwordSecret:
+      secretName: datafold-operator-secrets
+      keyName: emailPassword
+
+  components:
+    server:
+      enabled: true
+      rawValues:
+        serviceAccount:
+          name: server
+          roleArn: "arn:aws:iam::123456789012:role/acme-datafold-server"
+      resources:
+        limits:
+          memory: 4Gi
+        requests:
+          memory: 4Gi
+
+    # worker-io handles the datadiff task queue.
+    # minReplicas: 1 keeps a warm replica for low-latency response to incoming diffs.
+    worker-io:
+      enabled: true
+      keda:
+        enabled: true
+        minReplicas: 1
+        maxReplicas: 10
+      replicas: 1
+
+    # worker-compute handles compute-heavy queues (datadiff, translation).
+    worker-compute:
+      enabled: true
+      keda:
+        enabled: true
+        minReplicas: 0
+        maxReplicas: 5
+      resources:
+        limits:
+          memory: 8Gi
+        requests:
+          memory: 8Gi
+
+    # worker-highmem handles lineage and catalog computations.
+    worker-highmem:
+      enabled: true
+      keda:
+        enabled: true
+        minReplicas: 0
+        maxReplicas: 3
+      resources:
+        limits:
+          memory: 20Gi
+        requests:
+          memory: 20Gi
+
+    # worker-realtime handles interactive and API queues.
+    # minReplicas: 1 ensures interactive requests are served without cold-start delay.
+    worker-realtime:
+      enabled: true
+      keda:
+        enabled: true
+        minReplicas: 1
+        maxReplicas: 5
+      replicas: 1
+      resources:
+        limits:
+          memory: 4Gi
+        requests:
+          memory: 4Gi
+
+    # worker-storage handles local storage and replication queues.
+    worker-storage:
+      enabled: true
+      keda:
+        enabled: true
+        minReplicas: 0
+        maxReplicas: 5
+
+    # worker-storage-high handles the large localstorage queue.
+    worker-storage-high:
+      enabled: true
+      keda:
+        enabled: true
+        minReplicas: 0
+        maxReplicas: 3
+
+    clickhouse:
+      enabled: true
+      rawValues:
+        config:
+          s3_backup_role: "arn:aws:iam::123456789012:role/acme-datafold-clickhouse-backup"
+          s3_bucket: "acme-datafold-clickhouse-backups"
+          s3_region: us-east-1
+        storage:
+          dataSize: 100
+          logSize: 40
+
+    redis:
+      enabled: true
+
+    nginx:
+      enabled: true
+
+    scheduler:
+      enabled: true
+      rawValues:
+        serviceAccount:
+          name: scheduler
+          roleArn: "arn:aws:iam::123456789012:role/acme-datafold-scheduler"
+
+    operator:
+      enabled: true
+      rawValues:
+        serviceAccount:
+          name: operator
+          roleArn: "arn:aws:iam::123456789012:role/acme-datafold-operator"
+
+    dfshell:
+      enabled: true
+      rawValues:
+        serviceAccount:
+          name: dfshell
+          roleArn: "arn:aws:iam::123456789012:role/acme-datafold-dfshell"
+
+    worker:
+      enabled: true
+      rawValues:
+        serviceAccount:
+          name: worker
+          roleArn: "arn:aws:iam::123456789012:role/acme-datafold-worker"

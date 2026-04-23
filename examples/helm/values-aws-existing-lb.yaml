@@ -1,0 +1,17 @@
+global:
+  serverName: datafold.example.com
+  environment: production
+  clusterName: datafold-cluster
+  deployment: datafold-production
+  # Target Group ARN of the existing load balancer that routes traffic to nginx
+  awsTargetGroupArn: "arn:aws:elasticloadbalancing:us-west-2:123456789012:targetgroup/existing-target-group/1234567890123456"
+
+secrets:
+  operator:
+    portalUrl: "https://portal.datafold.com"
+
+# Skip deploying a new load balancer — use the existing one above
+nginx:
+  ingress:
+    deploy: false
+    internal: false

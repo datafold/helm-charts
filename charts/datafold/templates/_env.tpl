@@ -114,6 +114,24 @@
       name: {{ include "datafold.secrets" . }}
       key: DATAFOLD_ANTHROPIC_API_KEY
       optional: true
+- name: TEMPORAL_API_KEY
+  valueFrom:
+    secretKeyRef:
+      name: {{ include "datafold.secrets" . }}
+      key: TEMPORAL_API_KEY
+      optional: true
+- name: TEMPORAL_TLS_CLIENT_CERT_DATA
+  valueFrom:
+    secretKeyRef:
+      name: {{ include "datafold.secrets" . }}
+      key: TEMPORAL_TLS_CLIENT_CERT_DATA
+      optional: true
+- name: TEMPORAL_TLS_CLIENT_KEY_DATA
+  valueFrom:
+    secretKeyRef:
+      name: {{ include "datafold.secrets" . }}
+      key: TEMPORAL_TLS_CLIENT_KEY_DATA
+      optional: true
 {{- range $custom_secret := .Values.global.customSecrets }}
 - name: {{ $custom_secret.envVarName }}
   valueFrom:

@@ -1,0 +1,33 @@
+global:
+  serverName: datafold.example.com
+  environment: production
+  clusterName: datafold-cluster
+  deployment: datafold-production
+
+secrets:
+  operator:
+    portalUrl: "https://portal.datafold.com"
+  datadog:
+    # Datadog API key (DD_API_KEY) — used by the Datadog Agent for data ingestion
+    apiKey: "your-datadog-api-key"
+    # Public client token for Datadog Browser RUM
+    clientToken: "pub1234567890abcdef1234567890abcdef"
+    # Datadog RUM application ID
+    applicationId: "12345678-1234-1234-1234-123456789012"
+
+config:
+  monitoringProvider: datadog
+
+# Datadog Agent and integration configuration
+datadog:
+  # Application Performance Monitoring
+  apm: true
+  # PostgreSQL monitoring via Datadog Agent autodiscovery
+  monitorPostgres: true
+  # Network Performance Monitoring
+  npm:
+    enabled: true
+    dnsstats: true
+  # Also set at top level for Datadog RUM
+  clientToken: "pub1234567890abcdef1234567890abcdef"
+  applicationId: "12345678-1234-1234-1234-123456789012"

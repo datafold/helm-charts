@@ -44,6 +44,7 @@ spec:
       4f2BGXNOX9qT+j+mn+DGEP5/NnhQ+SzG1GJfMDqH2tyne37ztDR3v7oXtmLE
       -----END CERTIFICATE-----
     deployment: datafold-production
+    taskEngine: celery
   monitoring:
     type: datadog
     monitoringApiKey:
@@ -129,6 +130,10 @@ spec:
     installPassword:
       secretName: datafold-operator-secrets
       keyName: installPassword
+    # Optional: API org creation donor tokens
+    # apiOrgCreationDonorTokens:
+    #   secretName: datafold-operator-secrets
+    #   keyName: apiOrgCreationDonorTokens
   components:
     dfshell:
       enabled: true
@@ -259,20 +264,6 @@ spec:
         serviceAccount:
           name: datafold-worker-lineage
           roleArn: "arn:aws:iam::123456789012:role/datafold-worker-lineage"
-    worker-portal:
-      enabled: true
-      replicas: 1
-      resources:
-        limits:
-          cpu: "1000m"
-          memory: "2Gi"
-        requests:
-          cpu: "500m"
-          memory: "1Gi"
-      rawValues:
-        serviceAccount:
-          name: datafold-worker-portal
-          roleArn: "arn:aws:iam::123456789012:role/datafold-worker-portal"
     worker-temporal:
       enabled: true
       replicas: 1
@@ -287,6 +278,72 @@ spec:
         serviceAccount:
           name: datafold-worker-temporal
           roleArn: "arn:aws:iam::123456789012:role/datafold-worker-temporal"
+    worker-compute:
+      enabled: true
+      replicas: 1
+      extraEnv:
+        - name: TEMPORAL_TASK_QUEUES
+          value: "datadiff,translation"
+      resources:
+        limits:
+          memory: "4Gi"
+        requests:
+          cpu: "500m"
+          memory: "4Gi"
+    worker-highmem:
+      enabled: true
+      replicas: 1
+      extraEnv:
+        - name: TEMPORAL_TASK_QUEUES
+          value: "lineage,catalog"
+      resources:
+        limits:
+          memory: "20Gi"
+        requests:
+          cpu: "100m"
+          memory: "20Gi"
+    worker-realtime:
+      enabled: true
+      replicas: 1
+      extraEnv:
+        - name: TEMPORAL_TASK_QUEUES
+          value: "interactive,api"
+      resources:
+        limits:
+          memory: "4Gi"
+        requests:
+          cpu: "200m"
+          memory: "4Gi"
+    worker-storage:
+      enabled: true
+      replicas: 1
+      extraEnv:
+        - name: TEMPORAL_TASK_QUEUES
+          value: "localstorage,replication"
+      storage:
+        enabled: true
+        dataSize: "100Gi"
+      resources:
+        limits:
+          memory: "15Gi"
+        requests:
+          cpu: "100m"
+          memory: "15Gi"
+    worker-storage-high:
+      enabled: true
+      replicas: 1
+      extraEnv:
+        - name: TEMPORAL_TASK_QUEUES
+          value: "localstorage-large"
+      storage:
+        enabled: true
+        dataSize: "100Gi"
+      resources:
+        limits:
+          memory: "30Gi"
+        requests:
+          cpu: "100m"
+          memory: "30Gi"
     worker-monitor:
       enabled: true
       replicas: 1

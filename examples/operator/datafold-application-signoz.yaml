@@ -23,7 +23,5 @@ spec:
       logsEndpoint: "http://signoz-otel-collector:4318/v1/logs"
       # Service name in OpenTelemetry
       serviceName: "datafold"
-      # Optional: Ingestion key for authentication
-      ingestionKey: ""
-      # Optional: Header name for ingestion key (default: signoz-ingestion-key)
+      # Optional: Header name for ingestion key (ingestion key comes from monitoringApiKey secret)
       headerName: ""

@@ -1,0 +1,19 @@
+global:
+  serverName: datafold.example.com
+  environment: production
+  clusterName: datafold-cluster
+  deployment: datafold-production
+  nginx:
+    # Network Endpoint Group path of the existing GCP load balancer backend
+    # Format: projects/{project-id}/zones/{zone}/networkEndpointGroups/{neg-name}
+    gcpNegName: "projects/your-project-id/zones/us-central1-a/networkEndpointGroups/existing-neg-name"
+
+secrets:
+  operator:
+    portalUrl: "https://portal.datafold.com"
+
+# Skip deploying a new load balancer — attach nginx to the existing NEG above
+nginx:
+  ingress:
+    deploy: false
+    internal: false

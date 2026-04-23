@@ -64,7 +64,20 @@ data:
 {{- if .Values.config.temporalAddress }}
   TEMPORAL_ADDRESS: "{{ .Values.config.temporalAddress }}"
 {{- end }}
+{{- if .Values.global.temporal.namespace }}
+  TEMPORAL_NAMESPACE: "{{ .Values.global.temporal.namespace }}"
+{{- else }}
   TEMPORAL_NAMESPACE: "{{ .Release.Namespace }}"
+{{- end }}
+{{- if .Values.global.temporal.encryption.activeKeyId }}
+  TEMPORAL_ENCRYPTION_ACTIVE_KEY_ID: "{{ .Values.global.temporal.encryption.activeKeyId }}"
+{{- end }}
+{{- if .Values.global.temporal.corsOrigins }}
+  TEMPORAL_CODEC_CORS_ORIGINS: "{{ .Values.global.temporal.corsOrigins }}"
+{{- end }}
+{{- if .Values.global.temporal.encryption.codecClass }}
+  TEMPORAL_CODEC_CLASS: "{{ .Values.global.temporal.encryption.codecClass }}"
+{{- end }}
 {{- if .Values.config.taskEngine }}
   DATAFOLD_TASK_ENGINE: "{{ .Values.config.taskEngine }}"
 {{- end }}

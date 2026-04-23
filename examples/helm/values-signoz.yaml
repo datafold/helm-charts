@@ -1,0 +1,21 @@
+global:
+  serverName: datafold.example.com
+  environment: production
+  clusterName: datafold-cluster
+  deployment: datafold-production
+  # OpenTelemetry collector endpoints (SigNoz or any OTLP-compatible backend)
+  opentelemetry:
+    metricsEndpoint: "http://signoz-otel-collector:4318/v1/metrics"
+    logsEndpoint: "http://signoz-otel-collector:4318/v1/logs"
+    serviceName: "datafold"
+    # Optional: header name for the ingestion key (leave empty if no auth header is required)
+    headerName: ""
+    # Ingestion key sent in the header above (leave empty if not needed)
+    ingestionKey: "your-signoz-ingestion-key"
+
+secrets:
+  operator:
+    portalUrl: "https://portal.datafold.com"
+
+config:
+  monitoringProvider: opentelemetry
