@@ -71,6 +71,50 @@ global:
     createStorageClass: true
     # Non-empty: disk parameter for that class (AWS/GCP parameters.type, Azure parameters.skuname). Empty: gp3 / pd-standard / StandardSSD_LRS.
     parameterType: ""
+    # Temporal Cloud: override the Temporal namespace (empty → Release.Namespace for self-hosted).
+    # For Temporal Cloud set this to your cloud namespace, e.g. "myorg.acct123".
+    namespace: ""
+    # Temporal Cloud: API key authentication (leave empty for self-hosted mTLS or no-auth).
+    apiKey: ""
+    # Temporal Cloud: base64-encoded PEM client certificate and key for mTLS.
+    # Encode with: base64 -w 0 -i <file>
+    tlsClientCertData: ""
+    tlsClientKeyData: ""
+    # corsOrigins is a comma-separated list of allowed origins for the codec server.
+    # Must not be "*". Required when the Temporal Cloud UI needs to reach the
+    # /temporal/codec endpoint, e.g. "https://cloud.temporal.io".
+    corsOrigins: ""
+    # Payload encryption — disabled when keys is empty.
+    encryption:
+      # List of encryption keys: each entry has an id (arbitrary string) and a
+      # value (base64-encoded 32-byte AES-256 key).
+      # Example:
+      #   - id: "prod-key-v1"
+      #     value: "Zm9vYmFyYmF6cXV4cXV4cXV4cXV4cXV4cXV4cXU="
+      keys: []
+      # activeKeyId selects which key encrypts new payloads.
+      # Defaults to the key from the lexicographically first configured key.
+      activeKeyId: ""
+      # externalSecretName: name of a pre-existing Secret on the cluster that supplies
+      # TEMPORAL_ENCRYPTION_KEY_* entries (e.g. created by External Secrets Operator).
+      # When set, this name is used instead of the helm-managed secret and keys above
+      # can be left empty.
+      externalSecretName: ""
+      # codecClass: bare module stem and class name of a custom PayloadCodec plugin,
+      # e.g. "temporal_codec:KMSCodec". The stem must match the fileName in customCodec
+      # below. When set, takes precedence over the built-in AES-256-GCM codec.
+      codecClass: ""
+      # customCodec: mounts a customer-supplied Python file from a ConfigMap into both
+      # the server and worker-temporal containers at /datafold/plugins/<fileName>.
+      # The loader resolves TEMPORAL_CODEC_CLASS by looking up <module_stem>.py in that
+      # fixed directory — no PYTHONPATH manipulation needed.
+      # codecClass should use the bare stem, e.g. "temporal_codec:KMSCodec"
+      # when fileName is "temporal_codec.py".
+      customCodec:
+        # configMapName: name of a pre-existing ConfigMap whose key holds the Python source.
+        configMapName: ""
+        # fileName: key in the ConfigMap and the filename on disk (must end in .py).
+        fileName: "temporal_codec.py"
 
 # ------------------------------------------------------------------------------
 # These are properties only used by the charts and templates on this level.

@@ -3749,6 +3749,144 @@ spec:
                     description: TaskEngine specifies the task engine to use (e.g.,
                       "celery", "temporal")
                     type: string
+                  temporal:
+                    description: |-
+                      Temporal contains Temporal Cloud-specific configuration (namespace, auth, TLS, payload encryption).
+                      Leave unset for self-hosted Temporal deployments.
+                    properties:
+                      apiKey:
+                        description: |-
+                          ApiKeySecret references the secret containing the Temporal Cloud API key.
+                          The value is exposed as the TEMPORAL_API_KEY environment variable.
+                        properties:
+                          keyName:
+                            description: KeyName is the key within the secret
+                            type: string
+                          secretName:
+                            description: SecretName is the name of the secret
+                            type: string
+                        required:
+                        - keyName
+                        - secretName
+                        type: object
+                      corsOrigins:
+                        description: |-
+                          CorsOrigins is a comma-separated list of allowed origins for the codec server.
+                          Required when the Temporal Cloud UI needs to reach the /temporal/codec endpoint
+                          (e.g. "https://cloud.temporal.io"). Must not be "*".
+                        type: string
+                      encryption:
+                        description: Encryption contains payload encryption configuration
+                          for Temporal workflows.
+                        properties:
+                          activeKeyId:
+                            description: |-
+                              ActiveKeyId selects which key is used to encrypt new payloads.
+                              Defaults to the key from the lexicographically first TEMPORAL_ENCRYPTION_KEY_* env var.
+                            type: string
+                          codecClass:
+                            description: |-
+                              CodecClass is the bare module stem and class name of a custom PayloadCodec plugin,
+                              e.g. "temporal_codec:KMSCodec". When set, takes precedence over the built-in AES-256-GCM codec.
+                            type: string
+                          customCodec:
+                            description: |-
+                              CustomCodec mounts a customer-supplied Python file from a ConfigMap into the
+                              server and worker-temporal containers at /datafold/plugins/<fileName>.
+                            properties:
+                              configMapName:
+                                description: ConfigMapName is the name of a pre-existing
+                                  ConfigMap whose key holds the Python source.
+                                type: string
+                              fileName:
+                                default: temporal_codec.py
+                                description: FileName is the key in the ConfigMap
+                                  and the filename on disk (must end in .py).
+                                type: string
+                            required:
+                            - configMapName
+                            type: object
+                          externalSecretName:
+                            description: |-
+                              ExternalSecretName is the name of a pre-existing Secret supplying
+                              TEMPORAL_ENCRYPTION_KEY_* entries (e.g. managed by External Secrets Operator).
+                              When set, this secret is mounted instead of the helm-managed one.
+                            type: string
+                          keys:
+                            description: |-
+                              Keys is a list of encryption key secret references. Each entry references a
+                              Kubernetes secret holding a base64-encoded 32-byte AES-256 key value.
+                              Generate a key with: openssl rand -base64 32
+                            items:
+                              description: TemporalEncryptionKeyRef references a Kubernetes
+                                secret key holding a Temporal encryption key value
+                              properties:
+                                id:
+                                  description: |-
+                                    Id is the key identifier string (e.g. "prod-key-v1"). Used as the ID component
+                                    in the TEMPORAL_ENCRYPTION_KEY_<i> env var value ("<id>:<value>").
+                                  type: string
+                                valueSecret:
+                                  description: |-
+                                    ValueSecret references the Kubernetes secret and key containing the
+                                    base64-encoded 32-byte AES-256 encryption key value.
+                                    Generate a key with: openssl rand -base64 32
+                                  properties:
+                                    keyName:
+                                      description: KeyName is the key within the secret
+                                      type: string
+                                    secretName:
+                                      description: SecretName is the name of the secret
+                                      type: string
+                                  required:
+                                  - keyName
+                                  - secretName
+                                  type: object
+                              required:
+                              - id
+                              - valueSecret
+                              type: object
+                            type: array
+                        type: object
+                      namespace:
+                        description: |-
+                          Namespace overrides the Temporal namespace.
+                          For self-hosted Temporal, leave empty to use the Kubernetes release namespace.
+                          For Temporal Cloud, set this to your cloud namespace (e.g. "myorg.acct123").
+                        type: string
+                      tlsClientCert:
+                        description: |-
+                          TlsClientCertSecret references the secret containing the base64-encoded PEM
+                          client certificate for mTLS authentication to Temporal Cloud.
+                          The value is exposed as TEMPORAL_TLS_CLIENT_CERT_DATA.
+                        properties:
+                          keyName:
+                            description: KeyName is the key within the secret
+                            type: string
+                          secretName:
+                            description: SecretName is the name of the secret
+                            type: string
+                        required:
+                        - keyName
+                        - secretName
+                        type: object
+                      tlsClientKey:
+                        description: |-
+                          TlsClientKeySecret references the secret containing the base64-encoded PEM
+                          client key for mTLS authentication to Temporal Cloud.
+                          The value is exposed as TEMPORAL_TLS_CLIENT_KEY_DATA.
+                        properties:
+                          keyName:
+                            description: KeyName is the key within the secret
+                            type: string
+                          secretName:
+                            description: SecretName is the name of the secret
+                            type: string
+                        required:
+                        - keyName
+                        - secretName
+                        type: object
+                    type: object
                   temporalAddress:
                     description: |-
                       TemporalAddress is the Temporal server address (e.g. "temporal-frontend.temporal.svc.cluster.local:7233").

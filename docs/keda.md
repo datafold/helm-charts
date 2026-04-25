@@ -46,17 +46,16 @@ Temporal task queue depth
 ## Deployment order
 
 Deploy components in this order. Each step depends on the previous one. Steps
-1–5 are covered in [temporal-prerequisites.md](temporal-prerequisites.md).
+1–5 are covered in the [prerequisites guide](prerequisites.md).
 
 | Step | Component | Notes |
 |------|-----------|-------|
-| 1 | Managed PostgreSQL instance | AWS RDS, GCP Cloud SQL, or Azure Database |
+| 1 | PostgreSQL | [Managed DB](postgres-rds.md) or [Zalando in-cluster](postgres-zalando.md) |
 | 2 | Database setup | Two databases, dedicated user, Kubernetes Secret |
-| 3 | Create Temporal namespace | Required before deploying Temporal |
-| 4 | Temporal Helm chart | Points at the managed PostgreSQL instance |
-| 5 | Temporal logical namespace | One-time admin operation via `temporal-admintools` pod |
-| **6** | **KEDA** | Required before deploying the Datafold application |
-| 7 | Datafold application | Workers will scale via KEDA from this point on |
+| 3 | Temporal Helm chart | [temporal-install.md](temporal-install.md) |
+| 4 | Temporal logical namespace | One-time admin operation via `temporal-admintools` pod |
+| **5** | **KEDA** | Required before deploying the Datafold application |
+| 6 | Datafold application | Workers will scale via KEDA from this point on |
 
 ---
 

@@ -190,9 +190,17 @@ spec:
       enabled: false
     worker-lineage:
       enabled: false
-    worker-portal:
-      enabled: false
     worker-temporal:
+      enabled: false
+    worker-compute:
+      enabled: false
+    worker-highmem:
+      enabled: false
+    worker-realtime:
+      enabled: false
+    worker-storage:
+      enabled: false
+    worker-storage-high:
       enabled: false
     worker-monitor:
       enabled: false

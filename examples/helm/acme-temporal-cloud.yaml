@@ -1,0 +1,225 @@
+global:
+  serverName: acme.singletenant.datafold.com
+  environment: prod
+  clusterName: acme-datafold
+  deployment: acme-datafold
+  secondaryDeployment: false
+  vpcCidr: "10.0.0.0/16"
+  postgres:
+    server: acme-datafold.abc123.us-east-1.rds.amazonaws.com
+    port: 5432
+  redis:
+    port: 6379
+  clickhouse:
+    port: 9000
+    database: clickhouse
+  awsTargetGroupArn: "arn:aws:elasticloadbalancing:us-east-1:123456789012:targetgroup/acme-datafold-app/abc123"
+  # Temporal Cloud configuration
+  temporal:
+    # Temporal Cloud frontend address — format: <namespace>.tmprl.cloud:7233
+    address: "acme-datafold.abc123.tmprl.cloud:7233"
+    # Temporal Cloud namespace identifier (shown in the Temporal Cloud console)
+    namespace: "acme-datafold.abc123"
+    # API key for Temporal Cloud authentication.
+    # Generate in the Temporal Cloud console under Settings → API Keys.
+    apiKey: "your-temporal-cloud-api-key"
+    # corsOrigins allows the Temporal Cloud UI codec server to decode payloads
+    # for display in the workflow history view.
+    corsOrigins: "https://cloud.temporal.io"
+    # Payload encryption: all workflow inputs/outputs are encrypted with AES-256-GCM
+    # before leaving your cluster. Temporal Cloud servers see only ciphertext.
+    encryption:
+      # activeKeyId selects which key encrypts new payloads.
+      # When rotating keys, add the new key here and update activeKeyId.
+      activeKeyId: KEY_1
+      # Keys are base64-encoded 32-byte AES-256 values.
+      # Generate a key with: openssl rand -base64 32
+      keys:
+        - id: KEY_1
+          value: "your-base64-encoded-32-byte-key-v1"
+        - id: KEY_0
+          value: "your-base64-encoded-32-byte-key-v0"
+
+postgres:
+  install: false
+
+config:
+  # Switch from Celery to the Temporal task engine
+  taskEngine: temporal
+  temporalAddress: "acme-datafold.abc123.tmprl.cloud:7233"
+  monitoringProvider: datadog
+  loggingEnabled: "true"
+  metricsEnabled: "true"
+  monitorTemporal: "true"
+  monitorKeda: "true"
+
+operator:
+  install: true
+  image:
+    tag: "1.2.11"
+
+secrets:
+  operator:
+    apiKey: "your-api-key"
+    portalUrl: "https://portal.datafold.com"
+  database:
+    encryptionKey: "your-database-encryption-key"
+  installMePassword: "your-install-password"
+  postgres:
+    user: datafold
+    database: datafold
+    password: "your-postgres-password"
+    ro_user: datafold_ro
+    ro_password: "your-postgres-ro-password"
+  clickhouse:
+    user: default
+    password: "your-clickhouse-password"
+  redis:
+    password: "your-redis-password"
+  mail:
+    server: email-smtp.us-east-1.amazonaws.com
+    defaultSender: noreply@datafold.com
+    username: "<SMTP_USERNAME>"
+    password: "your-email-password"
+  datadog:
+    apiKey: "your-datadog-api-key"
+    clientToken: "<DATADOG_CLIENT_TOKEN>"
+    applicationId: "<DATADOG_APPLICATION_ID>"
+
+datadog:
+  apm: false
+  monitorPostgres: true
+  npm:
+    enabled: true
+    dnsstats: true
+  clientToken: "<DATADOG_CLIENT_TOKEN>"
+  applicationId: "<DATADOG_APPLICATION_ID>"
+  configuration:
+    monitorTemporal: true
+    monitorKeda: true
+
+nginx:
+  install: true
+  ingress:
+    deploy: false
+    internal: false
+    sslCertificate: "arn:aws:acm:us-east-1:123456789012:certificate/abc123-def4-5678-abcd-ef1234567890"
+  service:
+    loadBalancerIps:
+      - "10.0.1.100"
+      - "10.0.1.101"
+
+server:
+  install: true
+  serviceAccount:
+    name: server
+    roleArn: "arn:aws:iam::123456789012:role/acme-datafold-server"
+  resources:
+    limits:
+      memory: 4Gi
+    requests:
+      memory: 4Gi
+
+# worker-io handles the datadiff task queue.
+# minReplicas: 1 keeps a warm replica for low-latency response to incoming diffs.
+worker-io:
+  install: true
+  replicaCount: 1
+  keda:
+    enabled: true
+    minReplicas: 1
+    maxReplicas: 10
+
+# worker-compute handles compute-heavy queues (datadiff, translation).
+worker-compute:
+  install: true
+  keda:
+    enabled: true
+    minReplicas: 0
+    maxReplicas: 5
+  resources:
+    limits:
+      memory: 8Gi
+    requests:
+      memory: 8Gi
+
+# worker-highmem handles lineage and catalog computations.
+worker-highmem:
+  install: true
+  keda:
+    enabled: true
+    minReplicas: 0
+    maxReplicas: 3
+  resources:
+    limits:
+      memory: 20Gi
+    requests:
+      memory: 20Gi
+
+# worker-realtime handles interactive and API queues.
+# minReplicas: 1 ensures interactive requests are served without cold-start delay.
+worker-realtime:
+  install: true
+  replicaCount: 1
+  keda:
+    enabled: true
+    minReplicas: 1
+    maxReplicas: 5
+  resources:
+    limits:
+      memory: 4Gi
+    requests:
+      memory: 4Gi
+
+# worker-storage handles local storage and replication queues.
+worker-storage:
+  install: true
+  keda:
+    enabled: true
+    minReplicas: 0
+    maxReplicas: 5
+
+# worker-storage-high handles the large localstorage queue.
+worker-storage-high:
+  install: true
+  keda:
+    enabled: true
+    minReplicas: 0
+    maxReplicas: 3
+
+clickhouse:
+  install: true
+  config:
+    s3_backup_role: "arn:aws:iam::123456789012:role/acme-datafold-clickhouse-backup"
+    s3_bucket: "acme-datafold-clickhouse-backups"
+    s3_region: us-east-1
+  storage:
+    dataSize: 100
+    logSize: 40
+
+redis:
+  install: true
+
+scheduler:
+  install: true
+  serviceAccount:
+    name: scheduler
+    roleArn: "arn:aws:iam::123456789012:role/acme-datafold-scheduler"
+
+operator:
+  install: true
+  serviceAccount:
+    name: operator
+    roleArn: "arn:aws:iam::123456789012:role/acme-datafold-operator"
+
+dfshell:
+  install: true
+  serviceAccount:
+    name: dfshell
+    roleArn: "arn:aws:iam::123456789012:role/acme-datafold-dfshell"
+
+worker:
+  install: true
+  serviceAccount:
+    name: worker
+    roleArn: "arn:aws:iam::123456789012:role/acme-datafold-worker"

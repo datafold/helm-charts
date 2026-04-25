@@ -1,0 +1,22 @@
+global:
+  serverName: datafold.example.com
+  environment: production
+  clusterName: datafold-cluster
+  deployment: datafold-production
+
+secrets:
+  operator:
+    portalUrl: "https://portal.datafold.com"
+
+# AWS Application Load Balancer — deploy a new ALB
+nginx:
+  ingress:
+    deploy: true
+    internal: false
+    # Subnets for the load balancer (use public subnets for an internet-facing ALB)
+    subnets: "subnet-12345678,subnet-87654321"
+    # Security groups attached to the ALB
+    secgroups: "sg-12345678,sg-87654321"
+    # Optional: attach this ingress to a shared ALB via an ingress group
+    awsIngressGroupName: "datafold-ingress-group"
+    awsIngressGroupOrder: "1"

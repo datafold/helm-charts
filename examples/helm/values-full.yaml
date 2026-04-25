@@ -1,0 +1,437 @@
+global:
+  serverName: datafold.example.com
+  environment: production
+  clusterName: datafold-cluster
+  deployment: datafold-production
+  vpcCidr: "10.0.0.0/16"
+  postgres:
+    server: datafold-postgres.example.com
+    port: 5432
+  redis:
+    port: 6379
+  clickhouse:
+    port: 9000
+    database: clickhouse
+
+postgres:
+  install: false
+
+config:
+  taskEngine: celery
+  portalCertData: |
+    -----BEGIN CERTIFICATE-----
+    MIIFyTCCBLGgAwIBAgIQDHefRAtAlWtoaHZmi8FMhjANBgkqhkiG9w0BAQsFADA8
+    MQswCQYDVQQGEwJVUzEPMA0GA1UEChMGQW1hem9uMRwwGgYDVQQDExNBbWF6b24g
+    UlNBIDIwNDggTTAzMB4XDTI1MDgwNDAwMDAwMFoXDTI2MDkwMjIzNTk1OVowHjEc
+    MBoGA1UEAxMTcG9ydGFsLmRhdGFmb2xkLmNvbTCCASIwDQYJKoZIhvcNAQEBBQAD
+    ggEPADCCAQoCggEBAPUN1RNYVUjxsFZqkdRYgG+zQ9qVtSFl/bjjkscMcfSdeNKn
+    Qiyt5T3XbcPrBLENPqEXevx2RHyzgmIPe+8coaTFBZ1OvLeA00reF5Q8yNdmUOCt
+    UNr7zENI84YAEhMScCrCxYLH96aPmxTyEEB63RI39swWpawO/7CL3gluu8H7D2cq
+    SUnPrp7PNqI+09Jxxjj2odOa6LA/B1hRtyzU1iwa+rHDp2fexb0zsxDyIubD4iD7
+    oGlAN1J32FAvKO1oT0Kxyoe57VxIboolLGjMQkD+Yp3PH/WDNNmOcGUbSxKm0zap
+    suv78NsIt+ee+kUjsftP8gk3GuGBRqrOqg68xSkCAwEAAaOCAuMwggLfMB8GA1Ud
+    IwQYMBaAFFXZGF/SHMwB4Vi0vqvZVUIB1y4CMB0GA1UdDgQWBBRlp6kUJ281KGA2
+    mYNdwrRgw+iYoTAeBgNVHREEFzAVghNwb3J0YWwuZGF0YWZvbGQuY29tMBMGA1Ud
+    IAQMMAowCAYGZ4EMAQIBMA4GA1UdDwEB/wQEAwIFoDATBgNVHSUEDDAKBggrBgEF
+    BQcDATA7BgNVHR8ENDAyMDCgLqAshipodHRwOi8vY3JsLnIybTAzLmFtYXpvbnRy
+    dXN0LmNvbS9yMm0wMy5jcmwwdQYIKwYBBQUHAQEEaTBnMC0GCCsGAQUFBzABhiFo
+    dHRwOi8vb2NzcC5yMm0wMy5hbWF6b250cnVzdC5jb20wNgYIKwYBBQUHMAKGKmh0
+    dHA6Ly9jcnQucjJtMDMuYW1hem9udHJ1c3QuY29tL3IybTAzLmNlcjAMBgNVHRMB
+    Af8EAjAAMIIBfwYKKwYBBAHWeQIEAgSCAW8EggFrAWkAdgDXbX0Q0af1d8LH6V/X
+    AL/5gskzWmXh0LMBcxfAyMVpdwAAAZhyhucKAAAEAwBHMEUCIQDDzkzyyICB3ZZW
+    rfJ7nm0uWhWQl20j7zK3tzK8z/98gQIgGo7iG5iqHDG8UK5u5VruC84LVbAa+zBz
+    PLTebiIE9YoAdgDCMX5XRRmjRe5/ON6ykEHrx8IhWiK/f9W1rXaa2Q5SzQAAAZhy
+    hudGAAAEAwBHMEUCIQDGiE0ap+d41T1CnVB5ufCbKGv204BYN0riOzuXnEK/jgIg
+    ayVlYYhcz7lfFr6zgXDAjvUmOLyO4rYYf+NoTBj8R4IAdwCUTkOH+uzB74HzGSQm
+    qBhlAcfTXzgCAT9yZ31VNy4Z2AAAAZhyhudYAAAEAwBIMEYCIQC+1zrqWF0MjBXu
+    HXfC4LGfxqndvGE8Ju8TWpf6PjrR0gIhAOwh7nXIgjH0HOhHPuynd9S0eO0rXzxs
+    S84VqhRZAuClMA0GCSqGSIb3DQEBCwUAA4IBAQAR/Jx8tluSbTiZvckXDz75UGR6
+    r3EDPmOu6va3m/5P/1G9l2OLv+VoZ9LVdAIi3GZFhKawZ8ayjN1P0la2E6nV3AUX
+    PYYommMxmjW9q8/F1E+uk7kkkr1LJwYEUvLUqPOPA92C5nggFziIViaIP7QdWcbv
+    YFP7lxIdx2bsqgqBq2TlAMczCOlyPLbXengcOxerLaKiJwVouT8YRoCwv2BrzEZc
+    FZ7pD+e8GgZnvj+fkqArMj/FrIzkmcDDKVknd09aEYFVD8QtfcKLmsgwjhV0yTzp
+    4f2BGXNOX9qT+j+mn+DGEP5/NnhQ+SzG1GJfMDqH2tyne37ztDR3v7oXtmLE
+    -----END CERTIFICATE-----
+
+secrets:
+  operator:
+    apiKey: "your-api-key"
+    portalUrl: "https://portal.datafold.com"
+  database:
+    encryptionKey: "your-database-encryption-key"
+  installMePassword: "your-install-password"
+  postgres:
+    user: datafold
+    database: datafold
+    password: "your-postgres-password"
+    ro_user: datafold_ro
+    ro_password: "your-postgres-ro-password"
+    datadog_password: "your-postgres-monitoring-password"
+  clickhouse:
+    user: default
+    password: "your-clickhouse-password"
+  redis:
+    password: "your-redis-password"
+  mail:
+    server: email-smtp.us-west-2.amazonaws.com
+    defaultSender: noreply@datafold.com
+    username: "your-smtp-username"
+    password: "your-email-password"
+  datadog:
+    apiKey: "your-datadog-api-key"
+    clientToken: "your-datadog-client-token"
+    applicationId: "your-datadog-application-id"
+  freshpaint:
+    url: "https://api.perfalytics.com/track"
+    frontendToken: "your-frontend-token"
+    backendToken: "your-backend-token"
+    avoToken: "your-avo-token"
+
+config:
+  monitoringProvider: datadog
+
+datadog:
+  apm: false
+  monitorPostgres: true
+  npm:
+    enabled: true
+    dnsstats: true
+  clientToken: "your-datadog-client-token"
+  applicationId: "your-datadog-application-id"
+
+operator:
+  install: true
+  replicaCount: 1
+  image:
+    tag: "1.2.9"
+  resources:
+    limits:
+      cpu: "500m"
+      memory: "1Gi"
+    requests:
+      cpu: "250m"
+      memory: "512Mi"
+  serviceAccount:
+    name: datafold-operator
+    roleArn: "arn:aws:iam::123456789012:role/datafold-operator"
+
+nginx:
+  install: true
+  replicaCount: 2
+  resources:
+    limits:
+      cpu: "1000m"
+      memory: "1Gi"
+    requests:
+      cpu: "500m"
+      memory: "512Mi"
+  ingress:
+    deploy: true
+    internal: false
+    sslCertificate: "arn:aws:acm:us-west-2:123456789012:certificate/your-certificate-id"
+    subnets: "subnet-12345678,subnet-87654321"
+    secgroups: "sg-12345678,sg-87654321"
+  service:
+    loadBalancerIps:
+      - "10.0.1.100"
+      - "10.0.1.101"
+
+dfshell:
+  install: true
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: "500m"
+      memory: "1Gi"
+    requests:
+      cpu: "250m"
+      memory: "512Mi"
+  serviceAccount:
+    name: datafold-dfshell
+    roleArn: "arn:aws:iam::123456789012:role/datafold-dfshell"
+
+server:
+  install: true
+  replicaCount: 2
+  resources:
+    limits:
+      cpu: "2000m"
+      memory: "4Gi"
+    requests:
+      cpu: "1000m"
+      memory: "2Gi"
+  serviceAccount:
+    name: datafold-server
+    roleArn: "arn:aws:iam::123456789012:role/datafold-server"
+
+worker:
+  install: true
+  replicaCount: 3
+  resources:
+    limits:
+      cpu: "2000m"
+      memory: "4Gi"
+    requests:
+      cpu: "1000m"
+      memory: "2Gi"
+  serviceAccount:
+    name: datafold-worker
+    roleArn: "arn:aws:iam::123456789012:role/datafold-worker"
+  worker:
+    count: 2
+    memory: "2000000"
+
+worker2:
+  install: true
+  replicaCount: 2
+  resources:
+    limits:
+      cpu: "2000m"
+      memory: "4Gi"
+    requests:
+      cpu: "1000m"
+      memory: "2Gi"
+  serviceAccount:
+    name: datafold-worker2
+    roleArn: "arn:aws:iam::123456789012:role/datafold-worker2"
+
+worker3:
+  install: true
+  replicaCount: 2
+  resources:
+    limits:
+      cpu: "2000m"
+      memory: "4Gi"
+    requests:
+      cpu: "1000m"
+      memory: "2Gi"
+  serviceAccount:
+    name: datafold-worker3
+    roleArn: "arn:aws:iam::123456789012:role/datafold-worker3"
+
+worker-catalog:
+  install: true
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: "1000m"
+      memory: "2Gi"
+    requests:
+      cpu: "500m"
+      memory: "1Gi"
+  serviceAccount:
+    name: datafold-worker-catalog
+    roleArn: "arn:aws:iam::123456789012:role/datafold-worker-catalog"
+
+worker-interactive:
+  install: true
+  replicaCount: 2
+  resources:
+    limits:
+      cpu: "2000m"
+      memory: "4Gi"
+    requests:
+      cpu: "1000m"
+      memory: "2Gi"
+  serviceAccount:
+    name: datafold-worker-interactive
+    roleArn: "arn:aws:iam::123456789012:role/datafold-worker-interactive"
+
+worker-singletons:
+  install: true
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: "1000m"
+      memory: "2Gi"
+    requests:
+      cpu: "500m"
+      memory: "1Gi"
+  serviceAccount:
+    name: datafold-worker-singletons
+    roleArn: "arn:aws:iam::123456789012:role/datafold-worker-singletons"
+
+worker-lineage:
+  install: true
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: "1000m"
+      memory: "2Gi"
+    requests:
+      cpu: "500m"
+      memory: "1Gi"
+  serviceAccount:
+    name: datafold-worker-lineage
+    roleArn: "arn:aws:iam::123456789012:role/datafold-worker-lineage"
+
+worker-temporal:
+  install: true
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: "1000m"
+      memory: "2Gi"
+    requests:
+      cpu: "500m"
+      memory: "1Gi"
+  serviceAccount:
+    name: datafold-worker-temporal
+    roleArn: "arn:aws:iam::123456789012:role/datafold-worker-temporal"
+
+worker-compute:
+  install: true
+  replicaCount: 1
+  extraEnv:
+    - name: TEMPORAL_TASK_QUEUES
+      value: "datadiff,translation"
+  resources:
+    limits:
+      memory: "4Gi"
+    requests:
+      cpu: "500m"
+      memory: "4Gi"
+
+worker-highmem:
+  install: true
+  replicaCount: 1
+  extraEnv:
+    - name: TEMPORAL_TASK_QUEUES
+      value: "lineage,catalog"
+  resources:
+    limits:
+      memory: "20Gi"
+    requests:
+      cpu: "100m"
+      memory: "20Gi"
+
+worker-realtime:
+  install: true
+  replicaCount: 1
+  extraEnv:
+    - name: TEMPORAL_TASK_QUEUES
+      value: "interactive,api"
+  resources:
+    limits:
+      memory: "4Gi"
+    requests:
+      cpu: "200m"
+      memory: "4Gi"
+
+worker-storage:
+  install: true
+  replicaCount: 1
+  extraEnv:
+    - name: TEMPORAL_TASK_QUEUES
+      value: "localstorage,replication"
+  storage:
+    enabled: true
+    dataSize: "100Gi"
+  resources:
+    limits:
+      memory: "15Gi"
+    requests:
+      cpu: "100m"
+      memory: "15Gi"
+
+worker-storage-high:
+  install: true
+  replicaCount: 1
+  extraEnv:
+    - name: TEMPORAL_TASK_QUEUES
+      value: "localstorage-large"
+  storage:
+    enabled: true
+    dataSize: "100Gi"
+  resources:
+    limits:
+      memory: "30Gi"
+    requests:
+      cpu: "100m"
+      memory: "30Gi"
+
+worker-monitor:
+  install: true
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: "1000m"
+      memory: "2Gi"
+    requests:
+      cpu: "500m"
+      memory: "1Gi"
+  serviceAccount:
+    name: datafold-worker-monitor
+    roleArn: "arn:aws:iam::123456789012:role/datafold-worker-monitor"
+  worker:
+    queues: "alerts"
+    count: 4
+    memory: "2000000"
+
+clickhouse:
+  install: true
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: "4000m"
+      memory: "8Gi"
+    requests:
+      cpu: "2000m"
+      memory: "4Gi"
+  config:
+    s3_bucket: "datafold-clickhouse-backups"
+    s3_region: "us-west-2"
+    s3_backup_role: "arn:aws:iam::123456789012:role/datafold-clickhouse-backup"
+  storage:
+    dataSize: 500
+    dataVolumeId: "vol-12345678"
+    logSize: 100
+    logVolumeId: "vol-87654321"
+
+redis:
+  install: true
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: "1000m"
+      memory: "2Gi"
+    requests:
+      cpu: "500m"
+      memory: "1Gi"
+  storage:
+    dataSize: 100
+    dataVolumeId: "vol-11223344"
+
+scheduler:
+  install: true
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: "1000m"
+      memory: "2Gi"
+    requests:
+      cpu: "500m"
+      memory: "1Gi"
+  serviceAccount:
+    name: datafold-scheduler
+    roleArn: "arn:aws:iam::123456789012:role/datafold-scheduler"
+
+storage-worker:
+  install: true
+  replicaCount: 2
+  resources:
+    limits:
+      cpu: "2000m"
+      memory: "4Gi"
+    requests:
+      cpu: "1000m"
+      memory: "2Gi"
+  serviceAccount:
+    name: datafold-storage-worker
+    roleArn: "arn:aws:iam::123456789012:role/datafold-storage-worker"
+  worker:
+    tasks: 1
+    count: 1
+    tasks_ack_late: "true"
+  storage:
+    dataSize: 200

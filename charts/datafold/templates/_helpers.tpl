@@ -146,6 +146,21 @@ Name of the datafold configmap location
 {{- end -}}
 
 {{/*
+Name of the Temporal payload-encryption keys secret (helm-managed)
+*/}}
+{{- define "datafold.temporal.encryptionSecret" -}}
+{{- printf "%s-temporal-encryption-keys" .Release.Name | trunc 63 | trimSuffix "-" }}
+{{- end -}}
+
+{{/*
+Resolved name of the Temporal encryption keys secret to mount.
+Returns externalSecretName when set, otherwise the helm-managed secret name.
+*/}}
+{{- define "datafold.temporal.encryptionSecretName" -}}
+{{- .Values.global.temporal.encryption.externalSecretName | default (include "datafold.temporal.encryptionSecret" .) }}
+{{- end -}}
+
+{{/*
 The deployment tag to use
 */}}
 {{- define "datafold.deployment.name" -}}
