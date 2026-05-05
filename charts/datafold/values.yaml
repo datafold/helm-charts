@@ -230,20 +230,6 @@ toplevel:
   labels: {}
   annotations: {}
 
-worker-temporal:
-  install: false
-  replicaCount: 0
-  terminationGracePeriodSeconds: "30"
-  temporal:
-    taskQueues: "all"
-    workerPoolType: "thread"
-  resources:
-    limits:
-      memory: 4Gi
-    requests:
-      cpu: 500m
-      memory: 4Gi
-
 worker-io:
   install: true
   replicaCount: 0
@@ -333,6 +319,22 @@ worker-storage-high:
     requests:
       cpu: 100m
       memory: 30Gi
+
+worker-monitors:
+  install: true
+  replicaCount: 0
+  terminationGracePeriodSeconds: "30"
+  temporal:
+    taskQueues: "monitors"
+    workerPoolType: "process"
+  keda:
+    minReplicas: 0
+  resources:
+    limits:
+      memory: 15Gi
+    requests:
+      cpu: 200m
+      memory: 15Gi
 
 worker:
   install: true
