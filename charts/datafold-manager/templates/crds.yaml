@@ -3699,9 +3699,9 @@ spec:
                     description: DatafoldRepository specifies the Docker repository
                       for Datafold images
                     type: string
-                  datafoldVersion:
+                  datafoldVersionOverride:
                     description: |-
-                      DatafoldVersion pins the Datafold image tag explicitly.
+                      DatafoldVersionOverride pins the Datafold image tag explicitly.
                       When set, the portal is not contacted and the running server version is not read.
                       Use this to lock a specific release or when running custom/scanned images.
                     type: string

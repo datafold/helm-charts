@@ -19,6 +19,7 @@ global:
   datafoldRepository: "us-docker.pkg.dev/datadiff-mm/datafold"
   datafoldImage: "server"
   shellRepository: "us-docker.pkg.dev/datadiff-mm/datafold"
+  datafoldVersionOverride: ""
   optional:
     intercom: "false"
     pylon: "false"
