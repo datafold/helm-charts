@@ -80,6 +80,10 @@ spec:
                 secretKeyRef:
                   name: {{ include "datafold.secrets" . }}
                   key: PORTAL_URL
+            {{- if .Values.global.datafoldVersionOverride }}
+            - name: DATAFOLD_VERSION_OVERRIDE
+              value: {{ .Values.global.datafoldVersionOverride | quote }}
+            {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           {{- with .Values.volumeMounts }}
