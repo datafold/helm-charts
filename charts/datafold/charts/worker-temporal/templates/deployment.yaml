@@ -103,35 +103,14 @@ spec:
             - name: TEMPORAL_METRICS_BIND_ADDRESS
               value: "0.0.0.0:{{ .Values.metrics.port }}"
             {{- end }}
-            {{- if .Values.health.enabled }}
-            - name: TEMPORAL_HEALTH_PORT
-              value: {{ .Values.health.port | quote }}
-            {{- end }}
             {{- with .Values.extraEnv }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
-          {{- if or .Values.metrics.enabled .Values.health.enabled }}
+          {{- if .Values.metrics.enabled }}
           ports:
-            {{- if .Values.metrics.enabled }}
             - name: metrics
               containerPort: {{ .Values.metrics.port }}
               protocol: TCP
-            {{- end }}
-            {{- if .Values.health.enabled }}
-            - name: health
-              containerPort: {{ .Values.health.port }}
-              protocol: TCP
-            {{- end }}
-          {{- end }}
-          {{- if .Values.health.enabled }}
-          livenessProbe:
-            httpGet:
-              path: /
-              port: {{ .Values.health.port }}
-            initialDelaySeconds: {{ .Values.health.livenessProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.health.livenessProbe.periodSeconds }}
-            failureThreshold: {{ .Values.health.livenessProbe.failureThreshold }}
-            timeoutSeconds: {{ .Values.health.livenessProbe.timeoutSeconds }}
           {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
