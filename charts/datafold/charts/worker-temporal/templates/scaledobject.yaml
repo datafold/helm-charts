@@ -28,7 +28,7 @@ spec:
     {{- end }}
     scalingModifiers:
       formula: {{ $formula | quote }}
-      target: {{ .Values.keda.targetQueueSize | quote }}
+      target: {{ .Values.temporal.maxConcurrency | quote }}
       metricType: AverageValue
     {{- end }}
   triggers:
@@ -46,7 +46,7 @@ spec:
         namespace: {{ $.Release.Namespace | quote }}
         taskQueue: {{ $queueName | quote }}
         endpoint: {{ (($.Values.global).temporal).address | quote }}
-        targetQueueSize: {{ $.Values.keda.targetQueueSize | quote }}
+        targetQueueSize: {{ $.Values.temporal.maxConcurrency | quote }}
         activationTargetQueueSize: {{ $.Values.keda.activationTargetQueueSize | quote }}
   {{- end }}
 {{- end }}
