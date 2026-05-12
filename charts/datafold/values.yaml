@@ -237,15 +237,16 @@ worker-io:
   terminationGracePeriodSeconds: "30"
   temporal:
     taskQueues: "io"
+    maxConcurrency: "20"
     workerPoolType: "thread"
   keda:
     minReplicas: 0
   resources:
     limits:
-      memory: 4Gi
+      memory: 6Gi
     requests:
       cpu: 500m
-      memory: 4Gi
+      memory: 6Gi
 
 worker-compute:
   install: true
