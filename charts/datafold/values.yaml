@@ -338,6 +338,22 @@ worker-monitors:
       cpu: 200m
       memory: 15Gi
 
+worker-thunderbolt:
+  install: true
+  replicaCount: 0
+  terminationGracePeriodSeconds: "30"
+  temporal:
+    taskQueues: "thunderbolt"
+    workerPoolType: "process"
+  keda:
+    minReplicas: 0
+  resources:
+    limits:
+      memory: 6Gi
+    requests:
+      cpu: 200m
+      memory: 6Gi
+
 worker:
   install: true
   replicaCount: 1
