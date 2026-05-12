@@ -62,7 +62,6 @@ keda:
   maxReplicas: 10
   pollingInterval: 30
   cooldownPeriod: 300
-  targetQueueSize: "5"
   activationTargetQueueSize: "0"
   scaleDown:
     stabilizationWindowSeconds: 300
