@@ -76,6 +76,20 @@ metrics:
   enabled: true
   port: 9090
 
+health:
+  # Enables the HTTP liveness probe endpoint (TEMPORAL_HEALTH_PORT).
+  # When the activity executor becomes broken the endpoint returns 503, which
+  # triggers K8s to send SIGTERM and schedule a replacement pod immediately.
+  # The old pod continues draining within terminationGracePeriodSeconds so
+  # in-flight work on healthy threads can still complete.
+  enabled: true
+  port: 8091
+  livenessProbe:
+    initialDelaySeconds: 30
+    periodSeconds: 15
+    failureThreshold: 4
+    timeoutSeconds: 5
+
 extraEnv: []
 
 volumes: []
