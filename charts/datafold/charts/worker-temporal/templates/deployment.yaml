@@ -103,14 +103,35 @@ spec:
             - name: TEMPORAL_METRICS_BIND_ADDRESS
               value: "0.0.0.0:{{ .Values.metrics.port }}"
             {{- end }}
+            {{- if .Values.liveness.enabled }}
+            - name: TEMPORAL_LIVENESS_PORT
+              value: {{ .Values.liveness.port | quote }}
+            {{- end }}
             {{- with .Values.extraEnv }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
-          {{- if .Values.metrics.enabled }}
+          {{- if or .Values.metrics.enabled .Values.liveness.enabled }}
           ports:
+            {{- if .Values.metrics.enabled }}
             - name: metrics
               containerPort: {{ .Values.metrics.port }}
               protocol: TCP
+            {{- end }}
+            {{- if .Values.liveness.enabled }}
+            - name: liveness
+              containerPort: {{ .Values.liveness.port }}
+              protocol: TCP
+            {{- end }}
+          {{- end }}
+          {{- if .Values.liveness.enabled }}
+          livenessProbe:
+            httpGet:
+              path: /livez
+              port: {{ .Values.liveness.port }}
+            initialDelaySeconds: {{ .Values.liveness.initialDelaySeconds }}
+            periodSeconds: {{ .Values.liveness.periodSeconds }}
+            failureThreshold: {{ .Values.liveness.failureThreshold }}
+            timeoutSeconds: {{ .Values.liveness.timeoutSeconds }}
           {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
