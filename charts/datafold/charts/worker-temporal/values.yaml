@@ -76,6 +76,17 @@ metrics:
   enabled: true
   port: 9090
 
+liveness:
+  # Starts a lightweight HTTP server inside the worker and wires up a K8s
+  # livenessProbe against /livez. The probe returns 503 when any Temporal worker
+  # stops running, a fatal error is raised, or the process pool becomes broken.
+  enabled: true
+  port: 8091
+  initialDelaySeconds: 60
+  periodSeconds: 20
+  failureThreshold: 3
+  timeoutSeconds: 5
+
 extraEnv: []
 
 volumes: []
