@@ -341,10 +341,11 @@ worker-monitors:
 worker-thunderbolt:
   install: true
   replicaCount: 0
-  terminationGracePeriodSeconds: "30"
+  terminationGracePeriodSeconds: "1800"
   temporal:
     taskQueues: "thunderbolt"
     workerPoolType: "thread"
+    gracefulShutdownTimeout: "1800"
   keda:
     minReplicas: 0
   resources:
