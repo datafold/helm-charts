@@ -99,6 +99,10 @@ spec:
             - name: DATAFOLD_WORKER_POOL_TYPE
               value: {{ .Values.temporal.workerPoolType | quote }}
             {{- end }}
+            {{- if .Values.temporal.gracefulShutdownTimeout }}
+            - name: TEMPORAL_GRACEFUL_SHUTDOWN_TIMEOUT
+              value: {{ .Values.temporal.gracefulShutdownTimeout | quote }}
+            {{- end }}
             {{- if .Values.metrics.enabled }}
             - name: TEMPORAL_METRICS_BIND_ADDRESS
               value: "0.0.0.0:{{ .Values.metrics.port }}"

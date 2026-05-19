@@ -55,6 +55,8 @@ temporal:
   maxConcurrency: "5"
   # workerPoolType sets DATAFOLD_WORKER_POOL_TYPE. Leave empty for the default pool type.
   workerPoolType: "thread"
+  # gracefulShutdownTimeout sets TEMPORAL_GRACEFUL_SHUTDOWN_TIMEOUT. Must be ≤ terminationGracePeriodSeconds. Empty leaves it unset.
+  gracefulShutdownTimeout: ""
 
 keda:
   enabled: false
