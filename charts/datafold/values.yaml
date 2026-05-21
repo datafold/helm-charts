@@ -274,22 +274,6 @@ worker-highmem:
       cpu: 100m
       memory: 25Gi
 
-worker-realtime:
-  install: true
-  replicaCount: 0
-  terminationGracePeriodSeconds: "30"
-  temporal:
-    taskQueues: "realtime"
-    workerPoolType: "thread"
-  keda:
-    minReplicas: 0
-  resources:
-    limits:
-      memory: 4Gi
-    requests:
-      cpu: 200m
-      memory: 4Gi
-
 worker-storage:
   install: true
   terminationGracePeriodSeconds: "18000"
