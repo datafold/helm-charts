@@ -8,7 +8,8 @@ Datafold application with Temporal. Each step depends on the previous one.
 | 1 | PostgreSQL | [Managed RDS / Cloud SQL / Azure DB](postgres-rds.md) or [Zalando in-cluster](postgres-zalando.md) |
 | 2 | Temporal server | [Temporal Helm chart installation](temporal-install.md) |
 | 3 | KEDA | [KEDA installation](keda.md) |
-| 4 | Datafold application | [Deploy with Operator](deploy-operator.md) or [Deploy with Helm](deploy-helm.md) |
+| 4 | Datafold operator | Install `datafold-manager` chart — see [Deploy with Operator](deploy-operator.md) Steps 2–3 |
+| 5 | Datafold application | Apply `DatafoldApplication` CR — see [Deploy with Operator](deploy-operator.md) Steps 4–5, or [Deploy with Helm](deploy-helm.md) |
 
 ---
 

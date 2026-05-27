@@ -69,7 +69,7 @@ global:
   temporalAddress: "temporal-frontend.temporal.svc.cluster.local:7233"
 ```
 
-See the [self-hosted example CR](../examples/acme-selfhosted-temporal.yaml)
+See the [self-hosted example CR](../examples/operator/acme-selfhosted-temporal.yaml)
 for a full working configuration.
 
 ---
@@ -104,7 +104,7 @@ global:
             keyName: temporalEncryptionKeyV0
 ```
 
-See the [Temporal Cloud example CR](../examples/acme-temporal-cloud.yaml)
+See the [Temporal Cloud example CR](../examples/operator/acme-temporal-cloud.yaml)
 for a full working configuration, and
 [temporal-cloud-encryption.md](temporal-cloud-encryption.md) for custom codec
 (e.g. KMS) setup.

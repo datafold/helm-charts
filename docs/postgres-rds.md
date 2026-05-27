@@ -17,7 +17,7 @@ without additional Kubernetes operators.
 - **Version:** PostgreSQL 17
 - **Network:** reachable from the Kubernetes cluster on port 5432 (same VPC or peered VPC)
 - **Sizing:** `db.t3.medium` (2 vCPU / 4 GiB) or equivalent — adequate for the expected Datafold workload
-- **Storage:** 20 GiB with autoscaling enabled
+- **Storage:** 50 GiB with autoscaling enabled
 
 ---
 
@@ -33,7 +33,7 @@ aws rds create-db-instance \
   --engine-version "17" \
   --master-username postgres \
   --master-user-password <MASTER_PASSWORD> \
-  --allocated-storage 20 \
+  --allocated-storage 50 \
   --storage-type gp3 \
   --storage-encrypted \
   --vpc-security-group-ids <SECURITY_GROUP_ID> \
@@ -90,7 +90,7 @@ az postgres flexible-server create \
   --sku-name Standard_D2s_v3 \
   --tier GeneralPurpose \
   --version 17 \
-  --storage-size 32 \
+  --storage-size 51200 \
   --vnet <VNET_NAME> \
   --subnet <SUBNET_NAME> \
   --admin-user postgres \

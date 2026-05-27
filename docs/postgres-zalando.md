@@ -174,7 +174,7 @@ spec:
   teamId: "datafold"
 
   volume:
-    size: 20Gi
+    size: 50Gi
     storageClass: <STORAGE_CLASS>
 
   numberOfInstances: 1
@@ -215,8 +215,9 @@ The operator creates a Kubernetes Secret for the database user:
 |------|-------------|
 | `temporal` | `temporal.temporal-database.credentials.postgresql.acid.zalan.do` |
 
-**Volume sizing:** 20 GiB is adequate. Temporal's database usage scales with
-open (in-flight) workflows, not the total count of completed workflows.
+**Volume sizing:** 50 GiB is recommended. At 15-day retention the Temporal
+databases (`temporal` + `temporal_visibility`) grow in proportion to workflow
+throughput — 50 GiB provides headroom for typical production workloads.
 
 ### Verify Backup
 
