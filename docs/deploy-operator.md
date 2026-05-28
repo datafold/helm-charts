@@ -5,31 +5,76 @@ The Datafold operator manages the full application lifecycle via a
 validates it against a strict schema, deploys all components, and continuously
 reconciles the cluster to match your declared state.
 
-Complete [prerequisites](prerequisites.md) before starting.
-
 > **Note:** This guide covers new Temporal-based deployments. Migrating an
 > existing Celery-based deployment to Temporal is a separate process not
 > covered here.
 
 ---
 
-## Step 1: Choose Your Temporal Hosting
+## Step 1: Install Temporal
 
-Read [temporal-hosting.md](temporal-hosting.md) to decide between:
-
-- **Self-hosted Temporal** — running inside your cluster (deployed as part of the prerequisites)
-- **Temporal Cloud** — managed by Temporal Inc., with API key auth and payload encryption
-
-Your choice determines which fields to set in the CR.
+Follow the [Temporal hosting guide](temporal-hosting.md) to choose between
+self-hosted and Temporal Cloud, then complete the installation before
+continuing. Your choice determines which fields to set in Step 4.
 
 ---
 
-## Step 2: Apply the DatafoldApplication CR
+## Step 2: Install the Datafold Operator
+
+### Add the Helm repository
+
+```bash
+helm repo add datafold https://datafold.github.io/helm-charts
+helm repo update
+```
+
+### Create the image pull secret
+
+The operator image is hosted in a private Google Artifact Registry. Datafold
+provides a `datafold-docker-secret.yaml` manifest as part of the customer
+onboarding package. Apply it to the namespace where Datafold will be deployed
+before installing the chart:
+
+```bash
+kubectl apply -f datafold-docker-secret.yaml -n <YOUR_NAMESPACE>
+```
+
+### Install the chart
+
+```bash
+helm upgrade --install datafold-manager datafold/datafold-manager \
+  --namespace <YOUR_NAMESPACE> \
+  --version <CHART_VERSION>
+```
+
+Verify the operator pod is running before continuing:
+
+```bash
+kubectl get pods -n <YOUR_NAMESPACE> -l app.kubernetes.io/name=datafold-manager
+```
+
+---
+
+## Step 3: Apply the Operator Secrets
+
+The `DatafoldApplication` CR references a single Kubernetes Secret
+(`datafold-operator-secrets` by convention) that holds all sensitive values.
+Datafold provides a pre-populated `datafold-operator-secrets.yaml` manifest as
+part of the customer onboarding package. Apply it to the same namespace as the
+operator:
+
+```bash
+kubectl apply -f datafold-operator-secrets.yaml -n <YOUR_NAMESPACE>
+```
+
+---
+
+## Step 4: Configure the DatafoldApplication CR
 
 ### Self-Hosted Temporal
 
 Use the annotated example as your starting point:
-[`acme-selfhosted-temporal.yaml`](../examples/acme-selfhosted-temporal.yaml)
+[`acme-selfhosted-temporal.yaml`](../examples/operator/acme-selfhosted-temporal.yaml)
 
 Key fields for self-hosted Temporal:
 
@@ -76,7 +121,7 @@ All Temporal workers are enabled and scaled by KEDA:
 ### Temporal Cloud — Built-in Encryption
 
 Use the annotated example as your starting point:
-[`acme-temporal-cloud.yaml`](../examples/acme-temporal-cloud.yaml)
+[`acme-temporal-cloud.yaml`](../examples/operator/acme-temporal-cloud.yaml)
 
 Key fields for Temporal Cloud:
 
@@ -117,7 +162,7 @@ Store it in the secret referenced by `valueSecret`.
 If you need to integrate with AWS KMS or another external key provider, supply
 a custom Python codec class. See:
 
-- Example CR: [`acme-temporal-cloud-custom-codec.yaml`](../examples/acme-temporal-cloud-custom-codec.yaml)
+- Example CR: [`acme-temporal-cloud-custom-codec.yaml`](../examples/operator/acme-temporal-cloud-custom-codec.yaml)
 - Codec implementation guide: [temporal-cloud-encryption.md](temporal-cloud-encryption.md)
 
 ```yaml
@@ -134,7 +179,7 @@ spec:
 
 ---
 
-## Step 3: Apply the CR
+## Step 5: Apply the CR
 
 ```bash
 kubectl apply -f acme-selfhosted-temporal.yaml
@@ -172,5 +217,6 @@ workflow to see them scale up.
 
 | Placeholder | Description | Example |
 |-------------|-------------|---------|
-| `<CLOUD_NAMESPACE>` | Temporal Cloud namespace identifier | `acme-datafold.abc123` |
 | `<YOUR_NAMESPACE>` | Kubernetes namespace for Datafold | `datafold`, `acme-datafold` |
+| `<CHART_VERSION>` | datafold-manager chart version to install | `0.1.105` |
+| `<CLOUD_NAMESPACE>` | Temporal Cloud namespace identifier | `acme-datafold.abc123` |

@@ -203,11 +203,23 @@ kubectl exec -it deploy/temporal-admintools -n temporal -- \
   temporal operator namespace create \
     --address temporal-frontend:7233 \
     --namespace <DEPLOYMENT_NAME>-datafold \
-    --retention 72h
+    --retention 360h
 ```
 
 The `--retention` flag controls how long completed workflow history is kept.
-72 hours is a reasonable default for debugging.
+360 hours (15 days) balances storage cost against the ability to inspect
+completed workflow runs.
+
+To update the retention on an **existing** namespace (e.g. after changing this
+setting post-install), use `update` instead of `create`:
+
+```bash
+kubectl exec -it deploy/temporal-admintools -n temporal -- \
+  temporal operator namespace update \
+    --address temporal-frontend:7233 \
+    --namespace <DEPLOYMENT_NAME>-datafold \
+    --retention 360h
+```
 
 After creation, the namespace persists in Temporal's PostgreSQL database.
 Datafold workers connect to this namespace — they do not create it themselves.
