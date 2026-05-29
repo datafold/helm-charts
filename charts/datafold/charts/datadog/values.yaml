@@ -49,6 +49,11 @@ configuration:
     enabled: "true"
     hostPortConfig: "true"
     tagCardinality: "low"
+  # Tag cardinality for Autodiscovery/integration checks (DD_CHECKS_TAG_CARDINALITY).
+  # "low" trims higher-cardinality orchestrator tags (e.g. pod_name, kube_replica_set)
+  # that the tagger would otherwise attach to scraped metrics such as temporal_worker.*.
+  # dogstatsd.tagCardinality above only governs DogStatsD metrics, so checks are set here.
+  checksTagCardinality: "low"
   monitorPostgres: false
   monitorKeda: false
   monitorTemporal: false
