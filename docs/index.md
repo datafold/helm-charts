@@ -7,6 +7,20 @@ on Kubernetes.
 
 ---
 
+## Before You Start
+
+Complete all [prerequisites](prerequisites.md) before deploying the Datafold
+application:
+
+1. **Temporal** — choose one:
+   - [Self-hosted Temporal](temporal-install.md) — requires you to also deploy
+     [PostgreSQL](postgres-rds.md) (managed) or [Zalando in-cluster](postgres-zalando.md)
+     as the Temporal backing database
+   - [Temporal Cloud](temporal-hosting.md) — fully managed; **no PostgreSQL deployment needed**
+2. **KEDA** — [required for worker autoscaling](keda.md)
+
+---
+
 ## Choose a Deployment Method
 
 There are two ways to deploy Datafold:
@@ -25,20 +39,6 @@ is kept in sync with what you declared.
 
 The direct Helm method is provided for environments where the operator cannot be
 used. It requires extra care to get values correct.
-
----
-
-## Before You Start
-
-Complete all [prerequisites](prerequisites.md) before deploying the Datafold
-application:
-
-1. **Temporal** — choose one:
-   - [Self-hosted Temporal](temporal-install.md) — requires you to also deploy
-     [PostgreSQL](postgres-rds.md) (managed) or [Zalando in-cluster](postgres-zalando.md)
-     as the Temporal backing database
-   - [Temporal Cloud](temporal-hosting.md) — fully managed; **no PostgreSQL deployment needed**
-2. **KEDA** — [required for worker autoscaling](keda.md)
 
 ---
 
