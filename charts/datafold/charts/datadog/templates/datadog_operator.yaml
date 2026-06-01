@@ -58,6 +58,8 @@ spec:
         name: src
     {{-  end }}
       env:
+        - name: DD_CHECKS_TAG_CARDINALITY
+          value: "{{ .Values.configuration.checksTagCardinality }}"
         - name: DD_SECRET_BACKEND_COMMAND
           value: "/readsecret_multiple_providers.sh"
         - name: DD_SECRET_BACKEND_ARGUMENTS

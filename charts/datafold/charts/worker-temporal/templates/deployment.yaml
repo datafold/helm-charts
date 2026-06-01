@@ -22,6 +22,36 @@ spec:
         {{- include "worker-temporal.datafold.annotations" . | nindent 8 }}
         {{- include "worker-temporal.datadog.annotations" . | nindent 8 }}
         {{- if .Values.metrics.enabled }}
+        # Keep Datadog custom-metric cardinality down for the Temporal SDK metrics.
+        # (Validated on the staging cluster — see notes per item.)
+        #
+        # 1. include_labels — allowlist of the only scraped SDK labels that any
+        #    Datadog monitor or the temporal dashboard actually queries: task_queue,
+        #    workflow_type, activity_type. Every other scraped label (operation,
+        #    namespace, service_name, version, ...) is dropped.
+        # 2. tag_by_endpoint=false — drops the `endpoint` tag
+        #    (http://<pod-ip>:9090/metrics), which is effectively per-pod cardinality.
+        # 3. exclude_metrics_by_labels — drops sticky task-queue samples at scrape
+        #    time. Every workflow worker creates a per-pod sticky queue
+        #    (task_queue="sticky.<pod>-worker-pod") that explodes task_queue
+        #    cardinality. It regex-matches the scraped label VALUE and drops the
+        #    whole sample; include_labels keeps the task_queue KEY but not its
+        #    values, so this value-level drop is still required. The real queues
+        #    (io, highmem, storage, storagehigh, monitors, ...) stay queryable.
+        #
+        # NOTE: ignore_tags does NOT work here — it only filters Autodiscovery/Tagger
+        # tags and the `tags` option, never labels scraped from the /metrics endpoint.
+        # Kubernetes tagger tags are trimmed separately at the agent via
+        # DD_CHECKS_TAG_CARDINALITY=low (DatadogAgent CR in the datadog chart,
+        # configuration.checksTagCardinality), which drops the higher-cardinality
+        # orchestrator tags (pod_name, kube_replica_set, ...).
+        #
+        # The host/cloud/node tag family (host, instance-id, availability-zone, aws_*,
+        # region, instance-type, image*, zone, kube_node, ...) is NOT removed by this
+        # config. `empty_default_hostname: true` would drop it, but it also strips the
+        # env/deployment DD_TAGS host tags (they piggyback on the host), so it must be
+        # paired with a check-level `tags: ["env:...","deployment:..."]` re-injection.
+        # Left off for now; add both together later, or use Metrics-without-Limits.
         ad.datadoghq.com/{{ .Chart.Name }}.checks: |
           {
             "openmetrics": {
@@ -29,17 +59,17 @@ spec:
                 "openmetrics_endpoint": "http://%%host%%:{{ .Values.metrics.port }}/metrics",
                 "namespace": "temporal_worker",
                 "metrics": ["temporal_.*"],
-                "labels_mapper": {
-                  "namespace":     "namespace",
-                  "task_queue":    "task_queue",
-                  "workflow_type": "workflow_type",
-                  "activity_type": "activity_type"
-                },
+                "tag_by_endpoint": false,
+                "include_labels": [
+                  "task_queue",
+                  "workflow_type",
+                  "activity_type"
+                ],
                 "collect_histogram_buckets": true,
                 "histogram_buckets_as_distributions": true,
-                "ignore_tags": [
-                  "task_queue:sticky\\..*"
-                ]
+                "exclude_metrics_by_labels": {
+                  "task_queue": ["^sticky\\."]
+                }
               }]
             }
           }
