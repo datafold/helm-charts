@@ -1,0 +1,177 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "worker-repo-mirror.fullname" . }}
+  labels:
+    {{- include "worker-repo-mirror.labels" . | nindent 4 }}
+    {{- with .Values.chartLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with .Values.chartAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  serviceName: {{ include "worker-repo-mirror.serviceName" . }}
+  replicas: {{ .Values.replicaCount }}
+  podManagementPolicy: OrderedReady
+  selector:
+    matchLabels:
+      {{- include "worker-repo-mirror.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      annotations:
+        {{- include "worker-repo-mirror.datafold.annotations" . | nindent 8 }}
+        {{- include "worker-repo-mirror.datadog.annotations" . | nindent 8 }}
+        {{- if .Values.metrics.enabled }}
+        # Datadog autodiscovery for Temporal SDK metrics. See
+        # worker-temporal/templates/deployment.yaml for the full rationale.
+        ad.datadoghq.com/{{ .Chart.Name }}.checks: |
+          {
+            "openmetrics": {
+              "instances": [{
+                "openmetrics_endpoint": "http://%%host%%:{{ .Values.metrics.port }}/metrics",
+                "namespace": "temporal_worker",
+                "metrics": ["temporal_.*"],
+                "tag_by_endpoint": false,
+                "include_labels": [
+                  "task_queue",
+                  "workflow_type",
+                  "activity_type"
+                ],
+                "collect_histogram_buckets": true,
+                "histogram_buckets_as_distributions": true,
+                "exclude_metrics_by_labels": {
+                  "task_queue": ["^sticky\\."]
+                }
+              }]
+            }
+          }
+        {{- end }}
+      labels:
+        {{- include "worker-repo-mirror.labels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "worker-repo-mirror.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
+      {{- with .Values.initContainers }}
+      initContainers:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.global.shellRepository }}/{{ .Values.global.datafoldImage }}:{{ .Values.global.datafoldVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            {{- toYaml .Values.command | nindent 12 }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "datafold.configmap" . }}
+            {{- if or .Values.global.temporal.encryption.keys .Values.global.temporal.encryption.externalSecretName }}
+            - secretRef:
+                name: {{ include "datafold.temporal.encryptionSecretName" . }}
+            {{- end }}
+          env:
+            {{ include "datafold.env" . | nindent 12 }}
+            - name: DATAFOLD_DATADOG_CLIENT_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "datafold.secrets" . }}
+                  key: DATAFOLD_DATADOG_CLIENT_TOKEN
+            - name: DATAFOLD_DATADOG_APPLICATION_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "datafold.secrets" . }}
+                  key: DATAFOLD_DATADOG_APPLICATION_ID
+            {{- if .Values.temporal.taskQueues }}
+            - name: TEMPORAL_TASK_QUEUES
+              value: {{ .Values.temporal.taskQueues | quote }}
+            {{- end }}
+            {{- if .Values.temporal.maxConcurrency }}
+            - name: TEMPORAL_MAX_CONCURRENCY
+              value: {{ .Values.temporal.maxConcurrency | quote }}
+            {{- end }}
+            {{- if .Values.temporal.workerPoolType }}
+            - name: DATAFOLD_WORKER_POOL_TYPE
+              value: {{ .Values.temporal.workerPoolType | quote }}
+            {{- end }}
+            {{- if .Values.temporal.gracefulShutdownTimeout }}
+            - name: TEMPORAL_GRACEFUL_SHUTDOWN_TIMEOUT
+              value: {{ .Values.temporal.gracefulShutdownTimeout | quote }}
+            {{- end }}
+            {{- if .Values.metrics.enabled }}
+            - name: TEMPORAL_METRICS_BIND_ADDRESS
+              value: "0.0.0.0:{{ .Values.metrics.port }}"
+            {{- end }}
+            {{- with .Values.extraEnv }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+          ports:
+            - name: git
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+            {{- if .Values.metrics.enabled }}
+            - name: metrics
+              containerPort: {{ .Values.metrics.port }}
+              protocol: TCP
+            {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: repos
+              mountPath: {{ .Values.storage.mountPath }}
+            {{- with .Values.volumeMounts }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+            {{- if .Values.global.temporal.encryption.customCodec.configMapName }}
+            - name: datafold-plugins
+              mountPath: /datafold/plugins
+              readOnly: true
+            {{- end }}
+      {{- if or .Values.volumes .Values.global.temporal.encryption.customCodec.configMapName }}
+      volumes:
+        {{- with .Values.volumes }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+        {{- if .Values.global.temporal.encryption.customCodec.configMapName }}
+        - name: datafold-plugins
+          configMap:
+            name: {{ .Values.global.temporal.encryption.customCodec.configMapName }}
+            items:
+              - key: {{ .Values.global.temporal.encryption.customCodec.fileName }}
+                path: {{ .Values.global.temporal.encryption.customCodec.fileName }}
+        {{- end }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+  volumeClaimTemplates:
+    - metadata:
+        name: repos
+        labels:
+          {{- include "worker-repo-mirror.labels" . | nindent 10 }}
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: {{ include "worker-repo-mirror.effectiveStorageClassName" . | quote }}
+        resources:
+          requests:
+            storage: {{ .Values.storage.dataSize | quote }}

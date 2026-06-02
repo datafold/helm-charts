@@ -1,0 +1,79 @@
+replicaCount: 1
+
+image:
+  pullPolicy: IfNotPresent
+  tag: ""
+
+imagePullSecrets:
+  - name: datafold-docker-secret
+
+nameOverride: ""
+fullnameOverride: ""
+
+terminationGracePeriodSeconds: "30"
+
+command:
+  - "repo_mirror_worker"
+
+serviceAccount:
+  create: false
+  automount: true
+  annotations: {}
+  roleArn: ""
+  name: "worker"
+
+podAnnotations: {}
+podLabels: {}
+
+chartLabels: {}
+chartAnnotations: {}
+
+podSecurityContext:
+  runAsUser: 1000
+  runAsNonRoot: true
+  fsGroup: 1000
+  fsGroupChangePolicy: "OnRootMismatch"
+
+securityContext:
+  allowPrivilegeEscalation: false
+
+storage:
+  dataSize: "32Gi"
+  # Empty falls back to global.temporal.storageClassName then to the
+  # chart default (see _helpers.tpl).
+  storageClass: ""
+  mountPath: "/repos"
+
+resources:
+  limits:
+    memory: 2Gi
+  requests:
+    cpu: 200m
+    memory: 2Gi
+
+temporal:
+  taskQueues: "repomirror"
+  maxConcurrency: "10"
+  workerPoolType: "thread"
+  # Must be ≤ terminationGracePeriodSeconds.
+  gracefulShutdownTimeout: "20"
+
+service:
+  type: ClusterIP
+  name: "repo-mirror"
+  port: 9418
+
+networkPolicy:
+  enabled: true
+
+metrics:
+  enabled: true
+  port: 9090
+
+extraEnv: []
+volumes: []
+volumeMounts: []
+nodeSelector: {}
+tolerations: []
+affinity: {}
+initContainers: []
