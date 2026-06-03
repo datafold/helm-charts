@@ -81,6 +81,9 @@ data:
 {{- if .Values.config.taskEngine }}
   DATAFOLD_TASK_ENGINE: "{{ .Values.config.taskEngine }}"
 {{- end }}
+{{- if .Values.config.ciRunMaxWaitHours }}
+  DATAFOLD_CI_RUN_MAX_WAIT_HOURS: "{{ .Values.config.ciRunMaxWaitHours }}"
+{{- end }}
 {{- if .Values.config.gitlabServer }}
   GITLAB_SERVER: "{{ .Values.config.gitlabServer }}"
 {{- end }}
