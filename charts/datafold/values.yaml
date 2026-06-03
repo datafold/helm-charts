@@ -179,6 +179,9 @@ config:
   customerAdaptation: ""
   temporalAddress: "temporal-frontend.temporal.svc.cluster.local:7233"
   taskEngine: "celery"
+  # Max time (in hours, float) a CI run waits for all diffs before timing out,
+  # e.g. "1.5" or "8". Leave empty to use the application default (4.0).
+  ciRunMaxWaitHours: ""
   customVars: []
 
 secrets:

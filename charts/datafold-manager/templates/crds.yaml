@@ -3662,6 +3662,11 @@ spec:
                 description: Global contains the core configuration for the Datafold
                   deployment
                 properties:
+                  ciRunMaxWaitHours:
+                    description: |-
+                      CiRunMaxWaitHours sets the maximum time (in hours) a CI run waits for all diffs before timing out.
+                      Maps to config.ciRunMaxWaitHours (DATAFOLD_CI_RUN_MAX_WAIT_HOURS) in the Helm chart.
+                    type: number
                   clusterName:
                     description: ClusterName specifies the name of the Kubernetes
                       cluster
