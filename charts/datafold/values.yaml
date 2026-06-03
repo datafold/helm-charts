@@ -237,7 +237,7 @@ toplevel:
 worker-io:
   install: true
   replicaCount: 0
-  terminationGracePeriodSeconds: "30"
+  terminationGracePeriodSeconds: "120"
   temporal:
     taskQueues: "io"
     maxConcurrency: "20"
