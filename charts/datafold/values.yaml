@@ -331,7 +331,7 @@ worker-thunderbolt:
   terminationGracePeriodSeconds: "1800"
   temporal:
     taskQueues: "thunderbolt"
-    workerPoolType: "thread"
+    workerPoolType: "process"
     gracefulShutdownTimeout: "1800"
   keda:
     minReplicas: 0
