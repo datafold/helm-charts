@@ -1,8 +1,20 @@
-replicaCount: 1
+replicaCount: 2
 image:
   repository: nginx
   pullPolicy: IfNotPresent
   tag: "1.24"
+
+# nginx is the only ingress path into the stack. Keep at least 2 replicas spread
+# across nodes so a single node going away (e.g. GKE node-pool upgrades) cannot
+# take the whole tenant down. See podDisruptionBudget / affinity / tolerations below.
+podDisruptionBudget:
+  enabled: true
+  # Allow at most one nginx replica to be unavailable during voluntary disruptions
+  # (node drains / upgrades), so the other keeps serving traffic.
+  # Set EITHER maxUnavailable OR minAvailable. If minAvailable is set (non-empty)
+  # it takes precedence; otherwise maxUnavailable is used. Left empty by default.
+  maxUnavailable: 1
+  minAvailable: ""
 
 imagePullSecrets:
 nameOverride: ""
@@ -64,6 +76,24 @@ volumeMounts: []
 
 nodeSelector: {}
 
-tolerations: []
+# Tolerate the dedicated ClickHouse node taint (clickhouse=reserved) so nginx can
+# also be scheduled onto that node. This widens the pool of nodes available to the
+# anti-affinity rule below, so the 2nd replica is always able to land on a separate
+# node even on small clusters.
+tolerations:
+  - key: clickhouse
+    operator: "Equal"
+    value: reserved
 
-affinity: {}
+# Require nginx replicas to land on different nodes (mirrors the server chart), so
+# losing a single node never removes the only ingress pod.
+affinity:
+  podAntiAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+            - key: app.kubernetes.io/name
+              operator: In
+              values:
+                - nginx
+        topologyKey: "kubernetes.io/hostname"
