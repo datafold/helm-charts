@@ -342,6 +342,9 @@ worker-thunderbolt:
       cpu: 200m
       memory: 6Gi
 
+worker-repo-mirror:
+  install: false
+
 worker:
   install: true
   replicaCount: 1

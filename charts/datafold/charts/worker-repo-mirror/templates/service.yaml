@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "worker-repo-mirror.serviceName" . }}
+  labels:
+    {{- include "worker-repo-mirror.labels" . | nindent 4 }}
+    {{- with .Values.chartLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with .Values.chartAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - name: git
+      port: {{ .Values.service.port }}
+      targetPort: git
+      protocol: TCP
+  selector:
+    {{- include "worker-repo-mirror.selectorLabels" . | nindent 4 }}

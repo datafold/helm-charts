@@ -2,7 +2,7 @@ apiVersion: v2
 name: datafold
 description: Helm chart package to deploy Datafold on kubernetes.
 type: application
-version: 0.10.96
+version: 0.10.97
 appVersion: "1.0.0"
 icon: https://www.datafold.com/logo.png
 
@@ -59,6 +59,10 @@ dependencies:
     repository: file://charts/worker-temporal
     condition: worker-thunderbolt.install
     alias: worker-thunderbolt
+  - name: worker-repo-mirror
+    version: "*.*.*"
+    repository: file://charts/worker-repo-mirror
+    condition: worker-repo-mirror.install
   - name: operator
     version: "*.*.*"
     repository: file://charts/operator
