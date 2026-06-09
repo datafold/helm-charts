@@ -23,3 +23,4 @@ spec:
     app.kubernetes.io/name: {{ include "nginx.name" . }}
   sessionAffinity: None
   type: {{ include "nginx.serviceType" . }}
+{{- include "nginx.externalTrafficPolicy" . | nindent 2 }}

@@ -250,3 +250,14 @@ NEG annotations for Google Cloud (in the service)
 nodePort: {{ .Values.service.nodePort }}
 {{- end }}
 {{- end }}
+
+{{/*
+externalTrafficPolicy for the nginx Service. AWS only: avoids a cross-node hop
+that the EKS node security group blocks, which causes ALB 504s with >1 replica.
+Invalid on the ClusterIP Services used by GCP/Azure.
+*/}}
+{{- define "nginx.externalTrafficPolicy" -}}
+{{- if (eq .Values.global.cloudProvider "aws") -}}
+externalTrafficPolicy: {{ .Values.service.externalTrafficPolicy | default "Local" }}
+{{- end }}
+{{- end }}
