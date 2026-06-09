@@ -25,6 +25,9 @@ service:
   typeOverride: ""
   nodePort: 31337
   loadBalancerIps: []
+  # AWS only. "Local" avoids the cross-node hop that causes ALB 504s with >1
+  # replica. Ignored on GCP/Azure. See "nginx.externalTrafficPolicy".
+  externalTrafficPolicy: "Local"
 
 ingress:
   deploy: false
