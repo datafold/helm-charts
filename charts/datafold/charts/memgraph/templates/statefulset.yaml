@@ -50,6 +50,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
             - "--storage-snapshot-on-exit=true"
+            - "--storage-snapshot-retention-count={{ .Values.snapshotRetentionCount }}"
             - "--log-level=WARNING"
             - "--also-log-to-stderr=true"
           ports:

@@ -9,6 +9,7 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 terminationGracePeriodSeconds: 60
+snapshotRetentionCount: 32
 
 storage:
   dataSize: 50Gi
