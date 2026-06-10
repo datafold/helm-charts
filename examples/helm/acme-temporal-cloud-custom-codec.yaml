@@ -163,18 +163,12 @@ worker-highmem:
     requests:
       memory: 20Gi
 
-worker-realtime:
+worker-monitors:
   install: true
-  replicaCount: 1
   keda:
     enabled: true
     minReplicas: 1
     maxReplicas: 5
-  resources:
-    limits:
-      memory: 4Gi
-    requests:
-      memory: 4Gi
 
 worker-storage:
   install: true

@@ -120,7 +120,7 @@ server:
     requests:
       memory: 4Gi
 
-# worker-io handles the datadiff task queue.
+# worker-io handles the io task queue (data diff I/O).
 # minReplicas: 1 keeps a warm replica for low-latency response to incoming diffs.
 worker-io:
   install: true
@@ -130,7 +130,7 @@ worker-io:
     minReplicas: 1
     maxReplicas: 10
 
-# worker-compute handles compute-heavy queues (datadiff, translation).
+# worker-compute handles the compute task queue (compute-heavy work).
 worker-compute:
   install: true
   keda:
@@ -143,7 +143,7 @@ worker-compute:
     requests:
       memory: 8Gi
 
-# worker-highmem handles lineage and catalog computations.
+# worker-highmem handles the highmem task queue (high-memory work).
 worker-highmem:
   install: true
   keda:
@@ -156,22 +156,15 @@ worker-highmem:
     requests:
       memory: 20Gi
 
-# worker-realtime handles interactive and API queues.
-# minReplicas: 1 ensures interactive requests are served without cold-start delay.
-worker-realtime:
+# worker-monitors handles the monitors task queue (monitor/alert runs).
+worker-monitors:
   install: true
-  replicaCount: 1
   keda:
     enabled: true
-    minReplicas: 1
+    minReplicas: 1        # keep one warm replica for scheduled monitor runs
     maxReplicas: 5
-  resources:
-    limits:
-      memory: 4Gi
-    requests:
-      memory: 4Gi
 
-# worker-storage handles local storage and replication queues.
+# worker-storage handles the storage task queue (local storage).
 worker-storage:
   install: true
   keda:
@@ -179,7 +172,7 @@ worker-storage:
     minReplicas: 0
     maxReplicas: 5
 
-# worker-storage-high handles the large localstorage queue.
+# worker-storage-high handles the storagehigh task queue (large local storage).
 worker-storage-high:
   install: true
   keda:

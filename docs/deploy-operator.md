@@ -86,33 +86,35 @@ spec:
     # Do not set global.temporal — that section is for Temporal Cloud only
 ```
 
-All Temporal workers are enabled and scaled by KEDA:
+All Temporal workers are enabled and scaled by KEDA. Each worker is preset to
+its own Temporal task queue in the chart (shown in parentheses) — you enable the
+worker and tune its KEDA bounds, not the queue:
 
 ```yaml
   components:
-    worker-io:
+    worker-io:            # io queue
       enabled: true
       keda:
         enabled: true
         minReplicas: 1     # keep one warm replica for low-latency response
-    worker-compute:
+    worker-monitors:      # monitors queue
+      enabled: true
+      keda:
+        enabled: true
+        minReplicas: 1     # keep one warm replica for scheduled monitor runs
+    worker-compute:       # compute queue
       enabled: true
       keda:
         enabled: true      # scales to zero when queues are empty
-    worker-highmem:
+    worker-highmem:       # highmem queue
       enabled: true
       keda:
         enabled: true
-    worker-realtime:
+    worker-storage:       # storage queue
       enabled: true
       keda:
         enabled: true
-        minReplicas: 1
-    worker-storage:
-      enabled: true
-      keda:
-        enabled: true
-    worker-storage-high:
+    worker-storage-high:  # storagehigh queue
       enabled: true
       keda:
         enabled: true

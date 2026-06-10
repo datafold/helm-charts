@@ -265,7 +265,11 @@ worker-lineage:
     name: datafold-worker-lineage
     roleArn: "arn:aws:iam::123456789012:role/datafold-worker-lineage"
 
-worker-temporal:
+# Each Temporal worker is preset to its own task queue in the chart (shown in
+# the comment) — do not override the queue. Tune resources and KEDA only.
+
+# worker-io handles the io task queue (data diff I/O).
+worker-io:
   install: true
   replicaCount: 1
   resources:
@@ -276,15 +280,13 @@ worker-temporal:
       cpu: "500m"
       memory: "1Gi"
   serviceAccount:
-    name: datafold-worker-temporal
-    roleArn: "arn:aws:iam::123456789012:role/datafold-worker-temporal"
+    name: datafold-worker-io
+    roleArn: "arn:aws:iam::123456789012:role/datafold-worker-io"
 
+# worker-compute handles the compute task queue (compute-heavy work).
 worker-compute:
   install: true
   replicaCount: 1
-  extraEnv:
-    - name: TEMPORAL_TASK_QUEUES
-      value: "datadiff,translation"
   resources:
     limits:
       memory: "4Gi"
@@ -292,12 +294,10 @@ worker-compute:
       cpu: "500m"
       memory: "4Gi"
 
+# worker-highmem handles the highmem task queue (high-memory work).
 worker-highmem:
   install: true
   replicaCount: 1
-  extraEnv:
-    - name: TEMPORAL_TASK_QUEUES
-      value: "lineage,catalog"
   resources:
     limits:
       memory: "20Gi"
@@ -305,25 +305,21 @@ worker-highmem:
       cpu: "100m"
       memory: "20Gi"
 
-worker-realtime:
+# worker-monitors handles the monitors task queue (monitor/alert runs).
+worker-monitors:
   install: true
   replicaCount: 1
-  extraEnv:
-    - name: TEMPORAL_TASK_QUEUES
-      value: "interactive,api"
   resources:
     limits:
-      memory: "4Gi"
+      memory: "15Gi"
     requests:
       cpu: "200m"
-      memory: "4Gi"
+      memory: "15Gi"
 
+# worker-storage handles the storage task queue (local storage).
 worker-storage:
   install: true
   replicaCount: 1
-  extraEnv:
-    - name: TEMPORAL_TASK_QUEUES
-      value: "localstorage,replication"
   storage:
     enabled: true
     dataSize: "100Gi"
@@ -334,15 +330,13 @@ worker-storage:
       cpu: "100m"
       memory: "15Gi"
 
+# worker-storage-high handles the storagehigh task queue (large local storage).
 worker-storage-high:
   install: true
   replicaCount: 1
-  extraEnv:
-    - name: TEMPORAL_TASK_QUEUES
-      value: "localstorage-large"
   storage:
     enabled: true
-    dataSize: "100Gi"
+    dataSize: "300Gi"
   resources:
     limits:
       memory: "30Gi"

@@ -172,13 +172,13 @@ worker-singletons:
   install: false
 worker-lineage:
   install: false
-worker-temporal:
+worker-io:
   install: false
 worker-compute:
   install: false
 worker-highmem:
   install: false
-worker-realtime:
+worker-monitors:
   install: false
 worker-storage:
   install: false

@@ -21,125 +21,124 @@ Complete [prerequisites](prerequisites.md) before starting.
 
 ## Activating Temporal
 
-Set `global.taskEngine` to `temporal` and configure the Temporal address. For
-self-hosted Temporal, that is the in-cluster service address. For Temporal Cloud,
-use your cloud namespace endpoint.
+Switch the task engine to Temporal under `config`, and set the Temporal address
+in two places:
+
+- `config.temporalAddress` — consumed by the application (server and workers) as
+  `TEMPORAL_ADDRESS`.
+- `global.temporal.address` — consumed by the KEDA scaler to poll queue depth.
+
+For self-hosted Temporal both are the in-cluster frontend service address. For
+Temporal Cloud, use your cloud namespace endpoint (see
+[Temporal Cloud Additions](#temporal-cloud-additions) below).
 
 ```yaml
 # values.yaml (self-hosted Temporal)
+config:
+  taskEngine: "temporal"   # default is "celery"; set to "temporal" to switch
+  temporalAddress: "temporal-frontend.temporal.svc.cluster.local:7233"
+
 global:
-  taskEngine: "temporal"
   temporal:
     address: "temporal-frontend.temporal.svc.cluster.local:7233"
-    namespace: "<DEPLOYMENT_NAME>-datafold"
 ```
+
+> **Note:** `global.temporal.namespace` is a **Temporal Cloud–only** override.
+> For self-hosted Temporal, leave it unset — the workers use the release
+> namespace (`Release.Namespace`) automatically.
 
 ---
 
 ## Enabling Temporal Workers
 
-Each Temporal worker type runs as a separate Helm subchart. All are disabled by
-default. Enable the ones you need and configure KEDA to scale them automatically.
+Each Temporal worker is an instance of the shared `worker-temporal` subchart,
+toggled with `install: true` (the Helm dependency condition is
+`<worker>.install`). **Each worker is preset to its own Temporal task queue and
+pool type in the chart — you do not set the queue yourself.** Turn on autoscaling
+per worker with `keda.enabled: true`.
 
-### worker-io (I/O worker — datadiff queue)
+| Worker | Task queue | Pool type | `install` default |
+|--------|-----------|-----------|-------------------|
+| `worker-io` | `io` | thread | `true` |
+| `worker-compute` | `compute` | process | `true` |
+| `worker-highmem` | `highmem` | process | `true` |
+| `worker-storage` | `storage` | process | `true` |
+| `worker-storage-high` | `storagehigh` | process | `true` |
+| `worker-monitors` | `monitors` | process | `true` |
+
+> The task queue, pool type, termination grace period, and default
+> resource requests/limits for each worker are set in the chart's `values.yaml`.
+> Override only what you need — typically the `keda` bounds and `resources`.
+> `keda.enabled` defaults to `false`, so KEDA must be enabled explicitly per
+> worker. The per-replica concurrency (`temporal.maxConcurrency`) is also the
+> value KEDA targets when scaling out — there is **no** `keda.targetQueueSize`.
+
+### worker-io (`io` queue)
 
 ```yaml
 worker-io:
-  enabled: true
-  temporal:
-    taskQueues: "datadiff"
+  install: true
   keda:
     enabled: true
     minReplicas: 1        # keep one warm replica
     maxReplicas: 10
-    pollingInterval: 30
-    cooldownPeriod: 300
-    targetQueueSize: "5"
+    pollingInterval: 30   # seconds between queue-depth polls
+    cooldownPeriod: 300   # seconds idle before scaling down
+  temporal:
+    maxConcurrency: "20"  # concurrent tasks per replica; KEDA's scale target
   resources:
     limits:
-      memory: 4Gi
+      memory: 6Gi
     requests:
-      cpu: 200m
-      memory: 4Gi
+      cpu: 500m
+      memory: 6Gi
 ```
 
-### worker-compute (compute-intensive — datadiff, translation queues)
+### worker-compute (`compute` queue)
 
 ```yaml
 worker-compute:
-  enabled: true
-  temporal:
-    taskQueues: "datadiff,translation"
+  install: true
   keda:
     enabled: true
     minReplicas: 0        # scale to zero when idle
     maxReplicas: 5
-    pollingInterval: 30
-    cooldownPeriod: 300
-    targetQueueSize: "5"
-  extraEnv:
-    - name: TEMPORAL_CODEC_ENCRYPTION
-      value: "false"      # disable payload encryption for this worker if needed
   resources:
     limits:
-      memory: 8Gi
+      memory: 10Gi
     requests:
       cpu: 500m
-      memory: 8Gi
+      memory: 10Gi
 ```
 
-### worker-highmem (high-memory — lineage, catalog queues)
+### worker-highmem (`highmem` queue)
 
 ```yaml
 worker-highmem:
-  enabled: true
-  temporal:
-    taskQueues: "lineage,catalog"
+  install: true
   keda:
     enabled: true
     minReplicas: 0
     maxReplicas: 3
-    targetQueueSize: "5"
   resources:
     limits:
-      memory: 20Gi
+      memory: 25Gi
     requests:
       cpu: 100m
-      memory: 20Gi
+      memory: 25Gi
 ```
 
-### worker-realtime (interactive, api queues)
+### worker-storage (`storage` queue)
 
-```yaml
-worker-realtime:
-  enabled: true
-  temporal:
-    taskQueues: "interactive,api"
-  keda:
-    enabled: true
-    minReplicas: 1        # keep one warm for interactive latency
-    maxReplicas: 5
-    targetQueueSize: "5"
-  resources:
-    limits:
-      memory: 4Gi
-    requests:
-      cpu: 200m
-      memory: 4Gi
-```
-
-### worker-storage (localstorage, replication queues)
+Storage workers attach a PersistentVolume via the `storage` block.
 
 ```yaml
 worker-storage:
-  enabled: true
-  temporal:
-    taskQueues: "localstorage,replication"
+  install: true
   keda:
     enabled: true
     minReplicas: 0
     maxReplicas: 5
-    targetQueueSize: "5"
   storage:
     enabled: true
     dataSize: 100Gi
@@ -151,27 +150,37 @@ worker-storage:
       memory: 15Gi
 ```
 
-### worker-storage-high (large localstorage queue)
+### worker-storage-high (`storagehigh` queue)
 
 ```yaml
 worker-storage-high:
-  enabled: true
-  temporal:
-    taskQueues: "localstorage-large"
+  install: true
   keda:
     enabled: true
     minReplicas: 0
     maxReplicas: 3
-    targetQueueSize: "5"
   storage:
     enabled: true
-    dataSize: 200Gi
+    dataSize: 300Gi
   resources:
     limits:
       memory: 30Gi
     requests:
       cpu: 100m
       memory: 30Gi
+```
+
+### worker-monitors (`monitors` queue)
+
+Keep one warm replica so scheduled monitor/alert runs start without a cold start:
+
+```yaml
+worker-monitors:
+  install: true
+  keda:
+    enabled: true
+    minReplicas: 1        # keep one warm replica
+    maxReplicas: 5
 ```
 
 ---
@@ -197,13 +206,18 @@ server:
 
 ## Temporal Cloud Additions
 
-For Temporal Cloud, add the auth and encryption settings under `global.temporal`:
+Activate Temporal under `config` as for self-hosted (see
+[Activating Temporal](#activating-temporal)), then add the Temporal Cloud auth
+and encryption settings under `global.temporal`:
 
 ```yaml
-global:
+config:
   taskEngine: "temporal"
+  temporalAddress: "<CLOUD_NAMESPACE>.tmprl.cloud:7233"
+
+global:
   temporal:
-    address: "<CLOUD_NAMESPACE>.tmprl.cloud:7233"
+    address: "<CLOUD_NAMESPACE>.tmprl.cloud:7233"  # used by the KEDA scaler
     namespace: "<CLOUD_NAMESPACE>"      # e.g. "acme-datafold.abc123"
     apiKey: "<TEMPORAL_CLOUD_API_KEY>"  # store this in a Kubernetes Secret if possible
     corsOrigins: "https://cloud.temporal.io"

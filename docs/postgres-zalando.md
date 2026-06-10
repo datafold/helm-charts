@@ -251,6 +251,68 @@ kubectl delete job logical-backup-temporal-database-manual -n temporal
 
 ---
 
+## Temporal Values File (Zalando Path)
+
+When the database runs in-cluster via the Zalando operator, the Temporal Helm
+chart's persistence config differs from the [managed path](postgres-rds.md) in
+two ways:
+
+- **Host** is the in-cluster service `temporal-database` (the name of the
+  `postgresql` resource from [Step A5](#step-a5-deploy-the-postgresql-cluster)),
+  not an external endpoint.
+- **`existingSecret`** is the Secret the operator generates for the `temporal`
+  user — `temporal.temporal-database.credentials.postgresql.acid.zalan.do` — not
+  the manually-created `temporal-db-credentials`. That Secret already contains a
+  `password` key, which is what the Temporal chart reads.
+
+Use this `temporal-values.yaml` in place of the managed-database one in
+[Temporal install Step 2](temporal-install.md#step-2-create-the-temporal-values-file).
+Everything below the `persistence` block (resources, disabled subcharts, schema
+jobs) is identical to the managed path.
+
+```yaml
+server:
+  config:
+    persistence:
+      default:
+        driver: "sql"
+        sql:
+          driver: "postgres12"
+          host: temporal-database
+          port: 5432
+          database: temporal
+          user: temporal
+          existingSecret: temporal.temporal-database.credentials.postgresql.acid.zalan.do
+          maxConns: 20
+          maxIdleConns: 20
+          maxConnLifetime: "1h"
+          # Zalando clusters serve a self-signed cert. Enable TLS without host
+          # verification, or set enabled: false if your cluster does not use TLS.
+          tls:
+            enabled: true
+            enableHostVerification: false
+
+      visibility:
+        driver: "sql"
+        sql:
+          driver: "postgres12"
+          host: temporal-database
+          port: 5432
+          database: temporal_visibility
+          user: temporal
+          existingSecret: temporal.temporal-database.credentials.postgresql.acid.zalan.do
+          maxConns: 20
+          maxIdleConns: 20
+          maxConnLifetime: "1h"
+          tls:
+            enabled: true
+            enableHostVerification: false
+```
+
+Continue with [Temporal install Step 3](temporal-install.md#step-3-install-temporal).
+
+---
+
 ## Placeholder Reference
 
 | Placeholder | Description | Example |
