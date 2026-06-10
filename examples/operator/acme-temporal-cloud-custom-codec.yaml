@@ -184,18 +184,12 @@ spec:
         requests:
           memory: 20Gi
 
-    worker-realtime:
+    worker-monitors:
       enabled: true
       keda:
         enabled: true
         minReplicas: 1
         maxReplicas: 5
-      replicas: 1
-      resources:
-        limits:
-          memory: 4Gi
-        requests:
-          memory: 4Gi
 
     worker-storage:
       enabled: true

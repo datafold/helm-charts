@@ -128,17 +128,17 @@ triggerauthentications.keda.sh
 
 ## Worker scaling configuration
 
-Each `worker-temporal` instance exposes a `keda:` block in `values.yaml`. The
-defaults are set to scale to zero and back up:
+Each `worker-temporal` instance exposes a `keda:` block in `values.yaml`. KEDA
+is **disabled by default** — enable it per worker with `keda.enabled: true`.
+The shipped defaults are:
 
 ```yaml
 keda:
-  enabled: true                         # Set false to disable KEDA for this worker
+  enabled: false                        # Set true to create a ScaledObject for this worker
   minReplicas: 0                        # Scale to zero when the queue is empty
   maxReplicas: 10                       # Upper replica bound
   pollingInterval: 30                   # Seconds between queue depth checks
   cooldownPeriod: 300                   # Seconds idle before scaling to 0
-  targetQueueSize: "5"                  # Target pending tasks per replica
   activationTargetQueueSize: "0"        # Queue depth that triggers the first pod
   scaleDown:
     stabilizationWindowSeconds: 300     # Prevents flapping during scale-down
@@ -147,32 +147,45 @@ keda:
 
 | Field | Default | Effect |
 |-------|---------|--------|
-| `enabled` | `true` | Creates a `ScaledObject` for this worker. Set `false` to use a fixed `replicaCount` instead. |
+| `enabled` | `false` | Creates a `ScaledObject` for this worker. While `false`, the worker runs at a fixed `replicaCount`. |
 | `minReplicas` | `0` | Scales to zero when the queue is empty. Set to `1` to keep a warm standby. |
 | `maxReplicas` | `10` | Hard upper limit on replica count. |
 | `pollingInterval` | `30` | How often (seconds) KEDA queries the Temporal queue depth. |
 | `cooldownPeriod` | `300` | Seconds after the queue empties before scaling to zero begins. |
-| `targetQueueSize` | `"5"` | KEDA targets this many pending tasks per replica when scaling out. |
 | `activationTargetQueueSize` | `"0"` | Queue depth that must be exceeded to scale from 0 → 1. `"0"` means any task activates the worker. |
 | `scaleDown.stabilizationWindowSeconds` | `300` | HPA stabilization window — prevents rapid scale-down oscillation. |
 | `authRef` | `""` | Name of a `TriggerAuthentication` object. Leave empty if Temporal is not configured with authentication. |
+
+> **Scale-out target.** There is no `keda.targetQueueSize`. The KEDA trigger's
+> `targetQueueSize` is derived from the worker's `temporal.maxConcurrency` — the
+> number of concurrent tasks one replica handles. To change how aggressively a
+> worker scales out, set `temporal.maxConcurrency` (not a KEDA field):
+>
+> ```yaml
+> worker-compute:
+>   temporal:
+>     maxConcurrency: "10"   # KEDA targets ~10 pending tasks per replica
+> ```
 
 ### Per-worker overrides
 
 Override the defaults for individual worker types in your `values.yaml`. For
 example, to limit the high-memory worker to three replicas and keep one always
-warm:
+warm, and to let the compute worker scale wider:
 
 ```yaml
 worker-highmem:
   keda:
+    enabled: true
     minReplicas: 1
     maxReplicas: 3
 
 worker-compute:
   keda:
+    enabled: true
     maxReplicas: 20
-    targetQueueSize: "10"
+  temporal:
+    maxConcurrency: "10"
 ```
 
 ---
