@@ -1,5 +1,14 @@
 replicaCount: 2
 
+# Keep at least one server replica serving during voluntary disruptions
+# (node drains / upgrades / cluster-autoscaler scale-down). Mirrors the nginx
+# chart's PDB. Set EITHER maxUnavailable OR minAvailable; if minAvailable is
+# non-empty it takes precedence, otherwise maxUnavailable is used.
+podDisruptionBudget:
+  enabled: true
+  maxUnavailable: 1
+  minAvailable: ""
+
 image:
   pullPolicy: IfNotPresent
   tag: ""
