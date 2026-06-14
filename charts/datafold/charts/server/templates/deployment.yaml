@@ -133,9 +133,15 @@ spec:
             - name: server
               containerPort: {{ .Values.global.server.port }}
               protocol: TCP
+          # /livez and /readyz are the server image's dedicated lightweight health
+          # endpoints (process check / DB-reachability check). These probe paths
+          # are intentionally fixed — not exposed as chart values — and must match
+          # the running server image. Don't repoint them at /status_check (heavy,
+          # dependency-coupled): that re-couples liveness/readiness to backend
+          # health. They are served in-cluster only (see the nginx config-map).
           startupProbe:
             httpGet:
-              path: /status_check?token={{ .Values.global.statusCheckToken }}
+              path: /readyz
               port: server
               scheme: HTTP
               httpHeaders:
@@ -149,7 +155,7 @@ spec:
           livenessProbe:
             failureThreshold: 10
             httpGet:
-              path: /status_check?token={{ .Values.global.statusCheckToken }}
+              path: /livez
               port: server
               scheme: HTTP
               httpHeaders:
@@ -163,7 +169,7 @@ spec:
           readinessProbe:
             failureThreshold: 3
             httpGet:
-              path: /status_check?token={{ .Values.global.statusCheckToken }}
+              path: /readyz
               port: server
               scheme: HTTP
               httpHeaders:
