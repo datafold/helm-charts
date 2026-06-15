@@ -62,6 +62,8 @@ spec:
             {{- end }}
           env:
             {{ include "datafold.env" . | nindent 12 }}
+            - name: STATUS_CHECK_TOKEN
+              value: {{ .Values.global.statusCheckToken | quote }}
             - name: DATAFOLD_FRESHPAINT_FRONTEND_TOKEN
               valueFrom:
                 secretKeyRef:
