@@ -4030,6 +4030,13 @@ spec:
                     description: ShellRepository specifies the Docker repository for
                       shell images
                     type: string
+                  statusCheckToken:
+                    description: |-
+                      StatusCheckToken is the shared secret the server's /livez and /readyz probe
+                      endpoints validate (delivered by the kubelet via the X-Status-Token header).
+                      When empty the probes fail open. Deterrence-grade, not a hard boundary; the
+                      real perimeter is the nginx 404 + NetworkPolicy.
+                    type: string
                   storageClass:
                     description: StorageClass specifies the storage class to use for
                       persistent volumes
