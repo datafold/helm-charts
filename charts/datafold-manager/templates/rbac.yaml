@@ -95,12 +95,17 @@ rules:
   - patch
   - update
   - watch
-# Manage ClusterRole/ClusterRoleBinding for the datafold-operator (primary and secondary).
+# Manage (Cluster)Role/(Cluster)RoleBinding for the datafold-operator (primary and secondary).
+# Namespaced roles/rolebindings are needed because the datadog subchart renders a
+# Role + RoleBinding in the temporal namespace (temporal-secrets); without these
+# verbs the operator's chart apply fails pre-flight when that resource is present.
 - apiGroups:
   - rbac.authorization.k8s.io
   resources:
   - clusterroles
   - clusterrolebindings
+  - roles
+  - rolebindings
   verbs:
   - create
   - get
