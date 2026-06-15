@@ -135,7 +135,7 @@ spec:
               protocol: TCP
           startupProbe:
             httpGet:
-              path: /readyz?token={{ .Values.global.statusCheckToken }}
+              path: /readyz
               port: server
               scheme: HTTP
               httpHeaders:
@@ -143,13 +143,17 @@ spec:
                   value: {{ .Values.global.serverName }}
                 - name: "X-Forwarded-Proto"
                   value: https
+                # The kubelet probe delivers the shared secret via this header;
+                # an httpGet probe cannot send a ?token= query string.
+                - name: "X-Status-Token"
+                  value: {{ .Values.global.statusCheckToken }}
             periodSeconds: 10
             failureThreshold: 6
             timeoutSeconds: 5
           livenessProbe:
             failureThreshold: 10
             httpGet:
-              path: /livez?token={{ .Values.global.statusCheckToken }}
+              path: /livez
               port: server
               scheme: HTTP
               httpHeaders:
@@ -157,13 +161,17 @@ spec:
                   value: {{ .Values.global.serverName }}
                 - name: "X-Forwarded-Proto"
                   value: https
+                # The kubelet probe delivers the shared secret via this header;
+                # an httpGet probe cannot send a ?token= query string.
+                - name: "X-Status-Token"
+                  value: {{ .Values.global.statusCheckToken }}
             periodSeconds: 15
             successThreshold: 1
             timeoutSeconds: 5
           readinessProbe:
             failureThreshold: 3
             httpGet:
-              path: /readyz?token={{ .Values.global.statusCheckToken }}
+              path: /readyz
               port: server
               scheme: HTTP
               httpHeaders:
@@ -171,6 +179,10 @@ spec:
                   value: {{ .Values.global.serverName }}
                 - name: "X-Forwarded-Proto"
                   value: https
+                # The kubelet probe delivers the shared secret via this header;
+                # an httpGet probe cannot send a ?token= query string.
+                - name: "X-Status-Token"
+                  value: {{ .Values.global.statusCheckToken }}
             periodSeconds: 10
             successThreshold: 1
             timeoutSeconds: 5
