@@ -144,7 +144,7 @@ nginx:
   install: true
 
 config:
-  webWorkers: "3"
+  webWorkers: "6"
   workerCount: "15"
   githubServer: ""
   portalCertData: ""
