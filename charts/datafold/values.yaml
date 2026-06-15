@@ -66,7 +66,7 @@ global:
     maintenanceWindow: ""
   temporal:
     address: "temporal-frontend.temporal.svc.cluster.local:7233"
-    # Temporal worker StorageClass (templates/storageclass.yaml) metadata.name and PVC storageClassName (worker-temporal).
+    # Temporal worker StorageClass (templates/storageclass.yaml) metadata.name and PVC storageClassName.
     storageClassName: sc-datafold-temporal
     # Set false if the cluster already provides a StorageClass with storageClassName.
     createStorageClass: true
@@ -106,7 +106,7 @@ global:
       # below. When set, takes precedence over the built-in AES-256-GCM codec.
       codecClass: ""
       # customCodec: mounts a customer-supplied Python file from a ConfigMap into both
-      # the server and worker-temporal containers at /datafold/plugins/<fileName>.
+      # the server and all temporal worker containers at /datafold/plugins/<fileName>.
       # The loader resolves TEMPORAL_CODEC_CLASS by looking up <module_stem>.py in that
       # fixed directory — no PYTHONPATH manipulation needed.
       # codecClass should use the bare stem, e.g. "temporal_codec:KMSCodec"
