@@ -135,7 +135,7 @@ spec:
               protocol: TCP
           startupProbe:
             httpGet:
-              path: /readyz?token={{ .Values.global.statusCheckToken }}
+              path: /status_check?token={{ .Values.global.statusCheckToken }}
               port: server
               scheme: HTTP
               httpHeaders:
@@ -149,7 +149,7 @@ spec:
           livenessProbe:
             failureThreshold: 10
             httpGet:
-              path: /livez?token={{ .Values.global.statusCheckToken }}
+              path: /status_check?token={{ .Values.global.statusCheckToken }}
               port: server
               scheme: HTTP
               httpHeaders:
@@ -163,7 +163,7 @@ spec:
           readinessProbe:
             failureThreshold: 3
             httpGet:
-              path: /readyz?token={{ .Values.global.statusCheckToken }}
+              path: /status_check?token={{ .Values.global.statusCheckToken }}
               port: server
               scheme: HTTP
               httpHeaders:

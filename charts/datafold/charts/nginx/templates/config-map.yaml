@@ -74,20 +74,6 @@ data:
                 return 200 "healthy\n";
             }
 
-            # /livez and /readyz are internal Kubernetes probe endpoints. The
-            # kubelet reaches them on the pod directly (not through nginx), so the
-            # 404 here does not affect health checking. They are not part of the
-            # public surface; keep them unreachable from outside the cluster.
-            location = /livez {
-                access_log off;
-                return 404;
-            }
-
-            location = /readyz {
-                access_log off;
-                return 404;
-            }
-
             location /datadog-browser-intake {
                 rewrite ^/datadog-browser-intake(/.*)$ $1 break;
 
