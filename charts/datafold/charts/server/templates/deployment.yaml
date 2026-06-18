@@ -62,8 +62,12 @@ spec:
             {{- end }}
           env:
             {{ include "datafold.env" . | nindent 12 }}
+            {{- if .Values.global.statusCheckToken }}
+            # Probe-gate token (server validates X-Status-Token). Omitted when
+            # unset so /livez+/readyz fail open instead of enforcing a default.
             - name: STATUS_CHECK_TOKEN
               value: {{ .Values.global.statusCheckToken | quote }}
+            {{- end }}
             - name: DATAFOLD_FRESHPAINT_FRONTEND_TOKEN
               valueFrom:
                 secretKeyRef:
@@ -145,10 +149,13 @@ spec:
                   value: {{ .Values.global.serverName }}
                 - name: "X-Forwarded-Proto"
                   value: https
+                {{- if .Values.global.statusCheckToken }}
                 # The kubelet probe delivers the shared secret via this header;
-                # an httpGet probe cannot send a ?token= query string.
+                # an httpGet probe cannot send a ?token= query string. Omitted
+                # when no token is configured so the probes fail open.
                 - name: "X-Status-Token"
                   value: {{ .Values.global.statusCheckToken }}
+                {{- end }}
             periodSeconds: 10
             failureThreshold: 6
             timeoutSeconds: 5
@@ -163,10 +170,13 @@ spec:
                   value: {{ .Values.global.serverName }}
                 - name: "X-Forwarded-Proto"
                   value: https
+                {{- if .Values.global.statusCheckToken }}
                 # The kubelet probe delivers the shared secret via this header;
-                # an httpGet probe cannot send a ?token= query string.
+                # an httpGet probe cannot send a ?token= query string. Omitted
+                # when no token is configured so the probes fail open.
                 - name: "X-Status-Token"
                   value: {{ .Values.global.statusCheckToken }}
+                {{- end }}
             periodSeconds: 15
             successThreshold: 1
             timeoutSeconds: 5
@@ -181,10 +191,13 @@ spec:
                   value: {{ .Values.global.serverName }}
                 - name: "X-Forwarded-Proto"
                   value: https
+                {{- if .Values.global.statusCheckToken }}
                 # The kubelet probe delivers the shared secret via this header;
-                # an httpGet probe cannot send a ?token= query string.
+                # an httpGet probe cannot send a ?token= query string. Omitted
+                # when no token is configured so the probes fail open.
                 - name: "X-Status-Token"
                   value: {{ .Values.global.statusCheckToken }}
+                {{- end }}
             periodSeconds: 10
             successThreshold: 3
             timeoutSeconds: 5
