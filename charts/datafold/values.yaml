@@ -15,7 +15,7 @@ global:
   secondaryDeployment: false
   cloudProvider: ""
   authMethod: "password"
-  statusCheckToken: "magic_token"
+  statusCheckToken: ""
   datafoldRepository: "us-docker.pkg.dev/datadiff-mm/datafold"
   datafoldImage: "server"
   shellRepository: "us-docker.pkg.dev/datadiff-mm/datafold"
