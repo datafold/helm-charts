@@ -1,5 +1,14 @@
 replicaCount: 1
 
+# OnDelete decouples the mirror from the app deploy cadence: an image-tag bump
+# does NOT roll this pod, so it keeps its warm /repos PVC and keeps
+# incremental-fetching across every app deploy. Cycle it deliberately (delete
+# the pod) only when the mirror worker code itself changes. RollingUpdate (the
+# k8s default) would bounce the single replica on every deploy — opening a
+# `no_mirror` gap for consumers and SIGKILL-ing in-flight fetches.
+updateStrategy:
+  type: OnDelete
+
 image:
   pullPolicy: IfNotPresent
   tag: ""
