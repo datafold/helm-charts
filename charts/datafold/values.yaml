@@ -335,6 +335,13 @@ worker-thunderbolt:
     gracefulShutdownTimeout: "1800"
   keda:
     minReplicas: 0
+  # Thunderbolt agents run cross-DB replication (copy_table) into a scratch
+  # dir under /data (REPLICATION_WORK_DIR=/data/replication). Without an
+  # attached volume /data isn't writable and copy_table fails, so mount a
+  # 50Gi ephemeral PVC at /data (same mechanism as the storage workers).
+  storage:
+    enabled: true
+    dataSize: 50Gi
   resources:
     limits:
       memory: 6Gi
