@@ -3944,6 +3944,21 @@ spec:
                 description: Global contains the core configuration for the Datafold
                   deployment
                 properties:
+                  anthropicFoundryBaseUrl:
+                    description: |-
+                      AnthropicFoundryBaseUrl is a fully-qualified Anthropic-on-Foundry endpoint, used as an
+                      alternative to AnthropicFoundryResource. Maps to config.anthropicFoundryBaseUrl
+                      (DATAFOLD_ANTHROPIC_FOUNDRY_BASE_URL) in the Helm chart.
+                    type: string
+                  anthropicFoundryResource:
+                    description: |-
+                      AnthropicFoundryResource is the Microsoft (Azure AI) Foundry resource name used to target
+                      Anthropic models hosted on Foundry. The application builds the endpoint as
+                      https://{resource}.services.ai.azure.com/anthropic/. Maps to config.anthropicFoundryResource
+                      (DATAFOLD_ANTHROPIC_FOUNDRY_RESOURCE) in the Helm chart. Pair with the
+                      Secrets.AnthropicFoundryApiKeySecret credential. Use AnthropicFoundryBaseUrl instead to
+                      supply a fully-qualified endpoint.
+                    type: string
                   ciRunMaxWaitHours:
                     description: |-
                       CiRunMaxWaitHours sets the maximum time (in hours) a CI run waits for all diffs before timing out.
@@ -4625,6 +4640,23 @@ spec:
                   anthropicApiKey:
                     description: AnthropicApiKeySecret references the secret containing
                       the Anthropic API key for DMA containers
+                    properties:
+                      keyName:
+                        description: KeyName is the key within the secret
+                        type: string
+                      secretName:
+                        description: SecretName is the name of the secret
+                        type: string
+                    required:
+                    - keyName
+                    - secretName
+                    type: object
+                  anthropicFoundryApiKey:
+                    description: |-
+                      AnthropicFoundryApiKeySecret references the secret containing the API key for Anthropic models
+                      hosted on Microsoft (Azure AI) Foundry. The value is sent as the Azure `api-key` header and
+                      surfaces as secrets.anthropicFoundryApiKey (DATAFOLD_ANTHROPIC_FOUNDRY_API_KEY) in the Helm
+                      chart. Pair with Global.AnthropicFoundryResource or Global.AnthropicFoundryBaseUrl.
                     properties:
                       keyName:
                         description: KeyName is the key within the secret

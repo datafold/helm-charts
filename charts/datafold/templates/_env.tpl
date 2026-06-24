@@ -114,6 +114,12 @@
       name: {{ include "datafold.secrets" . }}
       key: DATAFOLD_ANTHROPIC_API_KEY
       optional: true
+- name: DATAFOLD_ANTHROPIC_FOUNDRY_API_KEY
+  valueFrom:
+    secretKeyRef:
+      name: {{ include "datafold.secrets" . }}
+      key: DATAFOLD_ANTHROPIC_FOUNDRY_API_KEY
+      optional: true
 - name: TEMPORAL_API_KEY
   valueFrom:
     secretKeyRef:

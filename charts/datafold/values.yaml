@@ -182,6 +182,12 @@ config:
   # Max time (in hours, float) a CI run waits for all diffs before timing out,
   # e.g. "1.5" or "8". Leave empty to use the application default (4.0).
   ciRunMaxWaitHours: ""
+  # Anthropic-on-Foundry endpoint. Set anthropicFoundryResource to the Foundry
+  # resource name (used as https://{resource}.services.ai.azure.com/anthropic/),
+  # or set anthropicFoundryBaseUrl to a fully-qualified endpoint instead.
+  # Auth uses secrets.anthropicFoundryApiKey.
+  anthropicFoundryResource: ""
+  anthropicFoundryBaseUrl: ""
   customVars: []
 
 secrets:
@@ -228,6 +234,10 @@ secrets:
     datafoldDocsAuthKey: ""
   apiOrgCreationDonorTokens: ""
   anthropicApiKey: ""
+  # API key for Anthropic models hosted on Microsoft (Azure AI) Foundry, sent as
+  # the Azure `api-key` header. Pair with config.anthropicFoundryResource (or
+  # config.anthropicFoundryBaseUrl) below.
+  anthropicFoundryApiKey: ""
 
 # Chart-level labels and annotations applied to resources in this top level chart
 toplevel:
