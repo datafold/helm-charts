@@ -60,12 +60,6 @@ spec:
                 secretKeyRef:
                   name: {{ include "datafold.secrets" . }}
                   key: DATAFOLD_DATADOG_APPLICATION_ID
-            - name: DATAFOLD_DMA_DOCS_AUTH_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "datafold.secrets" . }}
-                  key: DATAFOLD_DMA_DOCS_AUTH_KEY
-                  optional: true
             - name: CLAUDE_CODE_USE_BEDROCK
               value: "{{ .Values.dma.use_bedrock }}"
             - name: AWS_REGION
