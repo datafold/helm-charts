@@ -27,7 +27,13 @@ spec:
         #
         # 1. include_labels — allowlist of the only scraped SDK labels that any
         #    Datadog monitor or the temporal dashboard actually queries: task_queue,
-        #    workflow_type, activity_type. Every other scraped label (operation,
+        #    workflow_type, activity_type, plus worker_type + poller_type (ENG-4140:
+        #    the operator dashboard's worker-capacity section splits slots by
+        #    worker_type and pollers by poller_type; without these, prod series land
+        #    as worker_type:N/A / poller_type:N/A — only dev stacks that scrape all
+        #    labels populated them). Both are low-cardinality (worker_type has 3
+        #    values: activity/workflow/localactivity; poller_type 2), so the added
+        #    custom-metric volume is small. Every other scraped label (operation,
         #    namespace, service_name, version, ...) is dropped.
         # 2. tag_by_endpoint=false — drops the `endpoint` tag
         #    (http://<pod-ip>:9090/metrics), which is effectively per-pod cardinality.
@@ -63,7 +69,9 @@ spec:
                 "include_labels": [
                   "task_queue",
                   "workflow_type",
-                  "activity_type"
+                  "activity_type",
+                  "worker_type",
+                  "poller_type"
                 ],
                 "collect_histogram_buckets": true,
                 "histogram_buckets_as_distributions": true,
