@@ -205,9 +205,11 @@ instance (24h retention — a scaling control loop, not an observability stack)
 that scrapes every datafold pod exposing a container port named `metrics` in
 the release namespace, preserving per-pod identity via a `pod` label (the
 Temporal SDK metrics carry none, so unlabeled aggregation would undercount).
-It serves queries at `http://<release>-prometheus:9090` — with the standard
-release name that is `http://datafold-prometheus:9090`, matching the
-`serverAddress` in the example above.
+It serves queries at
+`http://<release>-prometheus.<namespace>.svc.cluster.local:9090` — with the
+standard release name in e.g. the `saas` namespace that is
+`http://datafold-prometheus.saas.svc.cluster.local:9090`, the form the
+`serverAddress` in the example above expects.
 
 ### Per-worker overrides
 
