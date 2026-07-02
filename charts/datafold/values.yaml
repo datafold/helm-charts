@@ -362,6 +362,10 @@ worker-thunderbolt:
 worker-repo-mirror:
   install: false
 
+# Minimal in-cluster Prometheus backing KEDA prometheusTriggers (see docs/keda.md).
+prometheus:
+  install: false
+
 worker:
   install: true
   replicaCount: 1
