@@ -139,9 +139,14 @@ keda:
   maxReplicas: 10                       # Upper replica bound
   pollingInterval: 30                   # Seconds between queue depth checks
   cooldownPeriod: 300                   # Seconds idle before scaling to 0
+  targetQueueSize: ""                   # Queued tasks per pod the HPA aims for (empty → maxConcurrency)
   activationTargetQueueSize: "0"        # Queue depth that triggers the first pod
+  queueTypes: ""                        # Task types counted in the backlog ("activity", "workflow", or both)
   scaleDown:
     stabilizationWindowSeconds: 300     # Prevents flapping during scale-down
+    policies: []                        # Optional HPA v2 scale-down rate policies
+  fallback: {}                          # Hold a fixed replica count when a scaler errors
+  prometheusTriggers: []                # Extra prometheus triggers (e.g. in-flight-slots hold)
   authRef: ""                           # TriggerAuthentication name (see below)
 ```
 
@@ -152,20 +157,44 @@ keda:
 | `maxReplicas` | `10` | Hard upper limit on replica count. |
 | `pollingInterval` | `30` | How often (seconds) KEDA queries the Temporal queue depth. |
 | `cooldownPeriod` | `300` | Seconds after the queue empties before scaling to zero begins. |
+| `targetQueueSize` | `""` | Queued tasks per pod the HPA targets: `desired = ceil(backlog / targetQueueSize)`. Empty inherits `temporal.maxConcurrency` — fine for fast tasks, but for long-running activities even a short queue means a long wait, so set it lower (e.g. `"1"`–`"2"`). |
 | `activationTargetQueueSize` | `"0"` | Queue depth that must be exceeded to scale from 0 → 1. `"0"` means any task activates the worker. |
+| `queueTypes` | `""` | Which Temporal task types count toward the backlog (`"activity"`, `"workflow"`, or both comma-separated). Empty uses the KEDA scaler default, which is version-dependent — pin it when the distinction matters. |
 | `scaleDown.stabilizationWindowSeconds` | `300` | HPA stabilization window — prevents rapid scale-down oscillation. |
+| `scaleDown.policies` | `[]` | HPA v2 scale-down rate policies, passed through verbatim (e.g. `{type: Pods, value: 1, periodSeconds: 600}` sheds at most one pod per 10 minutes). |
+| `fallback` | `{}` | KEDA `spec.fallback` (`failureThreshold` + `replicas`): hold a fixed replica count after a scaler errors repeatedly. Applies to `AverageValue` metrics such as `prometheusTriggers`. |
+| `prometheusTriggers` | `[]` | Additional `type: prometheus` triggers; the HPA scales to the max desired across all triggers. See below. |
 | `authRef` | `""` | Name of a `TriggerAuthentication` object. Leave empty if Temporal is not configured with authentication. |
 
-> **Scale-out target.** There is no `keda.targetQueueSize`. The KEDA trigger's
-> `targetQueueSize` is derived from the worker's `temporal.maxConcurrency` — the
-> number of concurrent tasks one replica handles. To change how aggressively a
-> worker scales out, set `temporal.maxConcurrency` (not a KEDA field):
->
-> ```yaml
-> worker-compute:
->   temporal:
->     maxConcurrency: "10"   # KEDA targets ~10 pending tasks per replica
-> ```
+> **Scale-out target.** `keda.targetQueueSize` controls how aggressively a
+> worker scales out. When left empty it inherits `temporal.maxConcurrency` —
+> the number of concurrent tasks one replica handles — which suits fast tasks.
+
+### Prometheus triggers (in-flight-slots hold)
+
+The Temporal backlog only measures *waiting* work, not *busy* work. A worker
+running long activities can look idle to the backlog trigger (queue empty)
+while every slot is occupied for hours — and gets scaled down mid-work. A
+`prometheusTriggers` entry adds a second signal so capacity is held while work
+is in flight:
+
+```yaml
+worker-thunderbolt:
+  keda:
+    prometheusTriggers:
+      - name: slots-hold
+        serverAddress: http://datafold-prometheus:9090
+        query: sum(temporal_worker_task_slots_used{task_queue="thunderbolt",worker_type="ActivityWorker"})
+        threshold: "6"              # target in-flight activities per pod
+        metricType: AverageValue    # desired = ceil(total_slots_used / threshold)
+```
+
+The HPA takes the **max** desired replicas across all triggers, so the backlog
+trigger handles scale-up bursts and the slots trigger prevents premature
+scale-down. Requires a Prometheus reachable at `serverAddress` that scrapes the
+workers' `:9090` metrics endpoint. Not supported on workers polling multiple
+`taskQueues` — the composite `scalingModifiers` formula those use would
+silently ignore extra triggers, so the template fails fast instead.
 
 ### Per-worker overrides
 
