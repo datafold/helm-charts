@@ -94,7 +94,8 @@ keda:
   # Not supported together with multiple taskQueues (the scalingModifiers composite formula
   # would silently ignore them; the template fails fast instead). Example:
   #   - name: slots-hold
-  #     serverAddress: http://datafold-prometheus:9090
+  #     # KEDA resolves serverAddress from the keda namespace: use a namespace-qualified FQDN
+  #     serverAddress: http://datafold-prometheus.<namespace>.svc.cluster.local:9090
   #     query: sum(temporal_worker_task_slots_used{task_queue="thunderbolt",worker_type="ActivityWorker"})
   #     threshold: "6"
   #     metricType: AverageValue

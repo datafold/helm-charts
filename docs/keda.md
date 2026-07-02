@@ -183,7 +183,8 @@ worker-thunderbolt:
   keda:
     prometheusTriggers:
       - name: slots-hold
-        serverAddress: http://datafold-prometheus:9090
+        # Namespace-qualified FQDN required: KEDA resolves this from the keda namespace
+        serverAddress: http://datafold-prometheus.<namespace>.svc.cluster.local:9090
         query: sum(temporal_worker_task_slots_used{task_queue="thunderbolt",worker_type="ActivityWorker"})
         threshold: "6"              # target in-flight activities per pod
         metricType: AverageValue    # desired = ceil(total_slots_used / threshold)
@@ -192,7 +193,9 @@ worker-thunderbolt:
 The HPA takes the **max** desired replicas across all triggers, so the backlog
 trigger handles scale-up bursts and the slots trigger prevents premature
 scale-down. Requires a Prometheus reachable at `serverAddress` that scrapes the
-workers' `:9090` metrics endpoint. Not supported on workers polling multiple
+workers' `:9090` metrics endpoint. The `serverAddress` must be a
+namespace-qualified FQDN — KEDA's operator resolves it from the `keda`
+namespace, so a bare service name leaves the ScaledObject `Ready=False`. Not supported on workers polling multiple
 `taskQueues` — the composite `scalingModifiers` formula those use would
 silently ignore extra triggers, so the template fails fast instead.
 
