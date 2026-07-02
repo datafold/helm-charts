@@ -64,9 +64,41 @@ keda:
   maxReplicas: 10
   pollingInterval: 30
   cooldownPeriod: 300
+  # targetQueueSize is the temporal trigger's per-pod queued-task target: the HPA aims for
+  # desired = ceil(total_backlog / targetQueueSize), so it is effectively a wait budget —
+  # the tolerated queue length per pod. Empty inherits temporal.maxConcurrency (the historical
+  # default, calibrated for fast tasks). Set explicitly for queues with long-running activities,
+  # where even a short queue means a long wait.
+  targetQueueSize: ""
   activationTargetQueueSize: "0"
+  # queueTypes pins which Temporal task types count toward the backlog: "workflow", "activity",
+  # or both comma-separated. Empty uses the KEDA scaler's default, which is version-dependent —
+  # pin explicitly when the distinction matters (e.g. "activity" for workers whose scaling is
+  # about activity slots, not ms-fast workflow tasks).
+  queueTypes: ""
   scaleDown:
     stabilizationWindowSeconds: 300
+    # policies are optional HPA v2 scale-down rate policies, passed through verbatim, e.g.:
+    #   - type: Pods
+    #     value: 1
+    #     periodSeconds: 600
+    policies: []
+  # fallback holds a fixed replica count after a scaler errors failureThreshold consecutive
+  # times (KEDA spec.fallback; only applies to AverageValue metrics such as prometheusTriggers):
+  #   failureThreshold: 3
+  #   replicas: 6
+  fallback: {}
+  # prometheusTriggers appends `type: prometheus` triggers alongside the temporal trigger; the
+  # HPA scales to the max desired across all triggers. Typical use: an in-flight-slots hold
+  # signal so workers running long activities aren't scaled down just because the queue is empty.
+  # Not supported together with multiple taskQueues (the scalingModifiers composite formula
+  # would silently ignore them; the template fails fast instead). Example:
+  #   - name: slots-hold
+  #     serverAddress: http://datafold-prometheus:9090
+  #     query: sum(temporal_worker_task_slots_used{task_queue="thunderbolt",worker_type="ActivityWorker"})
+  #     threshold: "6"
+  #     metricType: AverageValue
+  prometheusTriggers: []
   # authRef is the name of a pre-existing TriggerAuthentication object.
   # Leave empty for unauthenticated access to the Temporal endpoint.
   authRef: ""
