@@ -75,6 +75,16 @@ keda:
   # or both comma-separated. Empty uses the KEDA scaler's default, which is version-dependent —
   # pin explicitly when the distinction matters (e.g. "activity" for workers whose scaling is
   # about activity slots, not ms-fast workflow tasks).
+  #
+  # PAIRING RULE with minReplicas (verified live on KEDA 2.19, ENG-4128):
+  #   - minReplicas >= 1  → pin "activity". The cleanest sizing signal: only activities can
+  #     accumulate (workflow tasks drain in ms whenever a poller exists), and workflow-task
+  #     orphans (the dominant ENG-4128 leak class) can never pollute the metric.
+  #   - minReplicas == 0  → MUST include "workflow" (e.g. "workflow,activity"). A fresh
+  #     workflow's first task is a workflow task; pinned to "activity" the scaler ignores it
+  #     for both metric and activation, no pod ever wakes, and the workflow deadlocks at
+  #     zero pollers. The template fails fast on the deadlocking combination.
+  # Prefer minReplicas >= 1: no wake latency, no deadlock class, no orphan exposure.
   queueTypes: ""
   scaleDown:
     stabilizationWindowSeconds: 300
