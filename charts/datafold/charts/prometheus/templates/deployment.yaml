@@ -73,7 +73,8 @@ spec:
           configMap:
             name: {{ include "prometheus.fullname" . }}
         - name: data
-          emptyDir: {}
+          emptyDir:
+            sizeLimit: {{ .Values.emptyDirSizeLimit }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

@@ -12,6 +12,9 @@ imagePullSecrets: []
 # KEDA triggers only query the last few minutes; losing history on restart is acceptable.
 retentionTime: 24h
 retentionSize: 2GB
+# emptyDirSizeLimit fences the data volume at the k8s layer (kubelet evicts + cleanly restarts
+# the stateless pod past it). Keep it above retentionSize plus WAL headroom.
+emptyDirSizeLimit: 4Gi
 
 scrapeInterval: 30s
 
