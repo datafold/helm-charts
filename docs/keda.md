@@ -199,6 +199,18 @@ namespace, so a bare service name leaves the ScaledObject `Ready=False`. Not sup
 `taskQueues` — the composite `scalingModifiers` formula those use would
 silently ignore extra triggers, so the template fails fast instead.
 
+The chart ships an optional minimal Prometheus for exactly this. Set
+`prometheus.install: true` and it deploys a single-replica, emptyDir-backed
+instance (24h retention — a scaling control loop, not an observability stack)
+that scrapes every datafold pod exposing a container port named `metrics` in
+the release namespace, preserving per-pod identity via a `pod` label (the
+Temporal SDK metrics carry none, so unlabeled aggregation would undercount).
+It serves queries at
+`http://<release>-prometheus.<namespace>.svc.cluster.local:9090` — with the
+standard release name in e.g. the `saas` namespace that is
+`http://datafold-prometheus.saas.svc.cluster.local:9090`, the form the
+`serverAddress` in the example above expects.
+
 ### Per-worker overrides
 
 Override the defaults for individual worker types in your `values.yaml`. For

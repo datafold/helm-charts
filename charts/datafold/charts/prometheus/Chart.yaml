@@ -1,0 +1,6 @@
+apiVersion: v2
+name: prometheus
+description: Minimal in-cluster Prometheus backing KEDA prometheus triggers (scaling control loop, not an observability stack)
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
