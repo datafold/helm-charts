@@ -1,0 +1,44 @@
+nameOverride: ""
+fullnameOverride: ""
+
+image:
+  repository: prom/prometheus
+  tag: v3.5.0
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+
+# Scaling control-loop backend: short retention, no persistence (emptyDir).
+# KEDA triggers only query the last few minutes; losing history on restart is acceptable.
+retentionTime: 24h
+retentionSize: 2GB
+# emptyDirSizeLimit fences the data volume at the k8s layer (kubelet evicts + cleanly restarts
+# the stateless pod past it). Keep it above retentionSize plus WAL headroom.
+emptyDirSizeLimit: 4Gi
+
+scrapeInterval: 30s
+
+port: 9090
+
+# Additional scrape_configs appended verbatim to prometheus.yml.
+extraScrapeConfigs: []
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 512Mi
+  limits:
+    memory: 512Mi
+
+serviceAccount:
+  create: true
+  name: ""
+
+podAnnotations: {}
+podLabels: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

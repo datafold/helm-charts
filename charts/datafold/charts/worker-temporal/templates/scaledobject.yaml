@@ -1,6 +1,10 @@
 {{- if .Values.keda.enabled }}
 {{- $queues := splitList "," .Values.temporal.taskQueues }}
 {{- $multi := gt (len $queues) 1 }}
+{{- if and $multi .Values.keda.prometheusTriggers }}
+{{- fail "keda.prometheusTriggers cannot be combined with multiple taskQueues: the scalingModifiers composite formula would silently ignore them" }}
+{{- end }}
+{{- $targetQueueSize := .Values.keda.targetQueueSize | default .Values.temporal.maxConcurrency }}
 apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
 metadata:
@@ -14,11 +18,19 @@ spec:
   maxReplicaCount: {{ .Values.keda.maxReplicas }}
   pollingInterval: {{ .Values.keda.pollingInterval }}
   cooldownPeriod: {{ .Values.keda.cooldownPeriod }}
+  {{- with .Values.keda.fallback }}
+  fallback:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   advanced:
     horizontalPodAutoscalerConfig:
       behavior:
         scaleDown:
           stabilizationWindowSeconds: {{ .Values.keda.scaleDown.stabilizationWindowSeconds }}
+          {{- with .Values.keda.scaleDown.policies }}
+          policies:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
     {{- if $multi }}
     {{- $formula := "" }}
     {{- range $i, $q := $queues }}
@@ -28,7 +40,7 @@ spec:
     {{- end }}
     scalingModifiers:
       formula: {{ $formula | quote }}
-      target: {{ .Values.temporal.maxConcurrency | quote }}
+      target: {{ $targetQueueSize | quote }}
       metricType: AverageValue
     {{- end }}
   triggers:
@@ -46,7 +58,29 @@ spec:
         namespace: {{ $.Release.Namespace | quote }}
         taskQueue: {{ $queueName | quote }}
         endpoint: {{ (($.Values.global).temporal).address | quote }}
-        targetQueueSize: {{ $.Values.temporal.maxConcurrency | quote }}
+        targetQueueSize: {{ $targetQueueSize | quote }}
         activationTargetQueueSize: {{ $.Values.keda.activationTargetQueueSize | quote }}
+        {{- with $.Values.keda.queueTypes }}
+        queueTypes: {{ . | quote }}
+        {{- end }}
+  {{- end }}
+  {{- range .Values.keda.prometheusTriggers }}
+    - type: prometheus
+      {{- with .name }}
+      name: {{ . }}
+      {{- end }}
+      {{- with .metricType }}
+      metricType: {{ . }}
+      {{- end }}
+      metadata:
+        serverAddress: {{ .serverAddress | quote }}
+        query: {{ .query | quote }}
+        threshold: {{ .threshold | quote }}
+        {{- with .activationThreshold }}
+        activationThreshold: {{ . | quote }}
+        {{- end }}
+        {{- if hasKey . "ignoreNullValues" }}
+        ignoreNullValues: {{ .ignoreNullValues | quote }}
+        {{- end }}
   {{- end }}
 {{- end }}
