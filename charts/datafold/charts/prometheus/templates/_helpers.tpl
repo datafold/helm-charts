@@ -55,9 +55,15 @@ app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
 
 {{/*
-Selector labels
+Selector labels.
+
+Deliberately NO `app.kubernetes.io/part-of: datafold` here: kopf-datafold's
+upgrade manager treats every deployment carrying that label as a datafold-app
+component and reads its image tag as "the running datafold version". A
+third-party image tag (prom/prometheus:vX) in that set makes kopf conclude an
+upgrade never completed and re-roll every worker on each timer tick. Same
+convention as the memgraph / redis / clickhouse subcharts.
 */}}
 {{- define "prometheus.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "prometheus.name" . }}
-app.kubernetes.io/part-of: datafold
 {{- end }}
