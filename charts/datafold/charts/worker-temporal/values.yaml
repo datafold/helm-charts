@@ -52,6 +52,9 @@ temporal:
   # Comma-separated list or the special value "all".
   taskQueues: "none"
   # maxConcurrency sets TEMPORAL_MAX_CONCURRENCY — the number of concurrent activity/workflow tasks.
+  # Changing it for a worker also changes its scaling math: the default keda.targetQueueSize
+  # inherits it, and any slots-hold prometheusTriggers threshold must stay BELOW it so the
+  # hold never under-counts busy pods (see worker-thunderbolt in the parent values.yaml).
   maxConcurrency: "5"
   # workerPoolType sets DATAFOLD_WORKER_POOL_TYPE. Leave empty for the default pool type.
   workerPoolType: "thread"

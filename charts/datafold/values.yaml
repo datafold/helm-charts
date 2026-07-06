@@ -341,10 +341,29 @@ worker-thunderbolt:
   terminationGracePeriodSeconds: "1800"
   temporal:
     taskQueues: "thunderbolt"
+    # The fleet-standard concurrency, stated explicitly: the keda calibration below is derived
+    # from it (targetQueueSize "2"; a slots-hold prometheusTrigger, wired per-deployment because
+    # its serverAddress is namespace-qualified, uses setpoint "6" = 75% of these slots).
+    maxConcurrency: "8"
     workerPoolType: "process"
     gracefulShutdownTimeout: "1800"
   keda:
-    minReplicas: 0
+    # Pairing rule (see worker-temporal values.yaml): with queueTypes pinned to "activity",
+    # minReplicas must be >= 1. Deployments raise it further (saas runs 4).
+    minReplicas: 1
+    # Long-running LLM activities (up to 2h30m): a queued task means a long wait, so scale up
+    # on any sustained queue. The old inherited default (targetQueueSize = maxConcurrency)
+    # implied a ~1.5h wait budget and never reacted (ENG-4128).
+    targetQueueSize: "2"
+    # Activity tasks are the only type that accumulates; workflow tasks drain in ms with a
+    # live poller, and workflow-task orphan rows can never pollute the metric.
+    queueTypes: "activity"
+    scaleDown:
+      stabilizationWindowSeconds: 1800
+      policies:
+        - type: Pods
+          value: 1
+          periodSeconds: 600
   # Thunderbolt agents run cross-DB replication (copy_table) into a scratch
   # dir under /data (REPLICATION_WORK_DIR=/data/replication). Without an
   # attached volume /data isn't writable and copy_table fails, so mount a
