@@ -159,7 +159,7 @@ keda:
 | `cooldownPeriod` | `300` | Seconds after the queue empties before scaling to zero begins. |
 | `targetQueueSize` | `""` | Queued tasks per pod the HPA targets: `desired = ceil(backlog / targetQueueSize)`. Empty inherits `temporal.maxConcurrency` — fine for fast tasks, but for long-running activities even a short queue means a long wait, so set it lower (e.g. `"1"`–`"2"`). |
 | `activationTargetQueueSize` | `"0"` | Queue depth that must be exceeded to scale from 0 → 1. `"0"` means any task activates the worker. |
-| `queueTypes` | `""` | Which Temporal task types count toward the backlog (`"activity"`, `"workflow"`, or both comma-separated). Empty uses the KEDA scaler default, which is version-dependent — pin it when the distinction matters. |
+| `queueTypes` | `""` | Which Temporal task types count toward the backlog (`"activity"`, `"workflow"`, or both comma-separated). Empty uses the KEDA scaler default, which is version-dependent — pin it when the distinction matters. **Pairing rule:** with `minReplicas: 0` this must include `workflow` — see below. |
 | `scaleDown.stabilizationWindowSeconds` | `300` | HPA stabilization window — prevents rapid scale-down oscillation. |
 | `scaleDown.policies` | `[]` | HPA v2 scale-down rate policies, passed through verbatim (e.g. `{type: Pods, value: 1, periodSeconds: 600}` sheds at most one pod per 10 minutes). |
 | `fallback` | `{}` | KEDA `spec.fallback` (`failureThreshold` + `replicas`): hold a fixed replica count after a scaler errors repeatedly. Applies to `AverageValue` metrics such as `prometheusTriggers`. |
@@ -169,6 +169,28 @@ keda:
 > **Scale-out target.** `keda.targetQueueSize` controls how aggressively a
 > worker scales out. When left empty it inherits `temporal.maxConcurrency` —
 > the number of concurrent tasks one replica handles — which suits fast tasks.
+
+### queueTypes and scale-to-zero (the pairing rule)
+
+A fresh workflow's **first task is a workflow task**. A worker at zero replicas
+has zero pollers, so that task sits in the workflow backlog — and a scaler
+pinned to `queueTypes: "activity"` ignores it for **both** the metric and
+activation (verified live on KEDA 2.19): no pod ever wakes, and the workflow
+deadlocks. Hence:
+
+- **`minReplicas >= 1` (recommended): pin `queueTypes: "activity"`.** The
+  always-on poller serves the ms-fast workflow tasks, and the scaling metric
+  stays purely activity-driven — the only task type that actually accumulates,
+  and immune to workflow-task orphan rows polluting the count.
+- **`minReplicas: 0`: include `workflow`** (e.g. `"workflow,activity"`). The
+  workflow term is ~0 whenever a pod exists (workflow tasks drain in
+  milliseconds), so it barely affects sizing — it exists to break the
+  wake-from-zero chicken-and-egg. Trade-off: workflow-task orphans (if the
+  upstream matching leak ever recurs) would re-enter the metric and can
+  prevent scale-to-zero.
+
+The template **fails fast** on the deadlocking combination
+(`minReplicas: 0` + `queueTypes: "activity"`).
 
 ### Prometheus triggers (in-flight-slots hold)
 

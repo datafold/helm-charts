@@ -4,6 +4,9 @@
 {{- if and $multi .Values.keda.prometheusTriggers }}
 {{- fail "keda.prometheusTriggers cannot be combined with multiple taskQueues: the scalingModifiers composite formula would silently ignore them" }}
 {{- end }}
+{{- if and (eq (int .Values.keda.minReplicas) 0) (eq .Values.keda.queueTypes "activity") }}
+{{- fail "keda.minReplicas=0 with queueTypes=\"activity\" deadlocks: a fresh workflow's first task is a workflow task, which this configuration ignores for both metric and activation, so no pod ever wakes to serve it. Set minReplicas >= 1 or include \"workflow\" in queueTypes." }}
+{{- end }}
 {{- $targetQueueSize := .Values.keda.targetQueueSize | default .Values.temporal.maxConcurrency }}
 apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
