@@ -353,8 +353,11 @@ worker-thunderbolt:
     minReplicas: 1
     # Long-running LLM activities (up to 2h30m): a queued task means a long wait, so scale up
     # on any sustained queue. The old inherited default (targetQueueSize = maxConcurrency)
-    # implied a ~1.5h wait budget and never reacted (ENG-4128).
-    targetQueueSize: "2"
+    # implied a ~1.5h wait budget and never reacted (ENG-4128). "4" halves the burst
+    # overshoot observed at "2" (HPA converts queue length to pods through this value without
+    # knowing each pod absorbs maxConcurrency tasks; a 15-task burst produced 5 pods where
+    # 2 sufficed) while still reacting within one poll cycle.
+    targetQueueSize: "4"
     # Activity tasks are the only type that accumulates; workflow tasks drain in ms with a
     # live poller, and workflow-task orphan rows can never pollute the metric.
     queueTypes: "activity"
