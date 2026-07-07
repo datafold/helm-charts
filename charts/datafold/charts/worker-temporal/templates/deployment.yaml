@@ -44,13 +44,24 @@ spec:
         #    whole sample; include_labels keeps the task_queue KEY but not its
         #    values, so this value-level drop is still required. The real queues
         #    (io, highmem, storage, storagehigh, monitors, ...) stay queryable.
+        # 4. tags pod_name:%%kube_pod_name%% — re-injects the per-pod identity that
+        #    DD_CHECKS_TAG_CARDINALITY=low strips (see NOTE below). The SDK metrics
+        #    carry no pod identity of their own, so without this tag pods scheduled
+        #    on the SAME node submit identical tag sets and gauges collapse
+        #    last-write-wins (slots undercount, ENG-4128). The AD template variable
+        #    resolves at discovery; a per-instance `tag_cardinality` override is
+        #    silently ignored by the check (both validated live on the testing
+        #    cluster). Ingestion-side only: pod_name becomes QUERYABLE per metric
+        #    only where the Metrics-without-Limits allowlist admits it
+        #    (cloud-infra terraform/deployments/datadog/temporal_worker_tag_config.tf).
         #
         # NOTE: ignore_tags does NOT work here — it only filters Autodiscovery/Tagger
         # tags and the `tags` option, never labels scraped from the /metrics endpoint.
         # Kubernetes tagger tags are trimmed separately at the agent via
         # DD_CHECKS_TAG_CARDINALITY=low (DatadogAgent CR in the datadog chart,
         # configuration.checksTagCardinality), which drops the higher-cardinality
-        # orchestrator tags (pod_name, kube_replica_set, ...).
+        # orchestrator tags (pod_name, kube_replica_set, ...) — pod_name being
+        # re-added surgically via item 4 above.
         #
         # The host/cloud/node tag family (host, instance-id, availability-zone, aws_*,
         # region, instance-type, image*, zone, kube_node, ...) is NOT removed by this
@@ -66,6 +77,7 @@ spec:
                 "namespace": "temporal_worker",
                 "metrics": ["temporal_.*"],
                 "tag_by_endpoint": false,
+                "tags": ["pod_name:%%kube_pod_name%%"],
                 "include_labels": [
                   "task_queue",
                   "workflow_type",
