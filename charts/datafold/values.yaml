@@ -182,12 +182,25 @@ config:
   # Max time (in hours, float) a CI run waits for all diffs before timing out,
   # e.g. "1.5" or "8". Leave empty to use the application default (4.0).
   ciRunMaxWaitHours: ""
-  # Anthropic-on-Foundry endpoint. Set anthropicFoundryResource to the Foundry
-  # resource name (used as https://{resource}.services.ai.azure.com/anthropic/),
-  # or set anthropicFoundryBaseUrl to a fully-qualified endpoint instead.
-  # Auth uses secrets.anthropicFoundryApiKey.
-  anthropicFoundryResource: ""
-  anthropicFoundryBaseUrl: ""
+  # Shared Microsoft (Azure AI) Foundry resource that can host multiple models
+  # (e.g. several GPT deployments, or a mix of OpenAI and Anthropic models).
+  # Set resource to the Foundry resource name (used as
+  # https://{resource}.services.ai.azure.com/), or baseUrl for a
+  # fully-qualified endpoint instead. Auth uses secrets.foundry.apiKey for
+  # every model listed below.
+  foundry:
+    resource: ""
+    baseUrl: ""
+    # Default Azure OpenAI api-version for provider: openai entries below,
+    # unless a model overrides it.
+    apiVersion: ""
+    # - alias: gpt-5             # name the app refers to this model by
+    #   provider: openai         # openai | anthropic
+    #   deployment: gpt-5-prod   # required for provider: openai
+    # - alias: claude-sonnet
+    #   provider: anthropic
+    #   model: claude-sonnet-4-5 # optional, defaults to alias
+    models: []
   customVars: []
 
 secrets:
@@ -234,10 +247,11 @@ secrets:
     datafoldDocsAuthKey: ""
   apiOrgCreationDonorTokens: ""
   anthropicApiKey: ""
-  # API key for Anthropic models hosted on Microsoft (Azure AI) Foundry, sent as
-  # the Azure `api-key` header. Pair with config.anthropicFoundryResource (or
-  # config.anthropicFoundryBaseUrl) below.
-  anthropicFoundryApiKey: ""
+  foundry:
+    # Shared API key for the Microsoft (Azure AI) Foundry resource configured
+    # under config.foundry, sent as the Azure `api-key` header for every
+    # model listed in config.foundry.models.
+    apiKey: ""
 
 # Chart-level labels and annotations applied to resources in this top level chart
 toplevel:
