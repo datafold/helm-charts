@@ -84,11 +84,17 @@ data:
 {{- if .Values.config.ciRunMaxWaitHours }}
   DATAFOLD_CI_RUN_MAX_WAIT_HOURS: "{{ .Values.config.ciRunMaxWaitHours }}"
 {{- end }}
-{{- if .Values.config.anthropicFoundryResource }}
-  DATAFOLD_ANTHROPIC_FOUNDRY_RESOURCE: "{{ .Values.config.anthropicFoundryResource }}"
+{{- if .Values.config.foundry.resource }}
+  DATAFOLD_FOUNDRY_RESOURCE: "{{ .Values.config.foundry.resource }}"
 {{- end }}
-{{- if .Values.config.anthropicFoundryBaseUrl }}
-  DATAFOLD_ANTHROPIC_FOUNDRY_BASE_URL: "{{ .Values.config.anthropicFoundryBaseUrl }}"
+{{- if .Values.config.foundry.baseUrl }}
+  DATAFOLD_FOUNDRY_BASE_URL: "{{ .Values.config.foundry.baseUrl }}"
+{{- end }}
+{{- if .Values.config.foundry.apiVersion }}
+  DATAFOLD_FOUNDRY_API_VERSION: "{{ .Values.config.foundry.apiVersion }}"
+{{- end }}
+{{- if .Values.config.foundry.models }}
+  DATAFOLD_FOUNDRY_MODELS: {{ .Values.config.foundry.models | toJson | quote }}
 {{- end }}
 {{- if .Values.config.gitlabServer }}
   GITLAB_SERVER: "{{ .Values.config.gitlabServer }}"

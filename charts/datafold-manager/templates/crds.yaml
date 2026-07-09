@@ -668,6 +668,84 @@ spec:
                             type: object
                         type: object
                     type: object
+                  prometheus:
+                    description: |-
+                      Prometheus enables the minimal in-cluster Prometheus backing KEDA
+                      prometheusTriggers (scaling control loop, not an observability stack).
+                      Subchart values (retention, emptyDirSizeLimit, image, ...) are tunable
+                      via RawValues.
+                    properties:
+                      enabled:
+                        description: Enabled specifies whether this component should
+                          be installed
+                        type: boolean
+                      rawValues:
+                        description: |-
+                          RawValues contains arbitrary Helm values to pass directly to this component's subchart
+                          These values will be merged with the component's default values and can override any
+                          configuration option supported by the component's Helm chart
+                        x-kubernetes-preserve-unknown-fields: true
+                      replicas:
+                        description: Replicas specifies the number of replicas for
+                          this component
+                        format: int32
+                        type: integer
+                      resources:
+                        description: Resources specifies the resource requirements
+                          for this component
+                        properties:
+                          limits:
+                            description: Limits specifies the maximum resources that
+                              can be used
+                            properties:
+                              cpu:
+                                description: CPU specifies the maximum CPU resources
+                                type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the maximum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the maximum 1Gi
+                                  hugepages (e.g. "1Gi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the maximum 2Mi
+                                  hugepages (e.g. "128Mi"). Requests must equal limits
+                                  for hugepages.
+                                type: string
+                              memory:
+                                description: Memory specifies the maximum memory resources
+                                type: string
+                            type: object
+                          requests:
+                            description: Requests specifies the minimum resources
+                              that should be allocated
+                            properties:
+                              cpu:
+                                description: CPU specifies the minimum CPU resources
+                                type: string
+                              ephemeralStorage:
+                                description: EphemeralStorage specifies the minimum
+                                  ephemeral storage (e.g. "10Gi")
+                                type: string
+                              hugepages1Gi:
+                                description: Hugepages1Gi specifies the minimum 1Gi
+                                  hugepages (e.g. "1Gi"). Must equal limits when both
+                                  are set.
+                                type: string
+                              hugepages2Mi:
+                                description: Hugepages2Mi specifies the minimum 2Mi
+                                  hugepages (e.g. "128Mi"). Must equal limits when
+                                  both are set.
+                                type: string
+                              memory:
+                                description: Memory specifies the minimum memory resources
+                                type: string
+                            type: object
+                        type: object
+                    type: object
                   redis:
                     description: Redis enables Redis cache
                     properties:
@@ -1342,6 +1420,24 @@ spec:
                           enabled:
                             description: Enabled turns on KEDA scaling for this worker
                             type: boolean
+                          fallback:
+                            description: Fallback holds a fixed replica count when
+                              a scaler errors repeatedly
+                            properties:
+                              failureThreshold:
+                                description: FailureThreshold is the number of consecutive
+                                  scaler errors before the fallback applies
+                                format: int32
+                                type: integer
+                              replicas:
+                                description: Replicas is the replica count held while
+                                  the fallback is active
+                                format: int32
+                                type: integer
+                            required:
+                            - failureThreshold
+                            - replicas
+                            type: object
                           maxReplicas:
                             description: MaxReplicas is the maximum replica count
                             format: int32
@@ -1355,6 +1451,83 @@ spec:
                               in seconds
                             format: int32
                             type: integer
+                          prometheusTriggers:
+                            description: |-
+                              PrometheusTriggers are additional prometheus triggers on the ScaledObject;
+                              the HPA scales to the max desired across all triggers (e.g. an in-flight-slots
+                              hold so workers running long activities aren't scaled down on an empty queue)
+                            items:
+                              description: |-
+                                KedaPrometheusTrigger is an additional prometheus trigger appended to the
+                                worker's ScaledObject.
+                              properties:
+                                activationThreshold:
+                                  description: ActivationThreshold is the 0->1 activation
+                                    threshold
+                                  type: string
+                                ignoreNullValues:
+                                  description: IgnoreNullValues controls whether an
+                                    empty query result is treated as 0
+                                  type: boolean
+                                metricType:
+                                  description: MetricType is the HPA metric type (AverageValue
+                                    or Value)
+                                  type: string
+                                name:
+                                  description: Name identifies the trigger in the
+                                    ScaledObject
+                                  type: string
+                                query:
+                                  description: Query is the PromQL query producing
+                                    the scaling metric
+                                  type: string
+                                serverAddress:
+                                  description: ServerAddress is the Prometheus query
+                                    endpoint
+                                  type: string
+                                threshold:
+                                  description: Threshold is the per-pod target for
+                                    the metric
+                                  type: string
+                              required:
+                              - query
+                              - serverAddress
+                              - threshold
+                              type: object
+                            type: array
+                          queueTypes:
+                            description: |-
+                              QueueTypes pins which Temporal task types count toward the backlog
+                              ("activity", "workflow", or both comma-separated). Empty uses the
+                              KEDA scaler default, which is version-dependent.
+                            type: string
+                          scaleDownPolicies:
+                            description: ScaleDownPolicies are HPA v2 scale-down rate
+                              policies, passed through verbatim
+                            items:
+                              description: KedaScaleDownPolicy is an HPA v2 scaling
+                                policy applied to scale-down.
+                              properties:
+                                periodSeconds:
+                                  description: PeriodSeconds is the window the policy
+                                    applies over
+                                  format: int32
+                                  type: integer
+                                type:
+                                  description: 'Type is the HPA policy type: Pods
+                                    or Percent'
+                                  type: string
+                                value:
+                                  description: Value is the maximum change allowed
+                                    per period
+                                  format: int32
+                                  type: integer
+                              required:
+                              - periodSeconds
+                              - type
+                              - value
+                              type: object
+                            type: array
                           scaleDownStabilizationWindowSeconds:
                             description: ScaleDownStabilizationWindowSeconds is the
                               scale-down stabilization window
@@ -1622,6 +1795,24 @@ spec:
                           enabled:
                             description: Enabled turns on KEDA scaling for this worker
                             type: boolean
+                          fallback:
+                            description: Fallback holds a fixed replica count when
+                              a scaler errors repeatedly
+                            properties:
+                              failureThreshold:
+                                description: FailureThreshold is the number of consecutive
+                                  scaler errors before the fallback applies
+                                format: int32
+                                type: integer
+                              replicas:
+                                description: Replicas is the replica count held while
+                                  the fallback is active
+                                format: int32
+                                type: integer
+                            required:
+                            - failureThreshold
+                            - replicas
+                            type: object
                           maxReplicas:
                             description: MaxReplicas is the maximum replica count
                             format: int32
@@ -1635,6 +1826,83 @@ spec:
                               in seconds
                             format: int32
                             type: integer
+                          prometheusTriggers:
+                            description: |-
+                              PrometheusTriggers are additional prometheus triggers on the ScaledObject;
+                              the HPA scales to the max desired across all triggers (e.g. an in-flight-slots
+                              hold so workers running long activities aren't scaled down on an empty queue)
+                            items:
+                              description: |-
+                                KedaPrometheusTrigger is an additional prometheus trigger appended to the
+                                worker's ScaledObject.
+                              properties:
+                                activationThreshold:
+                                  description: ActivationThreshold is the 0->1 activation
+                                    threshold
+                                  type: string
+                                ignoreNullValues:
+                                  description: IgnoreNullValues controls whether an
+                                    empty query result is treated as 0
+                                  type: boolean
+                                metricType:
+                                  description: MetricType is the HPA metric type (AverageValue
+                                    or Value)
+                                  type: string
+                                name:
+                                  description: Name identifies the trigger in the
+                                    ScaledObject
+                                  type: string
+                                query:
+                                  description: Query is the PromQL query producing
+                                    the scaling metric
+                                  type: string
+                                serverAddress:
+                                  description: ServerAddress is the Prometheus query
+                                    endpoint
+                                  type: string
+                                threshold:
+                                  description: Threshold is the per-pod target for
+                                    the metric
+                                  type: string
+                              required:
+                              - query
+                              - serverAddress
+                              - threshold
+                              type: object
+                            type: array
+                          queueTypes:
+                            description: |-
+                              QueueTypes pins which Temporal task types count toward the backlog
+                              ("activity", "workflow", or both comma-separated). Empty uses the
+                              KEDA scaler default, which is version-dependent.
+                            type: string
+                          scaleDownPolicies:
+                            description: ScaleDownPolicies are HPA v2 scale-down rate
+                              policies, passed through verbatim
+                            items:
+                              description: KedaScaleDownPolicy is an HPA v2 scaling
+                                policy applied to scale-down.
+                              properties:
+                                periodSeconds:
+                                  description: PeriodSeconds is the window the policy
+                                    applies over
+                                  format: int32
+                                  type: integer
+                                type:
+                                  description: 'Type is the HPA policy type: Pods
+                                    or Percent'
+                                  type: string
+                                value:
+                                  description: Value is the maximum change allowed
+                                    per period
+                                  format: int32
+                                  type: integer
+                              required:
+                              - periodSeconds
+                              - type
+                              - value
+                              type: object
+                            type: array
                           scaleDownStabilizationWindowSeconds:
                             description: ScaleDownStabilizationWindowSeconds is the
                               scale-down stabilization window
@@ -1976,6 +2244,24 @@ spec:
                           enabled:
                             description: Enabled turns on KEDA scaling for this worker
                             type: boolean
+                          fallback:
+                            description: Fallback holds a fixed replica count when
+                              a scaler errors repeatedly
+                            properties:
+                              failureThreshold:
+                                description: FailureThreshold is the number of consecutive
+                                  scaler errors before the fallback applies
+                                format: int32
+                                type: integer
+                              replicas:
+                                description: Replicas is the replica count held while
+                                  the fallback is active
+                                format: int32
+                                type: integer
+                            required:
+                            - failureThreshold
+                            - replicas
+                            type: object
                           maxReplicas:
                             description: MaxReplicas is the maximum replica count
                             format: int32
@@ -1989,6 +2275,83 @@ spec:
                               in seconds
                             format: int32
                             type: integer
+                          prometheusTriggers:
+                            description: |-
+                              PrometheusTriggers are additional prometheus triggers on the ScaledObject;
+                              the HPA scales to the max desired across all triggers (e.g. an in-flight-slots
+                              hold so workers running long activities aren't scaled down on an empty queue)
+                            items:
+                              description: |-
+                                KedaPrometheusTrigger is an additional prometheus trigger appended to the
+                                worker's ScaledObject.
+                              properties:
+                                activationThreshold:
+                                  description: ActivationThreshold is the 0->1 activation
+                                    threshold
+                                  type: string
+                                ignoreNullValues:
+                                  description: IgnoreNullValues controls whether an
+                                    empty query result is treated as 0
+                                  type: boolean
+                                metricType:
+                                  description: MetricType is the HPA metric type (AverageValue
+                                    or Value)
+                                  type: string
+                                name:
+                                  description: Name identifies the trigger in the
+                                    ScaledObject
+                                  type: string
+                                query:
+                                  description: Query is the PromQL query producing
+                                    the scaling metric
+                                  type: string
+                                serverAddress:
+                                  description: ServerAddress is the Prometheus query
+                                    endpoint
+                                  type: string
+                                threshold:
+                                  description: Threshold is the per-pod target for
+                                    the metric
+                                  type: string
+                              required:
+                              - query
+                              - serverAddress
+                              - threshold
+                              type: object
+                            type: array
+                          queueTypes:
+                            description: |-
+                              QueueTypes pins which Temporal task types count toward the backlog
+                              ("activity", "workflow", or both comma-separated). Empty uses the
+                              KEDA scaler default, which is version-dependent.
+                            type: string
+                          scaleDownPolicies:
+                            description: ScaleDownPolicies are HPA v2 scale-down rate
+                              policies, passed through verbatim
+                            items:
+                              description: KedaScaleDownPolicy is an HPA v2 scaling
+                                policy applied to scale-down.
+                              properties:
+                                periodSeconds:
+                                  description: PeriodSeconds is the window the policy
+                                    applies over
+                                  format: int32
+                                  type: integer
+                                type:
+                                  description: 'Type is the HPA policy type: Pods
+                                    or Percent'
+                                  type: string
+                                value:
+                                  description: Value is the maximum change allowed
+                                    per period
+                                  format: int32
+                                  type: integer
+                              required:
+                              - periodSeconds
+                              - type
+                              - value
+                              type: object
+                            type: array
                           scaleDownStabilizationWindowSeconds:
                             description: ScaleDownStabilizationWindowSeconds is the
                               scale-down stabilization window
@@ -2404,6 +2767,24 @@ spec:
                           enabled:
                             description: Enabled turns on KEDA scaling for this worker
                             type: boolean
+                          fallback:
+                            description: Fallback holds a fixed replica count when
+                              a scaler errors repeatedly
+                            properties:
+                              failureThreshold:
+                                description: FailureThreshold is the number of consecutive
+                                  scaler errors before the fallback applies
+                                format: int32
+                                type: integer
+                              replicas:
+                                description: Replicas is the replica count held while
+                                  the fallback is active
+                                format: int32
+                                type: integer
+                            required:
+                            - failureThreshold
+                            - replicas
+                            type: object
                           maxReplicas:
                             description: MaxReplicas is the maximum replica count
                             format: int32
@@ -2417,6 +2798,83 @@ spec:
                               in seconds
                             format: int32
                             type: integer
+                          prometheusTriggers:
+                            description: |-
+                              PrometheusTriggers are additional prometheus triggers on the ScaledObject;
+                              the HPA scales to the max desired across all triggers (e.g. an in-flight-slots
+                              hold so workers running long activities aren't scaled down on an empty queue)
+                            items:
+                              description: |-
+                                KedaPrometheusTrigger is an additional prometheus trigger appended to the
+                                worker's ScaledObject.
+                              properties:
+                                activationThreshold:
+                                  description: ActivationThreshold is the 0->1 activation
+                                    threshold
+                                  type: string
+                                ignoreNullValues:
+                                  description: IgnoreNullValues controls whether an
+                                    empty query result is treated as 0
+                                  type: boolean
+                                metricType:
+                                  description: MetricType is the HPA metric type (AverageValue
+                                    or Value)
+                                  type: string
+                                name:
+                                  description: Name identifies the trigger in the
+                                    ScaledObject
+                                  type: string
+                                query:
+                                  description: Query is the PromQL query producing
+                                    the scaling metric
+                                  type: string
+                                serverAddress:
+                                  description: ServerAddress is the Prometheus query
+                                    endpoint
+                                  type: string
+                                threshold:
+                                  description: Threshold is the per-pod target for
+                                    the metric
+                                  type: string
+                              required:
+                              - query
+                              - serverAddress
+                              - threshold
+                              type: object
+                            type: array
+                          queueTypes:
+                            description: |-
+                              QueueTypes pins which Temporal task types count toward the backlog
+                              ("activity", "workflow", or both comma-separated). Empty uses the
+                              KEDA scaler default, which is version-dependent.
+                            type: string
+                          scaleDownPolicies:
+                            description: ScaleDownPolicies are HPA v2 scale-down rate
+                              policies, passed through verbatim
+                            items:
+                              description: KedaScaleDownPolicy is an HPA v2 scaling
+                                policy applied to scale-down.
+                              properties:
+                                periodSeconds:
+                                  description: PeriodSeconds is the window the policy
+                                    applies over
+                                  format: int32
+                                  type: integer
+                                type:
+                                  description: 'Type is the HPA policy type: Pods
+                                    or Percent'
+                                  type: string
+                                value:
+                                  description: Value is the maximum change allowed
+                                    per period
+                                  format: int32
+                                  type: integer
+                              required:
+                              - periodSeconds
+                              - type
+                              - value
+                              type: object
+                            type: array
                           scaleDownStabilizationWindowSeconds:
                             description: ScaleDownStabilizationWindowSeconds is the
                               scale-down stabilization window
@@ -2686,6 +3144,24 @@ spec:
                           enabled:
                             description: Enabled turns on KEDA scaling for this worker
                             type: boolean
+                          fallback:
+                            description: Fallback holds a fixed replica count when
+                              a scaler errors repeatedly
+                            properties:
+                              failureThreshold:
+                                description: FailureThreshold is the number of consecutive
+                                  scaler errors before the fallback applies
+                                format: int32
+                                type: integer
+                              replicas:
+                                description: Replicas is the replica count held while
+                                  the fallback is active
+                                format: int32
+                                type: integer
+                            required:
+                            - failureThreshold
+                            - replicas
+                            type: object
                           maxReplicas:
                             description: MaxReplicas is the maximum replica count
                             format: int32
@@ -2699,6 +3175,83 @@ spec:
                               in seconds
                             format: int32
                             type: integer
+                          prometheusTriggers:
+                            description: |-
+                              PrometheusTriggers are additional prometheus triggers on the ScaledObject;
+                              the HPA scales to the max desired across all triggers (e.g. an in-flight-slots
+                              hold so workers running long activities aren't scaled down on an empty queue)
+                            items:
+                              description: |-
+                                KedaPrometheusTrigger is an additional prometheus trigger appended to the
+                                worker's ScaledObject.
+                              properties:
+                                activationThreshold:
+                                  description: ActivationThreshold is the 0->1 activation
+                                    threshold
+                                  type: string
+                                ignoreNullValues:
+                                  description: IgnoreNullValues controls whether an
+                                    empty query result is treated as 0
+                                  type: boolean
+                                metricType:
+                                  description: MetricType is the HPA metric type (AverageValue
+                                    or Value)
+                                  type: string
+                                name:
+                                  description: Name identifies the trigger in the
+                                    ScaledObject
+                                  type: string
+                                query:
+                                  description: Query is the PromQL query producing
+                                    the scaling metric
+                                  type: string
+                                serverAddress:
+                                  description: ServerAddress is the Prometheus query
+                                    endpoint
+                                  type: string
+                                threshold:
+                                  description: Threshold is the per-pod target for
+                                    the metric
+                                  type: string
+                              required:
+                              - query
+                              - serverAddress
+                              - threshold
+                              type: object
+                            type: array
+                          queueTypes:
+                            description: |-
+                              QueueTypes pins which Temporal task types count toward the backlog
+                              ("activity", "workflow", or both comma-separated). Empty uses the
+                              KEDA scaler default, which is version-dependent.
+                            type: string
+                          scaleDownPolicies:
+                            description: ScaleDownPolicies are HPA v2 scale-down rate
+                              policies, passed through verbatim
+                            items:
+                              description: KedaScaleDownPolicy is an HPA v2 scaling
+                                policy applied to scale-down.
+                              properties:
+                                periodSeconds:
+                                  description: PeriodSeconds is the window the policy
+                                    applies over
+                                  format: int32
+                                  type: integer
+                                type:
+                                  description: 'Type is the HPA policy type: Pods
+                                    or Percent'
+                                  type: string
+                                value:
+                                  description: Value is the maximum change allowed
+                                    per period
+                                  format: int32
+                                  type: integer
+                              required:
+                              - periodSeconds
+                              - type
+                              - value
+                              type: object
+                            type: array
                           scaleDownStabilizationWindowSeconds:
                             description: ScaleDownStabilizationWindowSeconds is the
                               scale-down stabilization window
@@ -3040,6 +3593,24 @@ spec:
                           enabled:
                             description: Enabled turns on KEDA scaling for this worker
                             type: boolean
+                          fallback:
+                            description: Fallback holds a fixed replica count when
+                              a scaler errors repeatedly
+                            properties:
+                              failureThreshold:
+                                description: FailureThreshold is the number of consecutive
+                                  scaler errors before the fallback applies
+                                format: int32
+                                type: integer
+                              replicas:
+                                description: Replicas is the replica count held while
+                                  the fallback is active
+                                format: int32
+                                type: integer
+                            required:
+                            - failureThreshold
+                            - replicas
+                            type: object
                           maxReplicas:
                             description: MaxReplicas is the maximum replica count
                             format: int32
@@ -3053,6 +3624,83 @@ spec:
                               in seconds
                             format: int32
                             type: integer
+                          prometheusTriggers:
+                            description: |-
+                              PrometheusTriggers are additional prometheus triggers on the ScaledObject;
+                              the HPA scales to the max desired across all triggers (e.g. an in-flight-slots
+                              hold so workers running long activities aren't scaled down on an empty queue)
+                            items:
+                              description: |-
+                                KedaPrometheusTrigger is an additional prometheus trigger appended to the
+                                worker's ScaledObject.
+                              properties:
+                                activationThreshold:
+                                  description: ActivationThreshold is the 0->1 activation
+                                    threshold
+                                  type: string
+                                ignoreNullValues:
+                                  description: IgnoreNullValues controls whether an
+                                    empty query result is treated as 0
+                                  type: boolean
+                                metricType:
+                                  description: MetricType is the HPA metric type (AverageValue
+                                    or Value)
+                                  type: string
+                                name:
+                                  description: Name identifies the trigger in the
+                                    ScaledObject
+                                  type: string
+                                query:
+                                  description: Query is the PromQL query producing
+                                    the scaling metric
+                                  type: string
+                                serverAddress:
+                                  description: ServerAddress is the Prometheus query
+                                    endpoint
+                                  type: string
+                                threshold:
+                                  description: Threshold is the per-pod target for
+                                    the metric
+                                  type: string
+                              required:
+                              - query
+                              - serverAddress
+                              - threshold
+                              type: object
+                            type: array
+                          queueTypes:
+                            description: |-
+                              QueueTypes pins which Temporal task types count toward the backlog
+                              ("activity", "workflow", or both comma-separated). Empty uses the
+                              KEDA scaler default, which is version-dependent.
+                            type: string
+                          scaleDownPolicies:
+                            description: ScaleDownPolicies are HPA v2 scale-down rate
+                              policies, passed through verbatim
+                            items:
+                              description: KedaScaleDownPolicy is an HPA v2 scaling
+                                policy applied to scale-down.
+                              properties:
+                                periodSeconds:
+                                  description: PeriodSeconds is the window the policy
+                                    applies over
+                                  format: int32
+                                  type: integer
+                                type:
+                                  description: 'Type is the HPA policy type: Pods
+                                    or Percent'
+                                  type: string
+                                value:
+                                  description: Value is the maximum change allowed
+                                    per period
+                                  format: int32
+                                  type: integer
+                              required:
+                              - periodSeconds
+                              - type
+                              - value
+                              type: object
+                            type: array
                           scaleDownStabilizationWindowSeconds:
                             description: ScaleDownStabilizationWindowSeconds is the
                               scale-down stabilization window
@@ -3320,6 +3968,24 @@ spec:
                           enabled:
                             description: Enabled turns on KEDA scaling for this worker
                             type: boolean
+                          fallback:
+                            description: Fallback holds a fixed replica count when
+                              a scaler errors repeatedly
+                            properties:
+                              failureThreshold:
+                                description: FailureThreshold is the number of consecutive
+                                  scaler errors before the fallback applies
+                                format: int32
+                                type: integer
+                              replicas:
+                                description: Replicas is the replica count held while
+                                  the fallback is active
+                                format: int32
+                                type: integer
+                            required:
+                            - failureThreshold
+                            - replicas
+                            type: object
                           maxReplicas:
                             description: MaxReplicas is the maximum replica count
                             format: int32
@@ -3333,6 +3999,83 @@ spec:
                               in seconds
                             format: int32
                             type: integer
+                          prometheusTriggers:
+                            description: |-
+                              PrometheusTriggers are additional prometheus triggers on the ScaledObject;
+                              the HPA scales to the max desired across all triggers (e.g. an in-flight-slots
+                              hold so workers running long activities aren't scaled down on an empty queue)
+                            items:
+                              description: |-
+                                KedaPrometheusTrigger is an additional prometheus trigger appended to the
+                                worker's ScaledObject.
+                              properties:
+                                activationThreshold:
+                                  description: ActivationThreshold is the 0->1 activation
+                                    threshold
+                                  type: string
+                                ignoreNullValues:
+                                  description: IgnoreNullValues controls whether an
+                                    empty query result is treated as 0
+                                  type: boolean
+                                metricType:
+                                  description: MetricType is the HPA metric type (AverageValue
+                                    or Value)
+                                  type: string
+                                name:
+                                  description: Name identifies the trigger in the
+                                    ScaledObject
+                                  type: string
+                                query:
+                                  description: Query is the PromQL query producing
+                                    the scaling metric
+                                  type: string
+                                serverAddress:
+                                  description: ServerAddress is the Prometheus query
+                                    endpoint
+                                  type: string
+                                threshold:
+                                  description: Threshold is the per-pod target for
+                                    the metric
+                                  type: string
+                              required:
+                              - query
+                              - serverAddress
+                              - threshold
+                              type: object
+                            type: array
+                          queueTypes:
+                            description: |-
+                              QueueTypes pins which Temporal task types count toward the backlog
+                              ("activity", "workflow", or both comma-separated). Empty uses the
+                              KEDA scaler default, which is version-dependent.
+                            type: string
+                          scaleDownPolicies:
+                            description: ScaleDownPolicies are HPA v2 scale-down rate
+                              policies, passed through verbatim
+                            items:
+                              description: KedaScaleDownPolicy is an HPA v2 scaling
+                                policy applied to scale-down.
+                              properties:
+                                periodSeconds:
+                                  description: PeriodSeconds is the window the policy
+                                    applies over
+                                  format: int32
+                                  type: integer
+                                type:
+                                  description: 'Type is the HPA policy type: Pods
+                                    or Percent'
+                                  type: string
+                                value:
+                                  description: Value is the maximum change allowed
+                                    per period
+                                  format: int32
+                                  type: integer
+                              required:
+                              - periodSeconds
+                              - type
+                              - value
+                              type: object
+                            type: array
                           scaleDownStabilizationWindowSeconds:
                             description: ScaleDownStabilizationWindowSeconds is the
                               scale-down stabilization window
@@ -3600,6 +4343,24 @@ spec:
                           enabled:
                             description: Enabled turns on KEDA scaling for this worker
                             type: boolean
+                          fallback:
+                            description: Fallback holds a fixed replica count when
+                              a scaler errors repeatedly
+                            properties:
+                              failureThreshold:
+                                description: FailureThreshold is the number of consecutive
+                                  scaler errors before the fallback applies
+                                format: int32
+                                type: integer
+                              replicas:
+                                description: Replicas is the replica count held while
+                                  the fallback is active
+                                format: int32
+                                type: integer
+                            required:
+                            - failureThreshold
+                            - replicas
+                            type: object
                           maxReplicas:
                             description: MaxReplicas is the maximum replica count
                             format: int32
@@ -3613,6 +4374,83 @@ spec:
                               in seconds
                             format: int32
                             type: integer
+                          prometheusTriggers:
+                            description: |-
+                              PrometheusTriggers are additional prometheus triggers on the ScaledObject;
+                              the HPA scales to the max desired across all triggers (e.g. an in-flight-slots
+                              hold so workers running long activities aren't scaled down on an empty queue)
+                            items:
+                              description: |-
+                                KedaPrometheusTrigger is an additional prometheus trigger appended to the
+                                worker's ScaledObject.
+                              properties:
+                                activationThreshold:
+                                  description: ActivationThreshold is the 0->1 activation
+                                    threshold
+                                  type: string
+                                ignoreNullValues:
+                                  description: IgnoreNullValues controls whether an
+                                    empty query result is treated as 0
+                                  type: boolean
+                                metricType:
+                                  description: MetricType is the HPA metric type (AverageValue
+                                    or Value)
+                                  type: string
+                                name:
+                                  description: Name identifies the trigger in the
+                                    ScaledObject
+                                  type: string
+                                query:
+                                  description: Query is the PromQL query producing
+                                    the scaling metric
+                                  type: string
+                                serverAddress:
+                                  description: ServerAddress is the Prometheus query
+                                    endpoint
+                                  type: string
+                                threshold:
+                                  description: Threshold is the per-pod target for
+                                    the metric
+                                  type: string
+                              required:
+                              - query
+                              - serverAddress
+                              - threshold
+                              type: object
+                            type: array
+                          queueTypes:
+                            description: |-
+                              QueueTypes pins which Temporal task types count toward the backlog
+                              ("activity", "workflow", or both comma-separated). Empty uses the
+                              KEDA scaler default, which is version-dependent.
+                            type: string
+                          scaleDownPolicies:
+                            description: ScaleDownPolicies are HPA v2 scale-down rate
+                              policies, passed through verbatim
+                            items:
+                              description: KedaScaleDownPolicy is an HPA v2 scaling
+                                policy applied to scale-down.
+                              properties:
+                                periodSeconds:
+                                  description: PeriodSeconds is the window the policy
+                                    applies over
+                                  format: int32
+                                  type: integer
+                                type:
+                                  description: 'Type is the HPA policy type: Pods
+                                    or Percent'
+                                  type: string
+                                value:
+                                  description: Value is the maximum change allowed
+                                    per period
+                                  format: int32
+                                  type: integer
+                              required:
+                              - periodSeconds
+                              - type
+                              - value
+                              type: object
+                            type: array
                           scaleDownStabilizationWindowSeconds:
                             description: ScaleDownStabilizationWindowSeconds is the
                               scale-down stabilization window
@@ -3944,21 +4782,6 @@ spec:
                 description: Global contains the core configuration for the Datafold
                   deployment
                 properties:
-                  anthropicFoundryBaseUrl:
-                    description: |-
-                      AnthropicFoundryBaseUrl is a fully-qualified Anthropic-on-Foundry endpoint, used as an
-                      alternative to AnthropicFoundryResource. Maps to config.anthropicFoundryBaseUrl
-                      (DATAFOLD_ANTHROPIC_FOUNDRY_BASE_URL) in the Helm chart.
-                    type: string
-                  anthropicFoundryResource:
-                    description: |-
-                      AnthropicFoundryResource is the Microsoft (Azure AI) Foundry resource name used to target
-                      Anthropic models hosted on Foundry. The application builds the endpoint as
-                      https://{resource}.services.ai.azure.com/anthropic/. Maps to config.anthropicFoundryResource
-                      (DATAFOLD_ANTHROPIC_FOUNDRY_RESOURCE) in the Helm chart. Pair with the
-                      Secrets.AnthropicFoundryApiKeySecret credential. Use AnthropicFoundryBaseUrl instead to
-                      supply a fully-qualified endpoint.
-                    type: string
                   ciRunMaxWaitHours:
                     description: |-
                       CiRunMaxWaitHours sets the maximum time (in hours) a CI run waits for all diffs before timing out.
@@ -4014,6 +4837,64 @@ spec:
                     description: Environment specifies the deployment environment
                       (e.g., production, staging, development)
                     type: string
+                  foundry:
+                    description: |-
+                      Foundry configures a shared Microsoft (Azure AI) Foundry resource that can host multiple
+                      models (e.g. several GPT deployments, or a mix of OpenAI and Anthropic models). Maps to
+                      config.foundry in the Helm chart. Pair with the Secrets.FoundryApiKeySecret credential.
+                    properties:
+                      apiVersion:
+                        description: |-
+                          ApiVersion is the default Azure OpenAI api-version applied to provider: openai models that
+                          don't specify their own. Maps to config.foundry.apiVersion (DATAFOLD_FOUNDRY_API_VERSION)
+                          in the Helm chart.
+                        type: string
+                      baseUrl:
+                        description: |-
+                          BaseUrl is a fully-qualified Foundry endpoint, used as an alternative to Resource. Maps to
+                          config.foundry.baseUrl (DATAFOLD_FOUNDRY_BASE_URL) in the Helm chart.
+                        type: string
+                      models:
+                        description: |-
+                          Models lists the models hosted on this Foundry resource. Maps to config.foundry.models
+                          (DATAFOLD_FOUNDRY_MODELS, JSON-encoded) in the Helm chart.
+                        items:
+                          description: FoundryModel describes a single model deployment
+                            hosted on a shared Foundry resource.
+                          properties:
+                            alias:
+                              description: Alias is the name the application refers
+                                to this model by.
+                              type: string
+                            deployment:
+                              description: Deployment is the Azure OpenAI deployment
+                                name. Required when Provider is "openai".
+                              type: string
+                            model:
+                              description: |-
+                                Model is the underlying model name, used when Provider is "anthropic". Defaults to Alias
+                                when omitted.
+                              type: string
+                            provider:
+                              description: Provider selects the API shape used to
+                                call this model.
+                              enum:
+                              - openai
+                              - anthropic
+                              type: string
+                          required:
+                          - alias
+                          - provider
+                          type: object
+                        type: array
+                      resource:
+                        description: |-
+                          Resource is the Foundry resource name, used to build the endpoint as
+                          https://{resource}.services.ai.azure.com/. Maps to config.foundry.resource
+                          (DATAFOLD_FOUNDRY_RESOURCE) in the Helm chart. Use BaseUrl instead to supply a
+                          fully-qualified endpoint.
+                        type: string
+                    type: object
                   githubServer:
                     description: GithubServer is the optional GitHub server URL for
                       GitHub integration
@@ -4651,23 +5532,6 @@ spec:
                     - keyName
                     - secretName
                     type: object
-                  anthropicFoundryApiKey:
-                    description: |-
-                      AnthropicFoundryApiKeySecret references the secret containing the API key for Anthropic models
-                      hosted on Microsoft (Azure AI) Foundry. The value is sent as the Azure `api-key` header and
-                      surfaces as secrets.anthropicFoundryApiKey (DATAFOLD_ANTHROPIC_FOUNDRY_API_KEY) in the Helm
-                      chart. Pair with Global.AnthropicFoundryResource or Global.AnthropicFoundryBaseUrl.
-                    properties:
-                      keyName:
-                        description: KeyName is the key within the secret
-                        type: string
-                      secretName:
-                        description: SecretName is the name of the secret
-                        type: string
-                    required:
-                    - keyName
-                    - secretName
-                    type: object
                   apiKey:
                     default:
                       keyName: apiKey
@@ -4733,6 +5597,23 @@ spec:
                       secretName: datafold-operator-secrets
                     description: DatabaseEncryptionKeySecret references the secret
                       containing the database encryption key
+                    properties:
+                      keyName:
+                        description: KeyName is the key within the secret
+                        type: string
+                      secretName:
+                        description: SecretName is the name of the secret
+                        type: string
+                    required:
+                    - keyName
+                    - secretName
+                    type: object
+                  foundryApiKey:
+                    description: |-
+                      FoundryApiKeySecret references the secret containing the shared API key for the Microsoft
+                      (Azure AI) Foundry resource configured under Global.Foundry. The value is sent as the Azure
+                      `api-key` header for every model listed in Global.Foundry.Models. Surfaces as
+                      secrets.foundry.apiKey (DATAFOLD_FOUNDRY_API_KEY) in the Helm chart.
                     properties:
                       keyName:
                         description: KeyName is the key within the secret
