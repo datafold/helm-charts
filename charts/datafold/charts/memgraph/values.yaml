@@ -15,6 +15,13 @@ snapshotRetentionCount: 32
 # for off-cluster DR backups (e.g. [worker-temporal]). Empty = no RBAC rendered.
 backupAccessServiceAccounts: []
 
+# Service accounts granted RBAC to scale this StatefulSet. Runtime per-org DKG
+# graph provisioning patches the replica count from these pods
+# (knowledge_graph/registry.py). Empty list disables the Role/RoleBinding.
+scaleAccessServiceAccounts:
+  - dma
+  - dfshell
+
 storage:
   dataSize: 50Gi
   storageClass: ""

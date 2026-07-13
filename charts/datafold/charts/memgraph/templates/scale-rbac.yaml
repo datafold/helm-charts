@@ -1,0 +1,61 @@
+{{- /*
+Per-org managed Memgraph graphs are provisioned at runtime by
+MemgraphsByOrg.create (datafold/knowledge_graph/registry.py): it patches this
+StatefulSet's replica count (_scale_statefulset) and polls the new pod for
+readiness (_wait_for_pod_healthy). That code runs inside the pods listed in
+.Values.scaleAccessServiceAccounts (dma, dfshell), whose service accounts would
+otherwise lack permission to read/scale StatefulSets, making
+`knowledge-graph create-graph` fail with a 403.
+*/ -}}
+{{- if .Values.scaleAccessServiceAccounts }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "memgraph.fullname" . }}-scale
+  labels:
+    {{- include "memgraph.labels" . | nindent 4 }}
+    {{- with .Values.chartLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with .Values.chartAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+rules:
+  # _scale_statefulset patches the replica count via the scale subresource.
+  - apiGroups: ["apps"]
+    resources: ["statefulsets/scale"]
+    verbs: ["get", "patch", "update"]
+  # _scale_statefulset reads the current replica count first.
+  - apiGroups: ["apps"]
+    resources: ["statefulsets"]
+    verbs: ["get"]
+  # _wait_for_pod_healthy polls the newly-created pod's readiness.
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "memgraph.fullname" . }}-scale
+  labels:
+    {{- include "memgraph.labels" . | nindent 4 }}
+    {{- with .Values.chartLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with .Values.chartAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ include "memgraph.fullname" . }}-scale
+subjects:
+  {{- range .Values.scaleAccessServiceAccounts }}
+  - kind: ServiceAccount
+    name: {{ . }}
+    namespace: {{ $.Release.Namespace }}
+  {{- end }}
+{{- end }}
