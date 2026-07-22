@@ -52,6 +52,7 @@ used. It requires extra care to get values correct.
 ## Reference
 
 - [Prerequisites overview](prerequisites.md)
+- [Cluster add-ons: metrics-server, Cluster Autoscaler, AWS Load Balancer Controller, Datadog Operator](cluster-addons.md)
 - [Temporal hosting: self-hosted vs Temporal Cloud](temporal-hosting.md)
 - [KEDA worker autoscaling](keda.md)
 - [Temporal Cloud payload encryption](temporal-cloud-encryption.md)

@@ -26,11 +26,26 @@ installation, IAM for backups, and custom resources.
 
 ---
 
+> **AWS shortcut:** If this cluster is provisioned with Datafold's
+> [`terraform-aws-datafold`](https://github.com/datafold/terraform-aws-datafold)
+> module, Steps A1 and A2 below are already handled for you — the module
+> creates the Temporal backup S3 bucket and the `postgres-pod` IAM role (via
+> IRSA) whenever `deploy_temporal` is `true` (the default). See the
+> [`temporal_backup` module block in `main.tf`](https://github.com/datafold/terraform-aws-datafold/blob/main/main.tf#L375-L384)
+> for the bucket and the
+> [`# temporal` section of `modules/eks/roles.tf`](https://github.com/datafold/terraform-aws-datafold/blob/main/modules/eks/roles.tf#L393-L443)
+> for the IAM role and policy. Confirm `deploy_temporal` hasn't been disabled
+> for this deployment, then skip ahead to
+> [Step A3](#step-a3-install-zalando-postgres-operator).
+
 ## Step A1: Create Backup Storage
 
 Create an object storage bucket for PostgreSQL logical backups. Enable
 server-side encryption and set a lifecycle policy to expire old backups
 (7 days recommended).
+
+> **AWS:** skip this if you're using the `terraform-aws-datafold` module —
+> see the [AWS shortcut](#deployment-order) above.
 
 | Cloud | Service | Example bucket name |
 |-------|---------|---------------------|
@@ -46,6 +61,9 @@ Grant the `postgres-pod` Kubernetes service account permission to read and
 write to the backup bucket.
 
 ### AWS (EKS)
+
+> Skip this if you're using the `terraform-aws-datafold` module — see the
+> [AWS shortcut](#deployment-order) above.
 
 Create an IAM role with an OIDC trust policy for the EKS cluster. The role must
 grant the following S3 actions, restricted to the backup bucket ARN:
@@ -309,7 +327,9 @@ server:
             enableHostVerification: false
 ```
 
-Continue with [Temporal install Step 3](temporal-install.md#step-3-install-temporal).
+Continue with [Optional: Datadog Metrics Collection](temporal-install.md#optional-datadog-metrics-collection)
+if this cluster monitors with Datadog, otherwise skip straight to
+[Temporal install Step 3](temporal-install.md#step-3-install-temporal).
 
 ---
 
