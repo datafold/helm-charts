@@ -1,0 +1,60 @@
+{{- /*
+Memgraph DR backups (datafold repo: docs/decisions/choose-memgraph-dr-architecture.md)
+pull each graph's newest snapshot file out of the Memgraph pod through the
+Kubernetes exec API (tar-over-exec, the kubectl-cp transport) and upload it to
+per-deployment object storage. The Temporal activity doing the pull runs in the
+pods listed in .Values.backupAccessServiceAccounts (worker-temporal), whose
+service account otherwise lacks permission to exec into pods.
+*/ -}}
+{{- if .Values.backupAccessServiceAccounts }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "memgraph.fullname" . }}-backup
+  labels:
+    {{- include "memgraph.labels" . | nindent 4 }}
+    {{- with .Values.chartLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with .Values.chartAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+rules:
+  # The snapshot pull streams `tar cf -` from the Memgraph pod via exec.
+  # RBAC cannot scope exec by label or command, only by exact resourceNames —
+  # which cannot cover dynamically-scaled StatefulSet ordinals — so this is
+  # namespace-wide, the same blast radius the operator carries for ClickHouse
+  # backups.
+  - apiGroups: [""]
+    resources: ["pods/exec"]
+    verbs: ["create"]
+  # Resolving the newest snapshot and the exec call itself read the pod.
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "memgraph.fullname" . }}-backup
+  labels:
+    {{- include "memgraph.labels" . | nindent 4 }}
+    {{- with .Values.chartLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with .Values.chartAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ include "memgraph.fullname" . }}-backup
+subjects:
+  {{- range .Values.backupAccessServiceAccounts }}
+  - kind: ServiceAccount
+    name: {{ . }}
+    namespace: {{ $.Release.Namespace }}
+  {{- end }}
+{{- end }}
