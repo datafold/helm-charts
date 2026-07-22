@@ -53,15 +53,20 @@ helm repo add temporal https://go.temporal.io/helm-charts
 helm repo update
 ```
 
-Pin the chart version explicitly to ensure reproducible deployments. List
-available versions:
+**Pin the chart to version `0.73.2`.** This guide's values format (legacy
+`server.config.persistence.default`/`visibility` stores, top-level
+`postgresql`/`cassandra`/`mysql`/`prometheus`/`grafana`/`elasticsearch`
+toggles) matches that release. Chart versions `1.1.0` and later restructured
+persistence under `server.config.persistence.datastores` and removed those
+top-level keys outright — applying this guide's values to a newer chart fails
+at render time. Confirm it's available:
 
 ```bash
-helm search repo temporal/temporal --versions
+helm search repo temporal/temporal --versions | grep 0.73.2
 ```
 
-The `APP VERSION` column shows the Temporal server version. Note the `CHART VERSION`
-for the app version you want — use that as `<CHART_VERSION>` below.
+Do not substitute a newer `CHART VERSION` without first reworking the values
+below for the new schema.
 
 ---
 
@@ -157,13 +162,120 @@ schema:
 
 ---
 
+## Optional: Datadog Metrics Collection
+
+If the cluster runs the Datadog Agent with Autodiscovery, add these values to
+`temporal-values.yaml` to scrape Temporal's OpenMetrics endpoint. **Skip this
+section if you don't use Datadog for monitoring** — Temporal runs identically
+either way, and none of this is required for the install steps above.
+
+First, switch the internal metrics reporter to the OpenTelemetry framework.
+This is what makes Temporal's histogram metrics (latencies) exportable in a
+form the Datadog OpenMetrics check can consume:
+
+```yaml
+server:
+  config:
+    metrics:
+      prometheus:
+        framework: opentelemetry
+        handlerPath: /metrics
+        listenAddress: 0.0.0.0:9090
+        timerType: histogram
+```
+
+Then annotate each service so the Agent picks up its metrics endpoint. The
+`metrics` allow-list is scoped per component — each service only emits a
+subset (for example, only Matching emits backlog/lag metrics, and only
+Frontend and History track workflow outcome counters):
+
+```yaml
+server:
+  frontend:
+    podAnnotations:
+      ad.datadoghq.com/temporal-frontend.checks: |
+        {
+          "openmetrics": {
+            "instances": [{
+              "openmetrics_endpoint": "http://%%host%%:9090/metrics",
+              "namespace": "temporal_server",
+              "metrics": ["service_requests", "service_latency", "service_error_with_type",
+                          "persistence_latency", "workflow_success",
+                          "workflow_failed", "workflow_timeout", "workflow_cancel",
+                          "no_poller_tasks", "poll_success", "poll_timeouts",
+                          "task_requests"],
+              "collect_histogram_buckets": true,
+              "histogram_buckets_as_distributions": true
+            }]
+          }
+        }
+
+  history:
+    podAnnotations:
+      ad.datadoghq.com/temporal-history.checks: |
+        {
+          "openmetrics": {
+            "instances": [{
+              "openmetrics_endpoint": "http://%%host%%:9090/metrics",
+              "namespace": "temporal_server",
+              "metrics": ["service_requests", "service_latency", "service_error_with_type",
+                          "persistence_latency", "workflow_success",
+                          "workflow_failed", "workflow_timeout", "workflow_cancel",
+                          "task_requests"],
+              "collect_histogram_buckets": true,
+              "histogram_buckets_as_distributions": true
+            }]
+          }
+        }
+
+  matching:
+    podAnnotations:
+      ad.datadoghq.com/temporal-matching.checks: |
+        {
+          "openmetrics": {
+            "instances": [{
+              "openmetrics_endpoint": "http://%%host%%:9090/metrics",
+              "namespace": "temporal_server",
+              "metrics": ["service_requests", "service_latency", "service_error_with_type",
+                          "approximate_backlog_count", "approximate_backlog_age_seconds", "task_lag_per_tl",
+                          "no_poller_tasks", "poll_success", "poll_timeouts"],
+              "collect_histogram_buckets": true,
+              "histogram_buckets_as_distributions": true
+            }]
+          }
+        }
+
+  worker:
+    podAnnotations:
+      ad.datadoghq.com/temporal-worker.checks: |
+        {
+          "openmetrics": {
+            "instances": [{
+              "openmetrics_endpoint": "http://%%host%%:9090/metrics",
+              "namespace": "temporal_server",
+              "metrics": ["service_requests", "service_latency", "service_error_with_type",
+                          "persistence_latency"],
+              "collect_histogram_buckets": true,
+              "histogram_buckets_as_distributions": true
+            }]
+          }
+        }
+```
+
+`%%host%%` is a Datadog Autodiscovery template variable resolved to the pod IP
+at scrape time — leave it as written. Merge these values into
+`temporal-values.yaml` before running the `helm upgrade --install` in Step 3
+below (or layer them in as a second `--values` file).
+
+---
+
 ## Step 3: Install Temporal
 
 ```bash
 helm upgrade --install temporal temporal/temporal \
   --namespace temporal --create-namespace \
   --values temporal-values.yaml \
-  --version <CHART_VERSION> \
+  --version 0.73.2 \
   --timeout 5m
 ```
 
@@ -261,4 +373,3 @@ Install [KEDA](keda.md) before deploying the Datafold application.
 | `<DEPLOYMENT_NAME>` | Your deployment name | `acme`, `production` |
 | `<DEPLOYMENT_NAME>-datafold` | Temporal logical namespace | `acme-datafold` |
 | `<RDS_ENDPOINT>` | Managed PostgreSQL hostname | `acme-temporal.abc123.us-east-1.rds.amazonaws.com` |
-| `<CHART_VERSION>` | Temporal Helm chart version | `0.73.2`, `1.0.0` |

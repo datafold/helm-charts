@@ -5,11 +5,27 @@ Datafold application with Temporal. Each step depends on the previous one.
 
 | Step | Component | Guide |
 |------|-----------|-------|
+| 0 | Cluster add-ons | [metrics-server, Cluster Autoscaler, AWS Load Balancer Controller, Datadog Operator](cluster-addons.md) |
 | 1 | PostgreSQL | [Managed RDS / Cloud SQL / Azure DB](postgres-rds.md) or [Zalando in-cluster](postgres-zalando.md) |
 | 2 | Temporal server | [Temporal Helm chart installation](temporal-install.md) |
 | 3 | KEDA | [KEDA installation](keda.md) |
 | 4 | Datafold operator | Install `datafold-manager` chart — see [Deploy with Operator](deploy-operator.md) Steps 2–3 |
 | 5 | Datafold application | Apply `DatafoldApplication` CR — see [Deploy with Operator](deploy-operator.md) Steps 4–5, or [Deploy with Helm](deploy-helm.md) |
+
+---
+
+## Cluster Add-ons
+
+Before installing PostgreSQL or Temporal, the cluster itself needs a handful
+of standard components: **metrics-server** (resource metrics for `kubectl
+top`/HPA), **Cluster Autoscaler** (EKS node scaling), the **AWS Load
+Balancer Controller** (provisions ALB/NLB from `Ingress`/`Service` objects),
+and — if this deployment monitors with Datadog — the **Datadog Operator**
+(the operator only; its `DatadogAgent` CR is applied later, automatically, by
+the Datafold chart).
+
+See [cluster-addons.md](cluster-addons.md) for install and verification steps
+for each.
 
 ---
 
