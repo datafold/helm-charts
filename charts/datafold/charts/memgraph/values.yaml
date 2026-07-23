@@ -11,6 +11,10 @@ fullnameOverride: ""
 terminationGracePeriodSeconds: 60
 snapshotRetentionCount: 32
 
+# Service accounts allowed to exec into Memgraph pods to pull snapshot files
+# for off-cluster DR backups (e.g. [worker-temporal]). Empty = no RBAC rendered.
+backupAccessServiceAccounts: []
+
 storage:
   dataSize: 50Gi
   storageClass: ""
