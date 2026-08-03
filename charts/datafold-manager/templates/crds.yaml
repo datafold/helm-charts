@@ -149,6 +149,36 @@ spec:
                                 type: string
                             type: object
                         type: object
+                      serviceAccount:
+                        description: |-
+                          ServiceAccount configures this component's Kubernetes ServiceAccount name and cloud
+                          workload identity annotations (AWS IRSA, GCP Workload Identity, Azure Workload Identity).
+                        properties:
+                          azureClientId:
+                            description: |-
+                              AzureClientId specifies the Azure managed identity client ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/client-id annotation on Azure clusters.
+                            type: string
+                          azureTenantId:
+                            description: |-
+                              AzureTenantId specifies the Azure tenant ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/tenant-id annotation on Azure clusters.
+                            type: string
+                          gcpServiceAccount:
+                            description: |-
+                              GCPServiceAccount specifies the GCP service account email to bind via Workload Identity.
+                              Renders as the iam.gke.io/gcp-service-account annotation on GCP clusters.
+                            type: string
+                          name:
+                            description: Name specifies the name of the Kubernetes
+                              ServiceAccount to create for this component.
+                            type: string
+                          roleArn:
+                            description: |-
+                              RoleArn specifies the AWS IAM role ARN to annotate the ServiceAccount with for IRSA.
+                              Renders as the eks.amazonaws.com/role-arn annotation on AWS clusters.
+                            type: string
+                        type: object
                     type: object
                   dfshell:
                     description: Dfshell enables the dfshell component
@@ -222,6 +252,36 @@ spec:
                                 description: Memory specifies the minimum memory resources
                                 type: string
                             type: object
+                        type: object
+                      serviceAccount:
+                        description: |-
+                          ServiceAccount configures this component's Kubernetes ServiceAccount name and cloud
+                          workload identity annotations (AWS IRSA, GCP Workload Identity, Azure Workload Identity).
+                        properties:
+                          azureClientId:
+                            description: |-
+                              AzureClientId specifies the Azure managed identity client ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/client-id annotation on Azure clusters.
+                            type: string
+                          azureTenantId:
+                            description: |-
+                              AzureTenantId specifies the Azure tenant ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/tenant-id annotation on Azure clusters.
+                            type: string
+                          gcpServiceAccount:
+                            description: |-
+                              GCPServiceAccount specifies the GCP service account email to bind via Workload Identity.
+                              Renders as the iam.gke.io/gcp-service-account annotation on GCP clusters.
+                            type: string
+                          name:
+                            description: Name specifies the name of the Kubernetes
+                              ServiceAccount to create for this component.
+                            type: string
+                          roleArn:
+                            description: |-
+                              RoleArn specifies the AWS IAM role ARN to annotate the ServiceAccount with for IRSA.
+                              Renders as the eks.amazonaws.com/role-arn annotation on AWS clusters.
+                            type: string
                         type: object
                     type: object
                   dma:
@@ -297,6 +357,36 @@ spec:
                                 type: string
                             type: object
                         type: object
+                      serviceAccount:
+                        description: |-
+                          ServiceAccount configures this component's Kubernetes ServiceAccount name and cloud
+                          workload identity annotations (AWS IRSA, GCP Workload Identity, Azure Workload Identity).
+                        properties:
+                          azureClientId:
+                            description: |-
+                              AzureClientId specifies the Azure managed identity client ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/client-id annotation on Azure clusters.
+                            type: string
+                          azureTenantId:
+                            description: |-
+                              AzureTenantId specifies the Azure tenant ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/tenant-id annotation on Azure clusters.
+                            type: string
+                          gcpServiceAccount:
+                            description: |-
+                              GCPServiceAccount specifies the GCP service account email to bind via Workload Identity.
+                              Renders as the iam.gke.io/gcp-service-account annotation on GCP clusters.
+                            type: string
+                          name:
+                            description: Name specifies the name of the Kubernetes
+                              ServiceAccount to create for this component.
+                            type: string
+                          roleArn:
+                            description: |-
+                              RoleArn specifies the AWS IAM role ARN to annotate the ServiceAccount with for IRSA.
+                              Renders as the eks.amazonaws.com/role-arn annotation on AWS clusters.
+                            type: string
+                        type: object
                     type: object
                   dma2:
                     description: Dma2 enables the second DMA instance
@@ -370,6 +460,36 @@ spec:
                                 description: Memory specifies the minimum memory resources
                                 type: string
                             type: object
+                        type: object
+                      serviceAccount:
+                        description: |-
+                          ServiceAccount configures this component's Kubernetes ServiceAccount name and cloud
+                          workload identity annotations (AWS IRSA, GCP Workload Identity, Azure Workload Identity).
+                        properties:
+                          azureClientId:
+                            description: |-
+                              AzureClientId specifies the Azure managed identity client ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/client-id annotation on Azure clusters.
+                            type: string
+                          azureTenantId:
+                            description: |-
+                              AzureTenantId specifies the Azure tenant ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/tenant-id annotation on Azure clusters.
+                            type: string
+                          gcpServiceAccount:
+                            description: |-
+                              GCPServiceAccount specifies the GCP service account email to bind via Workload Identity.
+                              Renders as the iam.gke.io/gcp-service-account annotation on GCP clusters.
+                            type: string
+                          name:
+                            description: Name specifies the name of the Kubernetes
+                              ServiceAccount to create for this component.
+                            type: string
+                          roleArn:
+                            description: |-
+                              RoleArn specifies the AWS IAM role ARN to annotate the ServiceAccount with for IRSA.
+                              Renders as the eks.amazonaws.com/role-arn annotation on AWS clusters.
+                            type: string
                         type: object
                     type: object
                   dma3:
@@ -445,6 +565,36 @@ spec:
                                 type: string
                             type: object
                         type: object
+                      serviceAccount:
+                        description: |-
+                          ServiceAccount configures this component's Kubernetes ServiceAccount name and cloud
+                          workload identity annotations (AWS IRSA, GCP Workload Identity, Azure Workload Identity).
+                        properties:
+                          azureClientId:
+                            description: |-
+                              AzureClientId specifies the Azure managed identity client ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/client-id annotation on Azure clusters.
+                            type: string
+                          azureTenantId:
+                            description: |-
+                              AzureTenantId specifies the Azure tenant ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/tenant-id annotation on Azure clusters.
+                            type: string
+                          gcpServiceAccount:
+                            description: |-
+                              GCPServiceAccount specifies the GCP service account email to bind via Workload Identity.
+                              Renders as the iam.gke.io/gcp-service-account annotation on GCP clusters.
+                            type: string
+                          name:
+                            description: Name specifies the name of the Kubernetes
+                              ServiceAccount to create for this component.
+                            type: string
+                          roleArn:
+                            description: |-
+                              RoleArn specifies the AWS IAM role ARN to annotate the ServiceAccount with for IRSA.
+                              Renders as the eks.amazonaws.com/role-arn annotation on AWS clusters.
+                            type: string
+                        type: object
                     type: object
                   dmatemplate:
                     description: DmaTemplate enables the DMA template instance
@@ -518,6 +668,36 @@ spec:
                                 description: Memory specifies the minimum memory resources
                                 type: string
                             type: object
+                        type: object
+                      serviceAccount:
+                        description: |-
+                          ServiceAccount configures this component's Kubernetes ServiceAccount name and cloud
+                          workload identity annotations (AWS IRSA, GCP Workload Identity, Azure Workload Identity).
+                        properties:
+                          azureClientId:
+                            description: |-
+                              AzureClientId specifies the Azure managed identity client ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/client-id annotation on Azure clusters.
+                            type: string
+                          azureTenantId:
+                            description: |-
+                              AzureTenantId specifies the Azure tenant ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/tenant-id annotation on Azure clusters.
+                            type: string
+                          gcpServiceAccount:
+                            description: |-
+                              GCPServiceAccount specifies the GCP service account email to bind via Workload Identity.
+                              Renders as the iam.gke.io/gcp-service-account annotation on GCP clusters.
+                            type: string
+                          name:
+                            description: Name specifies the name of the Kubernetes
+                              ServiceAccount to create for this component.
+                            type: string
+                          roleArn:
+                            description: |-
+                              RoleArn specifies the AWS IAM role ARN to annotate the ServiceAccount with for IRSA.
+                              Renders as the eks.amazonaws.com/role-arn annotation on AWS clusters.
+                            type: string
                         type: object
                     type: object
                   nginx:
@@ -593,6 +773,36 @@ spec:
                                 type: string
                             type: object
                         type: object
+                      serviceAccount:
+                        description: |-
+                          ServiceAccount configures this component's Kubernetes ServiceAccount name and cloud
+                          workload identity annotations (AWS IRSA, GCP Workload Identity, Azure Workload Identity).
+                        properties:
+                          azureClientId:
+                            description: |-
+                              AzureClientId specifies the Azure managed identity client ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/client-id annotation on Azure clusters.
+                            type: string
+                          azureTenantId:
+                            description: |-
+                              AzureTenantId specifies the Azure tenant ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/tenant-id annotation on Azure clusters.
+                            type: string
+                          gcpServiceAccount:
+                            description: |-
+                              GCPServiceAccount specifies the GCP service account email to bind via Workload Identity.
+                              Renders as the iam.gke.io/gcp-service-account annotation on GCP clusters.
+                            type: string
+                          name:
+                            description: Name specifies the name of the Kubernetes
+                              ServiceAccount to create for this component.
+                            type: string
+                          roleArn:
+                            description: |-
+                              RoleArn specifies the AWS IAM role ARN to annotate the ServiceAccount with for IRSA.
+                              Renders as the eks.amazonaws.com/role-arn annotation on AWS clusters.
+                            type: string
+                        type: object
                     type: object
                   operator:
                     description: Operator enables the operator component
@@ -666,6 +876,36 @@ spec:
                                 description: Memory specifies the minimum memory resources
                                 type: string
                             type: object
+                        type: object
+                      serviceAccount:
+                        description: |-
+                          ServiceAccount configures this component's Kubernetes ServiceAccount name and cloud
+                          workload identity annotations (AWS IRSA, GCP Workload Identity, Azure Workload Identity).
+                        properties:
+                          azureClientId:
+                            description: |-
+                              AzureClientId specifies the Azure managed identity client ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/client-id annotation on Azure clusters.
+                            type: string
+                          azureTenantId:
+                            description: |-
+                              AzureTenantId specifies the Azure tenant ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/tenant-id annotation on Azure clusters.
+                            type: string
+                          gcpServiceAccount:
+                            description: |-
+                              GCPServiceAccount specifies the GCP service account email to bind via Workload Identity.
+                              Renders as the iam.gke.io/gcp-service-account annotation on GCP clusters.
+                            type: string
+                          name:
+                            description: Name specifies the name of the Kubernetes
+                              ServiceAccount to create for this component.
+                            type: string
+                          roleArn:
+                            description: |-
+                              RoleArn specifies the AWS IAM role ARN to annotate the ServiceAccount with for IRSA.
+                              Renders as the eks.amazonaws.com/role-arn annotation on AWS clusters.
+                            type: string
                         type: object
                     type: object
                   prometheus:
@@ -745,6 +985,36 @@ spec:
                                 type: string
                             type: object
                         type: object
+                      serviceAccount:
+                        description: |-
+                          ServiceAccount configures this component's Kubernetes ServiceAccount name and cloud
+                          workload identity annotations (AWS IRSA, GCP Workload Identity, Azure Workload Identity).
+                        properties:
+                          azureClientId:
+                            description: |-
+                              AzureClientId specifies the Azure managed identity client ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/client-id annotation on Azure clusters.
+                            type: string
+                          azureTenantId:
+                            description: |-
+                              AzureTenantId specifies the Azure tenant ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/tenant-id annotation on Azure clusters.
+                            type: string
+                          gcpServiceAccount:
+                            description: |-
+                              GCPServiceAccount specifies the GCP service account email to bind via Workload Identity.
+                              Renders as the iam.gke.io/gcp-service-account annotation on GCP clusters.
+                            type: string
+                          name:
+                            description: Name specifies the name of the Kubernetes
+                              ServiceAccount to create for this component.
+                            type: string
+                          roleArn:
+                            description: |-
+                              RoleArn specifies the AWS IAM role ARN to annotate the ServiceAccount with for IRSA.
+                              Renders as the eks.amazonaws.com/role-arn annotation on AWS clusters.
+                            type: string
+                        type: object
                     type: object
                   redis:
                     description: Redis enables Redis cache
@@ -818,6 +1088,36 @@ spec:
                                 description: Memory specifies the minimum memory resources
                                 type: string
                             type: object
+                        type: object
+                      serviceAccount:
+                        description: |-
+                          ServiceAccount configures this component's Kubernetes ServiceAccount name and cloud
+                          workload identity annotations (AWS IRSA, GCP Workload Identity, Azure Workload Identity).
+                        properties:
+                          azureClientId:
+                            description: |-
+                              AzureClientId specifies the Azure managed identity client ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/client-id annotation on Azure clusters.
+                            type: string
+                          azureTenantId:
+                            description: |-
+                              AzureTenantId specifies the Azure tenant ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/tenant-id annotation on Azure clusters.
+                            type: string
+                          gcpServiceAccount:
+                            description: |-
+                              GCPServiceAccount specifies the GCP service account email to bind via Workload Identity.
+                              Renders as the iam.gke.io/gcp-service-account annotation on GCP clusters.
+                            type: string
+                          name:
+                            description: Name specifies the name of the Kubernetes
+                              ServiceAccount to create for this component.
+                            type: string
+                          roleArn:
+                            description: |-
+                              RoleArn specifies the AWS IAM role ARN to annotate the ServiceAccount with for IRSA.
+                              Renders as the eks.amazonaws.com/role-arn annotation on AWS clusters.
+                            type: string
                         type: object
                     type: object
                   scheduler:
@@ -893,6 +1193,36 @@ spec:
                                 type: string
                             type: object
                         type: object
+                      serviceAccount:
+                        description: |-
+                          ServiceAccount configures this component's Kubernetes ServiceAccount name and cloud
+                          workload identity annotations (AWS IRSA, GCP Workload Identity, Azure Workload Identity).
+                        properties:
+                          azureClientId:
+                            description: |-
+                              AzureClientId specifies the Azure managed identity client ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/client-id annotation on Azure clusters.
+                            type: string
+                          azureTenantId:
+                            description: |-
+                              AzureTenantId specifies the Azure tenant ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/tenant-id annotation on Azure clusters.
+                            type: string
+                          gcpServiceAccount:
+                            description: |-
+                              GCPServiceAccount specifies the GCP service account email to bind via Workload Identity.
+                              Renders as the iam.gke.io/gcp-service-account annotation on GCP clusters.
+                            type: string
+                          name:
+                            description: Name specifies the name of the Kubernetes
+                              ServiceAccount to create for this component.
+                            type: string
+                          roleArn:
+                            description: |-
+                              RoleArn specifies the AWS IAM role ARN to annotate the ServiceAccount with for IRSA.
+                              Renders as the eks.amazonaws.com/role-arn annotation on AWS clusters.
+                            type: string
+                        type: object
                     type: object
                   server:
                     description: Server enables the main Datafold server
@@ -967,6 +1297,36 @@ spec:
                                 type: string
                             type: object
                         type: object
+                      serviceAccount:
+                        description: |-
+                          ServiceAccount configures this component's Kubernetes ServiceAccount name and cloud
+                          workload identity annotations (AWS IRSA, GCP Workload Identity, Azure Workload Identity).
+                        properties:
+                          azureClientId:
+                            description: |-
+                              AzureClientId specifies the Azure managed identity client ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/client-id annotation on Azure clusters.
+                            type: string
+                          azureTenantId:
+                            description: |-
+                              AzureTenantId specifies the Azure tenant ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/tenant-id annotation on Azure clusters.
+                            type: string
+                          gcpServiceAccount:
+                            description: |-
+                              GCPServiceAccount specifies the GCP service account email to bind via Workload Identity.
+                              Renders as the iam.gke.io/gcp-service-account annotation on GCP clusters.
+                            type: string
+                          name:
+                            description: Name specifies the name of the Kubernetes
+                              ServiceAccount to create for this component.
+                            type: string
+                          roleArn:
+                            description: |-
+                              RoleArn specifies the AWS IAM role ARN to annotate the ServiceAccount with for IRSA.
+                              Renders as the eks.amazonaws.com/role-arn annotation on AWS clusters.
+                            type: string
+                        type: object
                     type: object
                   storage-worker:
                     description: StorageWorker enables the storage worker
@@ -1040,6 +1400,36 @@ spec:
                                 description: Memory specifies the minimum memory resources
                                 type: string
                             type: object
+                        type: object
+                      serviceAccount:
+                        description: |-
+                          ServiceAccount configures this component's Kubernetes ServiceAccount name and cloud
+                          workload identity annotations (AWS IRSA, GCP Workload Identity, Azure Workload Identity).
+                        properties:
+                          azureClientId:
+                            description: |-
+                              AzureClientId specifies the Azure managed identity client ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/client-id annotation on Azure clusters.
+                            type: string
+                          azureTenantId:
+                            description: |-
+                              AzureTenantId specifies the Azure tenant ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/tenant-id annotation on Azure clusters.
+                            type: string
+                          gcpServiceAccount:
+                            description: |-
+                              GCPServiceAccount specifies the GCP service account email to bind via Workload Identity.
+                              Renders as the iam.gke.io/gcp-service-account annotation on GCP clusters.
+                            type: string
+                          name:
+                            description: Name specifies the name of the Kubernetes
+                              ServiceAccount to create for this component.
+                            type: string
+                          roleArn:
+                            description: |-
+                              RoleArn specifies the AWS IAM role ARN to annotate the ServiceAccount with for IRSA.
+                              Renders as the eks.amazonaws.com/role-arn annotation on AWS clusters.
+                            type: string
                         type: object
                     type: object
                   storage-worker-large:
@@ -1116,6 +1506,36 @@ spec:
                                 type: string
                             type: object
                         type: object
+                      serviceAccount:
+                        description: |-
+                          ServiceAccount configures this component's Kubernetes ServiceAccount name and cloud
+                          workload identity annotations (AWS IRSA, GCP Workload Identity, Azure Workload Identity).
+                        properties:
+                          azureClientId:
+                            description: |-
+                              AzureClientId specifies the Azure managed identity client ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/client-id annotation on Azure clusters.
+                            type: string
+                          azureTenantId:
+                            description: |-
+                              AzureTenantId specifies the Azure tenant ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/tenant-id annotation on Azure clusters.
+                            type: string
+                          gcpServiceAccount:
+                            description: |-
+                              GCPServiceAccount specifies the GCP service account email to bind via Workload Identity.
+                              Renders as the iam.gke.io/gcp-service-account annotation on GCP clusters.
+                            type: string
+                          name:
+                            description: Name specifies the name of the Kubernetes
+                              ServiceAccount to create for this component.
+                            type: string
+                          roleArn:
+                            description: |-
+                              RoleArn specifies the AWS IAM role ARN to annotate the ServiceAccount with for IRSA.
+                              Renders as the eks.amazonaws.com/role-arn annotation on AWS clusters.
+                            type: string
+                        type: object
                     type: object
                   worker:
                     description: Worker enables the worker components
@@ -1190,6 +1610,36 @@ spec:
                                 type: string
                             type: object
                         type: object
+                      serviceAccount:
+                        description: |-
+                          ServiceAccount configures this component's Kubernetes ServiceAccount name and cloud
+                          workload identity annotations (AWS IRSA, GCP Workload Identity, Azure Workload Identity).
+                        properties:
+                          azureClientId:
+                            description: |-
+                              AzureClientId specifies the Azure managed identity client ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/client-id annotation on Azure clusters.
+                            type: string
+                          azureTenantId:
+                            description: |-
+                              AzureTenantId specifies the Azure tenant ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/tenant-id annotation on Azure clusters.
+                            type: string
+                          gcpServiceAccount:
+                            description: |-
+                              GCPServiceAccount specifies the GCP service account email to bind via Workload Identity.
+                              Renders as the iam.gke.io/gcp-service-account annotation on GCP clusters.
+                            type: string
+                          name:
+                            description: Name specifies the name of the Kubernetes
+                              ServiceAccount to create for this component.
+                            type: string
+                          roleArn:
+                            description: |-
+                              RoleArn specifies the AWS IAM role ARN to annotate the ServiceAccount with for IRSA.
+                              Renders as the eks.amazonaws.com/role-arn annotation on AWS clusters.
+                            type: string
+                        type: object
                     type: object
                   worker-catalog:
                     description: WorkerCatalog enables the catalog worker
@@ -1263,6 +1713,36 @@ spec:
                                 description: Memory specifies the minimum memory resources
                                 type: string
                             type: object
+                        type: object
+                      serviceAccount:
+                        description: |-
+                          ServiceAccount configures this component's Kubernetes ServiceAccount name and cloud
+                          workload identity annotations (AWS IRSA, GCP Workload Identity, Azure Workload Identity).
+                        properties:
+                          azureClientId:
+                            description: |-
+                              AzureClientId specifies the Azure managed identity client ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/client-id annotation on Azure clusters.
+                            type: string
+                          azureTenantId:
+                            description: |-
+                              AzureTenantId specifies the Azure tenant ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/tenant-id annotation on Azure clusters.
+                            type: string
+                          gcpServiceAccount:
+                            description: |-
+                              GCPServiceAccount specifies the GCP service account email to bind via Workload Identity.
+                              Renders as the iam.gke.io/gcp-service-account annotation on GCP clusters.
+                            type: string
+                          name:
+                            description: Name specifies the name of the Kubernetes
+                              ServiceAccount to create for this component.
+                            type: string
+                          roleArn:
+                            description: |-
+                              RoleArn specifies the AWS IAM role ARN to annotate the ServiceAccount with for IRSA.
+                              Renders as the eks.amazonaws.com/role-arn annotation on AWS clusters.
+                            type: string
                         type: object
                     type: object
                   worker-compute:
@@ -1603,6 +2083,36 @@ spec:
                                 description: Memory specifies the minimum memory resources
                                 type: string
                             type: object
+                        type: object
+                      serviceAccount:
+                        description: |-
+                          ServiceAccount configures this component's Kubernetes ServiceAccount name and cloud
+                          workload identity annotations (AWS IRSA, GCP Workload Identity, Azure Workload Identity).
+                        properties:
+                          azureClientId:
+                            description: |-
+                              AzureClientId specifies the Azure managed identity client ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/client-id annotation on Azure clusters.
+                            type: string
+                          azureTenantId:
+                            description: |-
+                              AzureTenantId specifies the Azure tenant ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/tenant-id annotation on Azure clusters.
+                            type: string
+                          gcpServiceAccount:
+                            description: |-
+                              GCPServiceAccount specifies the GCP service account email to bind via Workload Identity.
+                              Renders as the iam.gke.io/gcp-service-account annotation on GCP clusters.
+                            type: string
+                          name:
+                            description: Name specifies the name of the Kubernetes
+                              ServiceAccount to create for this component.
+                            type: string
+                          roleArn:
+                            description: |-
+                              RoleArn specifies the AWS IAM role ARN to annotate the ServiceAccount with for IRSA.
+                              Renders as the eks.amazonaws.com/role-arn annotation on AWS clusters.
+                            type: string
                         type: object
                       storage:
                         description: Storage configures ephemeral storage for the
@@ -1979,6 +2489,36 @@ spec:
                                 type: string
                             type: object
                         type: object
+                      serviceAccount:
+                        description: |-
+                          ServiceAccount configures this component's Kubernetes ServiceAccount name and cloud
+                          workload identity annotations (AWS IRSA, GCP Workload Identity, Azure Workload Identity).
+                        properties:
+                          azureClientId:
+                            description: |-
+                              AzureClientId specifies the Azure managed identity client ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/client-id annotation on Azure clusters.
+                            type: string
+                          azureTenantId:
+                            description: |-
+                              AzureTenantId specifies the Azure tenant ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/tenant-id annotation on Azure clusters.
+                            type: string
+                          gcpServiceAccount:
+                            description: |-
+                              GCPServiceAccount specifies the GCP service account email to bind via Workload Identity.
+                              Renders as the iam.gke.io/gcp-service-account annotation on GCP clusters.
+                            type: string
+                          name:
+                            description: Name specifies the name of the Kubernetes
+                              ServiceAccount to create for this component.
+                            type: string
+                          roleArn:
+                            description: |-
+                              RoleArn specifies the AWS IAM role ARN to annotate the ServiceAccount with for IRSA.
+                              Renders as the eks.amazonaws.com/role-arn annotation on AWS clusters.
+                            type: string
+                        type: object
                       storage:
                         description: Storage configures ephemeral storage for the
                           temporal worker
@@ -2087,6 +2627,36 @@ spec:
                                 description: Memory specifies the minimum memory resources
                                 type: string
                             type: object
+                        type: object
+                      serviceAccount:
+                        description: |-
+                          ServiceAccount configures this component's Kubernetes ServiceAccount name and cloud
+                          workload identity annotations (AWS IRSA, GCP Workload Identity, Azure Workload Identity).
+                        properties:
+                          azureClientId:
+                            description: |-
+                              AzureClientId specifies the Azure managed identity client ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/client-id annotation on Azure clusters.
+                            type: string
+                          azureTenantId:
+                            description: |-
+                              AzureTenantId specifies the Azure tenant ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/tenant-id annotation on Azure clusters.
+                            type: string
+                          gcpServiceAccount:
+                            description: |-
+                              GCPServiceAccount specifies the GCP service account email to bind via Workload Identity.
+                              Renders as the iam.gke.io/gcp-service-account annotation on GCP clusters.
+                            type: string
+                          name:
+                            description: Name specifies the name of the Kubernetes
+                              ServiceAccount to create for this component.
+                            type: string
+                          roleArn:
+                            description: |-
+                              RoleArn specifies the AWS IAM role ARN to annotate the ServiceAccount with for IRSA.
+                              Renders as the eks.amazonaws.com/role-arn annotation on AWS clusters.
+                            type: string
                         type: object
                     type: object
                   worker-io:
@@ -2428,6 +2998,36 @@ spec:
                                 type: string
                             type: object
                         type: object
+                      serviceAccount:
+                        description: |-
+                          ServiceAccount configures this component's Kubernetes ServiceAccount name and cloud
+                          workload identity annotations (AWS IRSA, GCP Workload Identity, Azure Workload Identity).
+                        properties:
+                          azureClientId:
+                            description: |-
+                              AzureClientId specifies the Azure managed identity client ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/client-id annotation on Azure clusters.
+                            type: string
+                          azureTenantId:
+                            description: |-
+                              AzureTenantId specifies the Azure tenant ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/tenant-id annotation on Azure clusters.
+                            type: string
+                          gcpServiceAccount:
+                            description: |-
+                              GCPServiceAccount specifies the GCP service account email to bind via Workload Identity.
+                              Renders as the iam.gke.io/gcp-service-account annotation on GCP clusters.
+                            type: string
+                          name:
+                            description: Name specifies the name of the Kubernetes
+                              ServiceAccount to create for this component.
+                            type: string
+                          roleArn:
+                            description: |-
+                              RoleArn specifies the AWS IAM role ARN to annotate the ServiceAccount with for IRSA.
+                              Renders as the eks.amazonaws.com/role-arn annotation on AWS clusters.
+                            type: string
+                        type: object
                       storage:
                         description: Storage configures ephemeral storage for the
                           temporal worker
@@ -2537,6 +3137,36 @@ spec:
                                 type: string
                             type: object
                         type: object
+                      serviceAccount:
+                        description: |-
+                          ServiceAccount configures this component's Kubernetes ServiceAccount name and cloud
+                          workload identity annotations (AWS IRSA, GCP Workload Identity, Azure Workload Identity).
+                        properties:
+                          azureClientId:
+                            description: |-
+                              AzureClientId specifies the Azure managed identity client ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/client-id annotation on Azure clusters.
+                            type: string
+                          azureTenantId:
+                            description: |-
+                              AzureTenantId specifies the Azure tenant ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/tenant-id annotation on Azure clusters.
+                            type: string
+                          gcpServiceAccount:
+                            description: |-
+                              GCPServiceAccount specifies the GCP service account email to bind via Workload Identity.
+                              Renders as the iam.gke.io/gcp-service-account annotation on GCP clusters.
+                            type: string
+                          name:
+                            description: Name specifies the name of the Kubernetes
+                              ServiceAccount to create for this component.
+                            type: string
+                          roleArn:
+                            description: |-
+                              RoleArn specifies the AWS IAM role ARN to annotate the ServiceAccount with for IRSA.
+                              Renders as the eks.amazonaws.com/role-arn annotation on AWS clusters.
+                            type: string
+                        type: object
                     type: object
                   worker-monitor:
                     description: WorkerMonitor enables the monitor worker
@@ -2610,6 +3240,36 @@ spec:
                                 description: Memory specifies the minimum memory resources
                                 type: string
                             type: object
+                        type: object
+                      serviceAccount:
+                        description: |-
+                          ServiceAccount configures this component's Kubernetes ServiceAccount name and cloud
+                          workload identity annotations (AWS IRSA, GCP Workload Identity, Azure Workload Identity).
+                        properties:
+                          azureClientId:
+                            description: |-
+                              AzureClientId specifies the Azure managed identity client ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/client-id annotation on Azure clusters.
+                            type: string
+                          azureTenantId:
+                            description: |-
+                              AzureTenantId specifies the Azure tenant ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/tenant-id annotation on Azure clusters.
+                            type: string
+                          gcpServiceAccount:
+                            description: |-
+                              GCPServiceAccount specifies the GCP service account email to bind via Workload Identity.
+                              Renders as the iam.gke.io/gcp-service-account annotation on GCP clusters.
+                            type: string
+                          name:
+                            description: Name specifies the name of the Kubernetes
+                              ServiceAccount to create for this component.
+                            type: string
+                          roleArn:
+                            description: |-
+                              RoleArn specifies the AWS IAM role ARN to annotate the ServiceAccount with for IRSA.
+                              Renders as the eks.amazonaws.com/role-arn annotation on AWS clusters.
+                            type: string
                         type: object
                     type: object
                   worker-monitors:
@@ -2950,6 +3610,36 @@ spec:
                                 description: Memory specifies the minimum memory resources
                                 type: string
                             type: object
+                        type: object
+                      serviceAccount:
+                        description: |-
+                          ServiceAccount configures this component's Kubernetes ServiceAccount name and cloud
+                          workload identity annotations (AWS IRSA, GCP Workload Identity, Azure Workload Identity).
+                        properties:
+                          azureClientId:
+                            description: |-
+                              AzureClientId specifies the Azure managed identity client ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/client-id annotation on Azure clusters.
+                            type: string
+                          azureTenantId:
+                            description: |-
+                              AzureTenantId specifies the Azure tenant ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/tenant-id annotation on Azure clusters.
+                            type: string
+                          gcpServiceAccount:
+                            description: |-
+                              GCPServiceAccount specifies the GCP service account email to bind via Workload Identity.
+                              Renders as the iam.gke.io/gcp-service-account annotation on GCP clusters.
+                            type: string
+                          name:
+                            description: Name specifies the name of the Kubernetes
+                              ServiceAccount to create for this component.
+                            type: string
+                          roleArn:
+                            description: |-
+                              RoleArn specifies the AWS IAM role ARN to annotate the ServiceAccount with for IRSA.
+                              Renders as the eks.amazonaws.com/role-arn annotation on AWS clusters.
+                            type: string
                         type: object
                       storage:
                         description: Storage configures ephemeral storage for the
@@ -3328,6 +4018,36 @@ spec:
                                 type: string
                             type: object
                         type: object
+                      serviceAccount:
+                        description: |-
+                          ServiceAccount configures this component's Kubernetes ServiceAccount name and cloud
+                          workload identity annotations (AWS IRSA, GCP Workload Identity, Azure Workload Identity).
+                        properties:
+                          azureClientId:
+                            description: |-
+                              AzureClientId specifies the Azure managed identity client ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/client-id annotation on Azure clusters.
+                            type: string
+                          azureTenantId:
+                            description: |-
+                              AzureTenantId specifies the Azure tenant ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/tenant-id annotation on Azure clusters.
+                            type: string
+                          gcpServiceAccount:
+                            description: |-
+                              GCPServiceAccount specifies the GCP service account email to bind via Workload Identity.
+                              Renders as the iam.gke.io/gcp-service-account annotation on GCP clusters.
+                            type: string
+                          name:
+                            description: Name specifies the name of the Kubernetes
+                              ServiceAccount to create for this component.
+                            type: string
+                          roleArn:
+                            description: |-
+                              RoleArn specifies the AWS IAM role ARN to annotate the ServiceAccount with for IRSA.
+                              Renders as the eks.amazonaws.com/role-arn annotation on AWS clusters.
+                            type: string
+                        type: object
                       storage:
                         description: Storage configures ephemeral storage for the
                           temporal worker
@@ -3436,6 +4156,36 @@ spec:
                                 description: Memory specifies the minimum memory resources
                                 type: string
                             type: object
+                        type: object
+                      serviceAccount:
+                        description: |-
+                          ServiceAccount configures this component's Kubernetes ServiceAccount name and cloud
+                          workload identity annotations (AWS IRSA, GCP Workload Identity, Azure Workload Identity).
+                        properties:
+                          azureClientId:
+                            description: |-
+                              AzureClientId specifies the Azure managed identity client ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/client-id annotation on Azure clusters.
+                            type: string
+                          azureTenantId:
+                            description: |-
+                              AzureTenantId specifies the Azure tenant ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/tenant-id annotation on Azure clusters.
+                            type: string
+                          gcpServiceAccount:
+                            description: |-
+                              GCPServiceAccount specifies the GCP service account email to bind via Workload Identity.
+                              Renders as the iam.gke.io/gcp-service-account annotation on GCP clusters.
+                            type: string
+                          name:
+                            description: Name specifies the name of the Kubernetes
+                              ServiceAccount to create for this component.
+                            type: string
+                          roleArn:
+                            description: |-
+                              RoleArn specifies the AWS IAM role ARN to annotate the ServiceAccount with for IRSA.
+                              Renders as the eks.amazonaws.com/role-arn annotation on AWS clusters.
+                            type: string
                         type: object
                     type: object
                   worker-storage:
@@ -3776,6 +4526,36 @@ spec:
                                 description: Memory specifies the minimum memory resources
                                 type: string
                             type: object
+                        type: object
+                      serviceAccount:
+                        description: |-
+                          ServiceAccount configures this component's Kubernetes ServiceAccount name and cloud
+                          workload identity annotations (AWS IRSA, GCP Workload Identity, Azure Workload Identity).
+                        properties:
+                          azureClientId:
+                            description: |-
+                              AzureClientId specifies the Azure managed identity client ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/client-id annotation on Azure clusters.
+                            type: string
+                          azureTenantId:
+                            description: |-
+                              AzureTenantId specifies the Azure tenant ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/tenant-id annotation on Azure clusters.
+                            type: string
+                          gcpServiceAccount:
+                            description: |-
+                              GCPServiceAccount specifies the GCP service account email to bind via Workload Identity.
+                              Renders as the iam.gke.io/gcp-service-account annotation on GCP clusters.
+                            type: string
+                          name:
+                            description: Name specifies the name of the Kubernetes
+                              ServiceAccount to create for this component.
+                            type: string
+                          roleArn:
+                            description: |-
+                              RoleArn specifies the AWS IAM role ARN to annotate the ServiceAccount with for IRSA.
+                              Renders as the eks.amazonaws.com/role-arn annotation on AWS clusters.
+                            type: string
                         type: object
                       storage:
                         description: Storage configures ephemeral storage for the
@@ -4152,6 +4932,36 @@ spec:
                                 type: string
                             type: object
                         type: object
+                      serviceAccount:
+                        description: |-
+                          ServiceAccount configures this component's Kubernetes ServiceAccount name and cloud
+                          workload identity annotations (AWS IRSA, GCP Workload Identity, Azure Workload Identity).
+                        properties:
+                          azureClientId:
+                            description: |-
+                              AzureClientId specifies the Azure managed identity client ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/client-id annotation on Azure clusters.
+                            type: string
+                          azureTenantId:
+                            description: |-
+                              AzureTenantId specifies the Azure tenant ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/tenant-id annotation on Azure clusters.
+                            type: string
+                          gcpServiceAccount:
+                            description: |-
+                              GCPServiceAccount specifies the GCP service account email to bind via Workload Identity.
+                              Renders as the iam.gke.io/gcp-service-account annotation on GCP clusters.
+                            type: string
+                          name:
+                            description: Name specifies the name of the Kubernetes
+                              ServiceAccount to create for this component.
+                            type: string
+                          roleArn:
+                            description: |-
+                              RoleArn specifies the AWS IAM role ARN to annotate the ServiceAccount with for IRSA.
+                              Renders as the eks.amazonaws.com/role-arn annotation on AWS clusters.
+                            type: string
+                        type: object
                       storage:
                         description: Storage configures ephemeral storage for the
                           temporal worker
@@ -4527,6 +5337,36 @@ spec:
                                 type: string
                             type: object
                         type: object
+                      serviceAccount:
+                        description: |-
+                          ServiceAccount configures this component's Kubernetes ServiceAccount name and cloud
+                          workload identity annotations (AWS IRSA, GCP Workload Identity, Azure Workload Identity).
+                        properties:
+                          azureClientId:
+                            description: |-
+                              AzureClientId specifies the Azure managed identity client ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/client-id annotation on Azure clusters.
+                            type: string
+                          azureTenantId:
+                            description: |-
+                              AzureTenantId specifies the Azure tenant ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/tenant-id annotation on Azure clusters.
+                            type: string
+                          gcpServiceAccount:
+                            description: |-
+                              GCPServiceAccount specifies the GCP service account email to bind via Workload Identity.
+                              Renders as the iam.gke.io/gcp-service-account annotation on GCP clusters.
+                            type: string
+                          name:
+                            description: Name specifies the name of the Kubernetes
+                              ServiceAccount to create for this component.
+                            type: string
+                          roleArn:
+                            description: |-
+                              RoleArn specifies the AWS IAM role ARN to annotate the ServiceAccount with for IRSA.
+                              Renders as the eks.amazonaws.com/role-arn annotation on AWS clusters.
+                            type: string
+                        type: object
                       storage:
                         description: Storage configures ephemeral storage for the
                           temporal worker
@@ -4636,6 +5476,36 @@ spec:
                                 type: string
                             type: object
                         type: object
+                      serviceAccount:
+                        description: |-
+                          ServiceAccount configures this component's Kubernetes ServiceAccount name and cloud
+                          workload identity annotations (AWS IRSA, GCP Workload Identity, Azure Workload Identity).
+                        properties:
+                          azureClientId:
+                            description: |-
+                              AzureClientId specifies the Azure managed identity client ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/client-id annotation on Azure clusters.
+                            type: string
+                          azureTenantId:
+                            description: |-
+                              AzureTenantId specifies the Azure tenant ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/tenant-id annotation on Azure clusters.
+                            type: string
+                          gcpServiceAccount:
+                            description: |-
+                              GCPServiceAccount specifies the GCP service account email to bind via Workload Identity.
+                              Renders as the iam.gke.io/gcp-service-account annotation on GCP clusters.
+                            type: string
+                          name:
+                            description: Name specifies the name of the Kubernetes
+                              ServiceAccount to create for this component.
+                            type: string
+                          roleArn:
+                            description: |-
+                              RoleArn specifies the AWS IAM role ARN to annotate the ServiceAccount with for IRSA.
+                              Renders as the eks.amazonaws.com/role-arn annotation on AWS clusters.
+                            type: string
+                        type: object
                     type: object
                   worker3:
                     description: Worker3 enables the third worker instance
@@ -4709,6 +5579,36 @@ spec:
                                 description: Memory specifies the minimum memory resources
                                 type: string
                             type: object
+                        type: object
+                      serviceAccount:
+                        description: |-
+                          ServiceAccount configures this component's Kubernetes ServiceAccount name and cloud
+                          workload identity annotations (AWS IRSA, GCP Workload Identity, Azure Workload Identity).
+                        properties:
+                          azureClientId:
+                            description: |-
+                              AzureClientId specifies the Azure managed identity client ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/client-id annotation on Azure clusters.
+                            type: string
+                          azureTenantId:
+                            description: |-
+                              AzureTenantId specifies the Azure tenant ID for Azure Workload Identity.
+                              Renders as the azure.workload.identity/tenant-id annotation on Azure clusters.
+                            type: string
+                          gcpServiceAccount:
+                            description: |-
+                              GCPServiceAccount specifies the GCP service account email to bind via Workload Identity.
+                              Renders as the iam.gke.io/gcp-service-account annotation on GCP clusters.
+                            type: string
+                          name:
+                            description: Name specifies the name of the Kubernetes
+                              ServiceAccount to create for this component.
+                            type: string
+                          roleArn:
+                            description: |-
+                              RoleArn specifies the AWS IAM role ARN to annotate the ServiceAccount with for IRSA.
+                              Renders as the eks.amazonaws.com/role-arn annotation on AWS clusters.
+                            type: string
                         type: object
                     type: object
                 type: object

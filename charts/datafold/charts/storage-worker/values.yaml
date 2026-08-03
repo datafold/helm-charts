@@ -17,6 +17,9 @@ serviceAccount:
   automount: true
   annotations: {}
   roleArn: ""
+  gcpServiceAccount: ""
+  azureClientId: ""
+  azureTenantId: ""
   name: "datafold-storage-worker"
 
 worker:
