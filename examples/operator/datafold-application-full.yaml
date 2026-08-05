@@ -145,10 +145,9 @@ spec:
         requests:
           cpu: "250m"
           memory: "512Mi"
-      rawValues:
-        serviceAccount:
-          name: datafold-dfshell
-          roleArn: "arn:aws:iam::123456789012:role/datafold-dfshell"
+      serviceAccount:
+        name: datafold-dfshell
+        roleArn: "arn:aws:iam::123456789012:role/datafold-dfshell"
     server:
       enabled: true
       replicas: 2
@@ -159,10 +158,9 @@ spec:
         requests:
           cpu: "1000m"
           memory: "2Gi"
-      rawValues:
-        serviceAccount:
-          name: datafold-server
-          roleArn: "arn:aws:iam::123456789012:role/datafold-server"
+      serviceAccount:
+        name: datafold-server
+        roleArn: "arn:aws:iam::123456789012:role/datafold-server"
     worker:
       enabled: true
       replicas: 3
@@ -173,10 +171,10 @@ spec:
         requests:
           cpu: "1000m"
           memory: "2Gi"
+      serviceAccount:
+        name: datafold-worker
+        roleArn: "arn:aws:iam::123456789012:role/datafold-worker"
       rawValues:
-        serviceAccount:
-          name: datafold-worker
-          roleArn: "arn:aws:iam::123456789012:role/datafold-worker"
         worker:
           count: 2
           memory: "2000000"
@@ -190,10 +188,9 @@ spec:
         requests:
           cpu: "1000m"
           memory: "2Gi"
-      rawValues:
-        serviceAccount:
-          name: datafold-worker2
-          roleArn: "arn:aws:iam::123456789012:role/datafold-worker2"
+      serviceAccount:
+        name: datafold-worker2
+        roleArn: "arn:aws:iam::123456789012:role/datafold-worker2"
     worker3:
       enabled: true
       replicas: 2
@@ -204,10 +201,9 @@ spec:
         requests:
           cpu: "1000m"
           memory: "2Gi"
-      rawValues:
-        serviceAccount:
-          name: datafold-worker3
-          roleArn: "arn:aws:iam::123456789012:role/datafold-worker3"
+      serviceAccount:
+        name: datafold-worker3
+        roleArn: "arn:aws:iam::123456789012:role/datafold-worker3"
     worker-catalog:
       enabled: true
       replicas: 1
@@ -218,10 +214,9 @@ spec:
         requests:
           cpu: "500m"
           memory: "1Gi"
-      rawValues:
-        serviceAccount:
-          name: datafold-worker-catalog
-          roleArn: "arn:aws:iam::123456789012:role/datafold-worker-catalog"
+      serviceAccount:
+        name: datafold-worker-catalog
+        roleArn: "arn:aws:iam::123456789012:role/datafold-worker-catalog"
     worker-interactive:
       enabled: true
       replicas: 2
@@ -232,10 +227,9 @@ spec:
         requests:
           cpu: "1000m"
           memory: "2Gi"
-      rawValues:
-        serviceAccount:
-          name: datafold-worker-interactive
-          roleArn: "arn:aws:iam::123456789012:role/datafold-worker-interactive"
+      serviceAccount:
+        name: datafold-worker-interactive
+        roleArn: "arn:aws:iam::123456789012:role/datafold-worker-interactive"
     worker-singletons:
       enabled: true
       replicas: 1
@@ -246,10 +240,9 @@ spec:
         requests:
           cpu: "500m"
           memory: "1Gi"
-      rawValues:
-        serviceAccount:
-          name: datafold-worker-singletons
-          roleArn: "arn:aws:iam::123456789012:role/datafold-worker-singletons"
+      serviceAccount:
+        name: datafold-worker-singletons
+        roleArn: "arn:aws:iam::123456789012:role/datafold-worker-singletons"
     worker-lineage:
       enabled: true
       replicas: 1
@@ -260,10 +253,9 @@ spec:
         requests:
           cpu: "500m"
           memory: "1Gi"
-      rawValues:
-        serviceAccount:
-          name: datafold-worker-lineage
-          roleArn: "arn:aws:iam::123456789012:role/datafold-worker-lineage"
+      serviceAccount:
+        name: datafold-worker-lineage
+        roleArn: "arn:aws:iam::123456789012:role/datafold-worker-lineage"
     # Each Temporal worker is preset to its own task queue in the chart (shown in
     # the comment) — do not override the queue. Tune resources and KEDA only.
 
@@ -278,10 +270,9 @@ spec:
         requests:
           cpu: "500m"
           memory: "1Gi"
-      rawValues:
-        serviceAccount:
-          name: datafold-worker-io
-          roleArn: "arn:aws:iam::123456789012:role/datafold-worker-io"
+      serviceAccount:
+        name: datafold-worker-io
+        roleArn: "arn:aws:iam::123456789012:role/datafold-worker-io"
     # worker-compute handles the compute task queue (compute-heavy work).
     worker-compute:
       enabled: true
@@ -348,10 +339,10 @@ spec:
         requests:
           cpu: "500m"
           memory: "1Gi"
+      serviceAccount:
+        name: datafold-worker-monitor
+        roleArn: "arn:aws:iam::123456789012:role/datafold-worker-monitor"
       rawValues:
-        serviceAccount:
-          name: datafold-worker-monitor
-          roleArn: "arn:aws:iam::123456789012:role/datafold-worker-monitor"
         worker:
           queues: "alerts"
           count: 4
@@ -410,10 +401,9 @@ spec:
         requests:
           cpu: "500m"
           memory: "1Gi"
-      rawValues:
-        serviceAccount:
-          name: datafold-scheduler
-          roleArn: "arn:aws:iam::123456789012:role/datafold-scheduler"
+      serviceAccount:
+        name: datafold-scheduler
+        roleArn: "arn:aws:iam::123456789012:role/datafold-scheduler"
     operator:
       enabled: true
       replicas: 1
@@ -424,10 +414,9 @@ spec:
         requests:
           cpu: "250m"
           memory: "512Mi"
-      rawValues:
-        serviceAccount:
-          name: datafold-operator
-          roleArn: "arn:aws:iam::123456789012:role/datafold-operator"
+      serviceAccount:
+        name: datafold-operator
+        roleArn: "arn:aws:iam::123456789012:role/datafold-operator"
     storage-worker:
       enabled: true
       replicas: 2
@@ -438,13 +427,22 @@ spec:
         requests:
           cpu: "1000m"
           memory: "2Gi"
+      serviceAccount:
+        name: datafold-storage-worker
+        roleArn: "arn:aws:iam::123456789012:role/datafold-storage-worker"
       rawValues:
-        serviceAccount:
-          name: datafold-storage-worker
-          roleArn: "arn:aws:iam::123456789012:role/datafold-storage-worker"
         worker:
           tasks: 1
           count: 1
           tasks_ack_late: "true"
         storage:
           dataSize: 200
+    # memgraph is a first-class component field, but NOT YET WIRED UP in the operator's
+    # reconcile logic - `enabled` here validates against the CRD but is currently a no-op.
+    # Use spec.rawValues.memgraph.install (top-level, not under components) instead until
+    # the operator gains a matching handler for this component.
+    memgraph:
+      enabled: true
+      rawValues:
+        storage:
+          dataSize: 50Gi

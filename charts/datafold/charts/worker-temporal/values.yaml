@@ -19,6 +19,9 @@ serviceAccount:
   automount: true
   annotations: {}
   roleArn: ""
+  gcpServiceAccount: ""
+  azureClientId: ""
+  azureTenantId: ""
   name: ""
 
 podAnnotations: {}

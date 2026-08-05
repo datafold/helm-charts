@@ -101,10 +101,9 @@ spec:
   components:
     server:
       enabled: true
-      rawValues:
-        serviceAccount:
-          name: server
-          roleArn: "arn:aws:iam::123456789012:role/acme-datafold-server"
+      serviceAccount:
+        name: server
+        roleArn: "arn:aws:iam::123456789012:role/acme-datafold-server"
       resources:
         limits:
           memory: 4Gi
@@ -191,28 +190,24 @@ spec:
 
     scheduler:
       enabled: true
-      rawValues:
-        serviceAccount:
-          name: scheduler
-          roleArn: "arn:aws:iam::123456789012:role/acme-datafold-scheduler"
+      serviceAccount:
+        name: scheduler
+        roleArn: "arn:aws:iam::123456789012:role/acme-datafold-scheduler"
 
     operator:
       enabled: true
-      rawValues:
-        serviceAccount:
-          name: operator
-          roleArn: "arn:aws:iam::123456789012:role/acme-datafold-operator"
+      serviceAccount:
+        name: operator
+        roleArn: "arn:aws:iam::123456789012:role/acme-datafold-operator"
 
     dfshell:
       enabled: true
-      rawValues:
-        serviceAccount:
-          name: dfshell
-          roleArn: "arn:aws:iam::123456789012:role/acme-datafold-dfshell"
+      serviceAccount:
+        name: dfshell
+        roleArn: "arn:aws:iam::123456789012:role/acme-datafold-dfshell"
 
     worker:
       enabled: true
-      rawValues:
-        serviceAccount:
-          name: worker
-          roleArn: "arn:aws:iam::123456789012:role/acme-datafold-worker"
+      serviceAccount:
+        name: worker
+        roleArn: "arn:aws:iam::123456789012:role/acme-datafold-worker"
