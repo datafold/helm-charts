@@ -5,6 +5,9 @@ image:
   pullPolicy: IfNotPresent
   tag: ""
 
+# Image for the init-chown init container.
+initImage: busybox:latest
+
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
