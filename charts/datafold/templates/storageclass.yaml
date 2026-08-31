@@ -18,6 +18,9 @@ parameters:
   encrypted: "true"
   fsType: ext4
   type: {{ include "datafold.storageClassParameterType" . | quote }}
+  {{- with .Values.global.storageClassKmsKeyId }}
+  kmsKeyId: {{ . | quote }}
+  {{- end }}
 allowVolumeExpansion: true
 volumeBindingMode: "WaitForFirstConsumer"
 {{- end }}
@@ -88,6 +91,9 @@ parameters:
   encrypted: "true"
   fsType: "ext4"
   type: {{ include "datafold.temporalStorageClassParameterType" . | quote }}
+  {{- with .Values.global.storageClassKmsKeyId }}
+  kmsKeyId: {{ . | quote }}
+  {{- end }}
 allowVolumeExpansion: true
 volumeBindingMode: "WaitForFirstConsumer"
 {{- end }}
