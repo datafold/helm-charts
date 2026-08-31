@@ -10,6 +10,7 @@ global:
   deployment: ""
   storageClass: ""
   storageClassType: ""
+  storageClassKmsKeyId: ""
   awsTargetGroupArn: ""
   vpcCidr: ""
   secondaryDeployment: false
