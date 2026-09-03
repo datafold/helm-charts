@@ -84,6 +84,9 @@ spec:
             - name: DATAFOLD_VERSION_OVERRIDE
               value: {{ .Values.global.datafoldVersionOverride | quote }}
             {{- end }}
+            {{- with .Values.extraEnv }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           {{- with .Values.volumeMounts }}

@@ -84,6 +84,7 @@ spec:
           value: "image:gcr.io/datadoghq.* image:registry.datadoghq.com/.* kube_namespace:.*"
         - name: DD_CONTAINER_INCLUDE
           value: "kube_namespace:{{ .Release.Namespace }} kube_namespace:temporal kube_namespace:dmadocs{{ if (eq .Values.configuration.monitorKeda true) }} kube_namespace:keda{{ end }}{{ range (.Values.containerIncludeExtraNamespaces | default list) }} kube_namespace:{{ . }}{{ end }}"
+        {{- include "datadog.proxy.env" . | nindent 8 }}
       tolerations:
         - operator: Equal
           key: clickhouse

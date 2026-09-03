@@ -58,3 +58,9 @@ tolerations: []
 affinity: {}
 
 initContainers: []
+
+# Extra env vars appended to the operator container - e.g. HTTP_PROXY/HTTPS_PROXY/NO_PROXY
+# for clusters where portal.datafold.com isn't directly reachable. Set via DatafoldApplication
+# components.operator.rawValues.extraEnv. Empty by default - no-op for every deployment that
+# doesn't set it.
+extraEnv: []
