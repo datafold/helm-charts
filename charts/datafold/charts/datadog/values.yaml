@@ -61,6 +61,15 @@ configuration:
   npm:
     enabled: "false"
     dnsstats: "false"
+  # HTTP(S) proxy for the node agent and cluster agent's own outbound traffic to the
+  # Datadog backend (not to be confused with node-level containerd/image-pull proxying,
+  # which is handled outside this chart). Set via DatafoldApplication
+  # monitoring.datadog.proxy.{http,https,noProxy}. Empty by default - no-op for every
+  # deployment that doesn't set it.
+  proxy:
+    http: ""
+    https: ""
+    noProxy: []
 
 # Extra Kubernetes namespaces to include for container log and metric collection
 # (in addition to the release namespace, temporal, and dmadocs). Set via DatafoldApplication

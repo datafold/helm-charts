@@ -112,6 +112,10 @@ The datadog clusteragent overrides
 clusterAgent:
   image:
     name: gcr.io/datadoghq/cluster-agent:latest
+{{- if (include "datadog.proxy.enabled" .) }}
+  env:
+    {{- include "datadog.proxy.env" . | nindent 4 }}
+{{- end }}
 {{- if or (eq .Values.configuration.monitorPostgres true) (eq .Values.configuration.monitorKeda true) }}
   extraConfd:
     configDataMap:
@@ -159,6 +163,36 @@ clusterAgent:
 {{-   end }}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Proxy env vars (DD_PROXY_HTTP/DD_PROXY_HTTPS/DD_PROXY_NO_PROXY) shared by every Datadog
+component override. Renders nothing when .Values.configuration.proxy is unset.
+*/}}
+{{- define "datadog.proxy.env" -}}
+{{- with .Values.configuration.proxy }}
+{{- if .http }}
+- name: DD_PROXY_HTTP
+  value: {{ .http | quote }}
+{{- end }}
+{{- if .https }}
+- name: DD_PROXY_HTTPS
+  value: {{ .https | quote }}
+{{- end }}
+{{- if .noProxy }}
+- name: DD_PROXY_NO_PROXY
+  value: {{ join "," .noProxy | quote }}
+{{- end }}
+{{- end }}
+{{- end }}
+
+{{/*
+Whether any proxy setting is configured - guards whether callers should emit an env: key.
+*/}}
+{{- define "datadog.proxy.enabled" -}}
+{{- with .Values.configuration.proxy }}
+{{- if or .http .https .noProxy }}true{{- end }}
+{{- end }}
+{{- end }}
 
 {{/*
 Logging service

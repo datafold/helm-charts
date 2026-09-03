@@ -6190,6 +6190,26 @@ spec:
                         - dnsstats
                         - enabled
                         type: object
+                      proxy:
+                        description: |-
+                          Proxy contains HTTP(S) proxy configuration for the Datadog agent and cluster
+                          agent's own outbound traffic to the Datadog backend.
+                        properties:
+                          http:
+                            description: Http is the proxy URL used for HTTP traffic
+                              (DD_PROXY_HTTP)
+                            type: string
+                          https:
+                            description: Https is the proxy URL used for HTTPS traffic
+                              (DD_PROXY_HTTPS)
+                            type: string
+                          noProxy:
+                            description: NoProxy lists hosts/domain suffixes/IPs that
+                              should bypass the proxy (DD_PROXY_NO_PROXY)
+                            items:
+                              type: string
+                            type: array
+                        type: object
                       tolerations:
                         description: Tolerations for the Datadog agent pods.
                         items:
