@@ -19,6 +19,9 @@ nameOverride: ""
 fullnameOverride: ""
 terminationGracePeriodSeconds: "120"
 
+startupProbe:
+  failureThreshold: 6
+
 command: "server"
 
 # Optional: set to a number of minutes to set DATAFOLD_USER_ACTIVITY_INTERVAL_MINUTES
