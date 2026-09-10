@@ -5,3 +5,6 @@ chart-dirs:
   - charts
 chart-repos:
   - bitnami=https://charts.bitnami.com/bitnami
+# Chart versions are stamped by the release pipeline of the private operator
+# repository that publishes this mirror, never bumped by hand in a PR.
+check-version-increment: false

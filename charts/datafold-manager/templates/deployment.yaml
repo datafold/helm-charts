@@ -35,7 +35,7 @@ spec:
         - /manager
         args:
           {{- toYaml .Values.operator.args | nindent 10 }}
-        image: "{{ .Values.operator.image.repository }}:{{ .Values.operator.image.tag }}"
+        image: "{{ .Values.operator.image.repository }}:{{ .Values.operator.image.tag | default .Chart.AppVersion }}"
         imagePullPolicy: {{ .Values.operator.image.pullPolicy }}
         name: manager
         ports: []

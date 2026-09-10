@@ -18,7 +18,11 @@ operator:
   # Operator image configuration
   image:
     repository: us-docker.pkg.dev/datadiff-mm/datafold/datafold-operator
-    tag: "1.6.9"
+    # Leave empty to run the operator build that shipped with this chart version
+    # (Chart.yaml appVersion). The release pipeline stamps appVersion, the chart
+    # version and the image tag with the same number, so they can never drift.
+    # Set explicitly only to pin a different build (e.g. "latest" for testing).
+    tag: ""
     pullPolicy: Always
 
   # Operator deployment configuration
