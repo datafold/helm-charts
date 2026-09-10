@@ -157,7 +157,7 @@ spec:
                   value: {{ .Values.global.statusCheckToken }}
                 {{- end }}
             periodSeconds: 10
-            failureThreshold: 6
+            failureThreshold: {{ .Values.startupProbe.failureThreshold }}
             timeoutSeconds: 5
           livenessProbe:
             failureThreshold: 10
