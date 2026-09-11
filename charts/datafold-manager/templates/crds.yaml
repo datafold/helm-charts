@@ -5804,10 +5804,6 @@ spec:
                     description: ManageSecretsYourself indicates whether secrets are
                       managed externally
                     type: boolean
-                  portalCertData:
-                    description: PortalCertData is the optional certificate data to
-                      verify which portal we're connecting to
-                    type: string
                   portalUrl:
                     description: PortalUrl is the optional URL to override the default
                       portal endpoint

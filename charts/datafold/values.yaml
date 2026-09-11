@@ -148,7 +148,6 @@ config:
   webWorkers: "3"
   workerCount: "15"
   githubServer: ""
-  portalCertData: ""
   gitlabServer: ""
   enableProcessProtection: "true"
   maxTasksPerWorker: "200"
