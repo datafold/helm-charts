@@ -5844,9 +5844,10 @@ spec:
                       for the storage class (e.g. "gp3" on AWS, "pd-standard" on GCP)
                     type: string
                   taskEngine:
-                    default: celery
-                    description: TaskEngine specifies the task engine to use (e.g.,
-                      "celery", "temporal")
+                    default: temporal
+                    description: |-
+                      TaskEngine specifies the task engine to use. Temporal is the only supported
+                      engine; the Celery worker and beat processes were retired by ENG-5140.
                     type: string
                   temporal:
                     description: |-

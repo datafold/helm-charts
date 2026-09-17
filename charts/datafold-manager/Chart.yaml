@@ -2,8 +2,8 @@ apiVersion: v2
 name: datafold-manager
 description: Helm chart for Datafold Operator
 type: application
-version: 1.7.2
-appVersion: "1.7.2"
+version: 1.7.3
+appVersion: "1.7.3"
 icon: https://www.datafold.com/logo.png
 
 maintainers:
