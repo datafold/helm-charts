@@ -1121,7 +1121,11 @@ spec:
                         type: object
                     type: object
                   scheduler:
-                    description: Scheduler enables the scheduler component
+                    description: |-
+                      Deprecated: the Celery worker and beat processes were retired by ENG-5140 and the
+                      subchart was removed, so this field no longer installs anything. Kept so existing
+                      DatafoldApplication resources that still set it remain valid; safe to delete.
+                      Scheduler enables the scheduler component
                     properties:
                       enabled:
                         description: Enabled specifies whether this component should
@@ -1329,7 +1333,11 @@ spec:
                         type: object
                     type: object
                   storage-worker:
-                    description: StorageWorker enables the storage worker
+                    description: |-
+                      Deprecated: the Celery worker and beat processes were retired by ENG-5140 and the
+                      subchart was removed, so this field no longer installs anything. Kept so existing
+                      DatafoldApplication resources that still set it remain valid; safe to delete.
+                      StorageWorker enables the storage worker
                     properties:
                       enabled:
                         description: Enabled specifies whether this component should
@@ -1433,8 +1441,11 @@ spec:
                         type: object
                     type: object
                   storage-worker-large:
-                    description: StorageWorkerLarge enables the large storage worker
-                      for high-memory workloads
+                    description: |-
+                      Deprecated: the Celery worker and beat processes were retired by ENG-5140 and the
+                      subchart was removed, so this field no longer installs anything. Kept so existing
+                      DatafoldApplication resources that still set it remain valid; safe to delete.
+                      StorageWorkerLarge enables the large storage worker for high-memory workloads
                     properties:
                       enabled:
                         description: Enabled specifies whether this component should
@@ -1538,7 +1549,11 @@ spec:
                         type: object
                     type: object
                   worker:
-                    description: Worker enables the worker components
+                    description: |-
+                      Deprecated: the Celery worker and beat processes were retired by ENG-5140 and the
+                      subchart was removed, so this field no longer installs anything. Kept so existing
+                      DatafoldApplication resources that still set it remain valid; safe to delete.
+                      Worker enables the worker components
                     properties:
                       enabled:
                         description: Enabled specifies whether this component should
@@ -1642,7 +1657,11 @@ spec:
                         type: object
                     type: object
                   worker-catalog:
-                    description: WorkerCatalog enables the catalog worker
+                    description: |-
+                      Deprecated: the Celery worker and beat processes were retired by ENG-5140 and the
+                      subchart was removed, so this field no longer installs anything. Kept so existing
+                      DatafoldApplication resources that still set it remain valid; safe to delete.
+                      WorkerCatalog enables the catalog worker
                     properties:
                       enabled:
                         description: Enabled specifies whether this component should
@@ -2556,7 +2575,11 @@ spec:
                         type: integer
                     type: object
                   worker-interactive:
-                    description: WorkerInteractive enables the interactive worker
+                    description: |-
+                      Deprecated: the Celery worker and beat processes were retired by ENG-5140 and the
+                      subchart was removed, so this field no longer installs anything. Kept so existing
+                      DatafoldApplication resources that still set it remain valid; safe to delete.
+                      WorkerInteractive enables the interactive worker
                     properties:
                       enabled:
                         description: Enabled specifies whether this component should
@@ -3065,7 +3088,11 @@ spec:
                         type: integer
                     type: object
                   worker-lineage:
-                    description: WorkerLineage enables the lineage worker
+                    description: |-
+                      Deprecated: the Celery worker and beat processes were retired by ENG-5140 and the
+                      subchart was removed, so this field no longer installs anything. Kept so existing
+                      DatafoldApplication resources that still set it remain valid; safe to delete.
+                      WorkerLineage enables the lineage worker
                     properties:
                       enabled:
                         description: Enabled specifies whether this component should
@@ -3169,7 +3196,11 @@ spec:
                         type: object
                     type: object
                   worker-monitor:
-                    description: WorkerMonitor enables the monitor worker
+                    description: |-
+                      Deprecated: the Celery worker and beat processes were retired by ENG-5140 and the
+                      subchart was removed, so this field no longer installs anything. Kept so existing
+                      DatafoldApplication resources that still set it remain valid; safe to delete.
+                      WorkerMonitor enables the monitor worker
                     properties:
                       enabled:
                         description: Enabled specifies whether this component should
@@ -4085,7 +4116,11 @@ spec:
                         type: integer
                     type: object
                   worker-singletons:
-                    description: WorkerSingletons enables the singletons worker
+                    description: |-
+                      Deprecated: the Celery worker and beat processes were retired by ENG-5140 and the
+                      subchart was removed, so this field no longer installs anything. Kept so existing
+                      DatafoldApplication resources that still set it remain valid; safe to delete.
+                      WorkerSingletons enables the singletons worker
                     properties:
                       enabled:
                         description: Enabled specifies whether this component should
@@ -5404,7 +5439,11 @@ spec:
                         type: integer
                     type: object
                   worker2:
-                    description: Worker2 enables the second worker instance
+                    description: |-
+                      Deprecated: the Celery worker and beat processes were retired by ENG-5140 and the
+                      subchart was removed, so this field no longer installs anything. Kept so existing
+                      DatafoldApplication resources that still set it remain valid; safe to delete.
+                      Worker2 enables the second worker instance
                     properties:
                       enabled:
                         description: Enabled specifies whether this component should
@@ -5508,7 +5547,11 @@ spec:
                         type: object
                     type: object
                   worker3:
-                    description: Worker3 enables the third worker instance
+                    description: |-
+                      Deprecated: the Celery worker and beat processes were retired by ENG-5140 and the
+                      subchart was removed, so this field no longer installs anything. Kept so existing
+                      DatafoldApplication resources that still set it remain valid; safe to delete.
+                      Worker3 enables the third worker instance
                     properties:
                       enabled:
                         description: Enabled specifies whether this component should

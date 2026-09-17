@@ -2,7 +2,7 @@ apiVersion: v2
 name: datafold
 description: Helm chart package to deploy Datafold on kubernetes.
 type: application
-version: 1.7.3
+version: 1.7.4
 appVersion: "1.0.0"
 icon: https://www.datafold.com/logo.png
 
@@ -71,60 +71,6 @@ dependencies:
     version: "*.*.*"
     repository: file://charts/server
     condition: server.install
-  - name: scheduler
-    version: "*.*.*"
-    repository: file://charts/scheduler
-    condition: scheduler.install
-  - name: worker
-    version: "*.*.*"
-    repository: file://charts/worker
-    condition: worker.install
-    alias: worker
-  - name: worker
-    version: "*.*.*"
-    repository: file://charts/worker
-    condition: worker2.install
-    alias: worker2
-  - name: worker
-    version: "*.*.*"
-    repository: file://charts/worker
-    condition: worker3.install
-    alias: worker3
-  - name: worker
-    version: "0.1.0"
-    repository: file://charts/worker
-    condition: worker-catalog.install
-    alias: worker-catalog
-  - name: worker
-    version: "0.1.0"
-    repository: file://charts/worker
-    condition: worker-interactive.install
-    alias: worker-interactive
-  - name: worker
-    version: "0.1.0"
-    repository: file://charts/worker
-    condition: worker-singletons.install
-    alias: worker-singletons
-  - name: worker
-    version: "0.1.0"
-    repository: file://charts/worker
-    condition: worker-lineage.install
-    alias: worker-lineage
-  - name: worker
-    version: "0.1.0"
-    repository: file://charts/worker
-    condition: worker-monitor.install
-    alias: worker-monitor
-  - name: storage-worker
-    version: "0.1.1"
-    repository: file://charts/storage-worker
-    condition: storage-worker.install
-    alias: storage-worker
-  - name: storage-worker
-    version: "0.1.1"
-    repository: file://charts/storage-worker
-    condition: storage-worker-large.install
-    alias: storage-worker-large
   - name: dma
     version: "0.1.0"
     repository: file://charts/dma

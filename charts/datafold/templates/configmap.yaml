@@ -96,9 +96,6 @@ data:
 {{- if .Values.config.gitlabServer }}
   GITLAB_SERVER: "{{ .Values.config.gitlabServer }}"
 {{- end }}
-{{- if (index .Values "storage-worker" "install") }}
-  DATAFOLD_STORAGE_WORKER_DEPLOYED: "true"
-{{- end }}
 {{- if (eq .Values.config.permitUnsafeLocalStorageMode "true" ) }}
   DATAFOLD_PERMIT_UNSAFE_LOCALSTORAGE_MODE: "true"
 {{- end }}
