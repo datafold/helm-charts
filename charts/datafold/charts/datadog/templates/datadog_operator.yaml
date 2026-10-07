@@ -44,6 +44,22 @@ spec:
       hostPortConfig:
         enabled: {{ .Values.configuration.dogstatsd.hostPortConfig }}
         hostPort: 8125
+    {{- $otlp := .Values.configuration.otlp | default dict }}
+    {{- $otlpHttp := eq (toString $otlp.http) "true" }}
+    {{- $otlpGrpc := eq (toString $otlp.grpc) "true" }}
+    {{- if or $otlpHttp $otlpGrpc }}
+    otlp:
+      receiver:
+        protocols:
+          {{- if $otlpHttp }}
+          http:
+            enabled: true
+          {{- end }}
+          {{- if $otlpGrpc }}
+          grpc:
+            enabled: true
+          {{- end }}
+    {{- end }}
     npm:
       enabled: {{ .Values.configuration.npm.enabled }}
       collectDNSStats: {{ .Values.configuration.npm.dnsstats }}
@@ -84,6 +100,17 @@ spec:
           value: "image:gcr.io/datadoghq.* image:registry.datadoghq.com/.* kube_namespace:.*"
         - name: DD_CONTAINER_INCLUDE
           value: "kube_namespace:{{ .Release.Namespace }} kube_namespace:temporal kube_namespace:dmadocs{{ if (eq .Values.configuration.monitorKeda true) }} kube_namespace:keda{{ end }}{{ range (.Values.containerIncludeExtraNamespaces | default list) }} kube_namespace:{{ . }}{{ end }}"
+        {{- if or $otlpHttp $otlpGrpc }}
+        # OTLP resource attributes (datafold.deployment, datafold.role, ...) as
+        # metric tags, which is what Butterfly's dashboard and monitors filter on.
+        # The agent's default drops them.
+        - name: DD_OTLP_CONFIG_METRICS_RESOURCE_ATTRIBUTES_AS_TAGS
+          value: "true"
+        # The agent's OTLP pipeline otherwise logs a line per received batch at
+        # INFO (debugexporter), which the agent then ships as its own logs.
+        - name: DD_OTLP_CONFIG_DEBUG_VERBOSITY
+          value: "none"
+        {{- end }}
         {{- include "datadog.proxy.env" . | nindent 8 }}
       tolerations:
         - operator: Equal

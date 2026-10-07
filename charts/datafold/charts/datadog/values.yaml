@@ -70,6 +70,19 @@ configuration:
     http: ""
     https: ""
     noProxy: []
+  # The node agent's OTLP receiver (DatadogAgent features.otlp), for pods that push
+  # OpenTelemetry metrics and traces to the agent on their own node: Butterfly does.
+  # Set via DatafoldApplication monitoring.datadog.otlpReceiver.{http,grpc}. The
+  # Datadog operator adds the port to its node-local Service (`<fullname>-agent`,
+  # internalTrafficPolicy Local): 4318 for HTTP, 4317 for gRPC. Turning it on also
+  # makes the agent tag OTLP metrics with their resource attributes. Traces need
+  # `apm` on as well: the agent hands OTLP spans to the trace-agent, and without
+  # one it refuses them (the sender sees a timeout). Logs over OTLP stay off (no
+  # DD_OTLP_CONFIG_LOGS_ENABLED); container logs come from stdout. Off by
+  # default - no-op for every deployment that doesn't set it.
+  otlp:
+    http: false
+    grpc: false
 
 # Extra Kubernetes namespaces to include for container log and metric collection
 # (in addition to the release namespace, temporal, and dmadocs). Set via DatafoldApplication

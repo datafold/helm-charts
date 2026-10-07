@@ -6230,6 +6230,24 @@ spec:
                         - dnsstats
                         - enabled
                         type: object
+                      otlpReceiver:
+                        description: |-
+                          OtlpReceiver turns on the node agent's OTLP receiver, so pods can push
+                          OpenTelemetry metrics and traces to the agent on their own node. The Datadog
+                          operator adds the port to its node-local Service (`datafold-datadog-agent`,
+                          internalTrafficPolicy Local), so a pod's endpoint is
+                          `http://datafold-datadog-agent.<release namespace>.svc:4318`. OTLP metrics are
+                          tagged with their resource attributes. Traces also need Apm: the agent hands
+                          OTLP spans to the trace-agent and refuses them without one. Logs over OTLP
+                          stay off; the agent reads container stdout for those.
+                        properties:
+                          grpc:
+                            description: Grpc enables OTLP over gRPC, port 4317
+                            type: boolean
+                          http:
+                            description: Http enables OTLP over HTTP, port 4318
+                            type: boolean
+                        type: object
                       proxy:
                         description: |-
                           Proxy contains HTTP(S) proxy configuration for the Datadog agent and cluster
