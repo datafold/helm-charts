@@ -46,6 +46,117 @@ entries:
   datafold:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2026-10-07T18:26:37.719307812Z"
+    dependencies:
+    - condition: redis.install
+      name: redis
+      repository: file://charts/redis
+      version: '*.*.*'
+    - condition: clickhouse.install
+      name: clickhouse
+      repository: file://charts/clickhouse
+      version: '*.*.*'
+    - condition: dfshell.install
+      name: dfshell
+      repository: file://charts/dfshell
+      version: '*.*.*'
+    - alias: worker-io
+      condition: worker-io.install
+      name: worker-temporal
+      repository: file://charts/worker-temporal
+      version: '*.*.*'
+    - alias: worker-compute
+      condition: worker-compute.install
+      name: worker-temporal
+      repository: file://charts/worker-temporal
+      version: '*.*.*'
+    - alias: worker-highmem
+      condition: worker-highmem.install
+      name: worker-temporal
+      repository: file://charts/worker-temporal
+      version: '*.*.*'
+    - alias: worker-storage
+      condition: worker-storage.install
+      name: worker-temporal
+      repository: file://charts/worker-temporal
+      version: '*.*.*'
+    - alias: worker-storage-high
+      condition: worker-storage-high.install
+      name: worker-temporal
+      repository: file://charts/worker-temporal
+      version: '*.*.*'
+    - alias: worker-monitors
+      condition: worker-monitors.install
+      name: worker-temporal
+      repository: file://charts/worker-temporal
+      version: '*.*.*'
+    - alias: worker-thunderbolt
+      condition: worker-thunderbolt.install
+      name: worker-temporal
+      repository: file://charts/worker-temporal
+      version: '*.*.*'
+    - condition: worker-repo-mirror.install
+      name: worker-repo-mirror
+      repository: file://charts/worker-repo-mirror
+      version: '*.*.*'
+    - condition: operator.install
+      name: operator
+      repository: file://charts/operator
+      version: '*.*.*'
+    - condition: server.install
+      name: server
+      repository: file://charts/server
+      version: '*.*.*'
+    - alias: dma
+      condition: dma.install
+      name: dma
+      repository: file://charts/dma
+      version: 0.1.0
+    - alias: dma2
+      condition: dma2.install
+      name: dma
+      repository: file://charts/dma
+      version: 0.1.0
+    - alias: dma3
+      condition: dma3.install
+      name: dma
+      repository: file://charts/dma
+      version: 0.1.0
+    - alias: dmatemplate
+      condition: dmatemplate.install
+      name: dma
+      repository: file://charts/dma
+      version: 0.1.0
+    - condition: nginx.install
+      name: nginx
+      repository: file://charts/nginx
+      version: 0.1.0
+    - condition: memgraph.install
+      name: memgraph
+      repository: file://charts/memgraph
+      version: '*.*.*'
+    - condition: global.datadog.install
+      name: datadog
+      repository: file://charts/datadog
+      version: '*.*.*'
+    - condition: prometheus.install
+      name: prometheus
+      repository: file://charts/prometheus
+      version: '*.*.*'
+    description: Helm chart package to deploy Datafold on kubernetes.
+    digest: f0701d223083936aaa0b980cd7e4d58daf0844e4b85d55dc736f713070994cd5
+    icon: https://www.datafold.com/logo.png
+    maintainers:
+    - email: support@datafold.com
+      name: datafold
+      url: https://datafold.com
+    name: datafold
+    type: application
+    urls:
+    - https://github.com/datafold/helm-charts/releases/download/datafold-1.7.6/datafold-1.7.6.tgz
+    version: 1.7.6
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2026-10-07T15:04:42.156291457Z"
     dependencies:
     - condition: redis.install
@@ -34520,6 +34631,21 @@ entries:
   datafold-crds:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2026-10-07T18:26:38.002996193Z"
+    description: Helm chart package to deploy Datafold CRDs on kubernetes.
+    digest: 5affa8fae5c110ff043d7f9e7c434866a9cd928859e245b06cf5cf6c82bfcfb8
+    icon: https://www.datafold.com/logo.png
+    maintainers:
+    - email: support@datafold.com
+      name: datafold
+      url: https://datafold.com
+    name: datafold-crds
+    type: application
+    urls:
+    - https://github.com/datafold/helm-charts/releases/download/datafold-crds-1.7.6/datafold-crds-1.7.6.tgz
+    version: 1.7.6
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2026-10-07T15:04:42.405111313Z"
     description: Helm chart package to deploy Datafold CRDs on kubernetes.
     digest: f82e5f3bedfebe0f80a24aa3d5b553bf60527b1a4b7aa67298f5861516d2ef54
@@ -34640,6 +34766,20 @@ entries:
     version: 0.1.0
   datafold-ephemeral:
   - apiVersion: v2
+    created: "2026-10-07T18:26:38.259451464Z"
+    description: Helm chart for Datafold ephemeral PR environment
+    digest: 3fa0491182b6f01ebef271630f18d12a3a71d857c8e25a34613560ba73627194
+    icon: https://www.datafold.com/logo.png
+    maintainers:
+    - email: support@datafold.com
+      name: datafold
+      url: https://datafold.com
+    name: datafold-ephemeral
+    type: application
+    urls:
+    - https://github.com/datafold/helm-charts/releases/download/datafold-ephemeral-1.7.6/datafold-ephemeral-1.7.6.tgz
+    version: 1.7.6
+  - apiVersion: v2
     created: "2026-10-07T15:04:42.599240674Z"
     description: Helm chart for Datafold ephemeral PR environment
     digest: 7461faaf6e483b3ab2b58359d3888c650aa9626c194a764245b86d899c67ba8f
@@ -34724,6 +34864,27 @@ entries:
     - https://github.com/datafold/helm-charts/releases/download/datafold-ephemeral-0.1.1/datafold-ephemeral-0.1.1.tgz
     version: 0.1.1
   datafold-manager:
+  - apiVersion: v2
+    appVersion: 1.7.6
+    created: "2026-10-07T18:26:38.523153624Z"
+    description: Helm chart for Datafold Operator
+    digest: 81f8d8929b0c66a544f5e8d3befb33c0b3d6ccae0ab5a8f41602a9928bf0c21c
+    home: https://datafold.com
+    icon: https://www.datafold.com/logo.png
+    keywords:
+    - datafold
+    - operator
+    - kubernetes
+    - data-quality
+    maintainers:
+    - email: support@datafold.com
+      name: datafold
+      url: https://datafold.com
+    name: datafold-manager
+    type: application
+    urls:
+    - https://github.com/datafold/helm-charts/releases/download/datafold-manager-1.7.6/datafold-manager-1.7.6.tgz
+    version: 1.7.6
   - apiVersion: v2
     appVersion: 1.7.5
     created: "2026-10-07T15:04:42.779196863Z"
@@ -37490,4 +37651,4 @@ entries:
     urls:
     - https://github.com/datafold/helm-charts/releases/download/gcp-bootstrap-0.1.0/gcp-bootstrap-0.1.0.tgz
     version: 0.1.0
-generated: "2026-10-07T15:04:42.780485557Z"
+generated: "2026-10-07T18:26:38.524522769Z"
