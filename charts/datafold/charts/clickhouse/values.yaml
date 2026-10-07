@@ -52,7 +52,10 @@ secrets:
 
 serviceAccount:
   create: true
-  automount: true
+  # DTF-007 (ENG-5250): ClickHouse reaches object storage via its backup IRSA /
+  # workload identity (separate projected token), not the K8s API — don't mount
+  # the SA token.
+  automount: false
   annotations: {}
   name: ""
 

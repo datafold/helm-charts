@@ -16,7 +16,11 @@ command:
 
 serviceAccount:
   create: true
-  automount: true
+  # DTF-007 (ENG-5250): default the SA token OFF. worker-temporal aliases don't
+  # need the K8s API today (cleanup_workflow's pod-list already degrades
+  # gracefully without it). The Memgraph DR backup (ENG-5280) runs an rclone
+  # sidecar under its own SA, not this token.
+  automount: false
   annotations: {}
   roleArn: ""
   gcpServiceAccount: ""

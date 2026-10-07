@@ -5,6 +5,13 @@ Kubernetes exec API (tar-over-exec, the kubectl-cp transport) and upload it to
 per-deployment object storage. The Temporal activity doing the pull runs in the
 pods listed in .Values.backupAccessServiceAccounts (worker-temporal), whose
 service account otherwise lacks permission to exec into pods.
+
+DTF-007 (ENG-5250): pods/exec cannot be scoped by pod name for a dynamically
+scaled StatefulSet, so this Role is namespace-wide. Bind it ONLY to a dedicated
+backup service account — NEVER a shared, tenant-facing worker SA — or an RCE on
+a tenant worker inherits namespace-wide exec into every pod. ENG-5280 replaces
+this exec-pull path with an rclone sidecar (no pods/exec) and removes this
+template.
 */ -}}
 {{- if .Values.backupAccessServiceAccounts }}
 apiVersion: rbac.authorization.k8s.io/v1

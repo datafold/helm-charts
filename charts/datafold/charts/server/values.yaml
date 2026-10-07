@@ -29,7 +29,9 @@ command: "server"
 
 serviceAccount:
   create: true
-  automount: true
+  # DTF-007 (ENG-5250): no Kubernetes API use — don't mount the SA token.
+  # IRSA / workload-identity tokens are separate projected volumes, unaffected.
+  automount: false
   annotations: {}
   roleArn: ""
   gcpServiceAccount: ""
