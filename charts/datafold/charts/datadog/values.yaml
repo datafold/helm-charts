@@ -36,6 +36,10 @@ affinity: {}
 
 configuration:
   logLevel: "INFO"
+  # The node agent's whole logs pipeline: container stdout tailing (containerCollectAll
+  # and the ad.datadoghq.com/<container>.logs pod annotations) and the TCP log intake in
+  # extraConfd. Set via DatafoldApplication monitoring.datadog.logCollection. Turning off
+  # containerCollectAll alone still collects every annotated pod, which is all of ours.
   logCollection:
     enabled: "true"
     containerCollectAll: "true"

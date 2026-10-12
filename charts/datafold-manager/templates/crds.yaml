@@ -6203,6 +6203,17 @@ spec:
                       host:
                         description: Host specifies the Datadog agent host
                         type: string
+                      logCollection:
+                        description: |-
+                          LogCollection turns the node agent's log collection on or off. "false" stops the
+                          agent tailing container stdout and closes its TCP log intake, so no logs reach
+                          Datadog from this deployment; metrics are unaffected. Pair it with
+                          monitoring.loggingEnabled "false", or the app keeps pushing to the closed TCP
+                          port. Unset leaves the chart default: on.
+                        enum:
+                        - "true"
+                        - "false"
+                        type: string
                       logsPort:
                         description: LogsPort specifies the port for Datadog logs
                         format: int32
