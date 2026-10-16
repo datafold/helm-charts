@@ -263,6 +263,9 @@ worker-io:
     taskQueues: "io"
     maxConcurrency: "20"
     workerPoolType: "thread"
+  # The io queue runs the submit-events-to-freshpaint singleton.
+  freshpaint:
+    enabled: true
   keda:
     minReplicas: 0
   resources:

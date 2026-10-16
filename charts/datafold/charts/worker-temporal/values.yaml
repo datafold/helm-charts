@@ -122,6 +122,12 @@ keda:
   # Leave empty for unauthenticated access to the Temporal endpoint.
   authRef: ""
 
+freshpaint:
+  # Injects DATAFOLD_FRESHPAINT_BACKEND_TOKEN and DATAFOLD_FRESHPAINT_URL from the datafold
+  # secret. Only the worker that serves the "io" queue needs them: it runs the singleton that
+  # sends the queued backend analytics events to Freshpaint, and that job fails without them.
+  enabled: false
+
 metrics:
   # Exposes a Prometheus metrics port and adds Datadog autodiscovery annotations
   # so the DD Agent scrapes temporal_ SDK metrics. Disable only if you need to
