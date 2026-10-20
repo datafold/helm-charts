@@ -43,9 +43,9 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: '{{ .Values.global.datafoldRepository }}/operator:{{ include "operator.version" . }}'
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          # kopf is on PATH in every operator image (system Python in the Poetry-built ones,
+          # /opt/venv in the uv-built ones, which don't ship Poetry), so call it directly.
           command:
-            - poetry
-            - run
             - kopf
             - run
             - --liveness=http://0.0.0.0:8080/healthz
