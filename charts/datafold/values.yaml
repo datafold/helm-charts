@@ -258,8 +258,12 @@ toplevel:
 worker-io:
   install: true
   replicaCount: 0
-  terminationGracePeriodSeconds: "120"
+  # Longer than its longest activity, a row count or materialize (1h start_to_close), so a rollout
+  # drains a running activity instead of killing it; gracefulShutdownTimeout stays
+  # just below it.
+  terminationGracePeriodSeconds: "3900"
   temporal:
+    gracefulShutdownTimeout: "3840"
     taskQueues: "io"
     maxConcurrency: "20"
     workerPoolType: "thread"
@@ -277,8 +281,12 @@ worker-io:
 
 worker-compute:
   install: true
-  terminationGracePeriodSeconds: "900"
+  # Longer than its longest activity, a BI sync (6h start_to_close), so a rollout
+  # drains a running activity instead of killing it; gracefulShutdownTimeout stays
+  # just below it.
+  terminationGracePeriodSeconds: "21900"
   temporal:
+    gracefulShutdownTimeout: "21840"
     taskQueues: "compute"
     workerPoolType: "process"
   resources:
@@ -290,8 +298,20 @@ worker-compute:
 
 worker-highmem:
   install: true
-  terminationGracePeriodSeconds: "1800"
+  # Large memory requests: a surge pod often fits on no node, so allow one pod
+  # down as well. The rollout surges when there is room and otherwise replaces
+  # one pod at a time once the old pod has drained.
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  # Longer than its longest activity, a DKG repo import (2h start_to_close), so a rollout
+  # drains a running activity instead of killing it; gracefulShutdownTimeout stays
+  # just below it.
+  terminationGracePeriodSeconds: "7500"
   temporal:
+    gracefulShutdownTimeout: "7440"
     taskQueues: "highmem"
     workerPoolType: "process"
   resources:
@@ -319,6 +339,14 @@ worker-storage:
 
 worker-storage-high:
   install: true
+  # Large memory requests: a surge pod often fits on no node, so allow one pod
+  # down as well. The rollout surges when there is room and otherwise replaces
+  # one pod at a time once the old pod has drained.
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
   terminationGracePeriodSeconds: "18000"
   temporal:
     taskQueues: "storagehigh"
@@ -352,7 +380,10 @@ worker-monitors:
 worker-thunderbolt:
   install: true
   replicaCount: 0
-  terminationGracePeriodSeconds: "1800"
+  # Longer than its longest activity, an agent run (2h30m start_to_close), so a rollout
+  # drains a running activity instead of killing it; gracefulShutdownTimeout stays
+  # just below it.
+  terminationGracePeriodSeconds: "9300"
   temporal:
     taskQueues: "thunderbolt"
     # The fleet-standard concurrency, stated explicitly: the keda calibration below is derived
@@ -360,7 +391,7 @@ worker-thunderbolt:
     # its serverAddress is namespace-qualified, uses setpoint "6" = 75% of these slots).
     maxConcurrency: "8"
     workerPoolType: "process"
-    gracefulShutdownTimeout: "1800"
+    gracefulShutdownTimeout: "9240"
   keda:
     # Pairing rule (see worker-temporal values.yaml): with queueTypes pinned to "activity",
     # minReplicas must be >= 1. Deployments raise it further (saas runs 4).

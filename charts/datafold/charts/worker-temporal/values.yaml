@@ -8,6 +8,10 @@ imagePullSecrets:
 nameOverride: ""
 fullnameOverride: ""
 terminationGracePeriodSeconds: "30"
+# Deployment update strategy. Empty keeps the Kubernetes default (RollingUpdate,
+# maxSurge 25%, maxUnavailable 25%), which for fewer than four replicas allows no
+# unavailable pod: a worker whose surge pod cannot be scheduled then never rolls.
+strategy: {}
 
 command:
   - "./manage.py"
