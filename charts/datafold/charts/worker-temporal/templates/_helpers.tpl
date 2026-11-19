@@ -84,6 +84,9 @@ ad.datadoghq.com/{{ .Chart.Name }}.logs: >-
 Datafold annotations
 */}}
 {{- define "worker-temporal.datafold.annotations" -}}
+{{- /* Rendered for KEDA workers too: the kopf operator sets spec.replicas from replica-count
+       on every build and defaults to 1 when it is missing (ENG-7389). The manager's wake skips
+       KEDA workers by the datafold.com/keda-scaled label, not by this annotation. */}}
 replica-count: "{{ .Values.replicaCount }}"
 {{- with .Values.podAnnotations }}
 {{- toYaml . | nindent 0 }}

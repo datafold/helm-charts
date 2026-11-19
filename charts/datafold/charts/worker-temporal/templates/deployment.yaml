@@ -4,6 +4,11 @@ metadata:
   name: {{ include "worker-temporal.fullname" . }}
   labels:
     {{- include "worker-temporal.labels" . | nindent 4 }}
+    {{- if .Values.keda.enabled }}
+    {{- /* The operator's sleep/wake pauses these through the ScaledObject instead of
+           writing spec.replicas. */}}
+    datafold.com/keda-scaled: "true"
+    {{- end }}
     {{- with .Values.chartLabels }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
@@ -12,7 +17,16 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
+  {{- if .Values.keda.enabled }}
+  {{- /* KEDA owns the replica count. Render the live count so an upgrade does not
+         reset it (and drain busy pods). Omitting the field instead would default it to
+         1 on the next upgrade; on first install there is nothing live, so leave it to KEDA. */}}
+  {{- with lookup "apps/v1" "Deployment" .Release.Namespace (include "worker-temporal.fullname" .) }}
+  replicas: {{ .spec.replicas }}
+  {{- end }}
+  {{- else }}
   replicas: {{ .Values.replicaCount }}
+  {{- end }}
   {{- with .Values.strategy }}
   strategy:
     {{- toYaml . | nindent 4 }}
