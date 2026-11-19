@@ -2037,6 +2037,15 @@ spec:
                               for scaling
                             type: string
                         type: object
+                      preventAutoscalerEviction:
+                        description: |-
+                          PreventAutoscalerEviction stops the cluster autoscaler from evicting this worker's pods
+                          on node scale-down, by setting cluster-autoscaler.kubernetes.io/safe-to-evict: "false".
+                          The autoscaler caps the termination grace period on scale-down (10 minutes by default),
+                          so without it a scale-down can kill running activities. Trade-off: a node running one
+                          of these pods is not scaled down until the pod is gone. Only the Kubernetes cluster
+                          autoscaler reads this annotation (Karpenter uses karpenter.sh/do-not-disrupt). Off by default.
+                        type: boolean
                       rawValues:
                         description: |-
                           RawValues contains arbitrary Helm values to pass directly to this component's subchart
@@ -2442,6 +2451,15 @@ spec:
                               for scaling
                             type: string
                         type: object
+                      preventAutoscalerEviction:
+                        description: |-
+                          PreventAutoscalerEviction stops the cluster autoscaler from evicting this worker's pods
+                          on node scale-down, by setting cluster-autoscaler.kubernetes.io/safe-to-evict: "false".
+                          The autoscaler caps the termination grace period on scale-down (10 minutes by default),
+                          so without it a scale-down can kill running activities. Trade-off: a node running one
+                          of these pods is not scaled down until the pod is gone. Only the Kubernetes cluster
+                          autoscaler reads this annotation (Karpenter uses karpenter.sh/do-not-disrupt). Off by default.
+                        type: boolean
                       rawValues:
                         description: |-
                           RawValues contains arbitrary Helm values to pass directly to this component's subchart
@@ -2955,6 +2973,15 @@ spec:
                               for scaling
                             type: string
                         type: object
+                      preventAutoscalerEviction:
+                        description: |-
+                          PreventAutoscalerEviction stops the cluster autoscaler from evicting this worker's pods
+                          on node scale-down, by setting cluster-autoscaler.kubernetes.io/safe-to-evict: "false".
+                          The autoscaler caps the termination grace period on scale-down (10 minutes by default),
+                          so without it a scale-down can kill running activities. Trade-off: a node running one
+                          of these pods is not scaled down until the pod is gone. Only the Kubernetes cluster
+                          autoscaler reads this annotation (Karpenter uses karpenter.sh/do-not-disrupt). Off by default.
+                        type: boolean
                       rawValues:
                         description: |-
                           RawValues contains arbitrary Helm values to pass directly to this component's subchart
@@ -3576,6 +3603,15 @@ spec:
                               for scaling
                             type: string
                         type: object
+                      preventAutoscalerEviction:
+                        description: |-
+                          PreventAutoscalerEviction stops the cluster autoscaler from evicting this worker's pods
+                          on node scale-down, by setting cluster-autoscaler.kubernetes.io/safe-to-evict: "false".
+                          The autoscaler caps the termination grace period on scale-down (10 minutes by default),
+                          so without it a scale-down can kill running activities. Trade-off: a node running one
+                          of these pods is not scaled down until the pod is gone. Only the Kubernetes cluster
+                          autoscaler reads this annotation (Karpenter uses karpenter.sh/do-not-disrupt). Off by default.
+                        type: boolean
                       rawValues:
                         description: |-
                           RawValues contains arbitrary Helm values to pass directly to this component's subchart
@@ -3983,6 +4019,15 @@ spec:
                               for scaling
                             type: string
                         type: object
+                      preventAutoscalerEviction:
+                        description: |-
+                          PreventAutoscalerEviction stops the cluster autoscaler from evicting this worker's pods
+                          on node scale-down, by setting cluster-autoscaler.kubernetes.io/safe-to-evict: "false".
+                          The autoscaler caps the termination grace period on scale-down (10 minutes by default),
+                          so without it a scale-down can kill running activities. Trade-off: a node running one
+                          of these pods is not scaled down until the pod is gone. Only the Kubernetes cluster
+                          autoscaler reads this annotation (Karpenter uses karpenter.sh/do-not-disrupt). Off by default.
+                        type: boolean
                       rawValues:
                         description: |-
                           RawValues contains arbitrary Helm values to pass directly to this component's subchart
@@ -4496,6 +4541,15 @@ spec:
                               for scaling
                             type: string
                         type: object
+                      preventAutoscalerEviction:
+                        description: |-
+                          PreventAutoscalerEviction stops the cluster autoscaler from evicting this worker's pods
+                          on node scale-down, by setting cluster-autoscaler.kubernetes.io/safe-to-evict: "false".
+                          The autoscaler caps the termination grace period on scale-down (10 minutes by default),
+                          so without it a scale-down can kill running activities. Trade-off: a node running one
+                          of these pods is not scaled down until the pod is gone. Only the Kubernetes cluster
+                          autoscaler reads this annotation (Karpenter uses karpenter.sh/do-not-disrupt). Off by default.
+                        type: boolean
                       rawValues:
                         description: |-
                           RawValues contains arbitrary Helm values to pass directly to this component's subchart
@@ -4901,6 +4955,15 @@ spec:
                               for scaling
                             type: string
                         type: object
+                      preventAutoscalerEviction:
+                        description: |-
+                          PreventAutoscalerEviction stops the cluster autoscaler from evicting this worker's pods
+                          on node scale-down, by setting cluster-autoscaler.kubernetes.io/safe-to-evict: "false".
+                          The autoscaler caps the termination grace period on scale-down (10 minutes by default),
+                          so without it a scale-down can kill running activities. Trade-off: a node running one
+                          of these pods is not scaled down until the pod is gone. Only the Kubernetes cluster
+                          autoscaler reads this annotation (Karpenter uses karpenter.sh/do-not-disrupt). Off by default.
+                        type: boolean
                       rawValues:
                         description: |-
                           RawValues contains arbitrary Helm values to pass directly to this component's subchart
@@ -5306,6 +5369,15 @@ spec:
                               for scaling
                             type: string
                         type: object
+                      preventAutoscalerEviction:
+                        description: |-
+                          PreventAutoscalerEviction stops the cluster autoscaler from evicting this worker's pods
+                          on node scale-down, by setting cluster-autoscaler.kubernetes.io/safe-to-evict: "false".
+                          The autoscaler caps the termination grace period on scale-down (10 minutes by default),
+                          so without it a scale-down can kill running activities. Trade-off: a node running one
+                          of these pods is not scaled down until the pod is gone. Only the Kubernetes cluster
+                          autoscaler reads this annotation (Karpenter uses karpenter.sh/do-not-disrupt). Off by default.
+                        type: boolean
                       rawValues:
                         description: |-
                           RawValues contains arbitrary Helm values to pass directly to this component's subchart
