@@ -24,3 +24,7 @@ rules:
   - apiGroups: ["apps"]
     resources: ["deployments", "deployments/scale", "statefulsets", "statefulsets/scale"]
     verbs: ["get", "list", "patch"]
+  # Pause KEDA ScaledObjects while a ClickHouse migration has the workers at 0 (ENG-7407).
+  - apiGroups: ["keda.sh"]
+    resources: ["scaledobjects"]
+    verbs: ["get", "patch"]
