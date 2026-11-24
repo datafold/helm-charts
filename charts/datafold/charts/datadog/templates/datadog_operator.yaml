@@ -34,6 +34,8 @@ spec:
       enabled: {{ .Values.configuration.oomKill }}
     orchestratorExplorer:
       enabled: {{ .Values.configuration.orchestratorExplorer }}
+    helmCheck:
+      enabled: {{ .Values.configuration.helmCheck }}
     apm:
       enabled: {{ .Values.configuration.apm }}
       hostPortConfig:

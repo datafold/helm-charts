@@ -48,6 +48,11 @@ configuration:
   processDiscovery: "true"
   oomKill: "true"
   orchestratorExplorer: "true"
+  # The cluster agent's Helm check (DatadogAgent features.helmCheck, datadog-operator
+  # >= 1.5.0): one helm.release gauge per stored release revision, tagged helm_release
+  # and helm_status. The fleet monitor for a release stuck in pending-* reads it
+  # (ENG-7554). Integration metric, not custom; release values are not sent.
+  helmCheck: "true"
   apm: "false"
   dogstatsd:
     enabled: "true"
